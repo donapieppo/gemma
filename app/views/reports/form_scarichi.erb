@@ -1,0 +1,39 @@
+<%= report_layout do %>  
+  <h2>Scarichi utente</h2>
+
+  <%= form_tag action: :scarichi do %>
+
+    <%= render partial: "format" %>
+    <%= render partial: "period" %>
+
+    <p>
+    <label>Scarichi a nome dell'utente</label><br/>
+    <%= collection_select(:user, :id, @cache_users, "id", "upn", { include_blank: 'Tutti' }) %>
+    </p>
+
+    <p>
+    <label>Del Materiale</label><br/>
+    <%= collection_select(:thing, :id, @things, :id, :short_name, { include_blank: 'Qualsiasi' }) %>
+    </p>
+
+    <p>
+    <label>Ricerca tra articoli di genere</label><br/>
+    <%= collection_select(:group, :id, @groups, :id, :name, { include_blank: 'Qualsiasi' }) %>
+    </p>
+
+    <p>
+    <label>Ricerca parola nelle note</label><br/>
+    <%= text_field_tag(:note) %>
+    </p>
+
+    <p>
+    <input type="checkbox" name="different_pages" /> 
+    <label>Una pagina per ogni utente</label>
+    </p>
+
+    <p>
+    <%= submit_tag "Scarica", data: { disable_with: false } %>
+    </p>
+
+  <% end %>
+<% end %>

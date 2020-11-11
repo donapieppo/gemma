@@ -1,0 +1,27 @@
+<%= report_layout do %>  
+  <h2>Ricevute</h2>
+
+  <%= form_tag action: :receipt do %>
+
+    <p>
+    <label>Data</label><br/>
+    <%- t = Date.today %>  
+    <%= select_date t, prefix: 'from' %> 
+    </p>
+
+    <p>
+    <label>Scarichi a nome dell'utente</label><br/>
+    <%= collection_select(:user, :id, @cache_users, "id", "cn_militar", { include_blank: false }) %>
+    </p>
+
+    <% if false %>
+      <input type="hidden" name="bookings" value="1" />  
+    <% end %>
+
+    <p>
+    <%= submit_tag "Scarica", data: { disable_with: false } %>
+    </p>
+
+  <% end %>
+<% end %>
+

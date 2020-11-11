@@ -1,0 +1,13 @@
+<%= report_layout do %>  
+  <h2>Articoli sottoscorta</h2>
+
+  <%= form_tag action: :sottoscorta do %>
+
+    <%= render partial: "format" %>
+
+    <p>
+    <%= submit_tag "Scarica", data: { disable_with: false } %>
+    </p>
+
+  <% end %>
+<% end %>

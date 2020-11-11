@@ -1,0 +1,31 @@
+<%= report_layout do %>  
+  <h2>Giacenze</h2>
+
+  <%= form_tag action: :giacenza do %>
+    <%= render partial: "format" %>
+
+    <p>
+    <label>Presso</label><br/>
+    <select id="location_id" name="location[id]">
+      <option value="0">intera struttura</option>
+      <% @locations.each do |location| %>
+        <option value="<%= location.id %>"><%= location %></option>
+      <% end %>
+    </select>
+    </p>
+
+    <p>
+    <label>Categoria</label><br/>
+    <select id="group_id" name="group[id]">
+      <option value="0">tutte</option>
+      <% @groups.each do |group| %>
+        <option value="<%= group.id %>"><%= group.to_s %></option>
+      <% end %>
+    </select>
+    </p>
+
+    <p>
+    <%= submit_tag "Scarica", data: { disable_with: false } %>
+    </p>
+  <% end %>
+<% end %>

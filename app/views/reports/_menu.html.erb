@@ -1,0 +1,19 @@
+<h2>Reports</h2>
+
+<ul class="list-group mb-3" id="choose_report">
+  <%= link_to "Elenco articoli",      reports_form_articoli_path,    class: "list-group-item list-group-item-action" %>
+  <%= link_to "Giacenze attuali",     reports_form_giacenza_path,    class: "list-group-item list-group-item-action" %>
+  <%= link_to "Articoli sottoscorta", reports_form_sottoscorta_path, class: "list-group-item list-group-item-action" %>
+  <%= link_to "Storico movimenti",    reports_form_storico_path,     class: "list-group-item list-group-item-action" %>
+  <%= link_to "Scarichi utente",      reports_form_scarichi_path,    class: "list-group-item list-group-item-action" %>
+  <%= link_to "Ricevute scarichi",    reports_form_receipts_path,    class: "list-group-item list-group-item-action" %>
+  <%= link_to "Dettagli Ddt",         reports_form_ddts_path,        class: "list-group-item list-group-item-action" %>
+</ul>
+
+<% if policy(current_organization).manage? %>  
+  <p><%= link_to 'archivio anni passati', archs_path, class: :button%></p>
+<% end %>
+
+<p class="info">
+  Il formato csv <%= big_dmicon('file-excel-o') %> può essere importato in excel, openoffice calc o anche solo salvato come file di testo.
+</p>

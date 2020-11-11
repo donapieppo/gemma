@@ -1,0 +1,24 @@
+<%= report_layout do %>  
+  <h2>Storico movimenti</h2>
+
+  <%= form_tag action: :storico do %>
+
+    <%= render partial: "format" %>
+    <%= render partial: "period" %>
+
+    <p>
+    <label>Materiale</label><br/>
+    <%= collection_select(:thing, :id, @things, :id, :short_name, { include_blank: 'Qualsiasi' } ) %>
+    </p>
+
+    <p>
+    <input type="checkbox" name="only_loads"></input>
+    <label>Mostra solo carichi</label> 
+    </p>
+
+    <p>
+    <%= submit_tag "Scarica", data: { disable_with: false } %>
+    </p>
+
+  <% end %>
+<% end %>

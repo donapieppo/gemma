@@ -1,0 +1,18 @@
+<%= report_layout do %>  
+  <h2>Elenco articoli</h2>
+
+  <%= form_tag action: :articoli do %>
+
+    <%= render partial: "format" %>
+
+    <p>
+    <input type="checkbox" name="different_pages" /> 
+    <label>Nuova pagina per ogni categoria</label>
+    </p>
+
+    <p>
+    <%= submit_tag "Scarica", data: { disable_with: false } %>
+    </p>
+  <% end %>
+<% end %>
+

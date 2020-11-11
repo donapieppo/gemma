@@ -1,0 +1,20 @@
+<%= report_layout do %>  
+  <h2>Ddt</h2>
+
+  <%= form_tag action: :ddts do %>
+    <%= render partial: "format" %>
+
+    <p>
+    <label>Selezionare i ddt da stampare:</label><br/>
+    <% @ddts.each do |ddt| %>  
+      <input type="checkbox" name="ddt_ids[]" value="<%= ddt.id %>"/> 
+      <strong>n.<%= ddt.number %></strong> del <%= l ddt.date %> di 
+      <em><%= ddt.supplier %></em>  <br/>
+    <% end %>
+    </p>
+
+    <p>
+    <%= submit_tag "Scarica", data: { disable_with: false } %>
+    </p>
+  <% end %>
+<% end %>

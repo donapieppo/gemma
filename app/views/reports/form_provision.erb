@@ -1,0 +1,13 @@
+<h2>Scarichi utente</h2>
+
+<%= form_tag action: :provision do %>
+
+  <%= render partial: "format" %>
+  <%= render partial: "period" %>
+
+  <p>
+  <%= submit_tag "Scarica" %>
+  </p>
+
+<% end %>
+
