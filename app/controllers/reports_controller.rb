@@ -324,6 +324,8 @@ class ReportsController < ApplicationController
     send_data report.render, filename: report.filename, type: report.type
   end
 
+  # single ddit. FIXME
+  # get 'reports/ddts/(:id)', to: "reports#ddt", as: 'ddt_report'
   def ddt
     authorize :report
     ddt   = Ddt.includes(:supplier).find(params[:id])
