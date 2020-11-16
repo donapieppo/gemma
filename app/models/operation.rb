@@ -57,6 +57,12 @@ class Operation < ApplicationRecord
   # {1=>4, 2=>6}
   def numbers=(nums)
     Rails.logger.debug("Operation numbers with #{nums.inspect}")
+    
+    # Rails6 From controller h is <ActionController::Parameters {"11459"=>"3"} permitted: true>
+    if nums.is_a?(ActionController::Parameters)
+      nums = nums.to_hash
+    end
+
     @_numbers = Hash.new
     if nums.is_a?(Hash)
       self.number = 0
@@ -99,15 +105,14 @@ class Operation < ApplicationRecord
   #
   # Bisogna considerare come pericolosi i cambiamenti di data e di numero perche' possono
   # creare giacenze negative in uno scarico movimento di data successiva. Quindi si usa history_coherent?
+  # Rails6 From controller h is <ActionController::Parameters {"11459"=>"3"} permitted: true>
   def aggiorna(h)
     avoid_history_coherent = avoid_price_updating = changed_numbers = false
 
-    old_numbers = numbers_hash
-    if h[:numbers] and h[:numbers] != old_numbers
+    old_numbers = self.numbers
+    if h[:numbers] && (h[:numbers] != old_numbers)
       self.numbers = h[:numbers]
       changed_numbers = true
-    else
-      self.numbers = old_numbers
     end
     h.delete(:numbers)
 
@@ -116,8 +121,8 @@ class Operation < ApplicationRecord
       self.send("#{k}=", v) 
     end
 
-    avoid_price_updating   = true unless (self.price_changed? or self.date_changed? or changed_numbers)
-    avoid_history_coherent = true unless (self.date_changed? or changed_numbers) # FIXME
+    avoid_price_updating   = true unless (self.price_changed? || self.date_changed? || changed_numbers)
+    avoid_history_coherent = true unless (self.date_changed? || changed_numbers) # FIXME
 
     self.save
   end
