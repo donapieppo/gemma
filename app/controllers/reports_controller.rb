@@ -30,7 +30,7 @@ class ReportsController < ApplicationController
   # 
   def form_giacenza
     authorize :report
-    @locations = current_organization.all_locations
+    @locations = current_organization.locations.order(:name)
     @groups    = current_organization.groups
     # se solo uno non c'e' da scegliere :-)
     (@locations.size == 1) and @locations = []
@@ -95,8 +95,8 @@ class ReportsController < ApplicationController
   def form_scarichi 
     authorize :report
     @cache_users = User.all_in_cache(current_organization.id)
-    @things = current_organization.all_things
-    @groups = current_organization.all_groups
+    @things = current_organization.things.order(:name)
+    @groups = current_organization.groups.order(:name)
   end
 
   def scarichi
@@ -210,7 +210,7 @@ class ReportsController < ApplicationController
   #
   def form_storico
     authorize :report
-    @things = current_organization.all_things
+    @things = current_organization.things.order(:name)
   end
 
   def storico
