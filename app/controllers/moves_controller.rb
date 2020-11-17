@@ -3,9 +3,6 @@ class MovesController < ApplicationController
   def index
     authorize Move
 
-    # FIXME TODO REFACTOR
-    # per ora cerchiamo tutto e scorriamo saltando quello che non ci interessa
-    @display_year = (params[:y] || Date.today.year).to_i
     if params[:thing_id]
       @thing = current_organization.things.find(params[:thing_id]) 
     else 
@@ -17,7 +14,17 @@ class MovesController < ApplicationController
     if @deposit
       @operations = @operations.ordered.includes(:user, :recipient, :moves).where('moves.deposit_id = ?', @deposit.id).references(:moves) 
     end
-                                                 
-    @deposits = @thing.deposits
+
+    if @operations.size < 1
+      redirect_to thing_path(@thing), alert: "Non sono ancora stati registrati movimenti per il materiale selezionato."
+      return
+    else
+
+      @deposits = @thing.deposits
+
+      @first_year = @operations.first.date.year
+      @last_year = @operations.last.date.year
+      @display_year = (params[:y] || @last_year).to_i
+    end
   end
 end

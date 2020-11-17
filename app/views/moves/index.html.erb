@@ -4,16 +4,14 @@
 <% title += " presso #{@deposit.location}" if @deposit %>
 
 <% if @operations.size > 0 %>
-  <% first_year = @operations.first.date.year %>  
-  <% last_year = @operations.last.date.year %>  
   <% tot = 0 %>
 
   <p class="m-3 font-weight-bold"><%= title %> <span class="text-muted small">(Per operare su un singolo movimento cliccare sulla riga).</span> </p>
 
-  <% if first_year != last_year %>  
-    <nav aria-label="Selziona l'anno">
+  <% if @first_year != @last_year %>  
+    <nav aria-label="Seleziona l'anno">
       <ul class="pagination justify-content-center">
-        <% (first_year .. last_year).each do |y| %>  
+        <% (@first_year .. @last_year).each do |y| %>  
           <% active = (y == @display_year) ? ' active ' : '' %>  
           <% where_to = @deposit ? deposit_moves_path(@deposit, y: y) : thing_moves_path(@thing, y: y) %>  
           <li class="page-item <%= active %>">
@@ -94,7 +92,7 @@
         <tr>
           <th class="number"><%= dep.actual %></th>
           <td>in <%= dep.location %></td>
-          <td><%= link_to dmicon('search') + " mostra movimenti", deposit_moves_path(dep), title: 'visualizza, modifica ed elimina carichi e scarichi.' %></td>
+          <td><%= link_to dmicon('search') + " mostra movimenti", deposit_moves_path(dep, y: @display_year), title: 'visualizza, modifica ed elimina carichi e scarichi.' %></td>
         </tr> 
       <% end %>
       <tr>
