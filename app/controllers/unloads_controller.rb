@@ -3,25 +3,28 @@ class UnloadsController < ApplicationController
   before_action :get_unload_and_check_permission, only: [:edit, :update, :destroy, :signing]
   before_action :get_last_recipient, only: [:new]
 
+  # current_user unloads
   def index
     authorize Unload
-    @unloads = current_organization.unloads.includes(:thing, :user)
-                                   .where('YEAR(date) = ?', Date.today.year)
+    @unloads = current_organization.unloads
+                                   .includes(:thing, :user)
                                    .where('recipient_id = ? OR user_id = ?', current_user.id, current_user.id)
+                                   .where('YEAR(date) = ?', Date.today.year)
                                    .order('date desc')
   end
 
   def new
     if @thing.total == 0 
       skip_authorization
-      flash[:alert] = 'Non sono presenti oggetti da scaricare.'
-      redirect_to (policy(current_organization).manage? ? new_thing_load_path(@thing) : group_things_path(@thing.group_id)) and return
+      u = policy(current_organization).manage? ? new_thing_load_path(@thing) : group_things_path(@thing.group_id)
+      redirect_to u, alert: 'Non sono presenti oggetti da scaricare.'
+      return
     else
       @unload = @thing.unloads.new(organization_id: current_organization.id)
       @unload.date = Date.today # FIXME vedi inizialize con date_afternoon
+      authorize @unload
+      @cache_users = User.all_in_cache(current_organization.id)
     end
-    authorize @unload
-    @cache_users = User.all_in_cache(current_organization.id)
   end
 
   def create
@@ -91,7 +94,7 @@ class UnloadsController < ApplicationController
 
   def destroy
     if @unload.destroy
-      flash[:notice] = "Lo scarico di #{@unload.number * -1} oggetti è starto eliminato."
+      flash[:notice] = "Lo scarico è stato eliminato."
     else
       flash[:alert] = "Non è stato possibile eliminare lo scarico"
     end

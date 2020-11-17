@@ -1,0 +1,41 @@
+<%= thing_actions_menu %>
+
+<% form_title = "Modulo di scarico di #{h @thing} " %>
+<% form_title += "(#{show_future_prices(@thing)})" if current_organization.pricing %>
+<% form_title += "- presso #{@thing.deposits.first.location}" unless @thing.deposits.size == 1 %> 
+
+<%= dm_form_for [@thing, @unload], title: form_title do |u| %>
+  <%= u.dm_error_notification %>  
+  <%= u.input :number, hint: "(massimo: #{@thing.max_actual_in_deposits})", required: true %>
+
+  <% if @thing.deposits.size > 1 %>  
+    <%= u.input :deposit_id, as: :unload_location %>  
+  <% else %>
+    <%= u.hidden_field :deposit_id, value: @thing.deposits.first.id %>  
+  <% end %>
+
+  <%= u.input :note %>
+
+  <% if policy(current_organization).give? %>
+    <%= u.input :date, as: :date, html5: true %>
+
+    <%= u.input :recipient_upn, input_html: { class: "choosen_dsauser" }, hint: recipient_hint(@unload) %>
+
+    <div class='col-sm-9 offset-sm-3'>
+      <input type="checkbox" id="unload_sendmail" name="sendmail" <%= current_organization.sendmail == 'y' ? 'checked="checked"' : '' %> />
+      <%= u.label "Avvisa ora l'utente dell'operazione tramite mail." %>
+      <% if current_organization.sendmail == 'w' %>
+        <%= u.hint "(in base a come è attualmente configurata la struttura, l'utente verrà comunque avvisato dei suoi scarchi ogni settimana)." %>
+      <% elsif current_organization.sendmail == 'm' %>
+        <%= u.hint "(in base a come è attualmente configurata la struttura, l'utente verrà comunque avvisato dei suoi scarchi ogni mese)." %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <%= u.submit %>
+  <%= thing_image(@thing) %>  
+<% end %>
+
+<%= render "dsausers/typeahead" %>  
+<%= render "dsausers/last_recipient" %>  
+

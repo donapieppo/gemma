@@ -1,0 +1,28 @@
+<h1>Ricevuta di scarico materiale di consumo.</h1>
+
+<p>
+..l.. sottoscritt.. <%= @unload.recipient %>
+</p>
+
+<p>
+attesta di avere autorizzato l'operatore <%= current_user.cn %> (<%= current_user.upn %>)
+ad effettuare lo scarico di n. <%= @unload.number.abs %> pezzi di "<%= @unload.thing %>"
+a proprio nome, in data <%= l @unload.date %>.
+</p>
+
+<% if current_organization.pricing %>  
+  <p>Costo: <%= print_price(@unload.price) %> </p>
+<% end %>
+
+<% unless @unload.note.blank? %>
+  <p><%= "Note: #{@unload.note}" %></p>
+<% end %>
+
+<p>
+In fede,
+</p>
+
+<p><%= @unload.recipient %></p>
+<p> _________________________</p>
+
+

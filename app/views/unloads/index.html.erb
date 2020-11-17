@@ -1,0 +1,37 @@
+<% tot = 0 %>  
+
+<h2>I miei scarichi presso <%= current_organization %> <small>(Anno <%= Date.today.year %>)</small>.</h2>
+
+<div class="unloads-list my-3">
+  <% @unloads.each do |o|  %>  
+    <%= content_tag :div, class: "unloads-list-item #{o.class}" do %>
+      <div class="row ">
+        <div class="col-2 col-md-2 col-lg-1">
+          <div class="move-number py-1 px-2"><%= o.number.abs %></div>
+        </div>
+
+        <div class="col my-1">
+          <span class="mr-2">
+            <%= l o.date %>
+          </span>
+          <span class="font-weight-bold"><%= o.thing %></span>
+          <% if current_organization.pricing %>
+            <% tot = tot + o.price %>  
+            <span class="number font-weight-bold mx-2 float-right"><%= o.price_string %></span>
+          <% end %>
+          <br/>
+          <span class="text-muted">
+            <%= o.note %>
+          </span>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+
+<% if (current_organization.pricing and tot > 0) %>
+  <div class="btn btn-outline-success float-right" style="font-size: 100%; font-weight: bold">
+    Totale: <%= print_price(tot) %>  
+  </div>
+<% end %>
+
