@@ -1,0 +1,136 @@
+it:
+  activerecord:
+    models:
+      organization: Struttura
+      division: Gruppo di spesa / reparto
+      supplier: Fornitore
+      ddt: Ddt/Fattura
+      load: Carico
+      price: Prezzo
+      takeover: Presa Consegna
+      unload: Scarico
+      group: Categoria
+      thing: Articolo
+      location: Ubicazione
+      operation: Operazione
+      stock: Giacenza iniziale
+      barcode: Codice a barre
+      delegation: Delega
+      thingcode: Codice
+    attributes:
+      admin:
+        user_upn: Indirizzo mail
+        organization: Struttura
+      organization:
+        name: Codice Struttura (A.xx)
+        description: Descrizione (per esempio Dipartimento di Matematica)
+        booking: Abilitazione prenotazione materiale
+        ordering: Abilitazione richiesta acquisti
+        pricing: Abilitazione inserimento prezzi acquisti
+        division: Abilitazione Gruppi di spesa / Reparti
+      network: 
+        name: Rete
+        organization: Struttua
+        authlevel: Permessi
+      admin:
+        authlevel: Permessi
+      ddt:
+        name: Dettagli documento
+        supplier: Fornitore
+        date: Data documento
+        gen: Tipo documento
+      load:
+        number: Numero di oggetti da caricare
+        ddt:    Ddt/Fattura 
+        date: Data del carico
+        price: Costo totale del carico 
+        ycia: Rif. Cia o Nr. Prot.
+        note: Note
+      stock:
+        number: Numero di oggetti da caricare
+        price: Costo totale del carico
+        date: Data 
+      price:
+        date: Data di partenza
+        price: Prezzo del materiale
+      takeover:
+        number: Numero di oggetti da caricare
+        date: Data del carico
+        note: Note
+        recipient_upn: Indirizzo mail di chi consegna il materiale
+      unload:
+        number: Numero articoli da scaricare
+        division: Gruppo di spesa / reparto
+        date: Data della consegna 
+        deposit_id: Scegliere la provenienza
+        note: Eventuali annotazioni
+      booking:
+        number: Numero di articoli da prenotare
+        recipient_id: Destinatario/resposabile scarico
+      shift:
+        date: Data
+        number: Numero
+      group:
+        name: Categoria
+      thing:
+        group: Genere
+        minimum: Scorta minima
+        name: Nome 
+        description: Descrizione
+        locations: Ubicazioni dove questo articolo può trovarsi
+        fixprice: Prezzo
+      location:
+        name: Nome dell'ubicazione
+      operation: 
+        recipient_upn: Indirizzo mail del ricevente
+      division:
+        name:  Nome del gruppo di spesa / reparto
+        description: Descrizione
+        email: Indirizzo di posta elettronica
+      supplier:
+        name: Nome fornitore
+        pi: Partita IVA
+      organization:
+        name: Nome
+        description: Descrizione
+        adminmail: Indirizzo mail responsabili
+        sendmail: Modalità invio mail
+        booking: Prenotazione materiale
+        ordering: Richiesta acquisti 
+        pricing: Prezzi
+        division: Reparti
+      delegation:
+        delegator_upn: Delegante
+        delegate_upn: Delegato
+      thingcode:
+        code: Codice 
+      barcode:
+        name: Codice a barre
+
+  simple_form:
+    hints:
+      delegation:
+        delegator_upn: Indirizzo email del responsabile dei fondi.
+        delegate_upn: Indirizzo email della persona delegata a ritirale in materiale in nome del delegante sopra.
+
+
+  sottoscorta_message:  È possibile scegliere l'indirizzo mail a cui inviare gli avvisi (nel caso di più indirizzi, separarli con una virgola).
+  sendmail_message:     È possibile impostare la modalità di invio delle mail che notificano agli utenti la registrazione dello scarico. Indipendentemente dall'opzione attivata, nella maschera di scarico l'utente amministratore può sempre attivare l'invio della singola mail per notificare quella specifica operazione.
+  ddt_hint: Numero del ddt/fatt/scontrino come compare sul documento di accompagnamento emesso dal fornitore (per esempio kd/234)
+  booking_recipient_hint: Selezionare la presona reponsabile dello scarico
+  minimum_description: Soglia sotto la quale l'articolo è sottoscorta e si desidera essere avvisati via <strong>mail</strong>. Inserire 0 per non abilitare il servizio su questo articolo.
+  fixprice_description: È possibile inserire un prezzo stabilito. In questo modo non vengono considerati i prezzi di carico.
+  pricing_option: È possibile assegnare un prezzo ai carichi o agli oggetti in modo da calcolare il costo totale degli scarichi.
+
+  can_read:   può leggere
+  can_order:  può ordinare
+  can_book:   può prenotare
+  can_unload: può scaricare
+  can_give:   può scaricare a nome di altri
+  can_admin:  può amministrare
+  can_edit:   responsabile struttura (Direttore amministrativo)
+  is_cesia:   Amministratore Cesia
+
+  date:
+    formats:
+      in_list: ! '%d/%m/%y'

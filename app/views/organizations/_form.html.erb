@@ -1,0 +1,13 @@
+<%= dm_form_for current_organization, url: current_organization_update_path, title: 'Configurazioni' do |o| %>
+  <%= o.dm_error_notification %>  
+  <% if current_user.is_cesia? %>  
+    <%= o.input :name %>
+    <%= o.input :description, as: :text %>
+    <%= o.input :booking %>
+  <% end %>
+
+  <%= o.input :pricing, hint: t(:pricing_option) %>
+  <%= o.input :adminmail, hint: t(:sottoscorta_message).html_safe %>
+  <%= o.input :sendmail, collection: Configuration::SELECT_COLLECTION, hint: t(:sendmail_message) %>  
+  <%= o.submit 'Salva configurazione' %> - <%= link_to_back root_path %>  
+<% end %>

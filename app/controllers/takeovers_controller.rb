@@ -18,7 +18,7 @@ class TakeoversController < ApplicationController
     @takeover.organization_id = current_organization.id
     @takeover.user_id = current_user.id
     if recipient_upn =~ /(\w+\.\w+@unibo.it)/
-        @takeover.recipient_upn = $1
+      @takeover.recipient_upn = $1
     end
 
     authorize @takeover
@@ -68,6 +68,7 @@ class TakeoversController < ApplicationController
     else
       flash[:error] = "Non è stato possibile eliminare la presa consegna. Controllare che la sua cancellazione non precluda scarichi successivi."
     end
+
     redirect_to thing_moves_path(@takeover.thing_id)
   end
 

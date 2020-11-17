@@ -1,0 +1,20 @@
+<h1>Richiesta accesso prenotazione materiale</h1>
+
+<div class="centered">
+  <p>Gentile <%= current_user %></p>
+
+  <p>
+  per accedere alla struttura<br/>
+  <strong><%= current_organization %></strong><br/>
+  e prenotare materiale, si prega di confermare<br/>
+  la propria afferenza.
+  </p>
+
+  <%= form_tag current_organization_start_booking_path do %>
+    <%= hidden_field_tag :org, current_organization %>  
+    <button type="submit" class="btn btn-success" style="font-size: 120%; padding: 20px">
+      Dichiaro di afferire alla struttura <br/>
+      <%= current_organization.to_s %>
+    </button>
+  <% end %>
+</div>

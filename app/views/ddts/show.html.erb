@@ -1,0 +1,32 @@
+<% title = "Carichi relativi a #{h @ddt.gen} #{h @ddt}.<br/> Documento Record N. #{h @ddt.number} emesso da #{link_to @ddt.supplier, supplier_ddts_path(@ddt.supplier.id)} il #{I18n.l @ddt.date}" %>
+
+<%= dm_card title: title.html_safe do %>  
+  <table class="table table-sm">
+    <thead>
+      <tr>
+        <th class="number">Num</th>
+        <th>Articolo</th>
+        <th>Data</th>
+        <th>Rif. CIA - Nr. Prot.</th>
+        <th>Note</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @loads.each do |o| %>
+        <tr>
+          <td class="number"><%= o.number %></td>
+          <td><%= link_to o.thing, thing_moves_path(o.thing_id) %></td> 
+          <td><%= l o.date %></td>
+          <td><% if o.ncia %> <%= o.ycia %>/<%= o.ncia %> <% end %> </td>
+          <td><%= o.note %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <p>
+  <%= link_to big_dmicon('file-pdf') + " stampa pdf", ddt_report_path(@ddt.id, format: :pdf), class: :button %> 
+  <%= link_to big_dmicon('file-alt') + " scarica elenco", ddt_report_path(@ddt.id, format: :txt), class: :button %>  
+  </p>
+<% end %>

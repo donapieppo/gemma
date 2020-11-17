@@ -1,0 +1,18 @@
+.dm-card {
+  @extend .card;
+  @extend .my-3;
+}
+.dm-card-title, .dm-card-header {
+  @extend .mb-0;
+  @extend .card-header;
+  font-weight: bold;
+  border-bottom: 2px solid #ccc;
+}
+.dm-card-body {
+  @extend .card-body;
+}
+.dm-card-footer {
+  @extend .card-footer;
+}
+
+

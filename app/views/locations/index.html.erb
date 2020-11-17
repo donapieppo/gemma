@@ -1,0 +1,18 @@
+<h1>Ubicazioni</h1>
+
+<p class="info">
+Con il termine <strong>"ubicazione"</strong> si intende il posto dove si trova un articolo 
+(per esempio, "armadio numero uno", "laboratorio tecnici"...). 
+Cliccando sul nome è possibile vedere gli articoli che vi si trovano.<br/>
+<% if policy(current_organization).manage? %>
+  Si possono modificare / cancellare dalla <%= link_to 'pagina di configurazione', current_organization_edit_path %> della struttura.
+<% end %>
+</p>
+
+<div class="list-group">
+  <% @locations.each do |location| %>
+    <%= link_to location, location_things_path(location), class: "list-group-item list-group-item-action py-2" %> 
+  <% end %>
+</div>
+
+

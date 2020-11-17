@@ -1,0 +1,7 @@
+<%= dm_form_for @group, title: "Categoria presso #{@group.organization}" do |g| %>
+  <%= g.dm_error_notification %>  
+
+  <%= g.input :name %>
+  <%= g.submit %> - <%= link_to_back groups_path %>  
+<% end %>
+

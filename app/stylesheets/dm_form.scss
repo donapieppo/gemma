@@ -1,0 +1,81 @@
+// DM-FORM
+.dm-form {
+  @extend .dm-card;
+  input.input-small {
+    width: 10em;
+  }
+}
+.dm-form-title {
+  @extend .dm-card-title;
+}
+.dm-form-body {
+  @extend .card-body;
+}
+// SUMBIT
+input[type="submit"] {
+  @extend .btn;
+  @extend .btn-primary;
+} 
+.simple_form input[type="submit"] {
+  @extend .offset-sm-3;
+}
+.form-group label {
+  font-weight: bold;
+  text-align: right;
+}
+@media (max-width: 576px) {
+  .form-group label {
+    text-align: left;
+  }
+}
+input.integer {
+  width: 8em;
+}
+select.hour {
+  width: 5em;
+}
+// simple-form 2.0 bad choice
+small.form-text {
+  font-size: 100%
+}
+
+label.collection_check_boxes {
+  @extend .ml-1;
+}
+// .has-error {
+//   input.form-control {
+//      @extend .is-invalid;
+//    }
+// }
+// .form-error-block {
+//   @extend .text-danger;
+// }
+// .help-block {
+//   font-style: italic;
+// }
+// .radio {
+//   display: block;
+//   label {
+//     display: inline;
+//     input {
+//       display: inline;
+//     }
+//   }
+// }
+// .radio input[type="radio"], .checkbox input[type="checkbox"] {
+//   width: 30px;
+//   margin-left: 0px;
+//   height: auto;
+// }
+// .form-control-inline {
+//   @extend .form-control;
+//   display: inline;
+// }
+// input[type="file"] {
+//   border: 0;
+//   box-shadow: 0px 0px 0px 0px;
+//   height: auto;
+// }
+// .missing-field {
+//   // color: $brand-danger;
+// }

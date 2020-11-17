@@ -1,0 +1,31 @@
+<h1>Deleghe attive</h1>
+
+<p class="centered_action">
+  <%= link_to 'Nuova delega', new_delegation_path, class: 'btn btn-primary my-2' %>  
+</p>
+
+<% @delegations.keys.sort_by(&:surname).each do |delegator| %>  
+  <div class="list-group">
+    <div class="list-group-item py-2" onclick="hide_and_show(this)" style="cursor: pointer">
+      <strong><%= delegator.cn.upcase %> (<%= delegator.upn %>)</strong> 
+    </div>
+    <div class="list-group-item hide_and_show" style="display: none">
+      <ul>
+      <% @delegations[delegator].each do |delegation| %>
+        <li><%= delegation.delegate %> (<%= delegation.delegate.upn %>) <%= link_to_delete delegation %></li>
+      <% end %>
+      </ul>
+    </div>
+  </div>
+<% end %>
+
+<%= javascript_tag do %>  
+  function hide_and_show(e) {
+    x = e.nextElementSibling;
+    if (x.style.display === "none") {
+      x.style.display = "block";
+    } else {
+      x.style.display = "none";
+    }
+  }
+<% end %>

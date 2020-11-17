@@ -1,0 +1,33 @@
+<h1>DDT/Fatture
+  <%= @supplier ? "di #{@supplier}" : '' %>  
+  <% if @titolo_ricerca %> 
+    <small>(<%= @titolo_ricerca %>)</small>
+  <% end %>
+</h1>
+
+<div class="row">
+  <div class="col-md-3">
+    <%= render 'ricerca' %>
+  </div>
+
+  <div class="col-md-9">
+    <p class="centered_action"><%= link_to_new 'Registra nuovo ddt/fattura', suppliers_path(:for => 'ddt') %></p>
+
+    <table class="table table-sm table-hover">
+      <tbody>
+      <% @ddts.each do |ddt| %>
+        <tr>
+          <th><%= ddt.gen %> num. <%= ddt.number %></th>
+          <td>del <%= l ddt.date %> - <%= ddt %> <br/>di <%= ddt.supplier %></td>
+          <td>
+          <%= link_to_show ddt %>
+          <%= link_to_edit edit_ddt_path(ddt) %>  
+          <%= link_to_delete ddt_path(ddt) %>  
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+

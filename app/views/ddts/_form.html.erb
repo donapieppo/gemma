@@ -1,0 +1,9 @@
+<%= dm_form_for [@supplier, @ddt], title: "Dati documento" do |d| %>  
+  <%= d.dm_error_notification %>  
+  <%= d.input :supplier, disabled: true %>
+  <%= d.input :gen, collection: Ddt.possible_type_descripions, as: :radio_buttons %>  
+  <%= d.input :name, hint: t(:ddt_hint) %>
+  <%= d.input :date, as: :date, html5: true %>
+  <%= d.submit %> - <%= link_to_back ddts_path %>  
+<% end %>
+

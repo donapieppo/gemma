@@ -1,0 +1,6 @@
+<%= dm_form_for @location, title: "Presso #{current_organization}" do |location| %>
+  <%= location.dm_error_notification %>  
+  <%= location.input :name %>
+  <%= location.submit %> 
+<% end %>
+

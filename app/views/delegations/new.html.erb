@@ -1,0 +1,8 @@
+<%= dm_form_for @delegation, title: 'Nuova delega' do |d| %>  
+  <%= d.dm_error_notification %>
+  <%= d.input :delegator_upn, input_html: { class: "choosen_dsauser" } %>
+  <%= d.input :delegate_upn,  input_html: { class: "choosen_dsauser" } %>
+  <%= d.submit %>  
+<% end %>
+
+<%= render "dsausers/typeahead" %>  

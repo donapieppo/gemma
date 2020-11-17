@@ -1,0 +1,13 @@
+<h1>Scegli la struttura su cui lavorare</h1>
+
+<p class="info">
+Con le tue credenziali hai la possibilità di accedere a diverse strutture.<br/>
+Scegli dall'elenco la struttura sulla quale vuoi lavorare adesso.
+</p>
+
+<div class="list-group">
+  <% current_user.my_organizations.each do |organization| %>
+    <%= link_to organization.to_s.upcase, root_path(__org__: organization.code), class: "list-group-item list-group-item-action py-2" %>
+  <% end %>
+</div>
+

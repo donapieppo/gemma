@@ -97,7 +97,7 @@ class ThingsController < ApplicationController
 
   def update
     params[:thing].delete(:organization_id)
-    if @thing.update_attributes(thing_params)
+    if @thing.update(thing_params)
       redirect_to group_things_url(@thing.group_id), notice: "L'articolo è stato aggiornato"
     else
       @barcodes = @thing.barcodes
