@@ -1,6 +1,6 @@
 class UnloadPolicy < ApplicationPolicy
   def index?
-    false
+    current_organization_reader?
   end
 
   def create?

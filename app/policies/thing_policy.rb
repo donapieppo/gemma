@@ -7,6 +7,10 @@ class ThingPolicy < ApplicationPolicy
     index?
   end
 
+  def show?
+    index?
+  end
+
   def create?
     record_organization_manager?
   end

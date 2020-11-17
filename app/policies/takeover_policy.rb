@@ -8,5 +8,13 @@ class TakeoverPolicy < ApplicationPolicy
     OrganizationPolicy.new(@user, @record.organization).give? && 
     @record.organization_id == @record.thing.organization_id
   end
+
+  def update?
+    create?
+  end
+
+  def destroy?
+    create?
+  end
 end
 

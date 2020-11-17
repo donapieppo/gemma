@@ -4,9 +4,7 @@ class StockPolicy < ApplicationPolicy
   end
 
   def create?
-    @user && 
-    OrganizationPolicy.new(@user, @record.organization).manage? && 
-    @record.organization_id == @record.thing.organization_id
+    record_organization_manager?
   end
 
   def update?
@@ -14,6 +12,10 @@ class StockPolicy < ApplicationPolicy
   end
 
   def signing?
+    create?
+  end
+
+  def destroy?
     create?
   end
 end
