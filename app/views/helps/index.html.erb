@@ -1,0 +1,161 @@
+<h1>Istruzioni per l'utilizzo del programma Gemma</h1>
+
+<div>
+  <%= help_card title:'Accesso' do %>
+    <p>
+    Per essere inseriti tra gli <b>amministratori della propria struttura</b> è  necessario contattare il Cesia 
+    inviando una mail di richiesta a  
+    <a href="mailto:assistenza.cesia@unibo.it">Assistenza Cesia</a>. 
+    </p>
+    <p>
+    Una volta abilitati potete loggarvi con le Credenziali di Ateneo.
+    </p>
+  <% end %>
+
+  <%= help_card title:'Categorie' do %>
+    <p>
+    Inizialmente la vostra struttura avrà solo la categoria <i>cancelleria</i> per distinguere il materiale.
+    </p>
+
+    <p>
+    Ecco alcuni esempi di categorie che i colleghi di altre strutture hanno utilizzato per suddividere il materiale:
+    </p>
+
+    <ul>
+      <li>Cartoleria</li>                                                 
+      <li>Carta</li>                                                      
+      <li>Materiale didattico</li>                       
+      <li>Materiale elettrico</li>                                   
+      <li>Toner stampanti</li>                                   
+      <li>Toner e fotoconduttori per stampanti, fotocopiatrici e fax</li>
+      <li>Materiale di consumo per computer</li>
+    </ul>
+  <% end %>
+
+  <%= help_card title:'Modalità di scarico' do %>
+    <p>
+    È possibile scegliere una o più delle seguenti opzioni per gestire gli scarichi di materiale nella vostra struttra:
+    </p>
+    <ul>
+      <li>L'utente che riceve il materiale accede ad un pc abilitato ed effettua lui stesso lo scarico.</li>
+      <li>L'utente prenota il materiale a cui è interessato da un pc della struttura.
+        L'amministratore conferma lo scarico solo quando il materiale prenotato è effettivamente consegnato.</li>
+      <li>È possibile richiedere che alcuni utenti possano effettuare gli scarichi a nome di altri utenti
+        (a cui si suppone consegnino il materiale). <br/>
+        Questi utenti non sono però amministratori in quanto non possono effettuare carichi o modificare le 
+        operazioni fatte.</li>
+      <li>Gli amministratori sono gli unici che possono effettuare lo scarico. 
+        Nello scarico l'amministratore può indicare a chi è stato consegnato il materiale.</li>
+    </ul>
+    <p>
+    L'ultima modalità è quella attualmente più utilizzata.
+    </p>
+  <% end %>
+
+  <%= help_card title:'Mail di avviso' do %>
+    <p>
+    È possibile configurare la modalità con cui il programma informa gli utenti degli scarichi effettuati a loro nome.<br/>
+    Sono possibili le seguenti opzioni:
+    </p>
+
+    <ul>
+      <li>l'utente riceve una mail per ogni scarico</li>
+      <li>l'utente riceve una mail alla settimana con l'elenco del materiale scaricato</li>
+      <li>l'utente riceve una mail al mese con l'elenco del materiale scaricato</li>
+    </ul>
+
+    <p>
+    È anche possibile disabilitare completamente l'invio delle mail.
+    </p>
+  <% end %>
+
+  <%= help_card title: 'Come usare il programma (per amministratori della struttura)' do %>
+    <p>
+    Per iniziare a utilizzare il programma come amministratore suggeriamo di procedere come segue: 
+    </p>
+
+    <ul>
+      <li>Scegliete dal menu <%= dmicon('cogs') %> Amm. il link <%= dmicon 'cubes' %> Ubicazioni e aggiungete i posti dove
+        viene tenute il materiale di consumo (per esempio 'armadio uno', 'cassetto uno', 'laboratorio docenti'...)</li>
+      <li>Scegliete dal menu <%= dmicon 'list' %> Cat. la categoria su cui volete operare (per esempio "cartoleria") 
+        e quindi cliccate sul bottone "Nuovo articolo" per inserire un nuovo articolo (per esempio 'post it').</li>
+      <li>Sempre sotto cartoleria ora trovate l'articolo inserito.<br/>
+        Cliccate sul nome dell'articolo e vi trovate nella pagina dei carichi.</li>
+      <li>Il primo carico sarà probabilmente relativo alla giacenza iniziale (nel caso 
+        naturalmente abbiate già del materiale nel magazzino).<br/>
+        I carichi successivi di uno stesso articolo verranno da fatture/ddt che dovrete
+        inserire voi stessi scegliendo <%= dmicon 'file-alt' %>  ddt/fatt dal menu di amministrazione.<br/>
+        <i>I fornitori sono comuni a tutte le strutture e potete aggiungerne quando servono. </i></li>
+      <li>Ora potete fare uno scarico cliccando sul nome dell'articolo.</li>
+    </ul>
+
+    <p>
+    Si osservi che gli amministratori possono fare scarichi anche a nome di altri utenti.<br/>
+    In questo caso la mail di avviso arriva all'utente inserito dall'amministratore.<br/>
+    È possibile stampare una ricevuta da fare firmare all'utente che ha ritirato il materiale.</li>
+  Gli scarichi passati possono essere modificati dall'amministratore solo a <i>vantaggio dell'utente</i>.
+  Con questo intendiamo che l'amministratore può ridurre il numero di oggetti scaricati
+  dall'utente o eliminare lo scarico (nel caso l'utente abbia riconsegnato degli oggetti
+  o abbia fatto un errore nello scarico).<br/>
+  Per aumentare il numero di oggetti scaricati è necessario fare un <i>nuovo</i> scarico.
+    </p>
+  <% end %>
+
+  <%= help_card title:'Altre opzioni che possono essere attivate a richiesta' do %>
+    <ul>
+      <li>Ad ogni carico è possibile aggiungere il <b>prezzo</b> del materiale caricato.<br/>
+        In questo modo nei report si possono ottenere i valori per ogni singolo scarico e calcolare così
+        la spesa totale degli scarichi di ogni utente.</li>
+      <li>È possbile permettere ad utenti o gruppi di utenti
+        abilitati di <b>prenotare</b> il materiale già disponibile.<br/>
+        In questo modo si può pensare di raggruppare 
+        il materiale richiesto e di consegnarlo ad orari stabiliti.</li>
+    </ul>
+  <% end %>
+
+  <%= help_card title: "Esempio dell'utilizzo presso il Dipartimento di Matematica" do %>
+    <p>Nel Dipartimento di Matematica abbiamo un pc da cui gli utenti possono direttamente 
+    loggarsi e scaricare il materiale di consumo. <br/>
+    Se volete fare così basta fornirci l'indirizzo ip del pc abilitato (per avere l'ip contattate 
+    l'amministratore della rete della vostra struttura).<br/>
+    È anche possibile fornire una intera sottorete abilitata alla lettura (senza possibilita' di scaricare)
+    o alla prenotazione del materiale.
+    </p>
+
+    <p>Si osservi che l'interfaccia che si presenta agli <b>utenti</b> che <b>non</b> sono amministratori
+    è molto semplice e permette solo l'operazione di scegliere il materiale e il numero
+    di oggetti da scaricare o prenotare a seconda di come è stata configurata la struttura.
+    </p>
+
+    <p>L'idea è:</p>
+
+    <ul>
+      <li>permettere di consultare il programma da <i>ogni</i> pc della Struttura in modo
+        da poter verificare la presenza del materiale a cui si è interessati;</li>
+      <li>permettere a chiunque utilizzi un <i>determinato pc</i> di scaricare il materiale
+        di consumo che ha preso	in magazzino;</li>
+      <li>permettere agli amministratori di amministare la struttura da <i>qualunque computer</i>.</li>
+    </ul>
+  <% end %>
+
+  <%= help_card title: "Algoritmo per la valorizzazione degli scarichi (ovvero come si calcolano i prezzi)" do %>
+    <p>Una volta abilitata l'opzione relativa all'inserimento dei prezzi nei carichi il prgramma utilizzerà
+    l'algoritmo FIFO (Firts In First Out) per calcolare i prezzi degli scarichi successivi</p>
+
+    <p>Questo permette di risalire per ogni scarico al ddt con cui tale materiale è arrivato</p>
+
+    <p>Si abbiano per esempio:</p>
+    <ul>
+      <li>01/01/2018 Carico <strong>+ 10</strong> penne a 10 euro</li>
+      <li>02/01/2018 Scarico <strong>- 5</strong> penne</li>
+      <li>03/01/2018 Carico <strong>+ 10</strong> penne a 20 euro</li>
+      <li>04/01/2018 Scarico <strong>- 10</strong> penne</li>
+    </ul>
+
+    <p>In questo caso il primo scarico costerà 5 euro (5 penne a 1 euro ciascuna).</p>
+    <p>Il secondo scarico invece costerà 15 euro perchè composto da 5 penne a 1 euro ciascuna e 5 penne a 2 euro ciascuna.</p>
+
+
+  <% end %>
+</div>
+

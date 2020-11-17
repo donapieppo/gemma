@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
   # cesia list (more than dm_unibo_common)
   get '/organizations',          to: 'organizations#index', as: "organizations"
+  get '/infos',                  to: 'infos#index', as: "infos"
 
   scope ":__org__" do
     # current_organization implicit
@@ -35,8 +36,8 @@ Rails.application.routes.draw do
     post 'search', to: 'search#search', as: 'admin_search'
     get  'search', to: 'groups#index'
 
+    get  'helps',               to: 'helps#index'
     get  'helps/contacts',      to: 'helps#contacts', as: 'contacts'
-    get  'helps/index',         to: 'helps#index'
 
     get  'archs',               to: 'archs#index'
     post 'archs/list',          to: 'archs#list'
