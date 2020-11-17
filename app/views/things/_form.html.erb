@@ -1,0 +1,21 @@
+<%= dm_form_for @thing, title: "Caratteristiche dell'articolo" do |thing| %>
+  <%= thing.dm_error_notification %>  
+  <%= thing.association :group, collection: current_organization.groups.order(:name), include_blank: false %>
+  <%= thing.input :name %>
+  <%= thing.input :description, hint: "Campo opzionale" %>
+  <%= thing.input :minimum, hint: t(:minimum_description).html_safe %>
+
+  <% if @thing.new_record? %>  
+    <% if @locations.size > 1 %>
+      <%= thing.association :locations, collection: @locations, as: :check_boxes %>  
+    <% end %>
+    <div class='col-sm-9 offset-sm-3'>
+      <input type="checkbox" name="insert_barcodes"/> 
+      <label>Voglio inserire i codici a barre dopo aver salvato l'articolo</label>
+    </div>
+  <% end %>
+
+  <%= thing.submit %>
+<% end %>
+
+

@@ -1,0 +1,42 @@
+<% if @location %>  
+  <p class="info">Articoli presso <%= @location %></p>
+<% elsif @search_string %>  
+  <p class="info">Articoli che contengono <strong>"<%= @search_string %>"</strong></p>
+<% end %>
+
+<%= readonly_warning %>  
+
+<div class="list-group">
+  <% @things.each do |thing| %>
+    <% disabled_class  = thing_actions_enabled? ? "" : " disabled " %>  
+    <% highlight_class = (params[:from_thing] && params[:from_thing].to_i == thing.id) ? " bg-light " : "" %>  
+    <% number       = @location ? @actuals[thing.id] : thing.total %>  
+    <% number_class = "actual-number " + (number > 0 ? 'full' : 'empty') %>
+    <%= link_to thing_actions_url(thing), class: "list-group-item list-group-item-action py-2" + disabled_class + highlight_class do %> 
+      <%= thing.to_s_with_description%>
+      <%= content_tag :span, number, class: number_class %>
+    <% end %>
+  <% end %>
+</ul>
+
+<div class="row image-list">
+  <% @things.each do |thing| %>
+    <% (thing.images.size > 0) or next %>
+    <% disabled_class = thing_actions_enabled? ? "" : "disabled" %>  
+    <% thing.images.each do |image| %>  
+      <div class="image">
+        <%= link_to thing_actions_url(thing), class: disabled_class do %>
+          <%= image_tag image.photo.variant(resize_to_limit: [300, 300]) %>
+        <% end %><br/>
+        <%= thing %>  
+      </div>
+    <% end %>
+  <% end %>
+</div>
+
+<% if policy(current_organization).manage? && @group %>
+  <p class="centered_action"> <%= link_to_new 'Nuovo Articolo', new_group_thing_path(@group) %></p>
+<% end %>
+
+
+

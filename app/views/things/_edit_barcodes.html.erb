@@ -1,0 +1,30 @@
+<div class="dm-card">
+<div class="dm-card-title">
+  Codici a Barre <%= popover_help 'Codici a Barre', "Ogni articolo può essere identificato da diversi codici a barre." %>
+</div>
+<div class="dm-card-body">
+  <% if @barcodes.size > 0 %>  
+    <ul class="list-group mb-3">
+      <% @barcodes.each do |b| %>  
+        <li class="list-group-item py-1"> 
+          <%= b.name %> 
+          <span class="float-right">
+            <%= link_to_delete barcode_path(b) %>
+            <%= link_to dmicon('barcode'), barcode_path(b) %>
+          </span>
+        </li>
+     <% end %>
+    </ul>
+  <% else %>  
+    <p>Non sono al momento associati codici a barre a questo materiale.</p>
+  <% end %>
+
+  <p>
+  <%= link_to_new "Aggiungi codice a barre", new_thing_barcode_path(@thing) %> <br/>
+    <% if @barcodes.size == 0 %>
+      <%= link_to "Genera un codice a barre interno a gemma", generate_thing_barcodes_path(@thing), method: :post, class: 'btn btn-warning mt-2' %>
+    <% end %>
+  </p>
+</div>
+</div>
+

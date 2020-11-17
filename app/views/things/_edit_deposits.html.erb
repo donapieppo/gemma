@@ -1,0 +1,43 @@
+<div class="dm-card">
+  <div class="dm-card-title">
+    Ubicazioni <%= popover_help 'Ubicazioni', "Ogni articolo può trovarsi in più posti (ubicazioni) ed è possibile spostarlo da un posto all'altro." %>
+  </div>
+  <div class="dm-card-body">
+    <div class="list-group list-group-flush mb-3">
+      <% possible_shift_number = 0 %>
+      <% @deposits.each do |dep| %>  
+        <div class="list-group-item">
+          <%= dep.location %>
+          <br/><small><%= sprintf("%5d", dep.actual) %> oggetti presenti.</small>
+          <span class="float-right">
+            <% if dep.actual == 0 %>  
+              <%= link_to_delete deposit_path(dep) %>
+            <% else %>
+              <% possible_shift_number += 1 %>
+            <% end %>
+          </span>
+        </div>
+      <% end %>
+    </div>
+
+    <p>
+    <%= link_to_new "Aggiungi ubicazione", new_thing_deposit_path(@thing) %>
+    <% if @deposits.size > 1 and possible_shift_number > 0 %> 
+      - <%= link_to dmicon('angle-double-right') + " Sposta giacenze", new_thing_shift_path(@thing), class: "button" %><br/>
+    <% end %>
+    </p>
+  </div>
+  <% if @locations.size == 1 %>
+    <div class="dm-card-footer">
+      Gli articoli verranno depositati nell'ubicazione denominata <strong>"<%= @locations.first %>"</strong>.
+      Se necessario creare una <%= link_to "nuova ubicazione", locations_path %>.
+    </div>
+  <% end %>
+
+</div>
+
+<%= javascript_tag do %>  
+$(function () {
+  $('[data-toggle="popover"]').popover()
+})
+<% end %>

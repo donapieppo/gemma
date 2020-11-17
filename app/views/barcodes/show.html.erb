@@ -1,0 +1,10 @@
+<h1><%= @barcode.thing %> <small>(<%= @barcode.name %>)</small></h1>
+
+<% (1..12).each do |i| %>  
+  <div style="border: 1px solid black; text-align: center; display: inline-block; padding: 10px">
+    <img src='data:image/png;base64,<%= Base64.strict_encode64(Barby::Code128.new(@barcode.name).to_png) %>'/><br/>
+    <%= @barcode.name %>
+  </div>
+<% end %>
+
+<p><%= link_to 'indietro', edit_thing_path(@barcode.thing) %></p>

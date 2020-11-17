@@ -12,9 +12,8 @@
     <nav aria-label="Seleziona l'anno">
       <ul class="pagination justify-content-center">
         <% (@first_year .. @last_year).each do |y| %>  
-          <% active = (y == @display_year) ? ' active ' : '' %>  
           <% where_to = @deposit ? deposit_moves_path(@deposit, y: y) : thing_moves_path(@thing, y: y) %>  
-          <li class="page-item <%= active %>">
+          <li class="page-item <%= class_active_val(@display_year, y) %>">
             <%= link_to y, where_to, class: 'page-link' %>  
           <% end %>
       </ul>

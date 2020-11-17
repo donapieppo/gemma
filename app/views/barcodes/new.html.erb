@@ -1,0 +1,11 @@
+<script type="text/javascript">
+  function formfocus() {
+    document.getElementById('barcode_name').focus();
+  }
+  window.onload = formfocus;
+</script>
+
+<%= dm_form_for [@thing, @barcode], title: 'Aggiunta codice a barre' do |barcode| %>
+  <%= barcode.input :name %>
+  <%= barcode.submit %> - <%= link_to_back [:edit, @thing] %>
+<% end %>

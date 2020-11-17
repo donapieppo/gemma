@@ -1,0 +1,20 @@
+<%= thing_actions_menu %>
+
+<% title = "Modulo di presa consegna di #{@thing} " %>
+<% title += "da #{@takeover.recipient}" unless @takeover.new_record? %>
+
+<%= dm_form_for [@thing, @takeover], title: title do |o| %>
+  <%= o.dm_error_notification %>  
+    <% if @takeover.new_record? %>  
+      <%= o.input :recipient_upn, input_html: { class: "choosen_dsauser" }, hint: recipient_hint(@takeover), required: true %>
+    <% end %>
+
+    <%= render 'loads/numbers_form', o: o %>  
+
+    <%= o.input :date, as: :date, html5: true %>
+    <%= o.input :note %>
+    <%= o.submit %>
+<% end %>
+
+<%= render "dsausers/typeahead" if @takeover.new_record? %>  
+

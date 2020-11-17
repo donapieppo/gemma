@@ -1,0 +1,13 @@
+<%= thing_actions_menu %>
+
+<%= dm_form_for [@thing, @stock], title: "Giacenza iniziale di #{@thing}" do |o| %>
+  <%= o.dm_error_notification %>  
+
+  <%= render 'loads/numbers_form', o: o %>  
+
+  <%= o.input :price, as: :price, hint: 'Euro e centesimi' if current_organization.pricing %>
+  <%= o.input :date, as: :date, html5: true %>
+  <%= o.input :note %>
+  <%= o.submit %>
+<% end %>
+

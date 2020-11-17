@@ -1,0 +1,13 @@
+<h1>Materiale senza movimentazioni</h1>
+
+<ul class="inactive_things">
+  <% @inactive_things.each do |thing| %>  
+    <li>
+      <%= link_to thing, edit_thing_path(thing) %>
+      <span><%= link_to_delete thing_path(thing) %></span>
+    </li>
+  <% end %>
+</ul>
+
+
+
