@@ -1,0 +1,125 @@
+<%= thing_actions_menu %>
+
+<% title = "Lista movimenti di #{@thing}" %>
+<% title += " presso #{@deposit.location}" if @deposit %>
+
+<% if @operations.size > 0 %>
+  <% first_year = @operations.first.date.year %>  
+  <% last_year = @operations.last.date.year %>  
+  <% tot = 0 %>
+
+  <p class="m-3 font-weight-bold"><%= title %> <span class="text-muted small">(Per operare su un singolo movimento cliccare sulla riga).</span> </p>
+
+  <% if first_year != last_year %>  
+    <nav aria-label="Selziona l'anno">
+      <ul class="pagination justify-content-center">
+        <% (first_year .. last_year).each do |y| %>  
+          <% active = (y == @display_year) ? ' active ' : '' %>  
+          <% where_to = @deposit ? deposit_moves_path(@deposit, y: y) : thing_moves_path(@thing, y: y) %>  
+          <li class="page-item <%= active %>">
+            <%= link_to y, where_to, class: 'page-link' %>  
+          <% end %>
+      </ul>
+    </nav>
+  <% end %>
+
+  <div class="moves-list">
+    <% @operations.each do |o| %>
+
+      <% (o.is_shift? and next) unless @deposit %>
+      <% number = @deposit ? o.moves.first.number : o.number %>
+      <% tot += number %>
+
+      <% if @display_year == o.date.year %>  
+        <%= content_tag :div, class: "moves-list-item #{o.class}" do %>
+          <div class="row">
+            <div class="col-2 col-md-2 col-lg-1">
+              <div class="move-number py-1 px-2"><%= number %></div>
+            </div>
+
+            <div class="col">
+              <div class="main-information my-1">
+                <!-- caret --> <span class="mx-2"><i class="fas fa-caret-right"></i></span>
+                <%= l o.date %> 
+                <span class="ml-2 font-weight-bold"><%= organization_description(o) %></span>
+                <span class="move-remaining float-right px-2 <%= "move-negative" if tot < 0 %>">
+                  <%= tot %>
+                </span>
+                <% if current_organization.pricing and o.price %>
+                  <span class="float-right mr-2"><%= o.price_string %></span>
+                <% end %>
+              </div>
+
+              <div class="secondary-information mt-2">
+                <span class="text-muted">
+                  <% unless o.ncia.blank? %> 
+                    rif.cia: <%= o.ycia %>/<%= o.ncia %> 
+                <% end %>
+                <% unless o.note.blank? %>
+                  <%= o.note %> <br/>
+                <% end %>
+                <% if current_organization.pricing and o.price and o.price > 0 and o.number < 0 %>
+                  origine prezzo: <%= show_price_origins(o) %>
+              <% end %>
+                </span>
+                <span class="float-right ">
+                  <%= move_action_icons(o, number).html_safe %>
+                </span>
+              </div>
+            </div>
+          </div>
+        <% end %><!-- content_tag -->
+      <% end %> <!-- if year -->
+    <% end %> <!-- operations -->
+  </div><!-- moves-list -->
+
+  <%= content_tag :div, class: "my-2 row" do %>
+    <div class="col-8 offset-2 col-sm-10 offset-sm-1 pr-0">
+      <span class="text-success font-weight-bold float-right">
+        Tot. Disponibili: <%= tot %> 
+      <% if current_organization.pricing %>
+        &nbsp; [ <%= show_future_prices(@thing) %> ]
+      <% end %>
+      </span>
+    </div>
+  <% end %>
+<% else %>
+  <p class="info m-3">Non sono ancora stati registrati movimenti per il materiale selezionato.</p>
+<% end %>
+
+<% if @deposits.size > 1 %>
+  <%= dm_card title: "Disposizione giacenze" do %>
+    <table class="table table-sm">
+      <% @deposits.each do |dep| %>
+        <tr>
+          <th class="number"><%= dep.actual %></th>
+          <td>in <%= dep.location %></td>
+          <td><%= link_to dmicon('search') + " mostra movimenti", deposit_moves_path(dep), title: 'visualizza, modifica ed elimina carichi e scarichi.' %></td>
+        </tr> 
+      <% end %>
+      <tr>
+        <th class="number"><%= @thing.total %></th>
+        <td><strong>nell'intera struttura</strong></td>
+        <td><%= link_to dmicon('search') + " mostra movimenti", thing_moves_path(@thing) %></td>
+      </tr>
+    </table> 
+    <%= link_to "Sposta giacenze tra ubicazioni", new_thing_shift_path(@thing), class: :button %>
+  <% end %>
+<% end %>
+
+<% if current_organization.pricing %>  
+  <%= link_to 'ricalcola i prezzi', recalculate_prices_thing_path(@thing) %>  
+<% end %>
+
+<%= javascript_tag do %>  
+  $('document').ready(function() {
+    $(".secondary-information").hide();
+    $(".moves-list-item").click(function() { 
+      $(this).find(".secondary-information").toggle();
+      d = $(this).find(".fa-caret-down").removeClass("fa-caret-down");
+      r = $(this).find(".fa-caret-right").removeClass("fa-caret-right");
+      d.addClass("fa-caret-right");
+      r.addClass("fa-caret-down");
+    });
+  });
+<% end %>
