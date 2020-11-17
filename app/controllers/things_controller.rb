@@ -136,7 +136,7 @@ class ThingsController < ApplicationController
       [current_organization.things.find($1)]
     else
       sql_stringa = "%#{stringa_ricerca}%"
-      current_organization.things.includes(:group, :barcodes)
+      current_organization.things.includes(:group, :barcodes, :images)
                            .order(:name)
                            .where("things.name LIKE ? OR things.description LIKE ? OR barcodes.name LIKE ?", sql_stringa, sql_stringa, sql_stringa)
                            .references(:things, :barcodes)
