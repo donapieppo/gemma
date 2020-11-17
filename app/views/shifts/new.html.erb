@@ -1,0 +1,25 @@
+<%= dm_form_for [@thing, @shift], title: "Spostamento giacenze di \"#{@thing}\" tra ubicazioni." do |s| %>
+  <%= s.dm_error_notification %>  
+
+  <%= s.input :date, as: :date, html5: true %>
+  <%= s.input :number, hint: 'Numero di oggetti da spostare' %>
+
+  <div class="shift-locations">
+    <div class="shift-from">
+      <label class="control-label">da:</label><br/>
+      <% @deposits.each do |dep| %> 
+        <%= label_tag("shift[from]", "#{dep.location} (#{dep.actual} disponibili)" ) %> 
+        <%= radio_button_tag("shift[from]", dep.id, false, { disabled: (dep.actual < 1) }) %> <br/>
+      <% end %>
+    </div>
+    <div class="shift-to">
+      <label class="control-label">a:</label><br/>
+      <% @deposits.each do |dep| %>
+        <%= radio_button_tag("shift[to]", dep.id, false) %>
+        <%= label_tag("shift[to]", dep.location) %> <br/>
+      <% end %>
+    </div>
+  </div>
+
+  <%= submit_tag "Sposta" %> - <%= link_to_back [:edit, @thing] %>  
+<% end %>

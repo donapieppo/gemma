@@ -1,0 +1,7 @@
+<h1>Modifica spostamento</h1>
+
+<%= horizontal_form_for @shift do |s| %>
+  <%= s.dm_error_notification %>  
+  <%= s.input :date, as: :date, html5: true %>
+  <%= s.submit %> - <%= link_to_back thing_moves_path(@shift.thing) %>  
+<% end %>
