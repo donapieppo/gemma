@@ -26,8 +26,4 @@ class InfosController < ApplicationController
                                           WHERE date > (CURDATE() - INTERVAL 30 DAY) 
                                        GROUP BY date")
   end
-
-  def organization
-    authorize :info
-  end
 end
