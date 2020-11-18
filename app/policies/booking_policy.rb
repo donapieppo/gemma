@@ -18,5 +18,9 @@ class BookingPolicy < ApplicationPolicy
   def edit?
     record_organization_manager?
   end
+
+  def destroy?
+    owner_or_record_organization_manager?
+  end
 end
 
