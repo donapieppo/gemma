@@ -2,7 +2,7 @@
 
 <ul class="pagination justify-content-center">
   <% (2007..Date.today.year).each do |y| %>  
-    <li class="page-item <%= class_active_val(@year, y) %>"><%= link_to y, activity_path(year: y), class: 'page-link' %></li>
+    <li class="page-item <%= class_active_val(@year, y) %>"><%= link_to y, infos_path(year: y), class: 'page-link' %></li>
   <% end %>
 </ul>
 
