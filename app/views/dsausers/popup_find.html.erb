@@ -1,0 +1,40 @@
+<%= form_tag find_user_path, id: "search", method: :get, remote: :true, class: 'simple_form mb-3' do %>
+  <div class="form-group row">
+    <label class="col-sm-3 col-form-label">Nome (<i>opzionale</i>):</label>
+    <div class="col-sm-9"><%= text_field :dsauser, 'nome', size: 20 %></div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-3 col-form-label">Cognome:</label>
+    <div class="col-sm-9"> <%= text_field :dsauser, 'cognome', size: 20 %></div>
+  </div>
+  <%= submit_tag "Cerca" %>
+<% end %>
+
+<div id="upnresults">
+</div>
+
+<% if @cache_users.length > 0 %>
+  <p class="info">È possibile scegliere anche tra questi utenti precedentemente selezionati: </p>
+
+  <ul id="previus_users">
+    <% iniziale = '' %>
+
+    <% for user in @cache_users %>
+      <% if (! user.surname.blank?) and iniziale != (iniziale = user.surname[0,1]) %>
+        <li><span class="badge badge-info"><%= iniziale %></li>
+      <% end %>
+      <li><%= link_to "#{user.name} #{user.surname}", '#', id: user.upn, class: 'user_selector' %> (<%= user.upn %>)</li>
+    <% end %>
+  </ul>
+<% end %>
+
+<%= javascript_tag do %>  
+  $(document).ready(function() {
+    $('.modal-content .user_selector').click(function(e) {
+      e.preventDefault();
+      console.log(this.id);
+      $('.choosen_dsauser').val(this.id);
+      $("#main-modal").modal('hide');
+    });
+  });
+<% end %>

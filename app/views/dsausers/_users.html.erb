@@ -1,0 +1,19 @@
+<% if @dsa_result.ok? %>
+  <ul style="text-align: left;">
+    <% @dsa_result.users.each do |u| %>
+      <% u.upn =~ /studio.unibo.it/ and next %>  
+      <li> <%= link_to u.name + " " + u.sn, '#', :id => u.upn, :class => 'dsauser' %> (<%= u.upn %>) </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p id="errorExplanation">
+  <% if @dsa_result.find_state == 'TooMany' %>  
+    Sono stati trovati troppi risultati. Si prega di raffinare la ricerca
+    o utilizzare la 
+    <%= link_to 'Rubrica di Ateneo', 'https://www.unibo.it/uniboweb/unibosearch/rubrica.aspx' %>
+  <% elsif @dsa_result.count == 0 %>
+    Non sono stati trovati risultati. Si prega di consultare la 
+    <%= link_to 'Rubrica di Ateneo', 'https://www.unibo.it/uniboweb/unibosearch/rubrica.aspx' %>
+  <% end %>
+  </p>
+<% end %>
