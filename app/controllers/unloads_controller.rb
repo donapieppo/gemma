@@ -8,6 +8,7 @@ class UnloadsController < ApplicationController
     authorize Unload
     @unloads = current_organization.unloads
                                    .includes(:thing, :user)
+                                   .where(type: 'Unload')                 
                                    .where('recipient_id = ? OR user_id = ?', current_user.id, current_user.id)
                                    .where('YEAR(date) = ?', Date.today.year)
                                    .order('date desc')
