@@ -3,7 +3,6 @@ Rails.application.routes.draw do
 
   get '/logins/logout',  to: 'dm_unibo_common/logins#logout'
 
-  get '/stats',                  to: "stats#index", as: "activity"
   get '/stats/organization/:id', to: "stats#organization", as: "organization_stats"
   get '/choose_organization',    to: "organizations#choose_organization", as: "choose_organization"
   get '/no_access',              to: "logins#no_access", as: "no_access"
