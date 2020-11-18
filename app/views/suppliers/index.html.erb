@@ -1,0 +1,71 @@
+<h1><%= @title %></h1>
+
+<p class="info">
+<% if @for == 'ddt' %>
+  Per registrare un nuovo ddt/fattura/scontrino fiscale, clicca sul nome del fornitore che ha emesso il documento.
+<% end %>
+È possibile registrare un nuovo fornitore se non presente in elenco ma si tenga presente che i fornitori sono <strong>comuni a tutte le strutture</strong>.
+</p>
+
+<div class="row">
+  <div class="col-md-3">
+    <div class="dm-card search">
+      <div class="dm-card-title">Ricerca Fornitore</div>
+      <div class="dm-card-body">
+        <%= form_tag find_suppliers_path, remote: true do %>
+          <label for="supplier_string">per ragione sociale:</label><br/>
+          <input type="text"   id="supplier_string" name="supplier[string]" size="10" value="" />
+          <input type="hidden" name="for" value="<%= @for %>" />
+          <%= submit_tag 'Cerca' %>
+        <% end %>
+
+        <%= form_tag find_suppliers_path, remote: true do %>
+          <label for="supplier_pi">per partita iva:</label><br/>
+          <input type="text" id="supplier_pi" name="supplier[pi]" size="10" value="" />
+          <input type="hidden" name="for" value="<%= @for %>" />
+          <%= submit_tag 'Cerca' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-9">
+    <nav aria-label="suppliers list">
+      <ul id="suppliers_initial" class="pagination pagination-sm justify-content-center">
+        <% ('A'..'Z').each do |i| %>
+          <li class="page-item <%= class_active_val(i, @initial) %>" id="initial_<%= i %>">
+            <%= link_to i, suppliers_path(in: i, for: @for), class: 'page-link' %>
+          </li>
+        <% end %>
+      </ul>
+    </nav>
+
+    <p class="centered"><%= link_to_new 'Registra nuovo fornitore', new_supplier_path, modal: true %></p>
+    <table class="table table-sm table-hover">
+      <thead>
+        <tr>
+          <th>fornitore</th>
+          <th>partita iva</th>
+          <th>azioni</th>
+        </tr>
+      </thead>
+      <tbody id="suppliers">
+        <% @suppliers.each do |supplier| %>  
+          <tr>
+            <td>
+              <% if @for == 'ddt' %>
+                <%= link_to supplier, new_supplier_ddt_path(supplier) %>
+              <% else %>
+                <%= supplier %>
+              <% end %>
+            </td>
+            <td><%= supplier.pi %></td>
+            <td><%= link_to_edit edit_supplier_path(supplier), modal: true %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+

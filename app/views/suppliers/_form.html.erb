@@ -1,0 +1,12 @@
+<div class="alert alert-warning" role="alert">
+  I fornitori sono <b>comuni a tutte le strutture</b>.<br/>
+  Vi preghiamo di inserire/aggiornare questi dati con cura.
+</div>
+
+<%= dm_form_for @supplier, title: 'Dati fornitore' do |s| %>
+  <%= s.dm_error_notification %>  
+  <%= s.input :name %>
+  <%= s.input :pi %>
+  <%= s.submit %> 
+<% end %>
+
