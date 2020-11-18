@@ -1,0 +1,78 @@
+<% if @books.size > 0 %>  
+  <div class="dm-card">
+    <div class="dm-card-title"><%= booking_title %></div>
+    <div class="dm-card-body">
+
+      <% @things_cache = Hash.new {|h,v| h[v] = 0} %>  
+      <% old_user = nil %>  
+      <table class="table table-sm">
+        <% @books.each do |book| %>
+          <tr>
+            <% @things_cache[book.thing] += book.number.abs %>
+            <% if ! @user and old_user != (old_user = book.user) %>  
+              <th><%= link_to(book.user, user_bookings_path(book.user_id)) %></th>
+            <% else %>
+              <th style="border: 0"></th>
+            <% end %>
+            <td>
+              <strong><%= book.number.abs %> <%= book.thing %></strong> 
+              <%= "per #{h book.recipient}" if book.recipient %> 
+              <%= "(#{book.note})" unless book.note.blank? %>
+            </td>
+            <td nowrap>
+              <%= link_to_check confirm_booking_path(book) %> 
+              <%= link_to_delete booking_path(book) %> 
+              <%= link_to_change_and_confirm edit_booking_path(book) %>
+            </td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+  </div>
+
+  <% if @things_cache.size > 1 %>  
+    <div class="dm-card">
+      <div class="dm-card-title">Oggetti prenotati</div>
+      <div class="dm-card-body">
+
+        <ul class="booking-things">
+          <% @things_cache.each do |thing, num| %>  
+            <li><span class="number mr-3"><%= num %></span> <%= link_to thing, thing_bookings_path(thing.id) %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <%= form_tag barcode_bookings_path do %>  
+    <label>Ricerca attraverso codice a barre: </label>
+    <%= search_field_tag 'barcode' %>  
+    <%= submit_tag "cerca" %> <%= link_to('tutti', bookings_path) %>  
+  <% end %>
+
+<% else %>
+  <div class="alert alert-danger">Non ci sono prenotazioni.
+    <%= "per l'utente #{@user}" if @user  %> 
+    <%= "con il codice a barre richiesto" if params[:barcode] %>   
+  </div>
+<% end %>
+
+<% unless @cache_users.empty? %>  
+  <div class="dm-form">
+    <div class="dm-form-title">Ricevute</div>
+    <div class="dm-form-body">
+      <%= form_tag controller: 'reports', action: 'receipt' do %>
+        <label class="mr-2">Scarichi dell'utente</label>
+        <%= collection_select(:user, :id, @cache_users, "id", "cn_militar", { include_blank: false }) %>
+
+        <label class="m-2">in data</label>
+        <%- t = Date.today %>  
+        <%= select_date t, prefix: 'from' %> 
+
+        <input type="hidden" name="bookings" value="1" />  
+        <%= submit_tag "Scarica", class: 'button ml-2' %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+

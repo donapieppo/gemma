@@ -1,0 +1,23 @@
+<% form_title = "Prenotazione di #{h @thing}".html_safe %>  
+<% form_title += " - presso #{h @thing.deposits.first.location}".html_safe if @thing.deposits.size == 1 %> 
+<% if current_organization.pricing %>
+  <% form_title += " (#{show_future_prices(@thing)})" %>
+<% end %>
+
+<%= dm_form_for [@thing, @book], title: form_title do |book| %>
+  <%= book.dm_error_notification %>
+  <% if @delegators.size > 1 %>  
+    <%= book.input :recipient_id, collection: @delegators, label_method: :cn_militar, as: :radio_buttons, hint: t(:booking_recipient_hint) %>  
+  <% end %>
+
+  <%= book.input :number, hint: "Numero articoli da prenotare (massimo: #{@thing.max_actual_in_deposits})" %>
+
+  <% if @thing.deposits.size > 1 %>  
+    <%= book.input :deposit_id, as: :booking_location, hint: 'Ricordiamo che è possibile fare più prenotazioni successive scelte da ubicazioni diverse.' %>  
+  <% else %>
+    <%= book.hidden_field :deposit_id, value: @thing.deposits.first.id %>  
+  <% end %>
+
+  <%= book.input :note %>
+  <%= book.submit 'prenota' %>
+<% end %>
