@@ -1,5 +1,5 @@
 class OrganizationsController < ApplicationController
-  skip_before_action :set_booking_organization, only: [:booking_accept, :start_booking] 
+  skip_before_action :after_current_user_and_organization, only: [:booking_accept, :start_booking] 
 
   # only cesia from _menu
   def index
