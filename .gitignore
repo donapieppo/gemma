@@ -39,3 +39,11 @@
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity
+
+# donapieppo
+yarn.lock
+Gemfile.lock
+.ruby-version
+.rspec
+
+tags
