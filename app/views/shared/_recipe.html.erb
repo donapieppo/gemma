@@ -1,0 +1,10 @@
+<% if params[:from_unload] %>
+  <% unload = Unload.find(params[:from_unload]) %>  
+  <p>
+  <a href="#" onClick="window.open('<%= signing_unload_path(unload) %>', 'ricevuta', 'width=700,height=500,scrollbars=no');" class="button">STAMPA RICEVUTA</a> - 
+  <% if policy(current_organization).manage? %>  
+    <%= link_to "mostra scarico", thing_moves_path(unload.thing) %>  
+  <% end %>
+  </p>
+<% end %>
+
