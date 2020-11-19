@@ -3,6 +3,10 @@
 @import "tables";
 @import "moves";
 
+body {
+  color: rgb(62, 62, 62);
+}
+
 #thingmenu {
   @extend .nav;
   @extend .nav-pills;
