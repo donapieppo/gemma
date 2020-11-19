@@ -25,6 +25,9 @@ class MovesController < ApplicationController
       @first_year = @operations.first.date.year
       @last_year = @operations.last.date.year
       @display_year = (params[:y] || @last_year).to_i
+      if @display_year < @first_year || @display_year > @last_year
+        @display_year = @last_year
+      end
     end
   end
 end
