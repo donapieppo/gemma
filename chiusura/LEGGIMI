@@ -1,0 +1,18 @@
+operation 
+  number 
+  thing_id
+  operation
+  
+moves 
+  number
+  operation_id
+  mysql> 
+
+MOVES
++--------------+---------+------+-----+---------+----------------+
+| id           | int(11) | NO   | PRI | NULL    | auto_increment | 
+| number       | int(11) | NO   |     | NULL    |                | 
+| deposit_id   | int(11) | NO   | MUL | NULL    |                | 
+| operation_id | int(11) | NO   | MUL | NULL    |                | 
++--------------+---------+------+-----+---------+----------------+
+
