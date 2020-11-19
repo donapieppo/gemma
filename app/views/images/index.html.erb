@@ -1,0 +1,6 @@
+<ul>
+  <% @images.each do |image| %>  
+    <li><%= image.id %>  <%= image_tag image.photo %> : <%= image.thing ? image.thing.organization : "????" %> </li>
+  <% end %>
+</ul>
+
