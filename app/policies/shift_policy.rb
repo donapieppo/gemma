@@ -11,10 +11,6 @@ class ShiftPolicy < ApplicationPolicy
     create?
   end
 
-  def signing?
-    create?
-  end
-
   def destroy?
     create?
   end

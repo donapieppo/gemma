@@ -12,10 +12,6 @@ class SupplierPolicy < ApplicationPolicy
     create?
   end
 
-  def signing?
-    create?
-  end
-
   def find?
     true
   end
