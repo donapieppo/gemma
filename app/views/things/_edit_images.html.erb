@@ -1,13 +1,15 @@
 <%= dm_form_for [@thing, @image], html: { multipart: true }, title: 'Immagini (ogni articolo può essere assciato a una immagine)' do |form| %>
   <div class="image-list">
     <% @thing.images.each do |image| %>  
+      <% if image.photo.attached? %>  
       <div class="image">
         <%= image_tag image.photo.variant(resize_to_limit: [300, 300]) %>
       </div>
       <p><%= link_to_delete image_path(image) %></p>
     <% end %>
+    <% end %>
   </div>
-  <input id="image_photo" type="file" name="image[photo]"></input>
+  <%= form.file_field :photo %>
   <input type="submit" class="image_submit" value="Aggiungi immagine"></input>
   </fieldset>
 <% end %>
