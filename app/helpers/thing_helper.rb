@@ -14,9 +14,9 @@ module ThingHelper
   end
 
   def thing_image(thing)
-    if thing and i = thing.images.first
-      content_tag :div, class: 'image my-2' do
-        image_tag i.photo.variant(resize_to_limit: [300, 300]) 
+    if thing && (i = thing.images.first) && i.photo.attached?
+      content_tag :div, class: 'image centered my-3' do
+        image_tag i.photo
       end
     end
   end
