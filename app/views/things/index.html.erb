@@ -34,7 +34,7 @@
   <% end %>
 </div>
 
-<% if policy(current_organization).manage? && @group %>
+<% if @group && policy(current_organization).manage? %>
   <p class="centered_action"> <%= link_to_new 'Nuovo Articolo', new_group_thing_path(@group) %></p>
 <% end %>
 
