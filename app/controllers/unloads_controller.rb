@@ -102,12 +102,9 @@ class UnloadsController < ApplicationController
     redirect_to thing_moves_path(@unload.thing_id)
   end
 
-  #
-  # %%%% signing (ricevuta da stampare)  %%%%
-  #
-
+  # ricevuta da stampare
   def signing
-    render layout: false  # e' un popoup
+    render layout: 'signing' # e' un popoup
   end
 
   private 

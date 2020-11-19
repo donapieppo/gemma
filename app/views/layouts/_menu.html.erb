@@ -1,0 +1,70 @@
+<%= dm_menu do %>  
+  <%= dm_header %>
+  <% if current_user && current_organization %>  
+    <div class="collapse navbar-collapse" id="bs-navbar-collapse">
+      <ul class="navbar-nav mr-auto">
+        <!-- categorie -->
+        <%= dropdown_menu :category, big_dmicon('list') + ' Cat.' do %>  
+          <% current_organization.groups.order(:name).each do |g| %>
+            <%= link_to fwdmicon('angle-right') + g, group_things_path(g) %>
+          <% end %>
+          <% if current_organization && policy(current_organization).manage? %>  
+            <div class="dropdown-divider"></div>
+            <%= link_to fwdmicon('plus') + ' nuova categoria', new_group_path %>
+          <% end %>
+        <% end %>
+        <!-- categorie -->
+
+        <% if current_organization.booking %>
+          <li><%= link_to big_dmicon('shopping-cart') + ' Carrello', bookings_path %></li>
+        <% end %>
+
+        <!-- amministrazione -->
+        <% if current_organization && policy(current_organization).manage? %>  
+          <%= dropdown_menu :amm, big_dmicon('cogs') + ' Amm.' do  %>
+            <%= link_to fwdmicon('cubes')     + ' Ubicazioni',  locations_path %>
+            <%= link_to fwdmicon('file-alt')  + ' DDT/Fatture', ddts_path %>
+            <%= link_to fwdmicon('truck')     + ' Fornitori',   suppliers_path %>
+            <%= link_to fwdmicon('search')    + ' Reports e Ricerche', reports_path %>
+            <% if current_organization.booking %>  
+              <%= link_to fwdmicon('handshake') + ' Deleghe', delegations_path %>
+            <% end %>
+            <%= link_to fwdmicon('wrench') + 'Configurazioni', current_organization_edit_path %>
+            <!-- CESIA -->
+            <% if current_user.is_cesia? %>
+              <div class="dropdown-divider"></div>
+              <h6 class="dropdown-header">Cesia</h6>
+              <%= link_to fwdmicon('building')   + ' Strutture',      dm_unibo_common.organizations_path %>
+              <%# <%= link_to fwdmicon('plug')       + ' Reti',           dm_unibo_common.networks_path %1> %>
+              <%= link_to fwdmicon('user')       + ' Autorizzazioni', dm_unibo_common.permissions_path %>
+              <%= link_to fwdmicon('chart-line') + ' Statistiche',    infos_path %>
+            <% end %>
+          <% end %>
+        <% else %>
+          <li><%= link_to big_dmicon('clipboard-list') + ' I miei scarichi', unloads_path %></li>
+        <% end %>
+
+        <!-- organization -->
+        <% if policy(current_organization).manage? %>  
+          <%= dropdown_menu :institution, big_dmicon('building') + " " + current_organization.name do  %>
+            <%= link_to fwdmicon('home') + current_organization.short_description, current_organization_edit_path %>
+            <% if current_user.multi_organizations? %>
+              <%= link_to fwdmicon('exchange-alt') + ' cambia struttura', choose_organization_path %>
+            <% end %>
+          <% end %>
+        <% end %>
+
+        <% if current_user.is_cesia? %>  
+          <li><%= link_to big_dmicon('list'), organizations_path %></li>
+        <% end %>
+      </ul>
+
+      <!-- ricerca -->
+      <%= form_tag current_user.is_cesia? ? admin_search_path : find_things_path, class: "form-inline my-2 my-lg-0 ml-3", role: "search" do %>
+        <input name="search_string" size="6" class="form-control mr-sm-2" type="search" placeholder="cerca" aria-label="Cerca"/>
+      <% end %>
+
+      <%= logged_user %>  
+    </div>
+  <% end %>  
+<% end %>

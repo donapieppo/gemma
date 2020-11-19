@@ -1,0 +1,11 @@
+<% if current_user && current_organization %>  
+<div id="footer" role="navigation">
+  <div class="container" style="text-align: center">
+    <%= link_to big_dmicon('envelope') + ' Contatti', contacts_path %> - 
+    <%= link_to big_dmicon('book') + ' Istruzioni', controller: :helps %> -
+    <a href="http://www.unibo.it/it/ateneo/privacy-e-note-legali/privacy/informative-sul-trattamento-dei-dati-personali"><%= big_dmicon('eye') %> Privacy</a><br/>
+    <%= stop_impersonation_link %> <%= start_impersonation_link %> <br/>
+    <%= link_to image_pack_tag('unibo.png'), 'https://www.unibo.it' %> 
+  </div>
+</div>
+<% end %>

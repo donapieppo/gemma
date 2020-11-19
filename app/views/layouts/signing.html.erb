@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Gestione Multiutente MAteriale di consumo. Università di Bologna.">
+    <meta name="author" content="Dipartimento di Matematica - Unibo - Pietro Donatini">
+    <title>GE.M.MA - GEstione Multiutente MAteriale di consumo</title>
+
+    <%= stylesheet_pack_tag 'application', media: 'all' %>
+    <%= javascript_pack_tag 'application' %>
+
+    <%= csrf_meta_tag %>
+    <%= csp_meta_tag %>
+  </head>
+  <body>
+    <main role="main" class="container">
+      <div class="centered my-5">
+        <a href="#" onClick="window.print();"><%= big_dmicon('print') %></a>
+      </div>
+      <%= yield %>
+    </main>
+  </body>
+</html>
