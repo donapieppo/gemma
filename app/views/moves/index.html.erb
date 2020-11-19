@@ -3,6 +3,8 @@
 <% title = "Lista movimenti di #{@thing}" %>
 <% title += " presso #{@deposit.location}" if @deposit %>
 
+<% at_last_one = false %>  
+
 <% if @operations.size > 0 %>
   <% tot = 0 %>
 
@@ -28,6 +30,7 @@
       <% tot += number %>
 
       <% if @display_year == o.date.year %>  
+        <% at_last_one = true %>  
         <%= content_tag :div, class: "moves-list-item #{o.class}" do %>
           <div class="row">
             <div class="col-2 col-md-2 col-lg-1">
@@ -70,18 +73,21 @@
     <% end %> <!-- operations -->
   </div><!-- moves-list -->
 
-  <%= content_tag :div, class: "my-2 row" do %>
-    <div class="col-8 offset-2 col-sm-10 offset-sm-1 pr-0">
-      <span class="text-success font-weight-bold float-right">
-        Tot. Disponibili: <%= tot %> 
-      <% if current_organization.pricing %>
-        &nbsp; [ <%= show_future_prices(@thing) %> ]
-      <% end %>
-      </span>
-    </div>
-  <% end %>
-<% else %>
-  <p class="info m-3">Non sono ancora stati registrati movimenti per il materiale selezionato.</p>
+<% end %>
+
+<% unless at_last_one %>  
+  <p class="alert alert-info m-3">Non sono stati registrati movimenti per il materiale selezionato nel <%= @display_year %>.</p>
+<% end %>
+
+<%= content_tag :div, class: "my-2 row" do %>
+  <div class="col-8 offset-2 col-sm-10 offset-sm-1 pr-0">
+    <span class="text-success font-weight-bold float-right">
+      Tot. Disponibili: <%= tot %> 
+    <% if current_organization.pricing %>
+      &nbsp; [ <%= show_future_prices(@thing) %> ]
+    <% end %>
+    </span>
+  </div>
 <% end %>
 
 <% if @deposits.size > 1 %>
@@ -110,13 +116,13 @@
 
 <%= javascript_tag do %>  
   $('document').ready(function() {
-    $(".secondary-information").hide();
-    $(".moves-list-item").click(function() { 
-      $(this).find(".secondary-information").toggle();
-      d = $(this).find(".fa-caret-down").removeClass("fa-caret-down");
-      r = $(this).find(".fa-caret-right").removeClass("fa-caret-right");
-      d.addClass("fa-caret-right");
-      r.addClass("fa-caret-down");
-    });
+  $(".secondary-information").hide();
+  $(".moves-list-item").click(function() { 
+  $(this).find(".secondary-information").toggle();
+  d = $(this).find(".fa-caret-down").removeClass("fa-caret-down");
+  r = $(this).find(".fa-caret-right").removeClass("fa-caret-right");
+  d.addClass("fa-caret-right");
+  r.addClass("fa-caret-down");
+  });
   });
 <% end %>
