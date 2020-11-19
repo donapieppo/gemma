@@ -154,7 +154,7 @@ class ThingsController < ApplicationController
   end
 
   def thing_params
-    params[:thing].permit(:name, :description, :group_id, :minimum, :image)
+    params[:thing].permit(:name, :description, :group_id, :minimum)
   end 
 
 end
