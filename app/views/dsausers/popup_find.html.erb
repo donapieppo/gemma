@@ -19,8 +19,8 @@
   <ul id="previus_users">
     <% iniziale = '' %>
 
-    <% for user in @cache_users %>
-      <% if (! user.surname.blank?) and iniziale != (iniziale = user.surname[0,1]) %>
+    <% @cache_users.each do |user| %>
+      <% if (! user.surname.blank?) && iniziale != (iniziale = user.surname[0,1]) %>
         <li><span class="badge badge-info"><%= iniziale %></li>
       <% end %>
       <li><%= link_to "#{user.name} #{user.surname}", '#', id: user.upn, class: 'user_selector' %> (<%= user.upn %>)</li>
