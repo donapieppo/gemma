@@ -9,7 +9,7 @@ class Image < ApplicationRecord
   def resize_photo
     photo.blob.open do |file|
       resized = ImageProcessing::MiniMagick.source(file)
-                                           .resize_to_limit!(300, 300)
+                                           .resize_to_limit!(200, 200)
       v_filename = photo.filename
       v_content_type = photo.content_type
       photo.purge
