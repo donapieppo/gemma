@@ -107,6 +107,11 @@ class Thing < ApplicationRecord
     self.update_columns(future_prices: pc.remaining_stack)
   end
 
+  def generate_barcode
+    str = "g-#{self.id}"
+    self.barcodes.create(organization_id: self.organization_id, name: str)
+  end
+
   protected
 
   def strip_name_blanks

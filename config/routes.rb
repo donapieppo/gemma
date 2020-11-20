@@ -86,6 +86,7 @@ Rails.application.routes.draw do
     resources :delegations
 
     resources :things do
+      post :generate_barcode, on: :member
       collection do 
         post :find 
         get  :find
@@ -94,9 +95,7 @@ Rails.application.routes.draw do
       resources :shifts
       resources :takeovers
       resources :stocks
-      resources :barcodes do
-        post :generate, on: :collection
-      end
+      resources :barcodes 
       resources :deposits
       resources :unloads
       resources :loads

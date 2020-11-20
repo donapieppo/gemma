@@ -28,12 +28,6 @@ class BarcodesController < ApplicationController
     end
   end
 
-  def generate
-    authorize @thing, :update?
-    Barcode.generate(@thing)
-    redirect_to edit_thing_path(@thing)
-  end
-
   def destroy
     barcode = current_organization.barcodes.find(params[:id]) 
     authorize barcode

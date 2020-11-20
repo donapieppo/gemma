@@ -1,5 +1,5 @@
 class ThingsController < ApplicationController
-  before_action :get_thing_and_check_permission, only: [:show, :edit, :update, :recalculate_prices, :destroy]
+  before_action :get_thing_and_check_permission, only: [:show, :edit, :update, :recalculate_prices, :generate_barcode, :destroy]
   before_action :get_all_groups_and_locations,   only: [:new, :create, :edit, :update]
 
   def index
@@ -127,11 +127,17 @@ class ThingsController < ApplicationController
     redirect_to thing_moves_path(@thing)
   end
 
+  def generate_barcode
+    authorize @thing, :update?
+    @thing.generate_barcode
+    redirect_to edit_thing_path(@thing)
+  end
+
   private 
 
   # if g-1234 we return thing.find(1234)
   def real_find(stringa_ricerca)
-    # see Barcode.generate(thing)
+    # see Thing.generate_barcode
     if stringa_ricerca =~ /^g\-(\d+)$/
       [current_organization.things.find($1)]
     else
