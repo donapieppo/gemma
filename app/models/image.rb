@@ -21,6 +21,7 @@ class Image < ApplicationRecord
 
   def photo_format
     return unless photo.attached?
+
     if photo.blob.content_type.start_with? 'image/'
       resize_photo
     else

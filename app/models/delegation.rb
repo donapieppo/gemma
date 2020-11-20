@@ -13,7 +13,7 @@ class Delegation < ApplicationRecord
       Rails.logger.info _delegator.inspect
       self.delegator_id = _delegator.id
     rescue => e
-      Rails.logger.info "#{e.to_s} while validating delegator: #{@_delegator_upn}"
+      Rails.logger.info "#{e} while validating delegator: #{@_delegator_upn}"
       self.errors.add(:delegator, e.to_s)
       self.errors.add(:base, e.to_s)
     end
@@ -26,14 +26,14 @@ class Delegation < ApplicationRecord
       Rails.logger.info _delegate.inspect
       self.delegate_id = _delegate.id
     rescue => e
-      Rails.logger.info "#{e.to_s} while validating delegate: #{@_delegate_upn}"
+      Rails.logger.info "#{e} while validating delegate: #{@_delegate_upn}"
       self.errors.add(:delegate, e.to_s)
       self.errors.add(:base, e.to_s)
     end
   end
 
   def delegator_upn=(d)
-    @_delegator_upn = (d =~ /(\w+\.\w+)/) ? "#{$1}@unibo.it" : 'wrong upn'
+    @_delegator_upn = (d =~ /(\w+\.\w+)/) ? "#{Regexp.last_match(1)}@unibo.it" : 'wrong upn'
   end
 
   def delegator_upn
@@ -41,7 +41,7 @@ class Delegation < ApplicationRecord
   end
 
   def delegate_upn=(d)
-    @_delegate_upn = (d =~ /(\w+\.\w+)/) ? "#{$1}@unibo.it" : 'wrong upn'
+    @_delegate_upn = (d =~ /(\w+\.\w+)/) ? "#{Regexp.last_match(1)}@unibo.it" : 'wrong upn'
   end
 
   def delegate_upn

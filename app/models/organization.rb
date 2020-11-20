@@ -22,7 +22,7 @@ class Organization < ApplicationRecord
 
   default_scope { order('organizations.name') }
 
-  validates :name, uniqueness: { message: "Struttura già presente.", case_sensitive: false }
+  validates :name, uniqueness: { message: 'Struttura già presente.', case_sensitive: false }
 
   validate :check_mail_parameters
 
@@ -46,8 +46,8 @@ class Organization < ApplicationRecord
   end
 
   def last_recipient_upn
-    operation = self.operations.where("operations.recipient_id is not null").order('date desc').first
-    (operation and operation.recipient) ? operation.recipient.upn : nil
+    operation = self.operations.where('operations.recipient_id is not null').order('date desc').first
+    operation&.recipient ? operation.recipient.upn : nil
   end
 
   def destroyable?
@@ -61,15 +61,15 @@ class Organization < ApplicationRecord
 
     # se abbiamo adminmail lo controlliamo
     self.adminmail.nil? and return true
-    self.adminmail.gsub!(/\s+/,'')
+    self.adminmail.gsub!(/\s+/, '')
 
     self.adminmail.split(/,/).each do |mail|
-      ( mail =~ /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/ ) and next
-      errors.add(:adminmail, "indirizzo mail non corretto")
+      (mail =~ /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/) and next
+      errors.add(:adminmail, 'indirizzo mail non corretto')
       throw(:abort) 
     end
 
-    return true
+    true
   end
 
   def manual_delete
@@ -86,6 +86,4 @@ class Organization < ApplicationRecord
     self.arch_things.destroy_all
     self.arch_ddts.destroy_all
   end
-
 end
-

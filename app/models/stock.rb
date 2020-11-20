@@ -20,14 +20,13 @@ class Stock < Operation
 
   # verifico che non ci siano precedenti giacenze iniziali per lo stesso oggetto
   def no_previous_stock
-    if m = Stock.where(thing_id: self.thing_id).first
+    if (m = Stock.where(thing_id: self.thing_id).first)
       # se non sono nuovo o se sono nuovo e non solo l'unico
-      if ( self.new_record? or m.id != self.id )
-        errors.add(:base, "Esiste già una giacenza iniziale per questo materiale.")
+      if self.new_record? || m.id != self.id
+        errors.add(:base, 'Esiste già una giacenza iniziale per questo materiale.')
         throw(:abort) 
       end
     end
     true
   end
 end
-

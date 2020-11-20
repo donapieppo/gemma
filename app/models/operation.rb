@@ -1,4 +1,5 @@
-# price_operations: [{:id=>198986, :n=>50, :p=>2000.0, :desc=>"ddt n. 158"}] przzo calcolato come 50 prezzo totale 20 euro dal carico 198986
+# price_operations: [{:id=>198986, :n=>50, :p=>2000.0, :desc=>"ddt n. 158"}] 
+# prezzo calcolato come 50 prezzo totale 20 euro dal carico 198986
 class Operation < ApplicationRecord
   belongs_to :user
   belongs_to :recipient, class_name: 'User'
@@ -9,8 +10,8 @@ class Operation < ApplicationRecord
 
   serialize  :price_operations, Array
 
-  attribute :avoid_history_coherent, :boolean, default: false # quando creiamo a volte sappiamo che non serve perche' safe
-  attribute :avoid_price_updating,   :boolean, default: false   # se non viene modificato il prezzo o il numero di oggetti
+  attribute :avoid_history_coherent, :boolean, default: false # quando creiamo a volte sappiamo che non serve perchè safe
+  attribute :avoid_price_updating,   :boolean, default: false # se non viene modificato il prezzo o il numero di oggetti
 
   validates :date, :organization_id, :user_id, presence: true
 
@@ -34,7 +35,7 @@ class Operation < ApplicationRecord
   # la svolta per mettere date al posto di datetime e risolvere una tonnellata di problemi
   # ha solo il difetto che con stock e loads nella stessa giornata l'ordine non e' ottimale
   scope :ordered, -> { order('operations.date ASC, operations.number DESC') }
-  scope :in_last_years, -> (num) { where('YEAR(date) >= ?', num) }
+  scope :in_last_years, -> num { where('YEAR(date) >= ?', num) }
 
   def is_stock?    ; self.is_a?(Stock)    end
   def is_price?    ; self.is_a?(Price)    end
@@ -46,9 +47,8 @@ class Operation < ApplicationRecord
 
   # in questo modo @_numbers diventa una cache (se è settato con numbers=)
   def numbers
-    @_numbers ||= self.moves.inject({}) do |res, move| 
+    @_numbers ||= self.moves.each_with_object({}) do |res, move| 
       res[move.deposit_id] = move.number
-      res
     end
   end
 
@@ -59,15 +59,13 @@ class Operation < ApplicationRecord
     Rails.logger.debug("Operation numbers with #{nums.inspect}")
     
     # Rails6 From controller h is <ActionController::Parameters {"11459"=>"3"} permitted: true>
-    if nums.is_a?(ActionController::Parameters)
-      nums = nums.to_hash
-    end
+    nums = nums.to_hash if nums.is_a? ActionController::Parameters
 
     @_numbers = Hash.new
     if nums.is_a?(Hash)
       self.number = 0
       nums.each do |dep_id, num| 
-        if (num.to_i != 0)
+        if num.to_i != 0
           @_numbers[dep_id.to_i] = num.to_i 
           self.number += num.to_i
         end
@@ -121,8 +119,8 @@ class Operation < ApplicationRecord
       self.send("#{k}=", v) 
     end
 
-    avoid_price_updating   = true unless (self.price_changed? || self.date_changed? || changed_numbers)
-    avoid_history_coherent = true unless (self.date_changed? || changed_numbers) # FIXME
+    avoid_price_updating   = true unless self.price_changed? || self.date_changed? || changed_numbers
+    avoid_history_coherent = true unless self.date_changed? || changed_numbers # FIXME: 
 
     self.save
   end
@@ -141,7 +139,17 @@ class Operation < ApplicationRecord
   end
 
   def price_string
-    "%d,%02d€" % [self.price_int, self.price_dec]
+    '%d,%02d€' % [self.price_int, self.price_dec]
+  end
+
+  def date_afternoon(date)
+    # FIXME 
+    # dovrebbe essere il controller, ma tant'e', con datepicker
+    # cosi' il load sono in 00:00 e gli unload alle 12
+    if date && (date.to_s =~ /00:00/ || date.to_s !~ /\d+:\d+/)
+      date = date.to_s + ' 12:00' 
+    end
+    date 
   end
 
   protected 
@@ -189,12 +197,12 @@ class Operation < ApplicationRecord
     # a volte non ci sono i numbers (tipo per aggiornamento di date)
     if @_numbers
       @_numbers.each_key do |dep_id|
-        if dep = Deposit.find_by_id(dep_id)
+        if (dep = Deposit.find_by_id(dep_id))
           if (dep.thing_id != self.thing_id) 
-            errors.add(:base, "Oggetti differenti in deposit and operation. Contattare amministratore.") and return 
+            errors.add(:base, 'Oggetti differenti in deposit and operation. Contattare amministratore.') and return 
           end
         else
-          errors.add(:base, "È necessario selezionare una provenienza corretta.") and return
+          errors.add(:base, 'È necessario selezionare una provenienza corretta.') and return
         end
       end
     end
@@ -205,7 +213,7 @@ class Operation < ApplicationRecord
   def update_moves
     Rails.logger.debug("Update_moves: self=#{self.inspect} e numbers=#{self.numbers.inspect}")
 
-    @deposits_to_check ||= Array.new
+    @deposits_to_check ||= []
 
     tmp_numbers = @_numbers
 
@@ -216,7 +224,7 @@ class Operation < ApplicationRecord
     self.moves.each do |move|
       if tmp_numbers[move.deposit_id]
         if move.number != tmp_numbers[move.deposit_id] 
-          move.update(number: tmp_numbers[move.deposit_id].to_i) or raise("NON SALVO MOVE IN update_moves")
+          move.update(number: tmp_numbers[move.deposit_id].to_i) or raise('NON SALVO MOVE IN update_moves')
           @deposits_to_check << move.deposit_id
         else
           # FIXME per ora mettiamo cosi' perche' non sappiamo se la data e' cambiata................. 
@@ -224,7 +232,7 @@ class Operation < ApplicationRecord
           @deposits_to_check << move.deposit_id
         end
       else
-        move.destroy or raise("NON CANCELLO MOVE IN update_moves")
+        move.destroy or raise('NON CANCELLO MOVE IN update_moves')
         @deposits_to_check << move.deposit_id
       end
       tmp_numbers.delete(move.deposit_id)
@@ -232,7 +240,7 @@ class Operation < ApplicationRecord
 
     # aggiungiamo i nuovi
     tmp_numbers.each do |dep_id, num|
-      if (num.to_i != 0) 
+      if num.to_i != 0
         self.moves.create(deposit_id: dep_id,
                           number:     num)
         @deposits_to_check << dep_id
@@ -244,7 +252,7 @@ class Operation < ApplicationRecord
 
   # FIXME VERIFICARE CHE FINZIONA CON after_destroy invece di before
   def delete_moves
-    @deposits_to_check ||= Array.new 
+    @deposits_to_check ||= []
 
     # la cancellazione di un unload / prenotazione non pone problemi
     self.instance_of?(Unload) and avoid_history_coherent = true
@@ -252,7 +260,7 @@ class Operation < ApplicationRecord
 
     self.moves.each do |m|
       @deposits_to_check << m.deposit_id 
-      m.destroy or raise "non cancello in delete_moves"
+      m.destroy or raise 'non cancello in delete_moves'
     end
     true
   end
@@ -260,14 +268,14 @@ class Operation < ApplicationRecord
   # vanno controllati tutti i deposit con moves sia presenti che cancellati (passati)
   def history_coherent?
     if avoid_history_coherent 
-      Rails.logger.debug("SKIP history_coherent? and return true")
+      Rails.logger.debug('SKIP history_coherent? and return true')
       return true
     end
     @deposits_to_check.each do |dep_id|
       sum = 0 
       Move.includes(:operation)
-          .order("operations.date asc, operations.number desc, operations.id asc").references(:operations)
-          .where("deposit_id = ?", dep_id).each do |m|
+          .order('operations.date asc, operations.number desc, operations.id asc').references(:operations)
+          .where('deposit_id = ?', dep_id).each do |m|
         sum += m.number
         Rails.logger.debug("history_coherent?: move = #{m.inspect} sum = #{sum}")
         (sum < 0) and raise Gemma::NegativeDeposit
@@ -277,20 +285,7 @@ class Operation < ApplicationRecord
   end
 
   def rewrite_totals
-    self.moves.each {|m| m.deposit.update_actual}
+    self.moves.each { |m| m.deposit.update_actual }
     self.thing.update_total
   end
-
-  #before_validation :number_from_numbers
-  #def number_from_numbers
-  #  self.numbers.is_a?(Hash) or return true
-  #  self.number = 0
-  #  self.numbers.each do |dep_id, num|
-  #    (num == 0) and self.numbers.delete(dep_id)
-  #    self.number += num.to_i
-  #  end
-  #end
-
 end
-
-

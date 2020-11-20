@@ -13,7 +13,7 @@ class User < ApplicationRecord
   # Ritorna tutti gli utenti che sono stati in qualche modo associati ad una certa struttura in passato
   # Di solito sono gli utenti che hanno fatto s/carichi o a cui sono stati associati scarichi 
   # Andiamo indietro di un paio di anni
-  def self.all_in_cache(organization_id, booking=false)
+  def self.all_in_cache(organization_id, booking = false)
     and_booking = booking ? 'AND operations.from_booking IS NOT NULL' : ''
     and_user    = booking ? 'AND users.id  = user_id' : 'AND ( users.id = recipient_id OR users.id  = user_id )' 
     # coalesce non funziona bene con in. Anzi, nulla funziona bene con in. 
@@ -26,7 +26,7 @@ class User < ApplicationRecord
                              ORDER BY surname"
   end
 
-  def self.recipient_cache(organization_id, interval=365)
+  def self.recipient_cache(organization_id, interval = 365)
     User.find_by_sql "SELECT DISTINCT users.id, users.upn, name, surname 
                                  FROM users, operations 
                                 WHERE organization_id = #{organization_id.to_i} 
@@ -37,11 +37,11 @@ class User < ApplicationRecord
   end
 
   def get_delegators(organization_id)
-    self.delegators.where("delegations.organization_id = ?", organization_id)
+    self.delegators.where('delegations.organization_id = ?', organization_id)
   end
 
   def get_delegates(organization_id)
-    self.delegates.where("delegations.organization_id = ?", organization_id)
+    self.delegates.where('delegations.organization_id = ?', organization_id)
   end
 end
 

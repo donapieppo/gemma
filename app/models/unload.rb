@@ -21,26 +21,16 @@ class Unload < Operation
     super(attributes)
   end
 
-  def date_afternoon(date)
-    # FIXME 
-    # dovrebbe essere il controller, ma tant'e', con datepicker
-    # cosi' il load sono in 00:00 e gli unload alle 12
-    if date and (date.to_s =~ /00:00/ or date.to_s !~ /\d+:\d+/)
-      date = date.to_s + ' 12:00' 
-    end
-    date 
-  end
-
   # FIXME da fare dry con Load
   def validate_numbers
-    if (!self.numbers or self.numbers.size < 1)
-      errors.add(:number, "È necessario indicare la quantità di oggetti.")
+    if !self.numbers || self.numbers.empty?
+      errors.add(:number, 'È necessario indicare la quantità di oggetti.')
       throw(:abort) 
     end
 
     self.numbers.each_value do |num|
-      if (num >= 0)
-        errors.add(:number, "Il numero di oggetti da scaricare deve essere positivo.")
+      if num >= 0
+        errors.add(:number, 'Il numero di oggetti da scaricare deve essere positivo.')
         throw(:abort) 
       end
     end

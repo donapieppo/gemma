@@ -14,16 +14,6 @@ class Booking < Unload
     super(attributes)
   end
 
-  def date_afternoon(date)
-    # FIXME 
-    # dovrebbe essere il controller, ma tant'e', con datepicker
-    # cosi' il load sono in 00:00 e gli unload alle 12
-    if date and (date.to_s =~ /00:00/ or date.to_s !~ /\d+:\d+/)
-      date = date.to_s + ' 12:00' 
-    end
-    date 
-  end
-
   # passiamo da prenotazione di scarico a scarico effettivo
   # lo rende Unload
   def confirm
@@ -43,7 +33,7 @@ class Booking < Unload
       else
         Rails.logger.info("Wrong delegation: #{self.user} not delegated by #{self.recipient}")
         self.recipient_id = nil
-        self.errors.add(:recipient_id, "Non autorizzato.")
+        self.errors.add(:recipient_id, 'Non autorizzato.')
         throw(:abort) 
       end
     end

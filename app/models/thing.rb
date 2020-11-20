@@ -29,9 +29,9 @@ class Thing < ApplicationRecord
   before_destroy :check_no_associated_moves, prepend: true
 
   def create_deposits(location_ids)
-    location_ids = location_ids.select {|i| i.to_i > 0}
+    location_ids = location_ids.select { |i| i.to_i > 0 }
     Location.find(location_ids).each do |loc|
-      (loc.organization_id == self.organization_id) or raise DmUniboCommon::MismatchOrganization, "Struttura non permessa."
+      (loc.organization_id == self.organization_id) or raise DmUniboCommon::MismatchOrganization, 'Struttura non permessa.'
       loc.deposits.create(thing_id:        self.id, 
                           organization_id: self.organization_id,
                           actual:          0) or return false
@@ -63,7 +63,7 @@ class Thing < ApplicationRecord
   end
 
   def to_s_with_description
-    d = self.description.blank? ? "" : " (#{self.description})"
+    d = self.description.blank? ? '' : " (#{self.description})"
     self.name + d
   end
 
@@ -90,11 +90,11 @@ class Thing < ApplicationRecord
           if stack_price > 0
             if stack_operation.is_a?(Load)
               ddt = stack_operation.ddt
-              price_operations << {id: stack_operation.id, n: n, p: stack_price, desc: "#{ddt.gen} n. #{ddt.number}"}
+              price_operations << { id: stack_operation.id, n: n, p: stack_price, desc: "#{ddt.gen} n. #{ddt.number}" }
             elsif stack_operation.is_a?(Takeover)
-              price_operations << {id: stack_operation.id, n: n, p: stack_price, desc: "reso da #{stack_operation.recipient.upn}"}
+              price_operations << { id: stack_operation.id, n: n, p: stack_price, desc: "reso da #{stack_operation.recipient.upn}" }
             elsif stack_operation.is_a?(Stock)
-              price_operations << {id: stack_operation.id, n: n, p: stack_price, desc: "giacenza iniziale"}
+              price_operations << { id: stack_operation.id, n: n, p: stack_price, desc: 'giacenza iniziale' }
             end
           end
 
@@ -119,15 +119,14 @@ class Thing < ApplicationRecord
   end
 
   def check_group_organization
-    (self.group.organization_id == self.organization_id) or raise DmUniboCommon::MismatchOrganization, "Struttura non permessa."
+    (self.group.organization_id == self.organization_id) or raise DmUniboCommon::MismatchOrganization, 'Struttura non permessa.'
   end
 
   def check_no_associated_moves
-    # FIXME BUG risultano certe operations senza moves... da riflettere e sistemare
-    if self.moves.any? or self.operations.any?
-      errors[:base] << "Ci sono carichi e scarichi associati a questo articolo che devono prima essere cancellati."
+    # FIXME: BUG risultano certe operations senza moves... da riflettere e sistemare
+    if self.moves.any? || self.operations.any?
+      errors[:base] << 'Ci sono carichi e scarichi associati a questo articolo che devono prima essere cancellati.'
       throw :abort
     end
   end
 end
-

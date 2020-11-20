@@ -9,7 +9,7 @@ class Shift < Operation
   def initialize(attributes = nil)
     if attributes.is_a?(Hash)
       number = attributes[:number] ? attributes.delete(:number).to_i : 0
-      if attributes[:from] and attributes[:to]
+      if attributes[:from] && attributes[:to]
         attributes[:numbers] = { attributes.delete(:from).to_i => number * -1, attributes.delete(:to) => number }
       else
         attributes.delete(:from)
@@ -21,20 +21,20 @@ class Shift < Operation
 
   # REFACTOR
   def from
-    Deposit.find(self.numbers_hash.select {|k,v| v < 0}.flatten.first)
+    Deposit.find(self.numbers_hash.select { |_, v| v < 0 }.flatten.first)
   end
 
   # REFACTOR
   def to
-    Deposit.find(self.numbers_hash.select {|k,v| v > 0}.flatten.first)
+    Deposit.find(self.numbers_hash.select { |_, v| v > 0 }.flatten.first)
   end
 
   private
 
   def different_deposits
-    if self.numbers and self.numbers.size != 2
-      Rails.logger.info("Refuse shift on same deposit.")
-      errors.add(:base, "È necessario che le ubicazioni di partenza e arrivo siano diverse.")
+    if self.numbers && self.numbers.size != 2
+      Rails.logger.info('Refuse shift on same deposit.')
+      errors.add(:base, 'È necessario che le ubicazioni di partenza e arrivo siano diverse.')
     end
   end
 
@@ -44,5 +44,3 @@ class Shift < Operation
     end
   end
 end
-
-
