@@ -7,9 +7,10 @@ namespace :chiusura do
   require File.dirname(__FILE__) + '/../../chiusura/deletes'
   require File.dirname(__FILE__) + '/../../chiusura/checks'
 
+  # startyear, maxyear, organization_id, description<
   desc "Show chiusure to be done"
   task to_be_done: :environment do
-    ActiveRecord::Base.connection.instance_variable_get(:@connection).query('SELECT MIN(YEAR(date)) AS year, MAX(YEAR(date)) AS actualyear, organization_id, description FROM operations LEFT JOIN organizations ON organizations.id = operations.organization_id GROUP BY organization_id ORDER BY year desc').each do |row| 
+    ActiveRecord::Base.connection.instance_variable_get(:@connection).query('SELECT MIN(YEAR(date)) AS startyear, MAX(YEAR(date)) AS maxyear, organizations.code, organization_id, description FROM operations LEFT JOIN organizations ON organizations.id = operations.organization_id GROUP BY organization_id ORDER BY startyear desc').each do |row| 
       p row
     end
   end
