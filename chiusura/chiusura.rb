@@ -5,11 +5,13 @@ module Gemma
     def initialize(org_id, options = {})
       @organization = Organization.find(org_id.to_i)
       @conn = ActiveRecord::Base.connection.instance_variable_get(:@connection)
+
       @year, @user_id = get_year_and_user
-      if ! (@year and @user_id) 
+      if ! (@year && @user_id) 
         puts "Non abbiamo operazioni. Puoi cancellare tutto :-)"
         return 
       end
+
       @upn = User.find(@user_id).upn
 
       @last_year_date = "#{@year}-12-31 20:00"  # mettiamo l'operazione alla fine dell'anno
@@ -35,9 +37,11 @@ module Gemma
                        FROM ddts 
                       WHERE organization_id = #{@organization.id}
                         AND year(date) < #{@year}").first[0].to_i > 0
-        puts "SELECT * FROM ddts      WHERE organization_id = #{@organization_id} AND year(date) = #{@year - 1}"
-        puts "UPDATE ddts SET date='#{@year} 08:01' WHERE organization_id = #{@organization_id} AND year(date) = #{@year - 1}"
-        raise "ci sono ddt nell'anno precedente"
+       puts ""
+       puts "SELECT * FROM ddts      WHERE organization_id = #{@organization.id} AND year(date) < #{@year}"
+       puts "UPDATE ddts SET date='#{@year}-01-01 08:01' WHERE organization_id = #{@organization.id} AND year(date) = #{@year - 1}"
+       puts ""
+       raise "Ci sono ddt nell'anno precedente. Puoi eseguire gli update sopra."
      end
     end
 
