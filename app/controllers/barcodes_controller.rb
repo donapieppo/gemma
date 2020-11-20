@@ -3,7 +3,7 @@ require 'barby/outputter/png_outputter'
 require 'prawn/labels'
 
 class BarcodesController < ApplicationController
-  before_action :get_thing, only: [:new, :create, :generate]
+  before_action :set_thing, only: [:new, :create, :generate]
 
   def show
     @barcode = current_organization.barcodes.find(params[:id])
@@ -57,7 +57,7 @@ class BarcodesController < ApplicationController
     params[:barcode].permit(:name)
   end
 
-  def get_thing
+  def set_thing
     @thing = current_organization.things.find(params[:thing_id]) 
   end
 end
