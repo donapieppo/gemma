@@ -1,0 +1,1 @@
+class ArchLoad    < ArchOperation; end

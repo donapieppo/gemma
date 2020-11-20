@@ -1,0 +1,1 @@
+class ArchStock   < ArchOperation; end
