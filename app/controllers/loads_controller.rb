@@ -1,14 +1,13 @@
 class LoadsController < ApplicationController
-  before_action :get_thing, only: [:new, :create]
-  before_action :get_load_and_thing_and_check_permission, only: [:edit, :update, :destroy]
+  before_action :set_thing, only: [:new, :create]
+  before_action :set_load_and_thing_and_check_permission, only: [:edit, :update, :destroy]
 
   def new
-    if @thing.deposits.size < 1
+    if @thing.deposits.empty?
       redirect_to edit_thing_path(@thing), alert: 'Non è stata ancora definita una ubicazione per il materiale.'
-      return
     else 
       @load    = @thing.loads.new(date: Date.today, organization_id: current_organization.id)
-      @numbers = Hash.new
+      @numbers = {}
       authorize @load
     end
   end
@@ -85,11 +84,11 @@ class LoadsController < ApplicationController
                          numbers: params[:load][:numbers].try(:keys))
   end
 
-  def get_thing
+  def set_thing
     @thing = current_organization.things.includes(:deposits).find(params[:thing_id])
   end
 
-  def get_load_and_thing_and_check_permission
+  def set_load_and_thing_and_check_permission
     @load = current_organization.loads.includes(:thing).find(params[:id])
     @thing = @load.thing
     authorize @load

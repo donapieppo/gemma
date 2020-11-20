@@ -1,5 +1,5 @@
 class DdtsController < ApplicationController
-  before_action :get_ddt_and_check_permission, only: [:show, :edit, :update, :destroy]
+  before_action :set_ddt_and_check_permission, only: [:show, :edit, :update, :destroy]
 
   def index
     authorize Ddt
@@ -130,7 +130,7 @@ class DdtsController < ApplicationController
     params.require(:ddt).permit(:number, :gen, :name, :date)
   end
 
-  def get_ddt_and_check_permission
+  def set_ddt_and_check_permission
     @ddt = current_organization.ddts.includes(:supplier).find(params[:id])
     authorize @ddt
   end

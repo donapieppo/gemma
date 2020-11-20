@@ -1,5 +1,5 @@
 class DepositsController < ApplicationController
-  before_action :get_thing, only: [:new, :create]
+  before_action :set_thing, only: [:new, :create]
 
   def new
     @deposit = @thing.deposits.new(organization_id: current_organization.id)
@@ -18,7 +18,7 @@ class DepositsController < ApplicationController
                                                      location_id: loc_id,
                                                      actual:      0)
         authorize @deposit
-        if (! @deposit.save)
+        if ! @deposit.save
           redirect_to new_thing_deposit_path(@thing), alert: "Errore nell'aggiunta dell'articolo."
           return                      
         end
@@ -45,7 +45,7 @@ class DepositsController < ApplicationController
 
   private 
 
-  def get_thing
+  def set_thing
     @thing = current_organization.things.find(params[:thing_id]) 
   end
 end

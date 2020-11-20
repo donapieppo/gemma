@@ -1,5 +1,5 @@
 class GroupsController < ApplicationController 
-  before_action :get_group_and_check_permission, only: [:edit, :update, :destroy]
+  before_action :set_group_and_check_permission, only: [:edit, :update, :destroy]
 
   def index
     @groups = current_organization.groups.order(:name)
@@ -42,7 +42,7 @@ class GroupsController < ApplicationController
 
   private
 
-  def get_group_and_check_permission
+  def set_group_and_check_permission
     @group = Group.find(params[:id])
     authorize @group
   end
