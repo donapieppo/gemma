@@ -7,11 +7,6 @@ class BarcodePolicy < ApplicationPolicy
     record_organization_manager?
   end
 
-  # FIXME
-  def generate?
-    current_organization_manager?
-  end
-
   def destroy?
     record_organization_manager?
   end

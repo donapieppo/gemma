@@ -30,5 +30,9 @@ class ThingPolicy < ApplicationPolicy
   def recalculate_prices?
     record_organization_manager?
   end
+
+  def generate_barcode?
+    update?
+  end
 end
 
