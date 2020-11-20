@@ -1,6 +1,6 @@
 class BookingsController < ApplicationController
-  before_action :get_thing, only: [:new, :create]
-  before_action :get_booking_and_check_permission, only: [:destroy, :edit, :update, :confirm]
+  before_action :set_thing, only: [:new, :create]
+  before_action :set_booking_and_check_permission, only: [:destroy, :edit, :update, :confirm]
 
   def index
     authorize Booking
@@ -109,7 +109,7 @@ class BookingsController < ApplicationController
     params[:booking].permit(:note, :recipient_id, numbers: params[:booking][:numbers].try(:keys))
   end
 
-  def get_booking_and_check_permission
+  def set_booking_and_check_permission
     @book = current_organization.bookings.find(params[:id])
     # solo amministratore/bidello ha a che fare con ordini altrui
     unless policy(current_organization).give?
@@ -118,13 +118,13 @@ class BookingsController < ApplicationController
     authorize @book
   end
 
-  def get_thing
+  def set_thing
     @thing = current_organization.things.includes(:locations).find(params[:thing_id])
   end
 
   def delegations_hash
-    res = Hash.new {|h,v| h[v] = []}
-    current_organization.delegations.includes(:delegator, :delegate).each {|d| res[d.delegator] << d}
+    res = Hash.new { |h,v| h[v] = [] }
+    current_organization.delegations.includes(:delegator, :delegate).each { |d| res[d.delegator] << d }
     res
   end
 end
