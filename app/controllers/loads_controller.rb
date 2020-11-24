@@ -15,7 +15,7 @@ class LoadsController < ApplicationController
   # load: {"thing_id"=>"3998", "numbers"=>{"4003"=>"12", "4005"=>"21"}, "price_int"=>"2", "price_dec"=>"0"}
   def create
     params[:load][:numbers] = @numbers = params[:numbers].permit!
-    fix_prices(params[:load], params["price_with_iva"])
+    fix_prices(params[:load], params['price_with_iva'])
 
     @load = @thing.loads.new(load_params)
 
@@ -39,7 +39,7 @@ class LoadsController < ApplicationController
   end
 
   def update
-    fix_prices(params[:load], params["price_with_iva"])
+    fix_prices(params[:load], params['price_with_iva'])
     params[:load][:numbers] = @numbers = params[:numbers]
 
     begin 
@@ -50,7 +50,7 @@ class LoadsController < ApplicationController
     end
 
     if res
-      redirect_to thing_moves_path(@load.thing_id), notice: "Aggiornamento avvenuto correttamente."
+      redirect_to thing_moves_path(@load.thing_id), notice: 'Aggiornamento avvenuto correttamente.'
     else
       render action: :new
     end
@@ -65,7 +65,7 @@ class LoadsController < ApplicationController
     end
 
     if res 
-      flash[:notice] = "Carico eliminato. "
+      flash[:notice] = 'Carico eliminato. '
       if @load.ddt.operations.count < 1
         flash[:notice] += "Avviso: Non ci sono più carichi associati al ddt/fattura Record N. #{@load.ddt.number}."
       end
@@ -94,4 +94,3 @@ class LoadsController < ApplicationController
     authorize @load
   end
 end
-

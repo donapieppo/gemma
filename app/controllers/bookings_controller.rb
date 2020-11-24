@@ -56,7 +56,7 @@ class BookingsController < ApplicationController
     end
 
     if res 
-      redirect_to bookings_path(highlight: @book), notice: "Prenotazione effettuata correttamente."
+      redirect_to bookings_path(highlight: @book), notice: 'Prenotazione effettuata correttamente.'
     else
       @book.number = @book.number * -1
       @delegators = current_user.get_delegators(current_organization.id).to_a.push(current_user)
@@ -87,9 +87,9 @@ class BookingsController < ApplicationController
 
   def destroy
     if @book.destroy 
-      flash[:notice] = "La prenotazione è stata cancellata."
+      flash[:notice] = 'La prenotazione è stata cancellata.'
     else 
-      flash[:error] = "Errore sulla cancellazione."
+      flash[:error] = 'Errore sulla cancellazione.'
     end
     redirect_to bookings_path
   end
@@ -123,10 +123,8 @@ class BookingsController < ApplicationController
   end
 
   def delegations_hash
-    res = Hash.new { |h,v| h[v] = [] }
+    res = Hash.new { |h, v| h[v] = [] }
     current_organization.delegations.includes(:delegator, :delegate).each { |d| res[d.delegator] << d }
     res
   end
 end
-
-

@@ -1,5 +1,5 @@
 class LocationsController < ApplicationController
-  before_action :get_location_and_check_permission, only: [:edit, :update, :destroy]
+  before_action :set_location_and_check_permission, only: [:edit, :update, :destroy]
 
   def index
     authorize Location
@@ -44,7 +44,7 @@ class LocationsController < ApplicationController
 
   private
 
-  def get_location_and_check_permission
+  def set_location_and_check_permission
     @location = current_organization.locations.find(params[:id])
     authorize @location
   end
@@ -53,7 +53,4 @@ class LocationsController < ApplicationController
   def location_params
     params.require(:location).permit(:name)
   end
-
 end
-
-

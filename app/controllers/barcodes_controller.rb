@@ -33,9 +33,9 @@ class BarcodesController < ApplicationController
     authorize barcode
 
     if barcode.destroy
-      flash[:notice] = "Il codice a barre è stato cancellato come richiesto"
+      flash[:notice] = 'Il codice a barre è stato cancellato come richiesto'
     else
-      flash[:error]  = "Non è stato possibile cancellare il codice a barre."
+      flash[:error]  = 'Non è stato possibile cancellare il codice a barre.'
     end
 
     redirect_to edit_thing_path(barcode.thing_id)
@@ -43,11 +43,14 @@ class BarcodesController < ApplicationController
 
   def zxing_search
     authorize Barcode
-    thing = current_organization.things.includes(:barcodes).where("barcodes.name = ?", params[:bc].strip).references(:barcodes).first
+    thing = current_organization.things
+                                .includes(:barcodes)
+                                .where('barcodes.name = ?', params[:bc].strip).references(:barcodes)
+                                .first
     if thing
       redirect_to new_thing_unload_path(thing)
     else
-      redirect_to root_path, alert: "Codice a barre non presente nel sistema."
+      redirect_to root_path, alert: 'Codice a barre non presente nel sistema.'
     end
   end
 
@@ -61,5 +64,3 @@ class BarcodesController < ApplicationController
     @thing = current_organization.things.find(params[:thing_id]) 
   end
 end
-
-

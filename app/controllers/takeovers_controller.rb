@@ -1,10 +1,10 @@
 class TakeoversController < ApplicationController
-  before_action :get_thing, only: [:new, :create]
-  before_action :get_takeover_and_thing_and_check_permission, only: [:edit, :update, :destroy]
+  before_action :set_thing, only: [:new, :create]
+  before_action :set_takeover_and_thing_and_check_permission, only: [:edit, :update, :destroy]
 
   def new
     @takeover = @thing.takeovers.new(date: Date.today, organization_id: current_organization.id)
-    @numbers  = Hash.new
+    @numbers  = {}
     @cache_users = User.all_in_cache(current_organization.id)
     authorize @takeover
   end
@@ -25,7 +25,7 @@ class TakeoversController < ApplicationController
 
     # il create non dede raisare perchè sempre history_coherent
     if @takeover.save
-      redirect_to group_things_path(@takeover.thing.group_id, from_thing: @takeover.thing.id), notice: "Presa consegna registrata correttamente"
+      redirect_to group_things_path(@takeover.thing.group_id, from_thing: @takeover.thing.id), notice: 'Presa consegna registrata correttamente.'
     else
       @cache_users = User.all_in_cache(current_organization.id)
       render action: :new
@@ -48,7 +48,7 @@ class TakeoversController < ApplicationController
     end
 
     if res
-      redirect_to thing_moves_path(@takeover.thing_id), notice: "Aggiornamento avvenuto correttamente"
+      redirect_to thing_moves_path(@takeover.thing_id), notice: 'Aggiornamento avvenuto correttamente'
     else
       @numbers = @takeover.numbers_hash
       render action: :edit
@@ -66,7 +66,7 @@ class TakeoversController < ApplicationController
     if res
       flash[:notice] = "L'operazione di presa consegna è stata eliminata."
     else
-      flash[:error] = "Non è stato possibile eliminare la presa consegna. Controllare che la sua cancellazione non precluda scarichi successivi."
+      flash[:error] = 'Non è stato possibile eliminare la presa consegna. Controllare che la sua cancellazione non precluda scarichi successivi.'
     end
 
     redirect_to thing_moves_path(@takeover.thing_id)
@@ -78,11 +78,11 @@ class TakeoversController < ApplicationController
     params[:takeover].permit(:date, :note, numbers: params[:takeover][:numbers].try(:keys))
   end
 
-  def get_thing
+  def set_thing
     @thing = current_organization.things.includes(:deposits).find(params[:thing_id])
   end
 
-  def get_takeover_and_thing_and_check_permission
+  def set_takeover_and_thing_and_check_permission
     @takeover = current_organization.takeovers.includes([:thing, :user]).find(params[:id])
     @thing = @takeover.thing
     authorize @takeover

@@ -1,5 +1,5 @@
 class ShiftsController < ApplicationController
-  before_action :get_shift_and_check_permission, only: [:edit, :update, :destroy]
+  before_action :set_shift_and_check_permission, only: [:edit, :update, :destroy]
 
   def new
     @thing    = current_organization.things.find(params[:thing_id]) 
@@ -49,7 +49,7 @@ class ShiftsController < ApplicationController
     end
 
     if res
-      redirect_to thing_moves_path(@shift.thing_id), notice: "La data è stata aggiornata."
+      redirect_to thing_moves_path(@shift.thing_id), notice: 'La data è stata aggiornata.'
     else
       render action: :edit
     end
@@ -64,7 +64,7 @@ class ShiftsController < ApplicationController
     end
 
     if res
-      flash[:notice] = "Spostamento correttamente eliminato"
+      flash[:notice] = 'Spostamento correttamente eliminato'
     else
       flash[:alert] ||= "Non è stato possibile eliminare l'operazione. #{@shift.errors.on_base}"
     end
@@ -74,10 +74,8 @@ class ShiftsController < ApplicationController
 
   private
 
-  def get_shift_and_check_permission
+  def set_shift_and_check_permission
     @shift = current_organization.shifts.find(params[:id])
     authorize @shift
   end
 end
-
-

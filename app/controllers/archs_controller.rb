@@ -24,7 +24,7 @@ class ArchsController < ApplicationController
                        AND year(arch_operations.date) = #{@year}
                   ORDER BY arch_things.name, arch_operations.date, arch_operations.number DESC"
 
-    send_data report.render, :filename => report.filename, :type => report.type
+    send_data report.render, filename: report.filename, type: report.type
   end
 
   # lista dei movimenti di un thing particolare
@@ -54,6 +54,4 @@ class ArchsController < ApplicationController
   #     send_report
   #   end
   # end
-
 end
-

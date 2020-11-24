@@ -27,7 +27,7 @@ class GroupsController < ApplicationController
 
   def update
     if @group.update(name: params[:group][:name])
-      redirect_to current_organization_edit_path, notice: "La categoria è stata aggiornata."
+      redirect_to current_organization_edit_path, notice: 'La categoria è stata aggiornata.'
     else 
       render action: :update
     end
@@ -51,4 +51,3 @@ class GroupsController < ApplicationController
     params[:group].permit(:name)
   end
 end
-

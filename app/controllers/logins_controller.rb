@@ -5,4 +5,3 @@ class LoginsController < ApplicationController
     authorize :login
   end
 end
-

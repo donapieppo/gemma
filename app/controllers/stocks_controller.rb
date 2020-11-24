@@ -1,19 +1,19 @@
 class StocksController < ApplicationController
-  before_action :get_thing, only: [:new, :create]
-  before_action :get_stock_and_thing_and_check_permission, only: [:edit, :update, :destroy]
+  before_action :set_thing, only: [:new, :create]
+  before_action :set_stock_and_thing_and_check_permission, only: [:edit, :update, :destroy]
 
   def new
-    @thing.has_operation? and raise "Non si puo' avere giacenza inizale. Ci sono altri carichi"
+    @thing.has_operation? and raise 'Non si può avere giacenza inizale. Ci sono altri carichi'
     @stock   = @thing.stocks.new(date: Date.today, organization_id: current_organization.id)
     authorize @stock
-    @numbers = Hash.new
+    @numbers = {}
   end
 
   def create
-    @thing.has_operation? and raise "Non si può inserire una giacenza inizale in quanto sono presenti altri carichi"
+    @thing.has_operation? and raise 'Non si può inserire una giacenza inizale in quanto sono presenti altri carichi'
 
     params[:stock][:numbers] = @numbers = params[:numbers]
-    fix_prices(params[:stock], params["price_with_iva"])
+    fix_prices(params[:stock], params['price_with_iva'])
 
     @stock = @thing.stocks.new(stock_params)
 
@@ -25,14 +25,15 @@ class StocksController < ApplicationController
 
     # il create non vede raisare perche' sempre history_coherent
     if @stock.save
-      redirect_to group_things_path(@stock.thing.group_id), notice: "La giacenza iniziale è stata registrata correttamente."
+      redirect_to group_things_path(@stock.thing.group_id), notice: 'La giacenza iniziale è stata registrata correttamente.'
     else
       render action: :new
     end
   end
 
   def edit
-    @numbers = @stock.moves.inject({}) {|numbers, move| numbers[move.deposit_id] = move.number; numbers }
+    # @numbers = @stock.moves.inject({}) {|numbers, move| numbers[move.deposit_id] = move.number; numbers }
+    @numbers = @stock.moves.each_with_object({}) { |move, numbers| numbers[move.deposit_id] = move.number }
 
     if current_organization.pricing
       @price_int = @stock.price_int
@@ -43,7 +44,7 @@ class StocksController < ApplicationController
   end
 
   def update
-    fix_prices(params[:stock], params["price_with_iva"])
+    fix_prices(params[:stock], params['price_with_iva'])
 
     params[:stock][:numbers] = params[:numbers].permit!
 
@@ -55,9 +56,9 @@ class StocksController < ApplicationController
     end
 
     if res
-      redirect_to thing_moves_path(@stock.thing_id), notice: "La giacenza iniziale è stata correttamente aggiornata."
+      redirect_to thing_moves_path(@stock.thing_id), notice: 'La giacenza iniziale è stata correttamente aggiornata.'
     else
-      @numbers = @stock.moves.inject({}) {|numbers, move| numbers[move.deposit_id] = move.number; numbers }
+      @numbers = @stock.moves.each_with_object({}) { |move, numbers| numbers[move.deposit_id] = move.number }
       render action: :new
     end
   end
@@ -71,7 +72,7 @@ class StocksController < ApplicationController
     end
 
     if res 
-      flash[:notice] = "La giacenza iniziale è stata eliminata."
+      flash[:notice] = 'La giacenza iniziale è stata eliminata.'
     else
       flash[:alert] ||= "Non è stato possibile eliminare la giacenza iniziale. #{@stock.errors.on_base}."
     end
@@ -82,17 +83,16 @@ class StocksController < ApplicationController
   private
 
   def stock_params
-    params[:stock].permit(:number, :date, :ddt_id, :note, :price, :price_int, :price_dec, :numbers => params[:stock][:numbers].try(:keys))
+    params[:stock].permit(:number, :date, :ddt_id, :note, :price, :price_int, :price_dec, numbers: params[:stock][:numbers].try(:keys))
   end
 
-  def get_thing
+  def set_thing
     @thing = current_organization.things.includes(:deposits).find(params[:thing_id])
   end
 
-  def get_stock_and_thing_and_check_permission
+  def set_stock_and_thing_and_check_permission
     @stock = current_organization.stocks.includes(:thing).find(params[:id])
     @thing = @stock.thing
     authorize @stock
   end
 end
-

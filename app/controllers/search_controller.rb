@@ -11,7 +11,7 @@ class SearchController < ApplicationController
         search_organizations(@search_string)
       end
     else
-      redirect_to root_path, alert: "Si prega di raffinare la ricerca."
+      redirect_to root_path, alert: 'Si prega di raffinare la ricerca.'
     end
   end
 
@@ -20,22 +20,21 @@ class SearchController < ApplicationController
   def search_things(stringa_ricerca)
     sql_stringa = "%#{stringa_ricerca}%"
     @things = current_organization.things.includes([:group, :barcodes])
-                                   .order(:name)
-                                   .where("things.name LIKE ? OR things.description LIKE ? OR barcodes.name LIKE ?", sql_stringa, sql_stringa, sql_stringa)
-                                   .references(:things, :barcodes)
+                                  .order(:name)
+                                  .where('things.name LIKE ? OR things.description LIKE ? OR barcodes.name LIKE ?', sql_stringa, sql_stringa, sql_stringa)
+                                  .references(:things, :barcodes)
   end
 
   def search_admins(stringa_ricerca)
     sql_stringa = "%#{stringa_ricerca}%"
     @permissions = DmUniboCommon::Permission.includes(:user)
-                   .group(:user_id)
-                   .where("users.name LIKE ? OR users.surname LIKE ? OR users.upn LIKE ?", sql_stringa, sql_stringa, sql_stringa)
-                   .references(:users)
+                                            .group(:user_id)
+                                            .where('users.name LIKE ? OR users.surname LIKE ? OR users.upn LIKE ?', sql_stringa, sql_stringa, sql_stringa)
+                                            .references(:users)
   end
 
   def search_organizations(stringa_ricerca)
     sql_stringa = "%#{stringa_ricerca}%"
-    @organizations = Organization.where("organizations.name LIKE ? OR organizations.description LIKE ?", sql_stringa, sql_stringa)
+    @organizations = Organization.where('organizations.name LIKE ? OR organizations.description LIKE ?', sql_stringa, sql_stringa)
   end
 end
-

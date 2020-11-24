@@ -20,7 +20,7 @@ class OrganizationsController < ApplicationController
     @arch_number = ApplicationRecord.connection.execute(q).first[0]
     @operations_number = current_organization.operations.where('YEAR(date) = YEAR(NOW())').count
 
-    @permissions_hash = Hash.new {|hash, key| hash[key] = [] }
+    @permissions_hash = Hash.new { |hash, key| hash[key] = [] }
 
     current_organization.permissions.includes(:user).order('authlevel desc, users.upn asc').references(:user).each do |permission|
       @permissions_hash[permission.authlevel] << permission
@@ -52,27 +52,20 @@ class OrganizationsController < ApplicationController
 
   def destroy
     authorize current_organization
-    current_user.is_cesia? or raise "NO access"
     if current_organization.destroyable?
       current_organization.destroy
-      flash[:notice] = "Organizzazione cancellata."
+      flash[:notice] = 'Organizzazione cancellata.'
     else
-      flash[:error] = "Operazione non possibile."
+      flash[:error] = 'Operazione non possibile.'
     end
     redirect_to organizations_path
   end
 
   private
 
-  # except for cesia can edit current_organization
-  def get_organization_and_check_permission
-    @organization = current_user.is_cesia? ? Organization.find(params[:id]) : current_organization
-  end
-
   def organization_params
     p =  [:pricing, :sendmail, :adminmail]
     p += [:name, :description, :booking] if current_user.is_cesia?
     params[:organization].permit(p)
   end
-
 end

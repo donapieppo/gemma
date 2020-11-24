@@ -11,7 +11,7 @@ class ReportsController < ApplicationController
     authorize :report
     report = GemmaReport.new(current_organization, params[:format])
 
-    report.title     = "Elenco articoli"
+    report.title     = 'Elenco articoli'
     report.fields    = [:thing]
     report.separator = :group_name
     report.separator_page_break = params[:different_pages]
@@ -22,7 +22,7 @@ class ReportsController < ApplicationController
                       WHERE groups.organization_id = #{current_organization.id}
                    ORDER BY groups.name, things.name"
 
-    send_data report.render, :filename => report.filename, :type => report.type
+    send_data report.render, filename: report.filename, type: report.type
   end
 
   #
@@ -43,7 +43,7 @@ class ReportsController < ApplicationController
     location = (params[:location] and params[:location][:id].to_i > 0) ? Location.find(params[:location][:id]) : nil
     group    = (params[:group]    and params[:group][:id].to_i > 0) ? Group.find(params[:group][:id]) : nil
 
-    report.title  =  "Giacenza "
+    report.title  =  'Giacenza '
     report.title  +=  " in #{location}" if location
     report.title  +=  " categoria: #{group}" if group
 
@@ -62,7 +62,7 @@ class ReportsController < ApplicationController
                            #{group_query}
                   ORDER BY things.name"
 
-    send_data report.render, :filename => report.filename, :type => report.type
+    send_data report.render, filename: report.filename, type: report.type
   end
 
   #
@@ -76,7 +76,7 @@ class ReportsController < ApplicationController
     authorize :report
     report = GemmaReport.new(current_organization, params[:format])
 
-    report.title  = "Articoli sottoscorta"
+    report.title  = 'Articoli sottoscorta'
     report.fields = [:total, :minimum, :thing]
 
     report.query = "SELECT things.name as thing, total, minimum 
@@ -117,7 +117,7 @@ class ReportsController < ApplicationController
     @group_id = (params[:group] and params[:group][:id].to_i > 0) ? params[:group][:id].to_i : nil
     group_select = @group_id ? "AND group_id = #{@group_id}" : '' 
 
-    report.title = "Scarichi"
+    report.title = 'Scarichi'
     report.title += @user ? " da #{@user} " : ''
     report.title += @thing_id ? " di #{Thing.find(@thing_id)}" : ''
     report.title += @note ? " con parola #{@note}" : ''
@@ -179,7 +179,7 @@ class ReportsController < ApplicationController
     report.separator_page_break = true
     report.intro = "Il sottoscritto #{@user} dichiara di avere ricevuto il seguente materiale:"
     report.bye_bye = "In fede, #{@user}"
-    report.footer_title = "Ricevuta"
+    report.footer_title = 'Ricevuta'
 
     report.fields = [:date, :number, :thing, :description, :note]
     if @thing_id
@@ -202,7 +202,7 @@ class ReportsController < ApplicationController
                        AND operations.number < 0  
                   ORDER BY upn, things.name, operations.date"
 
-    send_data report.render, :filename => report.filename, :type => report.type
+    send_data report.render, filename: report.filename, type: report.type
   end
 
   #
@@ -219,15 +219,15 @@ class ReportsController < ApplicationController
 
     leggi_date
 
-    thing = (params[:thing] and params[:thing][:id].to_i > 0) ? Thing.find(params[:thing][:id].to_i) : nil
+    thing = (params[:thing] && params[:thing][:id].to_i > 0) ? Thing.find(params[:thing][:id].to_i) : nil
 
-    loc_query = ""
+    loc_query = ''
     # se ci limitiamo ad un oggetto
     thing and loc_query += " AND operations.thing_id = #{thing.id} "
     # se ci limitiamo ai ddt
     params[:only_loads] and loc_query += " AND operations.type = 'Load'"
 
-    report.title = "Storico "
+    report.title = 'Storico '
     thing  and report.title += "di #{thing}"
     report.title += " periodo dal #{I18n.l @from} al #{I18n.l @to}"
 
@@ -282,7 +282,7 @@ class ReportsController < ApplicationController
       report.separator_last_line[r[0].to_s] = sprintf("#{report.initial_space}            %5i  Giacenza %s", r[1], I18n.l(@to))
     end
 
-    send_data report.render, :filename => report.filename, :type => report.type
+    send_data report.render, filename: report.filename, type: report.type
   end
 
   #
@@ -302,7 +302,7 @@ class ReportsController < ApplicationController
 
     leggi_date
 
-    report.title = "Carichi"
+    report.title = 'Carichi'
 
     report.separator = :ddt
     report.fields    = [:date, :number, :thing] 
@@ -347,7 +347,7 @@ class ReportsController < ApplicationController
       report.body << "\r\n"
     end
 
-    send_data report.render, :filename => report.filename, :type => report.type
+    send_data report.render, filename: report.filename, type: report.type
   end
 
   def form_provision
@@ -359,7 +359,7 @@ class ReportsController < ApplicationController
     report = GemmaReport.new(current_organization, params[:format])
     leggi_date
 
-    report.title = "Storico per programmazione"
+    report.title = 'Storico per programmazione'
     report.title += " periodo dal #{I18n.l @from} al #{I18n.l @to}"
 
     report.separator = :thing
@@ -410,13 +410,10 @@ class ReportsController < ApplicationController
   def leggi_date
     today = Date.today
 
-    params['from'] ||= {day: 1, month: today.month, year: today.year}
-    params['to']   ||= {day: today.day, month: today.month, year: today.year}
+    params['from'] ||= { day: 1, month: today.month, year: today.year }
+    params['to']   ||= { day: today.day, month: today.month, year: today.year }
 
     @from = set_date(params['from']['year'].to_i, params['from']['month'].to_i, params['from']['day'].to_i)
     @to   = set_date(params['to']['year'].to_i, params['to']['month'].to_i, params['to']['day'].to_i)
   end
 end
-
-
-

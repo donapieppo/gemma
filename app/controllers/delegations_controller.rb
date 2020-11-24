@@ -1,8 +1,8 @@
 class DelegationsController < ApplicationController
   def index
     authorize Delegation
-    @delegations = Hash.new {|h,v| h[v] = []}
-    current_organization.delegations.includes(:delegator, :delegate).each {|d| @delegations[d.delegator] << d}
+    @delegations = Hash.new { |h, v| h[v] = [] }
+    current_organization.delegations.includes(:delegator, :delegate).each { |d| @delegations[d.delegator] << d }
   end
 
   def new
@@ -23,7 +23,7 @@ class DelegationsController < ApplicationController
     end
 
     if res 
-      flash[:notice] = "La delega è stata assegnata."
+      flash[:notice] = 'La delega è stata assegnata.'
       redirect_to delegations_path
     else
       @cache_users = User.all_in_cache(current_organization.id)
@@ -43,5 +43,3 @@ class DelegationsController < ApplicationController
     params[:delegation].permit(:delegator_upn, :delegate_upn)
   end
 end
-
-

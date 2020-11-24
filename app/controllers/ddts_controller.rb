@@ -13,9 +13,12 @@ class DdtsController < ApplicationController
   def search_cia
     authorize Ddt
     @ddts = []
-    if params[:ncia] and params[:ycia]
+    if params[:ncia] && params[:ycia]
       @titolo_ricerca = "Risultati ricerca per Riferimento Cia #{params[:ycia]} / #{params[:ncia]}"
-      @ddts = current_organization.operations.where("ncia = ? AND ycia = ?", params[:ncia], params[:ycia]).includes(:ddt).collect{|m| m.ddt}.uniq
+      @ddts = current_organization.operations
+                                  .where('ncia = ? AND ycia = ?', params[:ncia], params[:ycia])
+                                  .includes(:ddt)
+                                  .map(&:ddt).uniq
       render action: :index                             
     end
   end
@@ -27,31 +30,31 @@ class DdtsController < ApplicationController
     # ricerca nome fornitore
     if params[:supplier]
       @titolo_ricerca = "Risultati ricerca per fornitore: #{params[:supplier]}"
-      @ddts = @ddts.where("suppliers.name LIKE ?", "%#{params[:supplier]}%").references(:supplier)
+      @ddts = @ddts.where('suppliers.name LIKE ?', "%#{params[:supplier]}%").references(:supplier)
     end
 
     # ricerca con un singolo fornitore
     if params[:supplier_id]
-      @ddts = @ddts.where("supplier_id = ?", params[:supplier_id].to_i)
+      @ddts = @ddts.where('supplier_id = ?', params[:supplier_id].to_i)
     end
 
     # ricerca libera su name
     if params[:like]
-      @ddts = @ddts.where("name LIKE ?", "%#{params[:like]}%")
+      @ddts = @ddts.where('name LIKE ?', "%#{params[:like]}%")
     end
 
     # ricerca libera su record ddt (chiamato number)
     if params[:number]
       @titolo_ricerca = "Risultati ricerca numero #{params[:number].to_i}"
-      @ddts = @ddts.where("ddts.number = ?", params[:number].to_i)
+      @ddts = @ddts.where('ddts.number = ?', params[:number].to_i)
     end
 
     # ricerca tra date '15/01/2015'
-    if params[:datainizio] and params[:datafine]
+    if params[:datainizio] && params[:datafine]
       inizio = Date.parse(params['datainizio'])
       fine   = Date.parse(params['datafine'])
       @titolo_ricerca = "Risultati ricerca data tra #{inizio} e #{fine}"
-      @ddts = @ddts.where("ddts.date >= ? AND ddts.date <= ?", inizio, fine)
+      @ddts = @ddts.where('ddts.date >= ? AND ddts.date <= ?', inizio, fine)
     end
 
     render action: :index
@@ -90,7 +93,7 @@ class DdtsController < ApplicationController
         session[:from_thing_id] = nil
         redirect_to new_thing_load_path(from_thing_id) and return 
       else
-        flash[:notice] += "Per caricare gli articoli relativi a questo ddt/fattura scegliere la Categoria dal menu."
+        flash[:notice] += 'Per caricare gli articoli relativi a questo ddt/fattura scegliere la Categoria dal menu.'
         redirect_to ddts_path and return 
       end
     else
@@ -117,10 +120,10 @@ class DdtsController < ApplicationController
 
   def destroy
     if @ddt.loads.any?
-      redirect_to ddt_path(@ddt), alert: "Non è possibile cancellare il documento perchè ha carichi associati che devono prima essere cancellati."
+      redirect_to ddt_path(@ddt), alert: 'Non è possibile cancellare il documento perchè ha carichi associati che devono prima essere cancellati.'
     else
       @ddt.destroy or raise "errore interno su ddt #{ddt.id}"
-      redirect_to ddts_path, notice: "Il documento è stato cancellato."
+      redirect_to ddts_path, notice: 'Il documento è stato cancellato.'
     end
   end
 
@@ -135,5 +138,3 @@ class DdtsController < ApplicationController
     authorize @ddt
   end
 end
-
-
