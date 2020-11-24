@@ -26,6 +26,10 @@ class OrganizationPolicy < DmUniboCommon::OrganizationPolicy
     @user.is_cesia? || @user.can_manage?(@record)
   end
 
+  def destroy?
+    @user.is_cesia?
+  end
+
   def choose_organization?
     true
   end

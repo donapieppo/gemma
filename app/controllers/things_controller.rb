@@ -1,6 +1,6 @@
 class ThingsController < ApplicationController
-  before_action :get_thing_and_check_permission, only: [:show, :edit, :update, :recalculate_prices, :generate_barcode, :destroy]
-  before_action :get_all_groups_and_locations,   only: [:new, :create, :edit, :update]
+  before_action :set_thing_and_check_permission, only: [:show, :edit, :update, :recalculate_prices, :generate_barcode, :destroy]
+  before_action :set_all_groups_and_locations,   only: [:new, :create, :edit, :update]
 
   def index
     authorize Thing
@@ -11,7 +11,7 @@ class ThingsController < ApplicationController
       @location = current_organization.locations.find(params[:location_id])
       @things = @location.things.includes(:images).order(:name)
       # @actuals[thing_id] = actual
-      @actuals = @location.deposits.inject({}){|res, d| res[d.thing_id] = d.actual; res}
+      @actuals = @location.deposits.each_with_object({}) { |d, res| res[d.thing_id] = d.actual }
     else
       redirect_to groups_path
     end
@@ -30,11 +30,11 @@ class ThingsController < ApplicationController
     if @search_string.length > 2
       @things = real_find(@search_string)
 
-      if @things.length == 0
-        redirect_to groups_path, alert: "Non sono presenti articoli che soddisfino la ricerca."
+      if @things.empty?
+        redirect_to groups_path, alert: 'Non sono presenti articoli che soddisfino la ricerca.'
       # un solo articolo su cui si puo' operare.
       # se non possiamo operare lasciamo il view normale
-      elsif @things.length == 1 and @things.first.deposits.size > 0 
+      elsif @things.length == 1 && @things.first.deposits.size > 0 
         thing = @things.first
         if policy(current_organization).unload?
           redirect_to new_thing_unload_path(thing)
@@ -45,7 +45,7 @@ class ThingsController < ApplicationController
         render action: :index
       end
     else
-      redirect_to groups_path, alert: "Si prega di raffinare la ricerca."
+      redirect_to groups_path, alert: 'Si prega di raffinare la ricerca.'
     end
   end
 
@@ -54,7 +54,7 @@ class ThingsController < ApplicationController
     @thing = current_organization.things.new(group_id: @group.id, minimum: 0)
     authorize @thing
     @locations = current_organization.locations.order(:name)
-    if @locations.size == 0 
+    if @locations.empty?
       @locations = [current_organization.create_default_location]
     end
   end
@@ -65,18 +65,18 @@ class ThingsController < ApplicationController
     @thing = current_organization.things.new(thing_params)
     @locations = current_organization.locations.order(:name)
 
-    @locations.size == 1 and locations_array = [@locations.first.id]
+    locations_array = [@locations.first.id] if @locations.size == 1
 
     authorize @thing
 
     # almeno una locazione e' necessaria... 
-    if ( ! locations_array or locations_array.size == 0 )
+    if ! locations_array || locations_array.empty?
       @thing.errors.add(:base, "Si prega di scegliere l'ubicazione dell'articolo.")
       render action: 'new'
       return
     end
 
-    if @thing.save and @thing.create_deposits(locations_array)
+    if @thing.save && @thing.create_deposits(locations_array)
       flash[:notice] = "L'articolo ''#{@thing}'' è stato creato."
       if params[:insert_barcodes] 
         redirect_to new_thing_barcode_path(@thing)
@@ -111,7 +111,7 @@ class ThingsController < ApplicationController
     if @thing.destroy
       redirect_to groups_path, notice: "L'articolo è stato cancellato come richiesto"
     else
-      # FIXME
+      # FIXME:
       error = @thing.errors.messages[:base].first
       redirect_to thing_moves_path(@thing), alert: error
     end
@@ -143,18 +143,18 @@ class ThingsController < ApplicationController
     else
       sql_stringa = "%#{stringa_ricerca}%"
       current_organization.things.includes(:group, :barcodes, :images)
-                           .order(:name)
-                           .where("things.name LIKE ? OR things.description LIKE ? OR barcodes.name LIKE ?", sql_stringa, sql_stringa, sql_stringa)
-                           .references(:things, :barcodes)
+                          .order(:name)
+                          .where('things.name LIKE ? OR things.description LIKE ? OR barcodes.name LIKE ?', sql_stringa, sql_stringa, sql_stringa)
+                          .references(:things, :barcodes)
     end
   end
 
-  def get_all_groups_and_locations
+  def set_all_groups_and_locations
     @groups    = current_organization.groups.order(:name)
     @locations = current_organization.locations.order(:name)
   end
 
-  def get_thing_and_check_permission
+  def set_thing_and_check_permission
     @thing = current_organization.things.find(params[:id])
     authorize @thing
   end
@@ -162,7 +162,4 @@ class ThingsController < ApplicationController
   def thing_params
     params[:thing].permit(:name, :description, :group_id, :minimum)
   end 
-
 end
-
-

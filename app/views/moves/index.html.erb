@@ -91,23 +91,25 @@
 <% end %>
 
 <% if @deposits.size > 1 %>
-  <%= dm_card title: "Disposizione giacenze" do %>
-    <table class="table table-sm">
-      <% @deposits.each do |dep| %>
+  <div style="align: right; max-width: '600px'">
+    <%= dm_card title: "Disposizione giacenze" do %>
+      <table class="table table-sm">
+        <% @deposits.each do |dep| %>
+          <tr>
+            <th class="number"><%= dep.actual %></th>
+            <td>in <%= dep.location %></td>
+            <td><%= link_to dmicon('search') + " mostra movimenti", deposit_moves_path(dep, y: @display_year), title: 'visualizza, modifica ed elimina carichi e scarichi.' %></td>
+          </tr> 
+        <% end %>
         <tr>
-          <th class="number"><%= dep.actual %></th>
-          <td>in <%= dep.location %></td>
-          <td><%= link_to dmicon('search') + " mostra movimenti", deposit_moves_path(dep, y: @display_year), title: 'visualizza, modifica ed elimina carichi e scarichi.' %></td>
-        </tr> 
-      <% end %>
-      <tr>
-        <th class="number"><%= @thing.total %></th>
-        <td><strong>nell'intera struttura</strong></td>
-        <td><%= link_to dmicon('search') + " mostra movimenti", thing_moves_path(@thing) %></td>
-      </tr>
-    </table> 
-    <%= link_to "Sposta giacenze tra ubicazioni", new_thing_shift_path(@thing), class: :button %>
-  <% end %>
+          <th class="number"><%= @thing.total %></th>
+          <td><strong>nell'intera struttura</strong></td>
+          <td><%= link_to dmicon('search') + " mostra movimenti", thing_moves_path(@thing) %></td>
+        </tr>
+      </table> 
+      <%= link_to "Sposta giacenze tra ubicazioni", new_thing_shift_path(@thing), class: :button %>
+    <% end %>
+  </div>
 <% end %>
 
 <% if current_organization.pricing %>  

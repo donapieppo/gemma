@@ -12,11 +12,4 @@ class DsausersController < ApplicationController
     logger.info("DsaSearch for #{str}")
     @dsa_result = User.search(str)
   end
-  
-  #def last_recipient
-  #  last_operation = current_organization.operations.where("operations.recipient_id is not null").order('date desc').first
-  #  @last_recipient = last_operation ? last_operation.recipient.upn : ''
-  #  render :json => { head: :ok, upn: @last_recipient }
-  #end
 end
-  

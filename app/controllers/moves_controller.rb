@@ -12,14 +12,13 @@ class MovesController < ApplicationController
 
     @operations = @thing.operations.ordered.includes(:user, :recipient, ddt: :supplier)
     if @deposit
-      @operations = @operations.ordered.includes(:user, :recipient, :moves).where('moves.deposit_id = ?', @deposit.id).references(:moves) 
+      @operations = @operations.ordered.includes(:user, :recipient, :moves)
+                               .where('moves.deposit_id = ?', @deposit.id).references(:moves) 
     end
 
-    if @operations.size < 1
-      redirect_to thing_path(@thing), alert: "Non sono ancora stati registrati movimenti per il materiale selezionato."
-      return
+    if @operations.empty?
+      redirect_to thing_path(@thing), alert: 'Non sono ancora stati registrati movimenti per il materiale selezionato.'
     else
-
       @deposits = @thing.deposits
 
       @first_year = @operations.first.date.year

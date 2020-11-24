@@ -46,8 +46,10 @@ class Operation < ApplicationRecord
   def is_shift?    ; self.is_a?(Shift)    end
 
   # in questo modo @_numbers diventa una cache (se è settato con numbers=)
+  # undefined method `deposit_id' for {}:Hash
+
   def numbers
-    @_numbers ||= self.moves.each_with_object({}) do |res, move| 
+    @_numbers ||= self.moves.each_with_object({}) do |move, res| 
       res[move.deposit_id] = move.number
     end
   end
