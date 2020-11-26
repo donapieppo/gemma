@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_09_073445) do
+ActiveRecord::Schema.define(version: 0) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name", null: false
@@ -183,6 +183,7 @@ ActiveRecord::Schema.define(version: 2020_10_09_073445) do
     t.text "price_operations"
     t.integer "division_id"
     t.boolean "from_booking"
+    t.index ["date"], name: "date_idx"
     t.index ["ddt_id"], name: "index_operations_on_ddt_id"
     t.index ["organization_id"], name: "organization_id"
     t.index ["recipient_id"], name: "recipientid"
@@ -225,6 +226,7 @@ ActiveRecord::Schema.define(version: 2020_10_09_073445) do
   create_table "permissions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.integer "user_id", unsigned: true
     t.integer "organization_id"
+    t.string "network", limit: 20
     t.integer "authlevel"
     t.index ["organization_id"], name: "fk_organization_permission"
     t.index ["user_id"], name: "fk_user_permission"
