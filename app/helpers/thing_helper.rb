@@ -1,7 +1,7 @@
 module ThingHelper
 
   def thing_actions_enabled?
-    policy(current_organization).book? || policy(current_organization).manage?
+    policy(current_organization).book? || policy(current_organization).unload? 
   end
 
   # cliccabile se ci sono oggetti o se si ha diritto di fare qualcosa
