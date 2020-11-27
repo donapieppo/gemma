@@ -156,12 +156,6 @@ ActiveRecord::Schema.define(version: 0) do
     t.index ["operation_id"], name: "index_moves_on_operation_id"
   end
 
-  create_table "networks", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
-    t.string "name"
-    t.integer "organization_id"
-    t.integer "authlevel"
-  end
-
   create_table "notices", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.integer "organization_id"
     t.string "notice"
