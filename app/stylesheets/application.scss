@@ -60,18 +60,6 @@ ul.groups-list, ul.locations-list, ul.ddts-list, ul.deposits, ul.inactive_things
   }
 }
 
-.image-list {
-  @extend .my-5;
-  div.image {
-    @extend .col-sm-6;
-    @extend .col-md-3;
-    @extend .py-2;
-    font-size: 12px;
-  }
-  a {
-  }
-}
-
 .help-main {
   font-size: 14px;
   li {

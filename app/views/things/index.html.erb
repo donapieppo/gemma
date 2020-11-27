@@ -17,28 +17,31 @@
       <%= content_tag :span, number, class: number_class %>
     <% end %>
   <% end %>
-  </ul>
+</div>
 
-  <div class="row image-list">
-    <% @things.each do |thing| %>
-      <% (thing.images.size > 0) or next %>
-      <% disabled_class = thing_actions_enabled? ? "" : "disabled" %>  
-      <% thing.images.each do |image| %>  
-        <% if image.photo.attached?  %>  
-          <div class="image">
-            <%= link_to thing_actions_url(thing), class: disabled_class do %>
-              <%= image_tag image.photo %>
-            <% end %><br/>
-            <%= thing %>  
-          </div>
-        <% end %>
+<div class="row my-5">
+  <% @things.each do |thing| %>
+    <% (thing.images.size > 0) or next %>
+    <% disabled_class = thing_actions_enabled? ? "" : "disabled" %>  
+    <% thing.images.each do |image| %>  
+      <% if image.photo.attached? %>  
+        <div class="col-6 col-md-3">
+          <%= link_to thing_actions_url(thing), class: disabled_class do %>
+            <div class="card h-100 p-3">
+              <%= image_tag image.photo, class: 'card-img-top', alt: thing.to_s, style: '' %>
+              <div class="card-body">
+                <div class="card-title">
+                  <%= thing %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
       <% end %>
     <% end %>
-  </div>
-
-  <% if @group && policy(current_organization).manage? %>
-    <p class="centered_action"> <%= link_to_new 'Nuovo Articolo', new_group_thing_path(@group) %></p>
   <% end %>
+</div>
 
-
-
+<% if @group && policy(current_organization).manage? %>
+  <p class="centered_action"> <%= link_to_new 'Nuovo Articolo', new_group_thing_path(@group) %></p>
+<% end %>
