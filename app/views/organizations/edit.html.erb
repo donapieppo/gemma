@@ -8,6 +8,10 @@
       <dt><%= Authorization.level_description(authlevel).upcase %></dt>
       <dd>
       <%= permissions.map{|p| p.user.to_s}.join(', ') %>
+      </dd>
+    <% end %>
+    <% if current_user.is_cesia? %>  
+      <%= link_to 'Modifica', dm_unibo_common.organization_permissions_path(current_organization), class: 'btn btn-primary' %>  
     <% end %>
   </ul>
 <% end %>
