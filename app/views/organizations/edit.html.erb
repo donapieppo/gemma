@@ -3,7 +3,7 @@
 <%= render partial: 'form' %>
 
 <%= dm_card title: "Utenti" do %>
-  <ul>
+  <dl>
     <% @permissions_hash.each do |authlevel, permissions| %>
       <dt><%= Authorization.level_description(authlevel).upcase %></dt>
       <dd>
@@ -13,7 +13,7 @@
     <% if current_user.is_cesia? %>  
       <%= link_to 'Modifica', dm_unibo_common.organization_permissions_path(current_organization), class: 'btn btn-primary' %>  
     <% end %>
-  </ul>
+  </dl>
 <% end %>
 
 <div class="row">
@@ -62,21 +62,23 @@
 </div>
 
 <p class="alert alert-info">
-<strong><%= @operations_number %></strong> operazioni nell'anno corrente. <br/>
-<strong><%= @arch_number %></strong> operazioni in archivio. 
+<strong><%= @operations_number %></strong> operazioni nell'anno corrente (<strong><%= @arch_number %></strong> in archivio).
 </p>
 
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-md-8">
     <%= dm_card title: "Ultimi movimenti" do %> 
       <ul>
         <% @operations.each do |o| %>  
-          <li title="<%= o.thing %>"><%= l o.date %> - <%= o.user %> <%= o.recipient_id and " per " + o.recipient.to_s %> (<%= o.type %> <%= o.price %>)</li>
+          <li title="<%= o.thing %>">
+            <%= l o.date %> - <%= o.user %> <%= " per #{o.recipient}" if o.recipient_id %> 
+            (<%= t o.type %>) <%= o.price if current_organization.pricing %>
+          </li>
         <% end %>
       </ul>
     <% end %>
   </div>
-  <div class="col-md-6">
+  <div class="col-md-4">
     <%= dm_card title: "Ultimi ddt/fatture" do  %>  
       <ul>
         <% for ddt in @ddts do %>  
