@@ -1,0 +1,9 @@
+#!/bin/bash
+
+rake gemma:checks:moves_sum_and_operation_number_are_equal  # Moves numbers sum equal operation number
+rake gemma:checks:only_one_stock                            # Only one stock for things
+rake gemma:checks:positive_totals_in_history                # Check negative total in moves history
+rake gemma:checks:shifts_with_2_moves                       # Shifts with 2 moves each
+rake gemma:checks:total_is_sum_of_operations                # Totals is sum of operations
+# rake gemma:checks:prices
+
