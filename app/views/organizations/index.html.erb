@@ -3,8 +3,6 @@
 <div class="info">
   Con il termine struttura indichiamo una unità di luogo (di solito un Dipartimento)
   dove si trova il materiale di consumo.<br/>
-  Non è possibile cancellare le strutture anche se si è amministratori Cesia.
-  Nel caso contattare gli amministratori del database.<br/>
   Per ogni struttura riportiamo a destra i movimenti dell'ultimo anno e tra parentesi 
   quelli totali e quelli archiviati.
 </div>
@@ -12,15 +10,19 @@
 <table class="table table-sm">
   <% @organizations.each do |organization| %>
     <%= content_tag :tr, class: (@this_year_counts[organization.id] ? 'table-info' : '') do %>
-      <th><%= organization.name.upcase %></th>
+      <th><%= organization.code.upcase %></th>
+      <th><%= organization.id %></th>
       <td><%= link_to organization.description.upcase, current_organization_edit_path(__org__: organization.code) %></td>
       <td><%= dmicon('shopping-cart') if organization.booking %></td>
       <td><%= dmicon('euro-sign')     if organization.pricing %></td>
       <td><%= dmicon('envelope')      if organization.sendmail %></td>
       <td class="number" nowrap>
-        <%= @this_year_counts[organization.id] || 0 %>  
+        <%= @last_year_counts[organization.id] || 0 %>  
         (<%= @counts[organization.id] || 0 %> - <%= @arch_counts[organization.id] || 0 %>)
       </td>
+      <th class="number">
+        <%= @this_year_counts[organization.id] || 0 %>
+      </th>
     <% end %>
   <% end %>
 </table>
