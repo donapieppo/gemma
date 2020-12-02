@@ -134,3 +134,8 @@ it:
   date:
     formats:
       in_list: ! '%d/%m/%y'
+
+  Shift: Spostamento
+  Unload: Scarico
+  Load: Carico
+  Takeover: Presa
