@@ -8,7 +8,7 @@
 <% if @operations.size > 0 %>
   <% tot = 0 %>
 
-  <p class="m-3 font-weight-bold"><%= title %> <span class="text-muted small">(Per operare su un singolo movimento cliccare sulla riga).</span> </p>
+  <p class="m-3 font-weight-bold"><%= title %> <span class="text-muted small">(Per operare su un singolo movimento cliccare sulla riga).</span></p>
 
   <% if @first_year != @last_year %>  
     <nav aria-label="Seleziona l'anno">
@@ -17,7 +17,8 @@
           <% where_to = @deposit ? deposit_moves_path(@deposit, y: y) : thing_moves_path(@thing, y: y) %>  
           <li class="page-item <%= class_active_val(@display_year, y) %>">
             <%= link_to y, where_to, class: 'page-link' %>  
-          <% end %>
+          </li>
+        <% end %>
       </ul>
     </nav>
   <% end %>
@@ -42,7 +43,7 @@
                 <!-- caret --> <span class="mx-2"><i class="fas fa-caret-right"></i></span>
                 <%= l o.date %> 
                 <span class="ml-2 font-weight-bold"><%= organization_description(o) %></span>
-                <span class="move-remaining float-right px-2 <%= "move-negative" if tot < 0 %>">
+                <span class="move-remaining float-right px-2 <%= 'move-negative' if tot < 0 %>">
                   <%= tot %>
                 </span>
                 <% if current_organization.pricing and o.price %>
@@ -56,13 +57,13 @@
                     rif.cia: <%= o.ycia %>/<%= o.ncia %> 
                 <% end %>
                 <% unless o.note.blank? %>
-                  <%= o.note %> <br/>
+                  <%= o.note %> 
                 <% end %>
                 <% if current_organization.pricing and o.price and o.price > 0 and o.number < 0 %>
-                  origine prezzo: <%= show_price_origins(o) %>
+                  <br/>origine prezzo: <%= show_price_origins(o) %>
               <% end %>
                 </span>
-                <span class="float-right ">
+                <span class="float-right">
                   <%= move_action_icons(o, number).html_safe %>
                 </span>
               </div>
