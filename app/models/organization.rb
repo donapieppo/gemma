@@ -20,8 +20,6 @@ class Organization < ApplicationRecord
   has_many :arch_things
   has_many :arch_ddts
 
-  default_scope { order('organizations.name') }
-
   validates :name, uniqueness: { message: 'Struttura già presente.', case_sensitive: false }
 
   validate :check_mail_parameters

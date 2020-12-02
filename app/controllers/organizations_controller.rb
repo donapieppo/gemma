@@ -4,9 +4,10 @@ class OrganizationsController < ApplicationController
   # only cesia from _menu
   def index
     authorize Organization
-    @organizations    = Organization.order(:name)
+    @organizations    = Organization.order(:code)
     @counts           = Operation.group(:organization_id).count
     @this_year_counts = Operation.where('YEAR(date) = YEAR(NOW())').group(:organization_id).count
+    @last_year_counts = Operation.where('YEAR(date) = YEAR(NOW()) - 1 ').group(:organization_id).count
     @arch_counts      = ArchOperation.group(:organization_id).count
   end
 
@@ -65,7 +66,7 @@ class OrganizationsController < ApplicationController
 
   def organization_params
     p =  [:pricing, :sendmail, :adminmail]
-    p += [:name, :description, :booking] if current_user.is_cesia?
+    p += [:name, :description, :code, :booking] if current_user.is_cesia?
     params[:organization].permit(p)
   end
 end
