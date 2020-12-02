@@ -11,11 +11,15 @@
 </div>
 
 <%= dm_card title: "Numero di movimenti per struttura #{@year}" do %>
-  <ul>
+  <table class="table-sm">
     <% @count_organization_moves.each do |move| %>  
-      <li><%= move.number %>  - <%= link_to move.organization, current_organization_edit_path(__org__: move.organization.code) %></li>
+      <tr>
+        <th class="number"><%= move.number %></th>
+        <td><%= move.organization.code %> (<%= move.organization.id %>)</td>
+        <td><%= link_to move.organization, current_organization_edit_path(__org__: move.organization.code) %></td>
+      </tr>
     <% end %>
-  </ul>
+  </table>
 <% end %>
 
 <%= dm_card title: "Ultimi movimenti per struttura" do %>
