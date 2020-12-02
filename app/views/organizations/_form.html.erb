@@ -1,6 +1,7 @@
 <%= dm_form_for current_organization, url: current_organization_update_path, title: 'Configurazioni' do |o| %>
   <%= o.dm_error_notification %>  
   <% if current_user.is_cesia? %>  
+    <%= o.input :code %>
     <%= o.input :name %>
     <%= o.input :description, as: :text %>
     <%= o.input :booking %>
