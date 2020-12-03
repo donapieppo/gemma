@@ -47,5 +47,6 @@ Gemfile.lock
 .rspec
 
 tags
-doc/
 dm_unibo_common
+doc/recreate
+doc/changes.sql
