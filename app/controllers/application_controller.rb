@@ -10,7 +10,8 @@ class ApplicationController < DmUniboCommon::ApplicationController
       if session[:booking] != current_organization.id && current_organization.booking && (! policy(current_organization).unload?)
         redirect_to current_organization_booking_accept_path
       end
-    else
+    elsif current_user
+      logger.info("No current_organization. Redirect #{current_user&.upn} to NO ACCESS")
       redirect_to no_access_path
     end
   end
