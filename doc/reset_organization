@@ -1,0 +1,44 @@
+#!/bin/bash
+
+ORG=$1
+
+if [[ -z $ORG ]] || [[ $ORG != +([0-9]) ]]
+then
+  echo "DAMMI UN NUMERO"
+  exit 1
+fi
+
+mysql gemma -e "select * from organizations where id=$ORG"
+mysql gemma -e "select * from moves where operation_id IN (select id from operations where organization_id = $ORG)"
+mysql gemma -e "select * from orders where organization_id = $ORG"
+mysql gemma -e "select * from operations where organization_id = $ORG"
+mysql gemma -e "select * from barcodes where organization_id = $ORG"
+mysql gemma -e "select * from ddts where organization_id = $ORG"
+mysql gemma -e "select * from things where organization_id = $ORG"
+mysql gemma -e "select * from groups where organization_id = $ORG"
+
+echo "PROSEGUO? Crtl+C"
+
+read pippo
+
+echo BARCODES
+mysql gemma -e "delete from barcodes where organization_id = $ORG"
+echo MOVES
+mysql gemma -e "delete from moves where deposit_id IN (select id from deposits where organization_id = $ORG)"
+echo DEPOSITS
+mysql gemma -e "delete from deposits where organization_id = $ORG"
+echo ORDERS
+mysql gemma -e "delete from orders where organization_id = $ORG"
+echo OPERATIONS
+mysql gemma -e "delete from operations where organization_id = $ORG"
+echo DDTS
+mysql gemma -e "delete from ddts where organization_id = $ORG"
+echo IMAGES
+mysql gemma -e "delete from images where thing_id IN (select id from things where organization_id = $ORG)"
+echo THINGS
+mysql gemma -e "delete from things where organization_id = $ORG"
+echo GROUPS
+mysql gemma -e "delete from groups where organization_id = $ORG"
+
+
+

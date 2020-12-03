@@ -1,0 +1,48 @@
+#!/bin/bash
+
+ORG=$1
+
+if [[ -z $ORG ]] || [[ $ORG != +([0-9]) ]]
+then
+  echo "DAMMI UN NUMERO"
+  exit 1
+fi
+
+doc/reset_organization $ORG
+
+echo "PROSEGUO CON TUTT IL RESTO???? Crtl+C"
+
+read pippo
+
+echo BARCODES
+mysql gemma -e "delete from barcodes where organization_id = $ORG"
+echo MOVES
+mysql gemma -e "delete from moves where deposit_id IN (select id from deposits where organization_id = $ORG)"
+echo DEPOSITS
+mysql gemma -e "delete from deposits where organization_id = $ORG"
+echo LOCATIONS
+mysql gemma -e "delete from locations where organization_id = $ORG"
+echo DDTS
+mysql gemma -e "delete from ddts where organization_id = $ORG"
+echo ORDERS
+mysql gemma -e "delete from orders where organization_id = $ORG"
+echo OPERATIONS
+mysql gemma -e "delete from operations where organization_id = $ORG"
+echo THINGS
+mysql gemma -e "delete from things where organization_id = $ORG"
+echo GROUPS
+mysql gemma -e "delete from groups where organization_id = $ORG"
+echo ADMINS
+mysql gemma -e "delete from permissions where organization_id = $ORG"
+echo ORGANIZATION ITSSELF
+mysql gemma -e "delete from organizations where id = $ORG"
+
+#
+#for a in "Cartoleria" "Thermafil" "Spugne" "Pile"
+#do
+#		mysql gemma -e "INSERT INTO groups VALUES (0, '$a', $ORG)"
+#done
+#
+#mysql gemma -e "INSERT INTO locations VALUES (0, $ORG, 'generale')"
+
+
