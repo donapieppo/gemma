@@ -6,5 +6,9 @@ class HelpsController < ApplicationController
   def contacts
     authorize :help
   end
+
+  def old_url
+    authorize :help
+  end
 end
 

@@ -6,5 +6,9 @@ class HelpPolicy < ApplicationPolicy
   def contacts?
     true
   end
+
+  def old_url?
+    true
+  end
 end
 
