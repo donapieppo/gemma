@@ -1,13 +1,19 @@
-<div class="alert alert-danger">
-  <h1>Il servizio non è accessibile con le sue credenziali</h1>
+<% if current_user && current_user.has_some_authorization? %>  
+  <div class="alert alert-danger">
+    Non è possibile accedere alla pagina richiesta. Si prega di controllare l'indirizzo.<br/>
+    Per proseguire cliccare <%= link_to 'quì', root_path %>.
+  </div>
+<% else %>
+  <div class="alert alert-danger">
+    <h1>Il servizio non è accessibile con le sue credenziali</h1>
 
-  <p>
-  L'autenticazione è andata a buon fine <strong>(le credenziali istituzionali inserite sono corrette)</strong><br/> ma non si dispone di sufficienti diritti per accedere all'applicazione.<br/>
-  </p>
-  <p>
-  Contattare
-  <%= Rails.configuration.dm_unibo_common[:support_mail] %>
-  o telefonare al numero 051-2094421 per richiedere l'abilitazione.
-  </p>
-</div>
-
+    <p>
+    L'autenticazione è andata a buon fine <strong>(le credenziali istituzionali inserite sono corrette)</strong><br/> ma non si dispone di sufficienti diritti per accedere all'applicazione.<br/>
+    </p>
+    <p>
+    Contattare
+    <%= Rails.configuration.dm_unibo_common[:support_mail] %>
+    o telefonare al numero 051-2094421 per richiedere l'abilitazione.
+    </p>
+  </div>
+<% end %>
