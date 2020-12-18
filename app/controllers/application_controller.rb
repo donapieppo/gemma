@@ -11,8 +11,8 @@ class ApplicationController < DmUniboCommon::ApplicationController
         redirect_to current_organization_booking_accept_path
       end
     elsif current_user
-      logger.info("No current_organization. Redirect #{current_user&.upn} to NO ACCESS")
-      redirect_to no_access_path
+      logger.info("No current_organization for #{params[:__org__]}. Redirect #{current_user&.upn} to NO ACCESS")
+      redirect_to no_access_path(__failed_org__: params[:__org__])
     end
   end
 
