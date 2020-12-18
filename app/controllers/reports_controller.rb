@@ -25,30 +25,27 @@ class ReportsController < ApplicationController
     send_data report.render, filename: report.filename, type: report.type
   end
 
-  #
-  # GIACENZE
-  # 
   def form_giacenza
     authorize :report
     @locations = current_organization.locations.order(:name)
     @groups    = current_organization.groups
     # se solo uno non c'e' da scegliere :-)
-    (@locations.size == 1) and @locations = []
+    @locations = [] if @locations.size == 1
   end
 
   def giacenza
     authorize :report
     report = GemmaReport.new(current_organization, params[:format])
 
-    location = (params[:location] and params[:location][:id].to_i > 0) ? Location.find(params[:location][:id]) : nil
-    group    = (params[:group]    and params[:group][:id].to_i > 0) ? Group.find(params[:group][:id]) : nil
+    location = (params[:location] && params[:location][:id].to_i > 0) ? Location.find(params[:location][:id]) : nil
+    group    = (params[:group]    && params[:group][:id].to_i > 0) ? Group.find(params[:group][:id]) : nil
 
     report.title  =  'Giacenza '
     report.title  +=  " in #{location}" if location
     report.title  +=  " categoria: #{group}" if group
 
     report.fields = [:actual, :thing]
-    report.fields << :location unless (current_organization.locations.size <= 1 or location)
+    report.fields << :location unless (current_organization.locations.size <= 1 || location)
 
     loc_query   = location ? " AND deposits.location_id = #{location.id} " : ""
     group_query = group    ? " AND things.group_id = #{group.id} " : ""
@@ -65,9 +62,6 @@ class ReportsController < ApplicationController
     send_data report.render, filename: report.filename, type: report.type
   end
 
-  #
-  # SOTTOSCORTA
-  # 
   def form_sottoscorta
     authorize :report
   end
@@ -88,9 +82,6 @@ class ReportsController < ApplicationController
     send_data report.render, filename: report.filename, type: report.type
   end
 
-  # 
-  # SCARICHI
-  #
   # scarichi di un certo upn 
   def form_scarichi 
     authorize :report
@@ -105,16 +96,16 @@ class ReportsController < ApplicationController
 
     leggi_date
 
-    @user = (params[:user] and params[:user][:id].to_i > 0) ? User.find(params[:user][:id]) : nil
+    @user = (params[:user] && params[:user][:id].to_i > 0) ? User.find(params[:user][:id]) : nil
     user_select = @user ? "AND (recipient_id = '#{@user.id}' OR (recipient_id IS NULL AND user_id = '#{@user.id}')) " : ""
 
-    @thing_id = (params[:thing] and params[:thing][:id].to_i > 0) ? params[:thing][:id].to_i : nil
+    @thing_id = (params[:thing] && params[:thing][:id].to_i > 0) ? params[:thing][:id].to_i : nil
     thing_select = @thing_id ? "AND thing_id = #{@thing_id}" : '' 
 
     @note = params[:note].blank? ? nil : params[:note].gsub(/[^a-zA-Z0-9 ]/, '')
     note_select = @note ? "AND note LIKE '%#{@note}%'" : ''
 
-    @group_id = (params[:group] and params[:group][:id].to_i > 0) ? params[:group][:id].to_i : nil
+    @group_id = (params[:group] && params[:group][:id].to_i > 0) ? params[:group][:id].to_i : nil
     group_select = @group_id ? "AND group_id = #{@group_id}" : '' 
 
     report.title = 'Scarichi'
@@ -156,10 +147,6 @@ class ReportsController < ApplicationController
     send_data report.render, filename: report.filename, type: report.type
   end
 
-  # 
-  # RICEVUTE
-  #
-
   def form_receipts
     authorize :report
     @cache_users = User.recipient_cache(current_organization.id, 40)
@@ -171,7 +158,7 @@ class ReportsController < ApplicationController
 
     leggi_date
 
-    @user = (params[:user] and params[:user][:id].to_i > 0) ? User.find(params[:user][:id]) : nil
+    @user = (params[:user] && params[:user][:id].to_i > 0) ? User.find(params[:user][:id]) : nil
     user_select = @user ? "AND (recipient_id = #{@user.id} OR (recipient_id IS NULL AND user_id = #{@user.id})) " : ""
     user_select_bookings = @user ? "AND user_id = #{@user.id} AND from_booking IS NOT NULL" : ""
 
@@ -205,9 +192,6 @@ class ReportsController < ApplicationController
     send_data report.render, filename: report.filename, type: report.type
   end
 
-  #
-  # STORICO
-  #
   def form_storico
     authorize :report
     @things = current_organization.things.order(:name)
@@ -223,17 +207,17 @@ class ReportsController < ApplicationController
 
     loc_query = ''
     # se ci limitiamo ad un oggetto
-    thing and loc_query += " AND operations.thing_id = #{thing.id} "
+    loc_query += " AND operations.thing_id = #{thing.id} " if thing
     # se ci limitiamo ai ddt
-    params[:only_loads] and loc_query += " AND operations.type = 'Load'"
+    loc_query += " AND operations.type = 'Load'" if params[:only_loads]
 
     report.title = 'Storico '
-    thing  and report.title += "di #{thing}"
+    report.title += "di #{thing}" if thing
     report.title += " periodo dal #{I18n.l @from} al #{I18n.l @to}"
 
     report.separator = :thing
     report.fields    = [:date, :number, :type, :upn] 
-    current_organization.pricing and report.fields = [:date, :number, :type, :upn, :price] 
+    report.fields    = [:date, :number, :type, :upn, :price] if current_organization.pricing
     report.separator_page_break = params[:different_pages]
 
     report.query = "SELECT DATE_FORMAT(operations.date,'%e/%m/%Y') AS date, 
@@ -285,9 +269,6 @@ class ReportsController < ApplicationController
     send_data report.render, filename: report.filename, type: report.type
   end
 
-  #
-  # DDT
-  #
   def form_ddts
     authorize :report
     @ddts = current_organization.ddts.includes(:supplier).order('number desc').where('YEAR(date) = ?', Date.today.year)
