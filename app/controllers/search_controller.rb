@@ -35,6 +35,6 @@ class SearchController < ApplicationController
 
   def search_organizations(stringa_ricerca)
     sql_stringa = "%#{stringa_ricerca}%"
-    @organizations = Organization.where('organizations.name LIKE ? OR organizations.description LIKE ?', sql_stringa, sql_stringa)
+    @organizations = Organization.where('organizations.name LIKE ? OR organizations.description LIKE ? OR organizations.code LIKE ?', sql_stringa, sql_stringa, sql_stringa)
   end
 end
