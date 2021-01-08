@@ -1,14 +1,18 @@
 <%= thing_actions_menu %>
 
-<% form_title = "Modulo di scarico di #{h @thing} " %>
-<% form_title += "(#{show_future_prices(@thing)})" if current_organization.pricing %>
-<% form_title += "- presso #{@thing.deposits.first.location}" unless @thing.deposits.size == 1 %> 
-<% form_title += "- Scarichi multipli Cesia" if params[:batch] %> 
+<% 
+  form_title = "Modulo di scarico di #{h @thing} " 
+  form_title += "(#{show_future_prices(@thing)})" if current_organization.pricing 
+  form_title += "- presso #{@thing.deposits.first.location}" unless @thing.deposits.size == 1 
+  form_title += "- Scarichi multipli Cesia" if params[:batch] 
+  number_hint = "(massimo: #{@thing.max_actual_in_deposits})" 
+  number_hint += ". Numero di oggetti da consegnare ad ogni persona." if params[:batch] 
+%>  
 
 <%= dm_form_for [@thing, @unload], title: form_title do |u| %>
   <%= u.dm_error_notification %>  
   <input type="hidden" name="batch" value="<%= params[:batch] %>" />
-  <%= u.input :number, hint: "(massimo: #{@thing.max_actual_in_deposits})", required: true %>
+  <%= u.input :number, hint: number_hint, required: true %>
 
   <% if @thing.deposits.size > 1 %>  
     <%= u.input :deposit_id, as: :unload_location %>  
