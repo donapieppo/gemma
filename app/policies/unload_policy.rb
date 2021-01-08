@@ -20,5 +20,9 @@ class UnloadPolicy < ApplicationPolicy
   def destroy?
     create?
   end
+
+  def batch_unloads?
+    current_organization_manager?
+  end
 end
 
