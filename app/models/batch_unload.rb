@@ -1,20 +1,20 @@
 class BatchUnload
   attr_reader :errors, :recipients
 
-  def initialize(user, organization, thing, p)
+  def initialize(user, organization, thing, params)
     @user = user
     @organization = organization
     @thing = thing
-    @recipients = p.key?(:recipient_upn) ? p.delete(:recipient_upn).gsub(/\s/, '').split(',').uniq : []
-    @params = p
+    @recipients = params.key?(:recipient_upn) ? params.delete(:recipient_upn).gsub(/\s/, '').split(',').reject { |upn| upn == ''} : []
+    @params = params
     @deposit = @thing.deposits.find(@params[:numbers].keys.first.to_i)
     @errors = []
   end
 
   def validate_recipients
-    @errors << "Troppi pochi indirizzi" if @recipients.size < 2 
-    @errors << "Troppi indirizzi. Limitarsi a 20 indirizzi per volta." if @recipients.size > 20 
-    no_unibo = @recipients.select {|upn| upn !~ /@unibo.it/}
+    @errors << 'Troppi pochi indirizzi' if @recipients.size < 2 
+    @errors << 'Troppi indirizzi. Limitarsi a 20 indirizzi per volta.' if @recipients.size > 20 
+    no_unibo = @recipients.select { |upn| upn !~ /@unibo.it/ }
     @errors << "Gli indirizzi #{no_unibo.join(', ')} non sono mail Unibo." if no_unibo.size > 0
   end
 
