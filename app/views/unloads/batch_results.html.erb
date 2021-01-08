@@ -1,0 +1,21 @@
+<h1>Risultati dell'operazione di scarico</h1>
+
+<% if @batch_unloads.errors.any? %>
+  <div class="alert alert-danger">
+    <% @batch_unloads.errors.each do |e| %>  
+      <% if e.respond_to?(:full_messages) %>  
+        <p><%= e.full_messages %></p>
+      <% else %>
+        <p><%= e %></p>
+      <% end %>
+    <% end %>
+  </div>
+<% else %>
+  Operazione di scarico avvenuta correttamente.
+  <ul>
+    <% @batch_unloads.recipients.each do |r| %>  
+      <li><%= r %></li>
+    <% end %>
+  </ul>
+<% end %>
+

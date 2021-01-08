@@ -28,11 +28,13 @@ class UnloadsController < ApplicationController
   end
 
   def create
-    # solo bidelli o amministratori possono settare data (e nel caso la mettiamo con usta)
-    params[:unload][:date] = Date.today unless policy(current_organization).give? 
-
-    # ricorda che per avere permit la key deve essere string
-    params[:unload][:numbers] = { params[:unload].delete(:deposit_id) => (params[:unload].delete(:number).to_i * -1) }
+    if params[:batch] == 'y' && params[:unload][:recipient_upn]
+      authorize :unload, :batch_unloads?
+      @batch_unloads = BatchUnload.new(current_user, current_organization, @thing, unload_params)
+      @batch_unloads.run
+      render :batch_results
+      return
+    end
 
     @unload = @thing.unloads.new(unload_params)
 
@@ -134,6 +136,12 @@ class UnloadsController < ApplicationController
   end
 
   def unload_params
+    # solo bidelli o amministratori possono settare data (e nel caso la mettiamo con usta)
+    params[:unload][:date] = Date.today unless policy(current_organization).give? 
+
+    # ricorda che per avere permit la key deve essere string
+    params[:unload][:numbers] = { params[:unload].delete(:deposit_id) => (params[:unload].delete(:number).to_i * -1) }
+
     pars = [:number, :date, :ddt_id, :note, :price, numbers: params[:unload][:numbers].try(:keys)]
     pars << :recipient_upn if policy(current_organization).give?
     params[:unload].permit(pars)
