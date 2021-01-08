@@ -11,11 +11,12 @@
     <% end %>
   </div>
 <% else %>
-  Operazione di scarico avvenuta correttamente.
+  Operazione di scarico avvenuta correttamente per i seguenti utenti:
   <ul>
     <% @batch_unloads.recipients.each do |r| %>  
       <li><%= r %></li>
     <% end %>
   </ul>
+  <%= link_to "Mostra i movimenti di \"#{@thing}\"", thing_moves_path(@thing) %>  
 <% end %>
 
