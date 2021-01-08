@@ -8,7 +8,9 @@
 <% if @operations.size > 0 %>
   <% tot = 0 %>
 
-  <p class="m-3 font-weight-bold"><%= title %> <span class="text-muted small">(Per operare su un singolo movimento cliccare sulla riga).</span></p>
+  <p class="m-3 font-weight-bold">
+    <%= title %> <span class="text-muted small">(Per operare su un singolo movimento cliccare sulla riga).</span>
+  </p>
 
   <% if @first_year != @last_year %>  
     <nav aria-label="Seleziona l'anno">
