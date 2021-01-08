@@ -4,7 +4,7 @@
   <% @inactive_things.each do |thing| %>  
     <li>
       <%= link_to thing, edit_thing_path(thing) %>
-      <span><%= link_to_delete thing_path(thing) %></span>
+      <span><%= link_to_delete thing_path(thing, from_inactive: 1) %></span>
     </li>
   <% end %>
 </ul>

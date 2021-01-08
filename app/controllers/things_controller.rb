@@ -109,7 +109,8 @@ class ThingsController < ApplicationController
 
   def destroy
     if @thing.destroy
-      redirect_to groups_path, notice: "L'articolo è stato cancellato come richiesto"
+      redirect_path = params[:from_inactive] ? inactive_things_path : groups_path
+      redirect_to redirect_path, notice: "L'articolo è stato cancellato come richiesto"
     else
       # FIXME:
       error = @thing.errors.messages[:base].first
