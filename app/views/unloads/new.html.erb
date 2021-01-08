@@ -3,9 +3,11 @@
 <% form_title = "Modulo di scarico di #{h @thing} " %>
 <% form_title += "(#{show_future_prices(@thing)})" if current_organization.pricing %>
 <% form_title += "- presso #{@thing.deposits.first.location}" unless @thing.deposits.size == 1 %> 
+<% form_title += "- Scarichi multipli Cesia" if params[:batch] %> 
 
 <%= dm_form_for [@thing, @unload], title: form_title do |u| %>
   <%= u.dm_error_notification %>  
+  <input type="hidden" name="batch" value="<%= params[:batch] %>" />
   <%= u.input :number, hint: "(massimo: #{@thing.max_actual_in_deposits})", required: true %>
 
   <% if @thing.deposits.size > 1 %>  
@@ -19,7 +21,11 @@
   <% if policy(current_organization).give? %>
     <%= u.input :date, as: :date, html5: true %>
 
-    <%= u.input :recipient_upn, input_html: { class: "choosen_dsauser" }, hint: recipient_hint(@unload) %>
+    <% if params[:batch] == 'y' %>  
+      <%= u.input :recipient_upn, label: 'Indirizzi mail dei riceventi', hint: 'Separare gli indirizzi con la virgola. Usare meno di 20 indirizzi per volta.', as: :text %>
+    <% else %>
+      <%= u.input :recipient_upn, input_html: { class: "choosen_dsauser" }, hint: recipient_hint(@unload) %>
+    <% end %> 
 
     <div class='col-sm-9 offset-sm-3'>
       <input type="checkbox" id="unload_sendmail" name="sendmail" <%= current_organization.sendmail == 'y' ? 'checked="checked"' : '' %> />
@@ -33,6 +39,10 @@
   <% end %>
 
   <%= u.submit %>
+  <% if current_organization.code == 'cesia' %>  
+    <br/><%= link_to 'Scarichi Multipli Cesia', new_thing_unload_path(@thing, batch: 'y'), class: "float-right" %>  
+  <% end %>
+
   <%= thing_image(@thing) %>  
 <% end %>
 
