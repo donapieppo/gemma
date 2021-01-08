@@ -31,6 +31,7 @@ class UnloadsController < ApplicationController
     if params[:batch] == 'y' && params[:unload][:recipient_upn]
       authorize :unload, :batch_unloads?
       @batch_unloads = BatchUnload.new(current_user, current_organization, @thing, unload_params)
+      logger.info(@batch_unloads.inspect)
       @batch_unloads.run
       render :batch_results
       return
