@@ -42,7 +42,8 @@ class BatchUnload
         u.validate
         u.save
         if u.errors.any?
-          @errors << u.errors
+          Rails.logger.info("BatchUnload: error on #{upn} #{u.errors.inspect}")
+          @errors << "Errore sull'indirizzo #{upn}"
         else
           @ok << upn
         end
