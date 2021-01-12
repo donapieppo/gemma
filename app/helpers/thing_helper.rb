@@ -1,5 +1,4 @@
 module ThingHelper
-
   def thing_actions_enabled?
     policy(current_organization).book? || policy(current_organization).unload? 
   end
@@ -9,7 +8,7 @@ module ThingHelper
     if thing_actions_enabled?
       (policy(current_organization).book? && ! policy(current_organization).unload?) ? new_thing_booking_path(thing) : new_thing_unload_path(thing) 
     else
-      "#"
+      '#'
     end
   end
 
