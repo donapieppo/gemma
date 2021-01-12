@@ -1,5 +1,5 @@
 class BatchUnload
-  attr_reader :errors, :recipients
+  attr_reader :errors, :ok, :recipients
 
   def initialize(user, organization, thing, params)
     @user = user
@@ -9,6 +9,7 @@ class BatchUnload
     @params = params
     @deposit = @thing.deposits.find(@params[:numbers].keys.first.to_i)
     @errors = []
+    @ok = []
   end
 
   def validate_recipients
@@ -42,6 +43,8 @@ class BatchUnload
         u.save
         if u.errors.any?
           @errors << u.errors
+        else
+          @ok << upn
         end
       end
     end
