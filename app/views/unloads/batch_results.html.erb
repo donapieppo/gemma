@@ -13,10 +13,12 @@
 <% else %>
   Operazione di scarico avvenuta correttamente per i seguenti utenti:
   <ul>
-    <% @batch_unloads.recipients.each do |r| %>  
+    <% @batch_unloads.ok.each do |r| %>  
       <li><%= r %></li>
     <% end %>
   </ul>
-  <%= link_to "Mostra i movimenti di \"#{@thing}\"", thing_moves_path(@thing) %>  
+  
+  <%= link_to "Mostra i movimenti di \"#{@thing}\"", thing_moves_path(@thing) %> &nbsp; - &nbsp; 
+  <%= link_to "Esegui un nuovo scarico multiplo sullo stesso oggetto", new_thing_unload_path(@thing, batch: 'y') %>  
 <% end %>
 
