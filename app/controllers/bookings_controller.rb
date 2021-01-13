@@ -29,8 +29,8 @@ class BookingsController < ApplicationController
 
   def new
     if @thing.total == 0 
-      redirect_to group_things_path(@thing.group_id), alert: "Non sono presenti - #{@thing} - da scaricare."
       skip_authorization
+      redirect_to group_things_path(@thing.group_id), alert: "Non sono presenti - #{@thing} - da scaricare."
     else
       @book = @thing.bookings.new(organization_id: current_organization.id)
       authorize @book
