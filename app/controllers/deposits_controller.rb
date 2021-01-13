@@ -11,9 +11,9 @@ class DepositsController < ApplicationController
 
   # "thing"=>{"location_ids"=>["222", "223", ""]}, "commit"=>"Aggiungi", "thing_id"=>"12058"}
   def create
-    if params[:thing] and params[:thing][:location_ids]
+    if params[:thing] && params[:thing][:location_ids]
       params[:thing][:location_ids].each do |loc_id|
-        loc_id.blank? and next
+        next if loc_id.blank? 
         @deposit = current_organization.deposits.new(thing_id:    @thing.id,
                                                      location_id: loc_id,
                                                      actual:      0)
@@ -49,4 +49,3 @@ class DepositsController < ApplicationController
     @thing = current_organization.things.find(params[:thing_id]) 
   end
 end
-
