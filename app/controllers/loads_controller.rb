@@ -4,6 +4,7 @@ class LoadsController < ApplicationController
 
   def new
     if @thing.deposits.empty?
+      skip_authorization
       redirect_to edit_thing_path(@thing), alert: 'Non è stata ancora definita una ubicazione per il materiale.'
     else 
       @load    = @thing.loads.new(date: Date.today, organization_id: current_organization.id)
