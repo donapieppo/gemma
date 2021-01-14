@@ -1,6 +1,6 @@
 class Image < ApplicationRecord
   belongs_to :user
-  belongs_to :thing, dependent: :destroy
+  belongs_to :thing
 
   after_create_commit :photo_format
 
