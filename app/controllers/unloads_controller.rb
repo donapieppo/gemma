@@ -130,8 +130,10 @@ class UnloadsController < ApplicationController
       OperationMailer.notify_unload_to_recipient(@unload.reload).deliver_now
     end
 
+    @thing.reload
+
     # sottoscorta
-    if (@thing.total + @unload.number < @thing.minimum) && current_organization.adminmail =~ /\w/
+    if (@thing.total < @thing.minimum) && current_organization.adminmail =~ /\w/
       OperationMailer.notify_minimum(@unload).deliver_now
     end
   end

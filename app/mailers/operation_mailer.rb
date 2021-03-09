@@ -25,7 +25,6 @@ class OperationMailer < ApplicationMailer
     @unload       = unload
     @thing        = @unload.thing
     @organization = @thing.organization
-    @actual_total = @thing.total + @unload.number
     mail(to: @organization.adminmail,
          subject: "Raggiungimento minimo di #{@thing}")
   end
