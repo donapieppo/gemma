@@ -16,7 +16,7 @@ class GroupsController < ApplicationController
     authorize @group
 
     if @group.save
-      redirect_to group_things_path(@group), notice: 'La nuova categoria è stata creata.'
+      redirect_to current_organization_edit_path, notice: 'La nuova categoria è stata creata.'
     else
       render action: :new
     end
