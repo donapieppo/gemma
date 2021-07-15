@@ -23,6 +23,8 @@ class UnloadPolicy < ApplicationPolicy
 
   def batch_unloads?
     current_organization_manager?
+    # @user && 
+    # OrganizationPolicy.new(@user, @record.organization).unload? && 
+    # @record.organization_id == @record.thing.organization_id
   end
 end
-
