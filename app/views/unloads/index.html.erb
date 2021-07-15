@@ -22,6 +22,9 @@
           <br/>
           <span class="text-muted">
             <%= o.note %>
+            <% if current_user.id != o.user_id %>  
+              (operatore: <%= o.user %>)
+            <% end %>
           </span>
         </div>
       </div>
