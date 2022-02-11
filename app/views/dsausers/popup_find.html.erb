@@ -21,7 +21,7 @@
 
     <% @cache_users.each do |user| %>
       <% if (! user.surname.blank?) && iniziale != (iniziale = user.surname[0,1]) %>
-        <li><span class="badge badge-info"><%= iniziale %></li>
+        <li><span class="badge bg-info"><%= iniziale %></li>
       <% end %>
       <li><%= link_to "#{user.name} #{user.surname}", '#', id: user.upn, class: 'user_selector' %> (<%= user.upn %>)</li>
     <% end %>

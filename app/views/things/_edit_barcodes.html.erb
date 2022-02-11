@@ -8,7 +8,7 @@
       <% @barcodes.each do |b| %>  
         <li class="list-group-item py-1"> 
           <%= b.name %> 
-          <span class="float-right">
+          <span class="float-end">
             <%= link_to_delete barcode_path(b) %>
             <%= link_to dmicon('barcode'), barcode_path(b) %>
           </span>

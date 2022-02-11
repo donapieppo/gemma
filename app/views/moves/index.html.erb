@@ -44,12 +44,12 @@
               <div class="main-information my-1">
                 <!-- caret --> <span class="mx-2"><i class="fas fa-caret-right"></i></span>
                 <%= l o.date %> 
-                <span class="ml-2 font-weight-bold"><%= organization_description(o) %></span>
-                <span class="move-remaining float-right px-2 <%= 'move-negative' if tot < 0 %>">
+                <span class="ms-2 font-weight-bold"><%= organization_description(o) %></span>
+                <span class="move-remaining float-end px-2 <%= 'move-negative' if tot < 0 %>">
                   <%= tot %>
                 </span>
                 <% if current_organization.pricing and o.price %>
-                  <span class="float-right mr-2"><%= o.price_string %></span>
+                  <span class="float-end me-2"><%= o.price_string %></span>
                 <% end %>
               </div>
 
@@ -65,7 +65,7 @@
                   <br/>origine prezzo: <%= show_price_origins(o) %>
               <% end %>
                 </span>
-                <span class="float-right">
+                <span class="float-end">
                   <%= move_action_icons(o, number).html_safe %>
                 </span>
               </div>
@@ -84,7 +84,7 @@
 
 <%= content_tag :div, class: "my-2 row" do %>
   <div class="col-8 offset-2 col-sm-10 offset-sm-1 pr-0">
-    <span class="text-success font-weight-bold float-right">
+    <span class="text-success font-weight-bold float-end">
       Tot. Disponibili: <%= tot %> 
     <% if current_organization.pricing %>
       &nbsp; [ <%= show_future_prices(@thing) %> ]

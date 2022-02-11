@@ -6,11 +6,11 @@
         <!-- categorie -->
         <%= dropdown_menu :category, big_dmicon('list') + ' Cat.' do %>  
           <% current_organization.groups.order(:name).each do |g| %>
-            <%= link_to fwdmicon('angle-right') + g, group_things_path(g) %>
+            <li><%= link_to fwdmicon('angle-right') + g.to_s, group_things_path(g) %></li>
           <% end %>
           <% if current_organization && policy(current_organization).manage? %>  
             <div class="dropdown-divider"></div>
-            <%= link_to fwdmicon('plus') + ' nuova categoria', new_group_path %>
+            <li><%= link_to fwdmicon('plus') + ' nuova categoria', new_group_path %></li>
           <% end %>
         <% end %>
         <!-- categorie -->
@@ -22,22 +22,21 @@
         <!-- amministrazione -->
         <% if current_organization && policy(current_organization).manage? %>  
           <%= dropdown_menu :amm, big_dmicon('cogs') + ' Amm.' do  %>
-            <%= link_to fwdmicon('cubes')     + ' Ubicazioni',  locations_path %>
-            <%= link_to fwdmicon('file-alt')  + ' DDT/Fatture', ddts_path %>
-            <%= link_to fwdmicon('truck')     + ' Fornitori',   suppliers_path %>
-            <%= link_to fwdmicon('search')    + ' Reports e Ricerche', reports_path %>
+            <li><%= link_to fwdmicon('cubes')     + ' Ubicazioni',  locations_path %></li>
+            <li><%= link_to fwdmicon('file-alt')  + ' DDT/Fatture', ddts_path %></li>
+            <li><%= link_to fwdmicon('truck')     + ' Fornitori',   suppliers_path %></li>
+            <li><%= link_to fwdmicon('search')    + ' Reports e Ricerche', reports_path %></li>
             <% if current_organization.booking %>  
-              <%= link_to fwdmicon('handshake') + ' Deleghe', delegations_path %>
+              <li><%= link_to fwdmicon('handshake') + ' Deleghe', delegations_path %></li>
             <% end %>
-            <%= link_to fwdmicon('wrench') + 'Configurazioni', current_organization_edit_path %>
+            <li><%= link_to fwdmicon('wrench') + 'Configurazioni', current_organization_edit_path %></li>
             <!-- CESIA -->
             <% if current_user.is_cesia? %>
               <div class="dropdown-divider"></div>
               <h6 class="dropdown-header">Cesia</h6>
-              <%= link_to fwdmicon('building')   + ' Strutture',      dm_unibo_common.organizations_path %>
-              <%# <%= link_to fwdmicon('plug')       + ' Reti',           dm_unibo_common.networks_path %1> %>
-              <%= link_to fwdmicon('user')       + ' Autorizzazioni', dm_unibo_common.permissions_path %>
-              <%= link_to fwdmicon('chart-line') + ' Statistiche',    infos_path %>
+              <li><%= link_to fwdmicon('building')   + ' Strutture',      dm_unibo_common.organizations_path %></li>
+              <li><%= link_to fwdmicon('user')       + ' Autorizzazioni', dm_unibo_common.permissions_path %></li>
+              <li><%= link_to fwdmicon('chart-line') + ' Statistiche',    infos_path %></li>
             <% end %>
           <% end %>
         <% else %>
@@ -47,9 +46,9 @@
         <!-- organization -->
         <% if policy(current_organization).manage? %>  
           <%= dropdown_menu :institution, big_dmicon('building') + " " + current_organization.name do  %>
-            <%= link_to fwdmicon('home') + current_organization.short_description, current_organization_edit_path %>
+            <li><%= link_to fwdmicon('home') + current_organization.short_description, current_organization_edit_path %></li>
             <% if current_user.multi_organizations? %>
-              <%= link_to fwdmicon('exchange-alt') + ' cambia struttura', choose_organization_path %>
+              <li><%= link_to fwdmicon('exchange-alt') + ' cambia struttura', choose_organization_path %></li>
             <% end %>
           <% end %>
         <% end %>
@@ -60,8 +59,8 @@
       </ul>
 
       <!-- ricerca -->
-      <%= form_tag current_user.is_cesia? ? admin_search_path : find_things_path, class: "form-inline my-2 my-lg-0 ml-3", role: "search" do %>
-        <input name="search_string" size="6" class="form-control mr-sm-2" type="search" placeholder="cerca" aria-label="Cerca"/>
+      <%= form_tag current_user.is_cesia? ? admin_search_path : find_things_path, class: "form-inline my-2 my-lg-0 ms-3", role: "search" do %>
+        <input name="search_string" size="6" class="form-control me-sm-2" type="search" placeholder="cerca" aria-label="Cerca"/>
       <% end %>
 
       <%= logged_user %>  

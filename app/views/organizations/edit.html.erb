@@ -23,7 +23,7 @@
       <% current_organization.groups.order('groups.name').each do |group| %>  
         <div class="list-group-item py-2">
           <%= link_to group, group_things_path(group) %>
-          <span class="float-right">
+          <span class="float-end">
             <%= link_to_edit [:edit, group] %>
             <% if group.things.empty? %>  
               <%= link_to_delete group_path(group) %>  
@@ -45,7 +45,7 @@
       <% current_organization.locations.order('name').each do |location| %>  
         <div class="list-group-item py-2">
           <%= link_to location, location_things_path(location) %>
-          <span class="float-right">
+          <span class="float-end">
             <% if location.deposits.empty? %>  
               <%= link_to link_to_delete location_path(location) %>
             <% end %>

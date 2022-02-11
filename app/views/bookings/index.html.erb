@@ -37,7 +37,7 @@
 
         <ul class="booking-things">
           <% @things_cache.each do |thing, num| %>  
-            <li><span class="number mr-3"><%= num %></span> <%= link_to thing, thing_bookings_path(thing.id) %></li>
+            <li><span class="number me-3"><%= num %></span> <%= link_to thing, thing_bookings_path(thing.id) %></li>
           <% end %>
         </ul>
       </div>
@@ -62,7 +62,7 @@
     <div class="dm-form-title">Ricevute</div>
     <div class="dm-form-body">
       <%= form_tag controller: 'reports', action: 'receipt' do %>
-        <label class="mr-2">Scarichi dell'utente</label>
+        <label class="me-2">Scarichi dell'utente</label>
         <%= collection_select(:user, :id, @cache_users, "id", "cn_militar", { include_blank: false }) %>
 
         <label class="m-2">in data</label>
@@ -70,7 +70,7 @@
         <%= select_date t, prefix: 'from' %> 
 
         <input type="hidden" name="bookings" value="1" />  
-        <%= submit_tag "Scarica", class: 'button ml-2' %>
+        <%= submit_tag "Scarica", class: 'button ms-2' %>
       <% end %>
     </div>
   </div>

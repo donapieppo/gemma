@@ -5,7 +5,7 @@
   <div class="col-sm-9">
     <% @thing.deposits.each do |dep| %>  
       <% val = @total_from_orders ? @total_from_orders : @numbers[dep.id] %>  
-      <input type="number" class="form-control required numeric integer mt-2 mb-0 mr-1" name="numbers[<%= dep.id %>]" value="<%= val %>" step="1" size="5" />
+      <input type="number" class="form-control required numeric integer mt-2 mb-0 me-1" name="numbers[<%= dep.id %>]" value="<%= val %>" step="1" size="5" />
       <% @total_from_orders = nil if @total_from_orders %>
       in <strong><%= dep.location %></strong> (attualmente sono <%= dep.actual %>) 
     <% end %>
