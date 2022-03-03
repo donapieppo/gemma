@@ -1,0 +1,68 @@
+.moves-list {
+  @extend .list-group;
+
+  .moves-list-item {
+    @extend .list-group-item;
+    @extend .list-group-item-action;
+    @extend .py-1;
+    @extend .px-2;
+    cursor: pointer;
+    display: block;
+  }
+  .move-remaining {
+    @extend .number;
+    @extend .rounded;
+    @extend .bg-warning;
+    @extend .text-muted;
+    font-weight: bold;
+  }
+  .move-negative {
+    color: red !important;
+  }
+  .secondary-information {
+    display: none;
+  }
+  .move-number {
+    text-align: right;
+    font-weight: bold;
+    @extend .text-white;
+    @extend .rounded;
+  }
+  .Unload .move-number {
+    @extend .bg-info;
+  }
+  .Booking .move-number {
+    @extend .bg-info;
+  }
+  .Stock .move-number {
+    @extend .bg-secondary;
+  }
+  .Shift .move-number {
+    @extend .bg-secondary;
+  }
+  .Load .move-number, .Takeover .move-number {
+    @extend .bg-success;
+  }
+}
+
+.bookings-list, .unloads-list {
+  @extend .list-group;
+
+  .bookings-list-item, .unloads-list-item {
+    @extend .list-group-item;
+    display: block
+  }
+  .move-number {
+    text-align: right;
+    font-weight: bold;
+    @extend .text-white;
+    @extend .rounded;
+  }
+  .Booking .move-number {
+    @extend .bg-warning;
+  }
+  .Unload .move-number {
+    @extend .bg-info;
+  }
+}
+

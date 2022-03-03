@@ -1,0 +1,20 @@
+tr.Load, tr.Stock, tr.Takeover, tr.Shift {
+  @extend .table-warning;
+}
+tr.Stock {
+  font-weight: bold;
+}
+tr.Booking { 
+  @extend .table-info;
+}
+td.number, th.number {
+  text-align: right;
+}
+td.load_number, th.load_number {
+  background-color: #eee;  
+  text-align: right;
+}
+td.unload_number, th.unload_number {
+  text-align: right;
+}
+
