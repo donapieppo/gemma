@@ -1,8 +1,8 @@
 <%= dm_menu do %>  
   <%= dm_header %>
   <% if current_user && current_organization %>  
-    <div class="collapse navbar-collapse" id="bs-navbar-collapse">
-      <ul class="navbar-nav mr-auto">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto">
         <!-- categorie -->
         <%= dropdown_menu :category, big_dmicon('list') + ' Cat.' do %>  
           <% current_organization.groups.order(:name).each do |g| %>
