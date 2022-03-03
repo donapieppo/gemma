@@ -16,5 +16,8 @@
     <%= o.submit %>
 <% end %>
 
-<%= render "dsausers/typeahead" if @takeover.new_record? %>  
+<%= javascript_tag do  %>  
+  <%= render partial: "dsausers/awesomplete", formats: :js, locals: { input_id: 'takeover_recipient_upn' } %>  
+<% end %>
+
 

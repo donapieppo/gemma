@@ -5,4 +5,6 @@
   <%= d.submit %>  
 <% end %>
 
-<%= render "dsausers/typeahead" %>  
+<%= javascript_tag do  %>  
+  <%= render partial: "dsausers/awesomplete", formats: :js, locals: { input_id: 'delegation_delegator_upn', input2_id: 'delegation_delegate_upn' } %>  
+<% end %>
