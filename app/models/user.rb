@@ -21,7 +21,7 @@ class User < ApplicationRecord
                                   WHERE organization_id = #{organization_id.to_i} 
                                         AND operations.from_booking IS NOT NULL
                                         AND users.id  = user_id
-                                    AND operations.date > #{RECENTLY}
+                                    AND operations.date > DATE_SUB(NOW(), INTERVAL 2 YEAR)
                                ORDER BY surname"
     else
       User.find_by_sql "SELECT DISTINCT users.id, users.upn, name, surname
