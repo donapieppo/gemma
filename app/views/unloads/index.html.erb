@@ -11,13 +11,13 @@
         </div>
 
         <div class="col my-1">
-          <span class="mr-2">
+          <span class="me-2">
             <%= l o.date %>
           </span>
           <span class="font-weight-bold"><%= o.thing %></span>
           <% if current_organization.pricing %>
             <% tot = tot + o.price %>  
-            <span class="number font-weight-bold mx-2 float-right"><%= o.price_string %></span>
+            <span class="number font-weight-bold mx-2 float-end"><%= o.price_string %></span>
           <% end %>
           <br/>
           <span class="text-muted">
@@ -33,7 +33,7 @@
 </div>
 
 <% if current_organization.pricing && tot > 0 %>
-  <div class="btn btn-outline-success float-right" style="font-size: 100%; font-weight: bold">
+  <div class="btn btn-outline-success float-end" style="font-size: 100%; font-weight: bold">
     Totale: <%= print_price(tot) %>  
   </div>
 <% end %>

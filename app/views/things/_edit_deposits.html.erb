@@ -9,7 +9,7 @@
         <div class="list-group-item">
           <%= dep.location %>
           <br/><small><%= sprintf("%5d", dep.actual) %> oggetti presenti.</small>
-          <span class="float-right">
+          <span class="float-end">
             <% if dep.actual == 0 %>  
               <%= link_to_delete deposit_path(dep) %>
             <% else %>
