@@ -23,18 +23,23 @@
       <% if (! user.surname.blank?) && iniziale != (iniziale = user.surname[0,1]) %>
         <li><span class="badge bg-info"><%= iniziale %></li>
       <% end %>
-      <li><%= link_to "#{user.name} #{user.surname}", '#', id: user.upn, class: 'user_selector' %> (<%= user.upn %>)</li>
+      <li>
+        <%= link_to "#{user.name} #{user.surname}", '#', id: user.upn, 
+                                                         class: 'user_selector', 
+                                                         data: { controller: 'dsa', action: 'click->dsa#select_user', :'dsa-userupn-value' => user.upn } %> 
+        (<%= user.upn %>)
+      </li>
     <% end %>
   </ul>
 <% end %>
 
-<%= javascript_tag do %>  
-  $(document).ready(function() {
-    $('.modal-content .user_selector').click(function(e) {
-      e.preventDefault();
-      console.log(this.id);
-      $('.choosen_dsauser').val(this.id);
-      $("#main-modal").modal('hide');
-    });
-  });
-<% end %>
+<%# <%= javascript_tag do %1> %>  
+<%#   $(document).ready(function() { %>
+<%#     $('.modal-content .user_selector').click(function(e) { %>
+<%#       e.preventDefault(); %>
+<%#       console.log(this.id); %>
+<%#       $('.choosen_dsauser').val(this.id); %>
+<%#       $("#main-modal").modal('hide'); %>
+<%#     }); %>
+<%#   }); %>
+<%# <% end %1> %>
