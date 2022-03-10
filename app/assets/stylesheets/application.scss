@@ -15,10 +15,10 @@ body {
   i { font-size: 28px; }
   li {
     @extend .nav-item;
-    a { @extend .nav-link; }
+    a, button { @extend .nav-link; }
   }
   li.active {
-    a { @extend .active; }
+    a, button { @extend .active; }
   }
 }
 @media (max-width: 450px) {
