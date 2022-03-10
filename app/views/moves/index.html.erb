@@ -1,4 +1,4 @@
-<%= thing_actions_menu %>
+<%= render Thing::ActionsComponent.new(current_user, @thing) %>
 
 <% title = "Lista movimenti di #{@thing}" %>
 <% title += " presso #{@deposit.location}" if @deposit %>
@@ -41,7 +41,7 @@
             </div>
 
             <div class="col">
-              <div class="main-information my-1">
+              <div class="main-information my-1" onClick="show_secondary(event, this)">
                 <!-- caret --> <span class="mx-2"><i class="fas fa-caret-right"></i></span>
                 <%= l o.date %> 
                 <span class="ms-2 font-weight-bold"><%= organization_description(o) %></span>
@@ -120,14 +120,19 @@
 <% end %>
 
 <%= javascript_tag do %>  
-  $('document').ready(function() {
-  $(".secondary-information").hide();
-  $(".moves-list-item").click(function() { 
-  $(this).find(".secondary-information").toggle();
-  d = $(this).find(".fa-caret-down").removeClass("fa-caret-down");
-  r = $(this).find(".fa-caret-right").removeClass("fa-caret-right");
-  d.addClass("fa-caret-right");
-  r.addClass("fa-caret-down");
-  });
-  });
+  const show_secondary = (event, element) => {
+    element.nextElementSibling.style.display = 'block'
+  }
 <% end %>
+<%# <%= javascript_tag do %1> %>  
+<%#   $('document').ready(function() { %>
+<%#   $(".secondary-information").hide(); %>
+<%#   $(".moves-list-item").click(function() { %> 
+<%#   $(this).find(".secondary-information").toggle(); %>
+<%#   d = $(this).find(".fa-caret-down").removeClass("fa-caret-down"); %>
+<%#   r = $(this).find(".fa-caret-right").removeClass("fa-caret-right"); %>
+<%#   d.addClass("fa-caret-right"); %>
+<%#   r.addClass("fa-caret-down"); %>
+<%#   }); %>
+<%#   }); %>
+<%# <% end %1> %>

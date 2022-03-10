@@ -1,4 +1,4 @@
-<%= thing_actions_menu %>
+<%= render Thing::ActionsComponent.new(current_user, @thing) %>
 
 <% 
   form_title = "Modulo di scarico di #{h @thing} " 
@@ -26,30 +26,40 @@
     <%= u.input :date, as: :date, html5: true %>
 
     <% if params[:batch] == 'y' %>  
-      <%= u.input :recipient_upn, label: 'Indirizzi mail dei riceventi', hint: 'Separare gli indirizzi con la virgola. Usare meno di 20 indirizzi per volta.', as: :text %>
+      <%= u.input :recipient_upn, label: 'Indirizzi mail dei riceventi', 
+        hint: 'Separare gli indirizzi con la virgola. Usare meno di 20 indirizzi per volta.', as: :text %>
     <% else %>
+      <div class="col-sm-9 offset-sm-3 my-2"> 
+        È possibile 
+        <%= link_to dmicon('search') + "cercare l'utente", "#", data: { controller: 'dsa', action: 'click->dsa#searchUser', :'dsa-url-value' => popup_find_user_path } %>
+        <% if @unload.is_a?(Unload) %>  
+          , richiamare l' <%= link_to 'ultimo utente inserito', '#', id: 'last_recipient_link', data: { controller: 'dsa', action: 'click->dsa#setLastUpn', :'dsa-lastupn-value' => @last_recipient_upn } %> 
+        <% end %> 
+        o scrivere l'indirizzo email.
+      </div>
       <%= u.input :recipient_upn, input_html: { class: "choosen_dsauser" }, hint: recipient_hint(@unload) %>
-    <% end %> 
+    <% end %>
+  <% end %> 
 
-    <div class='col-sm-9 offset-sm-3'>
-      <input type="checkbox" id="unload_sendmail" name="sendmail" <%= current_organization.sendmail == 'y' ? 'checked="checked"' : '' %> />
-      <%= u.label "Avvisa ora l'utente dell'operazione tramite mail." %>
-      <% if current_organization.sendmail == 'w' %>
-        <%= u.hint "(in base a come è attualmente configurata la struttura, l'utente verrà comunque avvisato dei suoi scarchi ogni settimana)." %>
-      <% elsif current_organization.sendmail == 'm' %>
-        <%= u.hint "(in base a come è attualmente configurata la struttura, l'utente verrà comunque avvisato dei suoi scarchi ogni mese)." %>
-      <% end %>
-    </div>
-  <% end %>
+  <div class='col-sm-9 offset-sm-3'>
+    <input type="checkbox" id="unload_sendmail" name="sendmail" <%= current_organization.sendmail == 'y' ? 'checked="checked"' : '' %> />
+    <%= u.label "Avvisa ora l'utente dell'operazione tramite mail." %>
+    <% if current_organization.sendmail == 'w' %>
+      <%= u.hint "(in base a come è attualmente configurata la struttura, l'utente verrà comunque avvisato dei suoi scarchi ogni settimana)." %>
+    <% elsif current_organization.sendmail == 'm' %>
+      <%= u.hint "(in base a come è attualmente configurata la struttura, l'utente verrà comunque avvisato dei suoi scarchi ogni mese)." %>
+    <% end %>
+  </div>
 
   <%= u.submit %>
   <% if current_organization.code == 'cesia' %>  
-    <br/><%= link_to 'Scarichi Multipli Cesia', new_thing_unload_path(@thing, batch: 'y'), class: "float-right" %>  
+    <br/>
+    <%= link_to 'Scarichi Multipli Cesia', new_thing_unload_path(@thing, batch: 'y'), class: "float-end" %>  
   <% end %>
 
   <%= thing_image(@thing) %>  
 <% end %>
 
-<%= render "dsausers/typeahead" %>  
-<%= render "dsausers/last_recipient" %>  
-
+<%= javascript_tag do  %>  
+  <%= render partial: "dsausers/awesomplete", formats: :js, locals: { input_id: 'unload_recipient_upn' } %>  
+<% end %>
