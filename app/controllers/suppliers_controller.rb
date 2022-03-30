@@ -36,7 +36,7 @@ class SuppliersController < ApplicationController
     if @supplier.save
       redirect_to suppliers_path, notice: 'Il fornitore è stato creato.' 
     else
-      render action: :new
+      render action: :new, status: :unprocessable_entity
     end
   end
 
@@ -48,7 +48,7 @@ class SuppliersController < ApplicationController
     if @supplier.update(supplier_params)
       redirect_to suppliers_path, notice: 'Il fornitore è stato aggiornato.'
     else
-      render action: :edit
+      render action: :edit, status: :unprocessable_entity
     end
   end
 
