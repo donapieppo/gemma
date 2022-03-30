@@ -17,7 +17,7 @@ class LocationsController < ApplicationController
     if @location.save 
       redirect_to current_organization_edit_path, notice: "L'ubicazione è stata creata."
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -28,7 +28,7 @@ class LocationsController < ApplicationController
     if @location.update(location_params) 
       redirect_to locations_path, notice: "L'ubicazione è stata modificata."
     else
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 

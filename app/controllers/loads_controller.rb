@@ -30,7 +30,7 @@ class LoadsController < ApplicationController
       flash[:notice] = "Carico di #{@load.number} <strong>#{view_context.link_to(@thing, thing_moves_path(@thing))}</strong> registrato correttamente e associato al ddt/fattura con RECORD N. #{@load.ddt.number.to_i}.".html_safe
       redirect_to group_things_path(@thing.group_id, from_thing: @thing.id)
     else
-      render action: :new
+      render action: :new, status: :unprocessable_entity
     end
   end
 
@@ -53,7 +53,7 @@ class LoadsController < ApplicationController
     if res
       redirect_to thing_moves_path(@load.thing_id), notice: 'Aggiornamento avvenuto correttamente.'
     else
-      render action: :new
+      render action: :new, status: :unprocessable_entity
     end
   end
 

@@ -28,7 +28,7 @@ class TakeoversController < ApplicationController
       redirect_to group_things_path(@takeover.thing.group_id, from_thing: @takeover.thing.id), notice: 'Presa consegna registrata correttamente.'
     else
       @cache_users = User.all_in_cache(current_organization.id)
-      render action: :new
+      render action: :new, status: :unprocessable_entity
     end
   end
 
@@ -51,7 +51,7 @@ class TakeoversController < ApplicationController
       redirect_to thing_moves_path(@takeover.thing_id), notice: 'Aggiornamento avvenuto correttamente'
     else
       @numbers = @takeover.numbers_hash
-      render action: :edit
+      render action: :edit, status: :unprocessable_entity
     end
   end
 

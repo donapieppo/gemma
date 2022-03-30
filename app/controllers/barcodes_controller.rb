@@ -24,7 +24,7 @@ class BarcodesController < ApplicationController
     if @barcode.save
       redirect_to edit_thing_path(@thing), notice: "Il Codice a Barre è stato associato all'articolo #{@thing}"
     else
-      render action: :new
+      render action: :new, status: :unprocessable_entity
     end
   end
 

@@ -72,7 +72,7 @@ class ThingsController < ApplicationController
     # almeno una locazione e' necessaria... 
     if ! locations_array || locations_array.empty?
       @thing.errors.add(:base, "Si prega di scegliere l'ubicazione dell'articolo.")
-      render action: 'new'
+      render action: 'new', status: :unprocessable_entity
       return
     end
 
@@ -84,7 +84,7 @@ class ThingsController < ApplicationController
         redirect_to group_things_path(@thing.group_id)
       end
     else
-      render action: 'new' 
+      render action: 'new' , status: :unprocessable_entity
     end
   end
 
@@ -103,7 +103,7 @@ class ThingsController < ApplicationController
       @barcodes = @thing.barcodes
       @deposits = @thing.deposits.includes(:location).order('locations.name')
       @image    = Image.new
-      render action: 'edit'
+      render action: 'edit', status: :unprocessable_entity
     end
   end
 

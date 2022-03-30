@@ -27,7 +27,7 @@ class DelegationsController < ApplicationController
       redirect_to delegations_path
     else
       @cache_users = User.all_in_cache(current_organization.id)
-      render action: 'new'
+      render action: 'new', status: :unprocessable_entity
     end
   end
 

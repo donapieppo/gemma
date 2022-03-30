@@ -27,7 +27,7 @@ class StocksController < ApplicationController
     if @stock.save
       redirect_to group_things_path(@stock.thing.group_id), notice: 'La giacenza iniziale è stata registrata correttamente.'
     else
-      render action: :new
+      render action: :new, status: :unprocessable_entity
     end
   end
 
@@ -59,7 +59,7 @@ class StocksController < ApplicationController
       redirect_to thing_moves_path(@stock.thing_id), notice: 'La giacenza iniziale è stata correttamente aggiornata.'
     else
       @numbers = @stock.moves.each_with_object({}) { |move, numbers| numbers[move.deposit_id] = move.number }
-      render action: :new
+      render action: :new, status: :unprocessable_entity
     end
   end
 

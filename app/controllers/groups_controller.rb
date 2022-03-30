@@ -18,7 +18,7 @@ class GroupsController < ApplicationController
     if @group.save
       redirect_to current_organization_edit_path, notice: 'La nuova categoria è stata creata.'
     else
-      render action: :new
+      render action: :new, status: :unprocessable_entity
     end
   end
 
@@ -29,7 +29,7 @@ class GroupsController < ApplicationController
     if @group.update(name: params[:group][:name])
       redirect_to current_organization_edit_path, notice: 'La categoria è stata aggiornata.'
     else 
-      render action: :update
+      render action: :update, status: :unprocessable_entity
     end
   end
 

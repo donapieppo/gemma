@@ -33,7 +33,7 @@ class ShiftsController < ApplicationController
       redirect_to thing_moves_path(@thing.id), notice: "Sono stati spostati #{@shift.number} oggetti."
     else
       @deposits = @thing.deposits
-      render action: :new
+      render action: :new, status: :unprocessable_entity
     end
   end
 
@@ -51,7 +51,7 @@ class ShiftsController < ApplicationController
     if res
       redirect_to thing_moves_path(@shift.thing_id), notice: 'La data è stata aggiornata.'
     else
-      render action: :edit
+      render action: :edit, status: :unprocessable_entity
     end
   end
 

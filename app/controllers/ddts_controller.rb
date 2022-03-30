@@ -98,7 +98,7 @@ class DdtsController < ApplicationController
       end
     else
       @supplier = @ddt.supplier
-      render action: 'new'
+      render action: 'new', status: :unprocessable_entity
     end
   end
 
@@ -114,7 +114,7 @@ class DdtsController < ApplicationController
       redirect_to ddts_path, notice: 'Il documento è stato aggiornato.'
     else
       @supplier = @ddt.supplier
-      render action: 'edit'
+      render action: 'edit', status: :unprocessable_entity
     end
   end
 

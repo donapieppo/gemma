@@ -60,7 +60,7 @@ class BookingsController < ApplicationController
     else
       @book.number = @book.number * -1
       @delegators = current_user.get_delegators(current_organization.id).to_a.push(current_user)
-      render action: :new
+      render action: :new, status: :unprocessable_entity
     end
   end
 
