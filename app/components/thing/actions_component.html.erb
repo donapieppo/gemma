@@ -1,0 +1,25 @@
+<% active_class = "class='active'".html_safe %>
+
+<ul id="thingmenu" role="tablist">
+  <li <%= active_class if (@controller == 'unloads' && @action == 'new') %>>
+    <%= link_to '<i class="fa fa-fw fa-arrow-circle-down"></i> scarica'.html_safe, helpers.new_thing_unload_path(@thing) %> 
+  </li>
+  <li <%= active_class if (['loads', 'stocks'].include?(@controller) && @action == 'new') %>>
+    <%= link_to '<i class="fa fa-fw fa-plus-circle"></i> carica'.html_safe, helpers.new_thing_load_path(@thing) %> 
+  </li>
+  <li <%= active_class if (['takeovers'].include?(@controller) && @action == 'new') %>>
+    <%= link_to '<i class="fa fa-fw fa-reply"></i> resa'.html_safe, helpers.new_thing_takeover_path(@thing), title: "registrazione presa consegna" %> 
+  </li>
+  <li <%= active_class if (@controller == 'moves' && @action == 'index') %>>
+    <%= link_to '<i class="fa fa-fw fa-list"></i> storico'.html_safe, helpers.thing_moves_path(@thing), title: "visualizza, modifica ed elimina carichi e scarichi" %>
+  </li>
+  <li <%= active_class if (@controller == 'things' && @action == 'edit') %>>
+    <%= link_to '<i class="fa fa-fw fa-edit"></i> modifica'.html_safe, helpers.edit_thing_path(@thing), title: "modifica le caratteristiche dell'articolo" %> 
+  </li>
+  <li>
+    <%= button_to '<i class="fa fa-fw fa-trash-alt"></i> elimina'.html_safe, helpers.thing_path(@thing), method: :delete, form: { data: { 'turbo-confirm': 'Sicuro di volere cancelare il materiale?'}}, title: "elimina l'articolo" %> 
+  </li>
+</ul>
+
+
+
