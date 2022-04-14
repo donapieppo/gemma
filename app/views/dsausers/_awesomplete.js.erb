@@ -1,9 +1,0 @@
-const users = <%= raw @cache_users.map{|x| "#{x.to_s} (#{x.upn})"}.to_json %>;
-
-var input = document.getElementById('<%= input_id %>');
-new Awesomplete(input, {list: users, minChars: 3});
-
-<% if defined?(input2_id) %>
-  var input2 = document.getElementById('<%= input2_id %>');
-  new Awesomplete(input2, {list: users, minChars: 3});
-<% end %>
