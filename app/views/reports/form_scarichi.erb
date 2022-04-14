@@ -1,7 +1,7 @@
 <%= report_layout do %>  
   <h2>Scarichi utente</h2>
 
-  <%= form_tag action: :scarichi do %>
+  <%= form_with url: scarichi_reports_path, data: { turbo: false } do %>
 
     <%= render partial: "format" %>
     <%= render partial: "period" %>

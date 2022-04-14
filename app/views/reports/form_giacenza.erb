@@ -1,7 +1,7 @@
 <%= report_layout do %>  
   <h2>Giacenze</h2>
 
-  <%= form_tag action: :giacenza do %>
+  <%= form_with url: giacenza_reports_path, data: { turbo: false } do %>
     <%= render partial: "format" %>
 
     <p>

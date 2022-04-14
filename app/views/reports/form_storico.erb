@@ -1,7 +1,7 @@
 <%= report_layout do %>  
   <h2>Storico movimenti</h2>
 
-  <%= form_tag action: :storico do %>
+  <%= form_with url: storico_reports_path, data: { turbo: false } do %>
 
     <%= render partial: "format" %>
     <%= render partial: "period" %>

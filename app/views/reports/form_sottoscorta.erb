@@ -1,7 +1,7 @@
 <%= report_layout do %>  
   <h2>Articoli sottoscorta</h2>
 
-  <%= form_tag action: :sottoscorta do %>
+  <%= form_with url: sottoscorta_reports_path, data: { turbo: false } do %>
 
     <%= render partial: "format" %>
 

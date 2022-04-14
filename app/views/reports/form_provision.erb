@@ -1,6 +1,6 @@
 <h2>Scarichi utente</h2>
 
-<%= form_tag action: :provision do %>
+<%= form_with url: provision_reports_path, data: { turbo: false } do %>
 
   <%= render partial: "format" %>
   <%= render partial: "period" %>

@@ -1,7 +1,7 @@
 <%= report_layout do %>  
   <h2>Elenco articoli</h2>
 
-  <%= form_tag action: :articoli do %>
+  <%= form_with url: articoli_reports_path, data: { turbo: false } do %>
 
     <%= render partial: "format" %>
 

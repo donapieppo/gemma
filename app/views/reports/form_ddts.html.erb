@@ -1,7 +1,7 @@
 <%= report_layout do %>  
   <h2>Ddt</h2>
 
-  <%= form_tag action: :ddts do %>
+  <%= form_with url: ddts_reports_path, data: { turbo: false } do %>
     <%= render partial: "format" %>
 
     <p>
