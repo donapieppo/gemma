@@ -1,0 +1,24 @@
+<table class="table table-sm table-hover">
+  <thead>
+    <tr>
+      <th>fornitore</th>
+      <th>partita iva</th>
+      <th>azioni</th>
+    </tr>
+  </thead>
+  <tbody id="suppliers">
+    <% suppliers.each do |supplier| %>  
+      <tr>
+        <td>
+          <% if what_for == 'ddt' %>
+            <%= link_to supplier, new_supplier_ddt_path(supplier) %>
+          <% else %>
+            <%= supplier %>
+          <% end %>
+        </td>
+        <td><%= supplier.pi %></td>
+        <td><%= link_to_edit edit_supplier_path(supplier), modal: true %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

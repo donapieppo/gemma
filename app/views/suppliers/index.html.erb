@@ -12,14 +12,14 @@
     <div class="dm-card search">
       <div class="dm-card-title">Ricerca Fornitore</div>
       <div class="dm-card-body">
-        <%= form_tag find_suppliers_path do %>
+        <%= form_with url: find_suppliers_path do %>
           <label for="supplier_string">per ragione sociale:</label><br/>
           <input type="text"   id="supplier_string" name="supplier[string]" size="10" value="" />
           <input type="hidden" name="for" value="<%= @for %>" />
           <%= submit_tag 'Cerca' %>
         <% end %>
 
-        <%= form_tag find_suppliers_path do %>
+        <%= form_with url: find_suppliers_path do %>
           <label for="supplier_pi">per partita iva:</label><br/>
           <input type="text" id="supplier_pi" name="supplier[pi]" size="10" value="" />
           <input type="hidden" name="for" value="<%= @for %>" />
@@ -40,32 +40,13 @@
       </ul>
     </nav>
 
-    <p class="centered"><%= link_to_new 'Registra nuovo fornitore', new_supplier_path, modal: true %></p>
-    <table class="table table-sm table-hover">
-      <thead>
-        <tr>
-          <th>fornitore</th>
-          <th>partita iva</th>
-          <th>azioni</th>
-        </tr>
-      </thead>
-      <tbody id="suppliers">
-        <% @suppliers.each do |supplier| %>  
-          <tr>
-            <td>
-              <% if @for == 'ddt' %>
-                <%= link_to supplier, new_supplier_ddt_path(supplier) %>
-              <% else %>
-                <%= supplier %>
-              <% end %>
-            </td>
-            <td><%= supplier.pi %></td>
-            <td><%= link_to_edit edit_supplier_path(supplier), modal: true %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+    <p class="centered">
+    <%= link_to_new 'Registra nuovo fornitore', new_supplier_path, modal: true %>
+    </p>
 
+    <div id="suppliers">
+      <%= render partial: 'suppliers/list', locals: { suppliers: @suppliers, what_for: @for } %>  
+    </div>
   </div>
 </div>
 

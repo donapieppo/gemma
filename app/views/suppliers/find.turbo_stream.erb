@@ -1,0 +1,3 @@
+<%= turbo_stream.replace "suppliers" do %>  
+  <%= render partial: 'suppliers/list', locals: { suppliers: @suppliers, what_for: @for } %>  
+<% end %>

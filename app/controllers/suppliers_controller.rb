@@ -53,7 +53,7 @@ class SuppliersController < ApplicationController
   end
 
   def find
-    authorize Supplier
+    authorize :supplier
     @for = params[:for]
 
     if params[:supplier] && params[:supplier][:string] && params[:supplier][:string].length >= 2
@@ -68,7 +68,6 @@ class SuppliersController < ApplicationController
     end
     @supppliers = @suppliers.order('suppliers.name').to_a
     flash[:notice] = 'Non ci sono fornitori che soddisfino la ricerca' if @suppliers.empty?
-    render action: :index
   end
 
   private
