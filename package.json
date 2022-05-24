@@ -2,6 +2,7 @@
   "name": "app",
   "private": "true",
   "dependencies": {
+    "awesomplete": "^1.1.5",
     "dm_unibo_common": "donapieppo/dm_unibo_common.git#turbo"
   },
   "scripts": {
