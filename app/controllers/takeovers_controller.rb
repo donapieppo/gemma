@@ -5,7 +5,7 @@ class TakeoversController < ApplicationController
   def new
     @takeover = @thing.takeovers.new(date: Date.today, organization_id: current_organization.id)
     @numbers  = {}
-    @cache_users = User.all_in_cache(current_organization.id)
+    @cache_users_json = User.all_in_cache(current_organization.id).map{|x| "#{x.to_s} (#{x.upn})"}.to_json
     authorize @takeover
   end
 
@@ -27,7 +27,7 @@ class TakeoversController < ApplicationController
     if @takeover.save
       redirect_to group_things_path(@takeover.thing.group_id, from_thing: @takeover.thing.id), notice: 'Presa consegna registrata correttamente.'
     else
-      @cache_users = User.all_in_cache(current_organization.id)
+      @cache_users_json = User.all_in_cache(current_organization.id).map{|x| "#{x.to_s} (#{x.upn})"}.to_json
       render action: :new, status: :unprocessable_entity
     end
   end
