@@ -1,7 +1,7 @@
 class UnloadsController < ApplicationController
   before_action :set_thing, only: [:new, :create]
   before_action :set_unload_and_check_permission, only: [:edit, :update, :destroy, :signing]
-  before_action :set_last_recipient, only: [:new]
+  before_action :set_last_recipient, only: [:new, :create]
 
   # current_user unloads
   def index
@@ -23,7 +23,7 @@ class UnloadsController < ApplicationController
       @unload = @thing.unloads.new(organization_id: current_organization.id)
       @unload.date = Date.today # FIXME: vedi inizialize con date_afternoon
       authorize @unload
-      @cache_users = User.all_in_cache(current_organization.id)
+      @cache_users_json = User.all_in_cache(current_organization.id).map{|x| "#{x.to_s} (#{x.upn})"}.to_json
     end
   end
 
@@ -63,7 +63,7 @@ class UnloadsController < ApplicationController
 
       redirect_to group_things_path(@thing.group_id, from_unload: @unload.id, from_thing: @thing.id)
     else
-      @cache_users = User.all_in_cache(current_organization.id)
+      @cache_users_json = User.all_in_cache(current_organization.id).map{|x| "#{x.to_s} (#{x.upn})"}.to_json
       @unload.number = @unload.number * -1
       render action: :new, status: :unprocessable_entity
     end
