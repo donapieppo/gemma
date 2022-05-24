@@ -46,7 +46,7 @@ class GemmaReport
                        'Takeover' => 'Carico Manuale' }
 
 
-  GEMMA_IMAGE_DIR = "#{Rails.root.to_s}/app/javascript/images"
+  GEMMA_IMAGE_DIR = "#{Rails.root.to_s}/app/assets/images"
 
   # titolo del report
   attr_accessor :title
