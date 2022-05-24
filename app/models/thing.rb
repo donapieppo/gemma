@@ -125,7 +125,7 @@ class Thing < ApplicationRecord
   def check_no_associated_moves
     # FIXME: BUG risultano certe operations senza moves... da riflettere e sistemare
     if self.moves.any? || self.operations.any?
-      errors[:base] << 'Ci sono carichi e scarichi associati a questo articolo che devono prima essere cancellati.'
+      self.errors.add(:base, 'Ci sono carichi e scarichi associati a questo articolo che devono prima essere cancellati.')
       throw :abort
     end
   end
