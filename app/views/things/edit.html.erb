@@ -1,4 +1,4 @@
-<%= thing_actions_menu %>
+<%= render Thing::ActionsComponent.new(current_user, @thing) %>
 
 <div class="row">
   <div class="col-md-6">

@@ -1,7 +1,6 @@
 <% @stock_possible = (! @thing.has_operation?) %>  
 <% @all_ddts = current_organization.ddts.includes(:supplier).order('ddts.number desc') %>
 
-
 <% if @stock_possible %>
   <p class="alert alert-warning">
   <%= dmicon('exclamation-circle', size: 36) %>  <strong>Attenzione!</strong> 
@@ -11,7 +10,7 @@
   </p>
 <% end %>
 
-<%= thing_actions_menu %>
+<%= render Thing::ActionsComponent.new(current_user, @thing) %>
 
 <%= dm_form_for [@thing, @load], title: "Modulo di carico di #{@thing}" do |o| %>
   <%= o.dm_error_notification %>  
@@ -20,7 +19,9 @@
   <%= render 'loads/numbers_form', o: o %>  
 
   <%= o.input :date, as: :date, html5: true %>
-  <%= o.input :price, as: :price, hint: 'Euro e centesimi' if current_organization.pricing %>
+  <% if current_organization.pricing %>  
+    <%= o.input :price, as: :price, hint: 'Euro e centesimi' %>
+  <% end %>
   <%= o.input :ycia,  as: :rif_cia, hint: 'Anno / numero' %>  
   <%= o.input :note %>
 

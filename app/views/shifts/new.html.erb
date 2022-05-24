@@ -5,14 +5,14 @@
   <%= s.input :number, hint: 'Numero di oggetti da spostare' %>
 
   <div class="shift-locations">
-    <div class="shift-from">
+    <div class="shift-from px-2">
       <label class="control-label">da:</label><br/>
       <% @deposits.each do |dep| %> 
         <%= label_tag("shift[from]", "#{dep.location} (#{dep.actual} disponibili)" ) %> 
         <%= radio_button_tag("shift[from]", dep.id, false, { disabled: (dep.actual < 1) }) %> <br/>
       <% end %>
     </div>
-    <div class="shift-to">
+    <div class="shift-to px-2">
       <label class="control-label">a:</label><br/>
       <% @deposits.each do |dep| %>
         <%= radio_button_tag("shift[to]", dep.id, false) %>
