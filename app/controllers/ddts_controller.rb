@@ -56,8 +56,6 @@ class DdtsController < ApplicationController
       @titolo_ricerca = "Risultati ricerca data tra #{inizio} e #{fine}"
       @ddts = @ddts.where('ddts.date >= ? AND ddts.date <= ?', inizio, fine)
     end
-
-    render action: :index
   end
 
   # mostriamo i load relativi al Ddt (servono solo agli amministratori)

@@ -1,0 +1,4 @@
+<%= turbo_stream.replace 'ddts_table' do %>
+   <%= render Ddt::TableComponent.new(@ddts, current_user) %>  
+<% end %>
+

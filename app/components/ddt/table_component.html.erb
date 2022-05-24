@@ -1,0 +1,16 @@
+<table class="table table-sm table-hover" id="ddts_table">
+  <tbody>
+    <% @ddts.each do |ddt| %>
+      <tr>
+        <th><%= ddt.gen %> num. <%= ddt.number %></th>
+        <td>del <%= l ddt.date %> - <%= ddt %> <br/>di <%= ddt.supplier %></td>
+        <td>
+          <%= link_to_show ddt %>
+          <%= link_to_edit edit_ddt_path(ddt) %>  
+          <%= link_to_delete ddt_path(ddt) %>  
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
