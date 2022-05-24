@@ -1,10 +1,4 @@
 module ApplicationHelper
-  # anni di cia che ci interessano (scelta menu rif. cia)
-  def years_cia
-    oggi = Date.today.year.to_i
-    [oggi, oggi - 1, oggi - 2]
-  end
-
   def inizio_anno
     Date.parse("01-01-#{Date.today.year}")
   end
