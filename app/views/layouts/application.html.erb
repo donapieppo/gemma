@@ -11,8 +11,8 @@
     <%= csrf_meta_tag %>
     <%= csp_meta_tag %>
 
-    <%= javascript_include_tag "application" %>
-    <%= stylesheet_link_tag "fa.all.min", "application" %>
+    <%= stylesheet_link_tag "application" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
   </head>
   <body>
     <%= render partial: 'layouts/menu' %>
