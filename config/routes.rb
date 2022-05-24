@@ -21,7 +21,7 @@ Rails.application.routes.draw do
     post '/start_booking',  to: 'organizations#start_booking', as: "current_organization_start_booking"
 
     get 'dsausers/popup_find', to: 'dsausers#popup_find', as: 'popup_find_user'
-    get 'dsausers/find',       to: 'dsausers#find',       as: 'find_user'
+    post 'dsausers/find',       to: 'dsausers#find',       as: 'find_user'
     get 'reports',             to: "reports#index",       as: 'reports'
     get 'reports/ddts/(:id)',  to: "reports#ddt",         as: 'ddt_report'
 
@@ -30,7 +30,7 @@ Rails.application.routes.draw do
     end
 
     %w(articoli giacenza sottoscorta scarichi receipt storico ddts orders provision).each do |action|
-      post "reports/#{action}", controller: 'reports', action: action
+      post "reports/#{action}", controller: 'reports', action: action, as: "#{action}_reports"
     end
     
     # SEARCH
@@ -41,8 +41,8 @@ Rails.application.routes.draw do
     get  'helps/contacts',      to: 'helps#contacts', as: 'contacts'
 
     get  'archs',               to: 'archs#index'
-    post 'archs/list',          to: 'archs#list'
-    post 'archs/list_thing',    to: 'archs#list_thing'
+    post 'archs/list',          to: 'archs#list', as: 'archs_list'
+    post 'archs/list_thing',    to: 'archs#list_thing', as: 'archs_list_thing'
 
     get '/',              to: 'groups#index', as: 'current_organization_root'
 
@@ -79,7 +79,7 @@ Rails.application.routes.draw do
     end 
 
     resources :bookings do
-      post :barcode, on: :collection, action: :index
+      get :barcode, on: :collection, action: :index
       get :confirm, on: :member
     end
     resources :users do
