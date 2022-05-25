@@ -1,28 +1,18 @@
-<%= dm_form_for [@thing, @image], html: { multipart: true }, title: 'Immagini (ogni articolo può essere assciato a una immagine)' do |form| %>
-  <div class="image-list">
-    <% @thing.images.each do |image| %>  
-      <% if image.photo.attached? %>  
+<%= dm_form_for [@thing, @image], html: { multipart: true }, title: 'Immagine' do |form| %>
+  <p class="alert alert-info">ogni articolo può essere associato a una immagine</p>
+  <%= form.file_field :photo %>
+  <%= form.submit "Aggiungi immagine" %>  
+<% end %>
+
+<div class="image-list">
+  <% @thing.images.each do |image| %>  
+    <% if image.photo.attached? %>  
       <div class="image">
         <%= image_tag image.photo.variant(resize_to_limit: [300, 300]) %>
       </div>
-      <p><%= link_to_delete image_path(image) %></p>
+      <div>
+        <%= link_to_delete image_path(image) %>
+      </div>
     <% end %>
-    <% end %>
-  </div>
-  <%= form.file_field :photo %>
-  <input type="submit" class="image_submit" value="Aggiungi immagine"></input>
-  </fieldset>
-<% end %>
-
-<%= javascript_tag do %>  
-  $(document).ready(function() {
-    $("#image_photo").on('change', function() {
-      $(".image_submit").attr('disabled', null);
-    });
-    $(".image_submit").attr('disabled', 'disabled');
-  });
-<% end %>
-
-
-
-
+  <% end %>
+</div>
