@@ -9,7 +9,7 @@
   number_hint += ". Numero di oggetti da consegnare ad ogni persona." if params[:batch] 
 %>  
 
-<%= dm_form_for [@thing, @unload], title: form_title do |u| %>
+<%= dm_form_for [@thing, @unload], title: form_title, html: { data: { controller: 'dsa', dsa_url_value: popup_find_user_path, dsa_lastupn_value: @last_recipient_upn, turbo: false }} do |u| %>
   <%= u.dm_error_notification %>  
   <input type="hidden" name="batch" value="<%= params[:batch] %>" />
   <%= u.input :number, hint: number_hint, required: true %>
@@ -29,15 +29,17 @@
       <%= u.input :recipient_upn, label: 'Indirizzi mail dei riceventi', 
         hint: 'Separare gli indirizzi con la virgola. Usare meno di 20 indirizzi per volta.', as: :text %>
     <% else %>
-      <div class="col-sm-9 offset-sm-3 my-2"> 
+      <%= content_tag :div, data: { controller: "dsa-awesomplete", dsa_awesomplete_users_value: @cache_users_json } do %>
+        <%= u.input :recipient_upn, hint: recipient_hint(@unload) %>
+      <% end %>
+      <div class="col-sm-9 offset-sm-3 mb-4"> 
         È possibile 
-        <%= link_to dmicon('search') + "cercare l'utente", "#", data: { controller: 'dsa', action: 'click->dsa#searchUser', :'dsa-url-value' => popup_find_user_path } %>
+        <%= link_to dmicon('search') + "cercare l'utente", "#", data: { action: 'click->dsa#searchUser' } %>
         <% if @unload.is_a?(Unload) %>  
-          , richiamare l' <%= link_to 'ultimo utente inserito', '#', id: 'last_recipient_link', data: { controller: 'dsa', action: 'click->dsa#setLastUpn', :'dsa-lastupn-value' => @last_recipient_upn } %> 
+          , richiamare l'<%= link_to 'ultimo utente inserito', '#', id: 'last_recipient_link', data: { action: 'click->dsa#setLastUpn' } %> 
         <% end %> 
         o scrivere l'indirizzo email.
       </div>
-      <%= u.input :recipient_upn, input_html: { class: "choosen_dsauser" }, hint: recipient_hint(@unload) %>
     <% end %>
   <% end %> 
 
@@ -58,8 +60,4 @@
   <% end %>
 
   <%= thing_image(@thing) %>  
-<% end %>
-
-<%= javascript_tag do  %>  
-  <%= render partial: "dsausers/awesomplete", formats: :js, locals: { input_id: 'unload_recipient_upn' } %>  
 <% end %>
