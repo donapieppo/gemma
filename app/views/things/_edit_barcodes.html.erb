@@ -22,7 +22,7 @@
   <p>
   <%= link_to_new "Aggiungi codice a barre", new_thing_barcode_path(@thing) %> <br/>
     <% if @barcodes.size == 0 %>
-      <%= link_to "Genera un codice a barre interno a gemma", generate_barcode_thing_path(@thing), method: :post, class: 'btn btn-warning mt-2' %>
+      <%= button_to "Genera un codice a barre interno a gemma", generate_barcode_thing_path(@thing), class: 'btn btn-warning mt-2' %>
     <% end %>
   </p>
 </div>
