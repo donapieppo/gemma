@@ -1,7 +1,0 @@
-$("#upnresults").html("<%= escape_javascript( render(partial: "users") ) %>");
-$('.dsauser').click(function(e) {
-  e.preventDefault();
-  $('.choosen_dsauser').val(this.id);
-  $("#main-modal").modal('hide');
-});
-
