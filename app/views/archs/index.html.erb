@@ -6,7 +6,7 @@
   </p>
 
   <% if @years.size > 0 %>  
-    <%= form_tag action: 'list' do %>
+    <%= form_with url: archs_list_path, data: { turbo: false } do %>
       <%= render partial: "reports/format" %>
       <p>
       <label>Anno:</label>
