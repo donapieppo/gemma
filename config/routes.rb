@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   mount DmUniboCommon::Engine => "/dm_unibo_common"
 
-  get '/logins/logout',  to: 'dm_unibo_common/logins#logout'
+  get '/logins/logout', to: 'dm_unibo_common/logins#logout'
 
   get '/stats/organization/:id', to: "stats#organization", as: "organization_stats"
   get '/choose_organization',    to: "organizations#choose_organization", as: "choose_organization"
@@ -80,7 +80,7 @@ Rails.application.routes.draw do
 
     resources :bookings do
       get :barcode, on: :collection, action: :index
-      get :confirm, on: :member
+      post :confirm, on: :member
     end
     resources :users do
       resources :bookings
