@@ -1,9 +1,10 @@
 module OperationHelper
   def recipient_hint(what)
-    res = what.is_a?(Unload) ? "Riempire SOLO nel caso in cui il materiale venga consegnato ad un <strong>altro utente</strong> (non inserite voi stessi).<br/>" : ""
-    res += "È possibile #{link_to dmicon('search') + "cercare l'utente", popup_find_user_path, remote: true} o scrivere l'indirizzo email "
-    res += "o richiamare l'#{link_to 'ultimo utente inserito.', '#', id: 'last_recipient_link'}" if what.is_a?(Unload)
-    res.html_safe
+    if what.is_a?(Unload) 
+      "Riempire SOLO nel caso in cui il materiale venga consegnato ad un <strong>altro utente</strong> (non inserite voi stessi).".html_safe
+    else
+      ""
+    end
   end
 
   def organization_description(o)
