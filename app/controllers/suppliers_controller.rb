@@ -66,7 +66,7 @@ class SuppliersController < ApplicationController
       redirect_to suppliers_path
       return
     end
-    @supppliers = @suppliers.order('suppliers.name').to_a
+    @suppliers = @suppliers.order('suppliers.name').all
     flash[:notice] = 'Non ci sono fornitori che soddisfino la ricerca' if @suppliers.empty?
   end
 
