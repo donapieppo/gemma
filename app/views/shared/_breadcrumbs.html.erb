@@ -1,6 +1,6 @@
 <% if @group || @thing %>
-  <nav aria-label="breadcrumb" class="small font-weight-bold">
-    <ol class="breadcrumb" style="background-color: #fff; border: 1px solid #ccc; letter-spacing: 1px">
+  <nav aria-label="breadcrumb" class="small">
+    <ol class="breadcrumb" style="background-color: #fff; padding: 6px; letter-spacing: 1px">
       <li class="breadcrumb-item"><%= link_to 'CATEGORIE', current_organization_root_path %></li>
       <% if @thing && @thing.persisted? %>  
         <li class="breadcrumb-item"><%= link_to @thing.group.to_s.upcase, group_things_path(@thing.group) %></li>
