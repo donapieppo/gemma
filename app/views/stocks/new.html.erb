@@ -1,4 +1,4 @@
-<%= thing_actions_menu %>
+<%= render Thing::ActionsComponent.new(current_user, @thing) %>
 
 <%= dm_form_for [@thing, @stock], title: "Giacenza iniziale di #{@thing}" do |o| %>
   <%= o.dm_error_notification %>  
