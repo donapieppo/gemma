@@ -1,4 +1,4 @@
-<table class="table table-sm table-hover">
+<table class="table table-sm table-hover" id="suppliers_list">
   <thead>
     <tr>
       <th>fornitore</th>
@@ -17,7 +17,7 @@
           <% end %>
         </td>
         <td><%= supplier.pi %></td>
-        <td><%= link_to_edit edit_supplier_path(supplier), modal: true %></td>
+        <td><%= link_to_edit edit_supplier_path(supplier) %></td>
       </tr>
     <% end %>
   </tbody>

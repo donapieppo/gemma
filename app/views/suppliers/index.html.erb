@@ -41,12 +41,10 @@
     </nav>
 
     <p class="centered">
-    <%= link_to_new 'Registra nuovo fornitore', new_supplier_path, modal: true %>
+    <%= link_to_new 'Registra nuovo fornitore', new_supplier_path %>
     </p>
 
-    <div id="suppliers">
-      <%= render partial: 'suppliers/list', locals: { suppliers: @suppliers, what_for: @for } %>  
-    </div>
+    <%= render partial: 'suppliers/list', locals: { suppliers: @suppliers, what_for: @for } %>  
   </div>
 </div>
 
