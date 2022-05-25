@@ -19,7 +19,7 @@
               <%= "per #{h book.recipient}" if book.recipient %> 
               <%= "(#{book.note})" unless book.note.blank? %>
             </td>
-            <td nowrap>
+            <td nowrap="nowrap">
               <%= link_to_check confirm_booking_path(book) %> 
               <%= link_to_delete booking_path(book) %> 
               <%= link_to_change_and_confirm edit_booking_path(book) %>
@@ -44,10 +44,10 @@
     </div>
   <% end %>
 
-  <%= form_tag barcode_bookings_path do %>  
+  <%= form_with url: barcode_bookings_path, method: :get do %>
     <label>Ricerca attraverso codice a barre: </label>
     <%= search_field_tag 'barcode' %>  
-    <%= submit_tag "cerca" %> <%= link_to('tutti', bookings_path) %>  
+    <%= submit_tag "cerca" %> - <%= link_to('tutti', bookings_path) %>  
   <% end %>
 
 <% else %>
@@ -61,7 +61,7 @@
   <div class="dm-form">
     <div class="dm-form-title">Ricevute</div>
     <div class="dm-form-body">
-      <%= form_tag controller: 'reports', action: 'receipt' do %>
+      <%= form_with url: receipt_reports_path, data: { turbo: false } do %>
         <label class="me-2">Scarichi dell'utente</label>
         <%= collection_select(:user, :id, @cache_users, "id", "cn_militar", { include_blank: false }) %>
 
