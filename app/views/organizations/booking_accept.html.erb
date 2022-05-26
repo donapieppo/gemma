@@ -10,7 +10,7 @@
   la propria afferenza.
   </p>
 
-  <%= form_tag current_organization_start_booking_path do %>
+  <%= form_with url: current_organization_start_booking_path, data: { turbo: false }  do %>
     <%= hidden_field_tag :org, current_organization %>  
     <button type="submit" class="btn btn-success" style="font-size: 120%; padding: 20px">
       Dichiaro di afferire alla struttura <br/>
