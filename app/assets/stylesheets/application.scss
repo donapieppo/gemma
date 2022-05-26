@@ -67,13 +67,26 @@ ul.groups-list, ul.locations-list, ul.ddts-list, ul.deposits, ul.inactive_things
 }
 
 .shift-locations {
-  @include make-row();
   .shift-from {
-    @extend .col-md-6;
-    text-align: right;
+    border-right: 2px solid;
+    input:checked + label {
+      @extend .btn-info;
+    }
   }
   .shift-to {
-    @extend .col-md-6;
+    input:checked + label {
+      @extend .btn-info;
+    }
+  }
+  label {
+    @extend .m-1;
+    @extend .btn;
+    @extend .btn-sm;
+    @extend .btn-outline-secondary;
+
+  }
+  input {
+    display: none;
   }
 }
 ul.booking-things {

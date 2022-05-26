@@ -4,19 +4,19 @@
   <%= s.input :date, as: :date, html5: true %>
   <%= s.input :number, hint: 'Numero di oggetti da spostare' %>
 
-  <div class="shift-locations">
-    <div class="shift-from px-2">
-      <label class="control-label">da:</label><br/>
+  <div class="row shift-locations my-4">
+    <div class="shift-from col-md-6 px-2 text-end">
+      <div class="control-label">da:</div>
       <% @deposits.each do |dep| %> 
-        <%= label_tag("shift[from]", "#{dep.location} (#{dep.actual} disponibili)" ) %> 
-        <%= radio_button_tag("shift[from]", dep.id, false, { disabled: (dep.actual < 1) }) %> <br/>
+        <%= radio_button_tag "shift[from]", dep.id, false, { disabled: (dep.actual < 1) } %> 
+        <%= label_tag "shift[from]_#{dep.id}", "#{dep.location} (#{dep.actual} disponibili)" %><br/>  
       <% end %>
     </div>
-    <div class="shift-to px-2">
-      <label class="control-label">a:</label><br/>
+    <div class="shift-to col-md-6 px-2">
+      <div class="control-label">a:</div>
       <% @deposits.each do |dep| %>
-        <%= radio_button_tag("shift[to]", dep.id, false) %>
-        <%= label_tag("shift[to]", dep.location) %> <br/>
+        <%= radio_button_tag "shift[to]", dep.id, false %>
+        <%= label_tag "shift[to]_#{dep.id}", dep.location %> <br/>
       <% end %>
     </div>
   </div>
