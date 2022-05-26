@@ -1,10 +1,12 @@
-<%= dm_form_for @delegation, title: 'Nuova delega' do |d| %>  
-  <%= d.dm_error_notification %>
-  <%= d.input :delegator_upn, input_html: { class: "choosen_dsauser" } %>
-  <%= d.input :delegate_upn,  input_html: { class: "choosen_dsauser" } %>
-  <%= d.submit %>  
-<% end %>
+<%= dm_form_for @delegation, title: 'Nuova delega' do |f| %>  
+  <%= f.dm_error_notification %>
 
-<%= javascript_tag do  %>  
-  <%= render partial: "dsausers/awesomplete", formats: :js, locals: { input_id: 'delegation_delegator_upn', input2_id: 'delegation_delegate_upn' } %>  
+  <%= content_tag :div, data: { controller: "dsa-awesomplete", dsa_awesomplete_users_value: @cache_users_json } do %>
+    <%= f.input :delegator_upn, required: true %>
+  <% end %>
+  <%= content_tag :div, data: { controller: "dsa-awesomplete", dsa_awesomplete_users_value: @cache_users_json } do %>
+    <%= f.input :delegate_upn, required: true %>
+  <% end %>
+
+  <%= f.submit %>  
 <% end %>
