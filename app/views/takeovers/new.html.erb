@@ -1,23 +1,19 @@
-<%= thing_actions_menu %>
+<%= render Thing::ActionsComponent.new(current_user, @thing) %>
 
 <% title = "Modulo di presa consegna di #{@thing} " %>
 <% title += "da #{@takeover.recipient}" unless @takeover.new_record? %>
 
-<%= dm_form_for [@thing, @takeover], title: title do |o| %>
-  <%= o.dm_error_notification %>  
+<%= dm_form_for [@thing, @takeover], title: title do |f| %>
+  <%= f.dm_error_notification %>  
     <% if @takeover.new_record? %>  
-      <%= o.input :recipient_upn, input_html: { class: "choosen_dsauser" }, hint: recipient_hint(@takeover), required: true %>
+      <%= content_tag :div, data: { controller: "dsa-awesomplete", dsa_awesomplete_users_value: @cache_users_json } do %>
+        <%= f.input :recipient_upn, required: true %>
+      <% end %>
     <% end %>
 
-    <%= render 'loads/numbers_form', o: o %>  
+    <%= render 'loads/numbers_form', o: f %>  
 
-    <%= o.input :date, as: :date, html5: true %>
-    <%= o.input :note %>
-    <%= o.submit %>
+    <%= f.input :date, as: :date, html5: true %>
+    <%= f.input :note %>
+    <%= f.submit %>
 <% end %>
-
-<%= javascript_tag do  %>  
-  <%= render partial: "dsausers/awesomplete", formats: :js, locals: { input_id: 'takeover_recipient_upn' } %>  
-<% end %>
-
-
