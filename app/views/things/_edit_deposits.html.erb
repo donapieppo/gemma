@@ -30,14 +30,8 @@
   <% if @locations.size == 1 %>
     <div class="dm-card-footer">
       Gli articoli verranno depositati nell'ubicazione denominata <strong>"<%= @locations.first %>"</strong>.
-      Se necessario creare una <%= link_to "nuova ubicazione", locations_path %>.
+      Se necessario creare una <%= link_to "nuova ubicazione", current_organization_edit_path %>.
     </div>
   <% end %>
 
 </div>
-
-<%= javascript_tag do %>  
-$(function () {
-  $('[data-toggle="popover"]').popover()
-})
-<% end %>
