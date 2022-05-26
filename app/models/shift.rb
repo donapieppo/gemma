@@ -34,7 +34,7 @@ class Shift < Operation
   def different_deposits
     if self.numbers && self.numbers.size != 2
       Rails.logger.info('Refuse shift on same deposit.')
-      errors.add(:base, 'È necessario che le ubicazioni di partenza e arrivo siano diverse.')
+      errors.add(:base, 'È necessario che le ubicazioni di partenza e arrivo siano diverse e che il numero di oggetti sia positivo.')
     end
   end
 
