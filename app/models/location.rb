@@ -18,7 +18,7 @@ class Location < ApplicationRecord
 
   def check_no_associated_things
     if self.things.any?
-      errors.add(:base, 'Ci sono oggetti in questa ubicazione da spostare prima di poterla cancellare.')
+      self.errors.add(:base, 'Ci sono oggetti in questa ubicazione da spostare prima di poterla cancellare.')
       throw :abort
     end
   end
