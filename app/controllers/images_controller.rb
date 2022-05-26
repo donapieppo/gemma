@@ -30,6 +30,6 @@ class ImagesController < ApplicationController
   private
 
   def image_params
-    params[:image].permit(:description, :what_for, :photo)
+    params[:image].permit(:photo)
   end
 end
