@@ -8,19 +8,15 @@
     <meta name="author" content="Dipartimento di Matematica - Unibo - Pietro Donatini">
     <title>GE.M.MA - GEstione Multiutente MAteriale di consumo</title>
 
-    <%= csrf_meta_tag %>
-    <%= csp_meta_tag %>
-
-    <%= stylesheet_link_tag "application" %>
-    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+    <%= dm_unibo_common_headers %>  
   </head>
   <body>
     <%= render partial: 'layouts/menu' %>
 
     <main role="main" class="container">
       <%= render "shared/breadcrumbs" %>
-      <%= bootstrap_modal_div %>
       <%= bootstrap_flash %>
+      <%= turbo_frame_tag "modal" %>
       <%= render "shared/recipe" if params[:from_unload] %>
 
       <% begin %>  
