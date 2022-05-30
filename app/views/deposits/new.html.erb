@@ -1,9 +1,15 @@
 <div class="alert alert-info">
-  <p>Ubicazioni attuali per "<%= @thing %>": <%= @actual_locations.map(&:to_s).join(', ') %></p>
+  <p>Ubicazioni attuali per <q><%= @thing %></q>: 
+  <ul>
+    <% @actual_locations.each do |l| %>
+      <li><%= l %></li>
+    <% end %>
+  </ul>
 </div>
 
+<!-- method post -->
 <% if @other_locations.size > 0 %>  
-  <%= dm_form_for @thing, url: thing_deposits_path(@thing), method: :post, title: 'Aggiungi ubicazioni' do |thing| %>
+  <%= dm_form_for @thing, url: thing_deposits_path(@thing), method: :post, title: 'Aggiungi ubicazioni', html: { data: { turbo: false }} do |thing| %>
     <%= thing.association :locations, collection: @other_locations, as: :check_boxes, label: 'Altre ubicazioni disponibili' %>  
     <%= thing.submit "Aggiungi" %> - <%= link_to_back edit_thing_path(@thing) %>  
   <% end %>
