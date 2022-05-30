@@ -7,11 +7,9 @@
 </div>
 
 <p>
-<%= form_tag find_things_path, class: 'form-inline' do %>
+<%= form_with url: find_things_path, class: 'form-inline', data: { turbo: false } do %>
   <label for="thing_string">Ricerca libera sul nome dell'articolo o codice a barre: </label>
-  <div class="form-group ms-2 me-2">
-    <input id="search_string" name="search_string" size="6" type="text" placeholder="cerca" />
-  </div>
+  <input id="search_string" name="search_string" size="6" type="text" placeholder="cerca" class="my-2" />
   <%= submit_tag 'Cerca', class: 'button' %>
 <% end %>
 </p>
