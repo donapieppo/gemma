@@ -5,13 +5,17 @@
 <%= dm_card title: "Utenti" do %>
   <dl>
     <% @permissions_hash.each do |authlevel, permissions| %>
-      <dt><%= Authorization.level_description(authlevel).upcase %></dt>
-      <dd>
-      <%= permissions.map{|p| p.user.to_s}.join(', ') %>
-      </dd>
-    <% end %>
-    <% if current_user.is_cesia? %>  
-      <%= link_to 'Modifica', dm_unibo_common.organization_permissions_path(current_organization), class: 'btn btn-primary' %>  
+      <% if permissions.any? %>  
+        <dt><%= Authorization.level_description(authlevel).upcase %></dt>
+        <dd>
+          <% permissions.each do |p| %>
+            <span class="px-2"><%= p.user ? p.user : p.network %></span>
+          <% end %>
+        </dd>
+      <% end %>
+      <% if current_user.is_cesia? %>  
+        <%= link_to 'Modifica', dm_unibo_common.organization_permissions_path(current_organization), class: 'btn btn-primary mb-4' %>  
+      <% end %>
     <% end %>
   </dl>
 <% end %>
@@ -49,7 +53,7 @@
             <% if location.deposits.empty? %>  
               <%= link_to link_to_delete location_path(location) %>
             <% end %>
-            <%= link_to_edit edit_location_path(location), modal: true %>
+            <%= link_to_edit edit_location_path(location) %>
           </span>
         </div>
       <% end %>
@@ -90,7 +94,7 @@
 </div>
 
 <% if current_user.is_cesia? %>  
-  <%= link_to "Elimina la struttura", dm_unibo_common.organization_path(current_organization), method: :delete, class: :button %>  
+  <%= button_to "Elimina la struttura", dm_unibo_common.organization_path(current_organization), method: :delete, class: 'button' %>  
 <% end %>
 
 
