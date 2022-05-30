@@ -8,9 +8,9 @@
 <% if @operations.size > 0 %>
   <% tot = 0 %>
 
-  <p class="m-3 font-weight-bold">
+  <div class="m-3 font-weight-bold">
     <%= title %> <span class="text-muted small">(Per operare su un singolo movimento cliccare sulla riga).</span>
-  </p>
+  </div>
 
   <% if @first_year != @last_year %>  
     <nav aria-label="Seleziona l'anno">
@@ -48,7 +48,7 @@
                 <span class="move-remaining float-end px-2 <%= 'move-negative' if tot < 0 %>">
                   <%= tot %>
                 </span>
-                <% if current_organization.pricing and o.price %>
+                <% if current_organization.pricing && o.price %>
                   <span class="float-end me-2"><%= o.price_string %></span>
                 <% end %>
               </div>
@@ -61,7 +61,7 @@
                 <% unless o.note.blank? %>
                   <%= o.note %> 
                 <% end %>
-                <% if current_organization.pricing and o.price and o.price > 0 and o.number < 0 %>
+                <% if current_organization.pricing && o.price && o.price > 0 && o.number < 0 %>
                   <br/>origine prezzo: <%= show_price_origins(o) %>
               <% end %>
                 </span>
@@ -120,19 +120,7 @@
 <% end %>
 
 <%= javascript_tag do %>  
-  const show_secondary = (event, element) => {
+  var show_secondary = (event, element) => {
     element.nextElementSibling.style.display = 'block'
   }
 <% end %>
-<%# <%= javascript_tag do %1> %>  
-<%#   $('document').ready(function() { %>
-<%#   $(".secondary-information").hide(); %>
-<%#   $(".moves-list-item").click(function() { %> 
-<%#   $(this).find(".secondary-information").toggle(); %>
-<%#   d = $(this).find(".fa-caret-down").removeClass("fa-caret-down"); %>
-<%#   r = $(this).find(".fa-caret-right").removeClass("fa-caret-right"); %>
-<%#   d.addClass("fa-caret-right"); %>
-<%#   r.addClass("fa-caret-down"); %>
-<%#   }); %>
-<%#   }); %>
-<%# <% end %1> %>
