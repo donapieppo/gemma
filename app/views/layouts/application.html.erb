@@ -13,10 +13,11 @@
   <body>
     <%= render partial: 'layouts/menu' %>
 
+    <%= turbo_frame_tag :modal %>
+
     <main role="main" class="container">
       <%= render "shared/breadcrumbs" %>
       <%= bootstrap_flash %>
-      <%= turbo_frame_tag "modal" %>
       <%= render "shared/recipe" if params[:from_unload] %>
 
       <% begin %>  

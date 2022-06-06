@@ -1,13 +1,13 @@
-<%= turbo_stream.replace "upnresults" do %>  
+<%= turbo_stream.update "upnresults" do %>  
   <% if @dsa_result.ok? %>
     <ul style="text-align: left;">
-    <% @dsa_result.users.each do |u| %>
-      <% u.upn =~ /studio.unibo.it/ and next %>  
+    <% @dsa_result.users.each do |user| %>
+      <% user.upn =~ /studio.unibo.it/ and next %>  
       <li>
-        <%= link_to "#{u.name} #{u.surname}", '#', id: u.upn, 
-            class: 'user_selector', 
-            data: { controller: 'dsa', action: 'click->dsa#select_user', :'dsa-userupn-value' => u.upn } %> 
-        (<%= u.upn %>)
+      <%= content_tag :span, "#{user.name} #{user.surname}", id: user.upn, style: "text-decoration: underline; cursor: pointer",
+                      class: 'user_selector', 
+                      data: { controller: 'dsa', action: 'click->turbo-modal#hideModal click->dsa#select_user', :'dsa-userupn-value' => user.upn } %> 
+      (<%= user.upn %>)
       </li>
     <% end %>
     </ul>
