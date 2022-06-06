@@ -42,9 +42,9 @@
 
             <div class="col">
               <div class="main-information my-1" onClick="show_secondary(event, this)">
-                <!-- caret --> <span class="mx-2"><i class="fas fa-caret-right"></i></span>
+                <i class="fas fa-caret-right mx-2"></i>
                 <%= l o.date %> 
-                <span class="ms-2 font-weight-bold"><%= organization_description(o) %></span>
+                <span class="ms-2 font-weight-bold"><%= operation_description(o) %></span>
                 <span class="move-remaining float-end px-2 <%= 'move-negative' if tot < 0 %>">
                   <%= tot %>
                 </span>

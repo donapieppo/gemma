@@ -7,7 +7,7 @@ module OperationHelper
     end
   end
 
-  def organization_description(o)
+  def operation_description(o)
     if o.is_load? 
       "carico da ".html_safe + link_to(o.ddt.long_description, ddt_path(o.ddt))
     elsif o.is_unload? or o.is_takeover? # booking < unload
