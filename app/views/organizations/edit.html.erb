@@ -51,7 +51,7 @@
           <%= link_to location, location_things_path(location) %>
           <span class="float-end">
             <% if location.deposits.empty? %>  
-              <%= link_to link_to_delete location_path(location) %>
+              <%= link_to_delete location_path(location) %>
             <% end %>
             <%= link_to_edit edit_location_path(location) %>
           </span>
