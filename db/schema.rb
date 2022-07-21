@@ -2,38 +2,44 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# This file is the source Rails uses to define your schema when running `rails
-# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
 # be faster and is potentially less error prone than running all of your
 # migrations from scratch. Old migrations may fail to apply correctly if those
 # migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
-
-  create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+ActiveRecord::Schema[7.0].define(version: 2022_05_25_142402) do
+  create_table "active_storage_attachments", charset: "utf8mb4", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
     t.bigint "record_id", null: false
     t.bigint "blob_id", null: false
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: nil, null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
-  create_table "active_storage_blobs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "active_storage_blobs", charset: "utf8mb4", force: :cascade do |t|
     t.string "key", null: false
     t.string "filename", null: false
     t.string "content_type"
     t.text "metadata"
     t.bigint "byte_size", null: false
-    t.string "checksum", null: false
-    t.datetime "created_at", null: false
+    t.string "checksum"
+    t.datetime "created_at", precision: nil, null: false
+    t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "arch_ddts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "active_storage_variant_records", charset: "utf8mb4", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.string "variation_digest", null: false
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "arch_ddts", id: :integer, charset: "utf8mb4", force: :cascade do |t|
     t.integer "number"
     t.string "gen"
     t.string "name"
@@ -45,7 +51,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.index ["supplier_id"], name: "supplier_id"
   end
 
-  create_table "arch_divisions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "arch_divisions", id: :integer, charset: "utf8mb4", force: :cascade do |t|
     t.integer "organization_id", null: false
     t.string "name"
     t.string "description"
@@ -53,7 +59,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.index ["organization_id"], name: "organization_id"
   end
 
-  create_table "arch_operations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "arch_operations", id: :integer, charset: "utf8mb4", force: :cascade do |t|
     t.string "upn", limit: 150
     t.integer "user_id"
     t.string "recipient"
@@ -81,7 +87,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.index ["user_id"], name: "userid"
   end
 
-  create_table "arch_things", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "arch_things", id: :integer, charset: "utf8mb4", force: :cascade do |t|
     t.string "name"
     t.string "description"
     t.integer "organization_id", null: false
@@ -90,7 +96,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.index ["organization_id"], name: "organization_id"
   end
 
-  create_table "barcodes", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "barcodes", id: :integer, charset: "latin1", force: :cascade do |t|
     t.string "name"
     t.integer "thing_id"
     t.integer "organization_id"
@@ -99,7 +105,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.index ["thing_id"], name: "index_barcodes_on_thing_id"
   end
 
-  create_table "ddts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "ddts", id: :integer, charset: "utf8mb4", force: :cascade do |t|
     t.integer "number"
     t.integer "organization_id"
     t.string "gen"
@@ -108,7 +114,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.date "date"
   end
 
-  create_table "delegations", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "delegations", id: { type: :integer, unsigned: true }, charset: "utf8mb4", force: :cascade do |t|
     t.integer "delegator_id", null: false, unsigned: true
     t.integer "delegate_id", null: false, unsigned: true
     t.integer "organization_id", null: false
@@ -117,7 +123,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.index ["organization_id"], name: "organization_id"
   end
 
-  create_table "deposits", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "deposits", id: :integer, charset: "utf8mb4", force: :cascade do |t|
     t.integer "thing_id"
     t.integer "actual"
     t.integer "location_id"
@@ -126,29 +132,29 @@ ActiveRecord::Schema.define(version: 0) do
     t.index ["organization_id"], name: "organization_id"
   end
 
-  create_table "groups", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "groups", id: :integer, charset: "utf8mb4", force: :cascade do |t|
     t.string "name"
     t.integer "organization_id"
   end
 
-  create_table "images", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "images", id: { type: :integer, unsigned: true }, charset: "latin1", force: :cascade do |t|
     t.integer "thing_id", null: false, unsigned: true
     t.integer "user_id", unsigned: true
-    t.datetime "created_at"
+    t.datetime "created_at", precision: nil
     t.string "photo_file_name", limit: 200
     t.string "photo_content_type", limit: 100
     t.integer "photo_file_size", unsigned: true
-    t.datetime "photo_updated_at"
+    t.datetime "photo_updated_at", precision: nil
     t.index ["user_id"], name: "userid"
   end
 
-  create_table "locations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "locations", id: :integer, charset: "utf8mb4", force: :cascade do |t|
     t.integer "organization_id"
     t.string "name"
     t.index ["organization_id"], name: "index_locations_on_organization_id"
   end
 
-  create_table "moves", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "moves", id: :integer, charset: "utf8mb4", force: :cascade do |t|
     t.integer "number", null: false
     t.integer "deposit_id", null: false
     t.integer "operation_id", null: false
@@ -156,12 +162,12 @@ ActiveRecord::Schema.define(version: 0) do
     t.index ["operation_id"], name: "index_moves_on_operation_id"
   end
 
-  create_table "notices", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "notices", id: :integer, charset: "utf8mb4", force: :cascade do |t|
     t.integer "organization_id"
     t.string "notice"
   end
 
-  create_table "operations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "operations", id: :integer, charset: "utf8mb4", force: :cascade do |t|
     t.integer "organization_id", null: false
     t.integer "thing_id", null: false
     t.integer "number", null: false
@@ -177,7 +183,6 @@ ActiveRecord::Schema.define(version: 0) do
     t.text "price_operations"
     t.integer "division_id"
     t.boolean "from_booking"
-    t.index ["date"], name: "date_idx"
     t.index ["ddt_id"], name: "index_operations_on_ddt_id"
     t.index ["organization_id"], name: "organization_id"
     t.index ["recipient_id"], name: "recipientid"
@@ -185,14 +190,14 @@ ActiveRecord::Schema.define(version: 0) do
     t.index ["user_id"], name: "userid"
   end
 
-  create_table "orderingcalendars", id: :integer, options: "ENGINE=MyISAM DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "orderingcalendars", id: :integer, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
     t.integer "group_id", null: false
     t.date "from", null: false
     t.date "until", null: false
     t.index ["group_id"], name: "index_orderingcalendars_on_group_id"
   end
 
-  create_table "orders", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "orders", id: :integer, charset: "utf8mb4", force: :cascade do |t|
     t.integer "user_id"
     t.integer "thing_id", null: false
     t.integer "number", null: false
@@ -205,7 +210,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.index ["user_id"], name: "userid"
   end
 
-  create_table "organizations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "organizations", id: :integer, charset: "utf8mb4", force: :cascade do |t|
     t.string "code"
     t.string "name"
     t.string "description"
@@ -215,27 +220,31 @@ ActiveRecord::Schema.define(version: 0) do
     t.boolean "ordering"
     t.boolean "pricing"
     t.boolean "division"
+    t.datetime "updated_at", precision: nil
+    t.datetime "created_at", precision: nil
   end
 
-  create_table "permissions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "permissions", id: :integer, charset: "utf8mb4", force: :cascade do |t|
     t.integer "user_id", unsigned: true
     t.integer "organization_id"
     t.string "network", limit: 20
     t.integer "authlevel"
+    t.datetime "updated_at", precision: nil
+    t.datetime "created_at", precision: nil
     t.index ["organization_id"], name: "fk_organization_permission"
     t.index ["user_id"], name: "fk_user_permission"
   end
 
-  create_table "schema_info", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "schema_info", id: false, charset: "utf8mb4", force: :cascade do |t|
     t.integer "version"
   end
 
-  create_table "suppliers", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "suppliers", id: :integer, charset: "utf8mb4", force: :cascade do |t|
     t.string "name"
     t.string "pi"
   end
 
-  create_table "things", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "things", id: :integer, charset: "utf8mb4", force: :cascade do |t|
     t.string "name"
     t.string "description"
     t.integer "group_id"
@@ -247,18 +256,19 @@ ActiveRecord::Schema.define(version: 0) do
     t.index ["organization_id"], name: "organization_id"
   end
 
-  create_table "users", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "users", id: { type: :integer, unsigned: true }, charset: "utf8mb4", force: :cascade do |t|
     t.string "upn", limit: 150
     t.string "gender", limit: 1
     t.string "name", limit: 50
     t.string "surname", limit: 50
     t.string "email"
     t.integer "emplyeeid"
-    t.timestamp "updated_at", default: -> { "current_timestamp()" }, null: false
+    t.timestamp "updated_at", default: -> { "current_timestamp() ON UPDATE current_timestamp()" }, null: false
     t.index ["upn"], name: "index_dsacaches_on_upn", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "arch_ddts", "organizations", name: "arch_ddts_ibfk_1"
   add_foreign_key "arch_ddts", "suppliers", name: "arch_ddts_ibfk_2"
   add_foreign_key "arch_divisions", "organizations", name: "arch_divisions_ibfk_1"
