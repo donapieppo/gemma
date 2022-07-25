@@ -1,12 +1,8 @@
 <%= dm_form_for @delegation, title: 'Nuova delega' do |f| %>  
   <%= f.dm_error_notification %>
 
-  <%= content_tag :div, data: { controller: "dsa-awesomplete", dsa_awesomplete_users_value: @cache_users_json } do %>
-    <%= f.input :delegator_upn, required: true %>
-  <% end %>
-  <%= content_tag :div, data: { controller: "dsa-awesomplete", dsa_awesomplete_users_value: @cache_users_json } do %>
-    <%= f.input :delegate_upn, required: true %>
-  <% end %>
+  <%= f.input :delegator_upn, required: true %>
+  <%= f.input :delegate_upn, required: true %>
 
   <%= f.submit %>  
 <% end %>
