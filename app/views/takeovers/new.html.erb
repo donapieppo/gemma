@@ -6,9 +6,7 @@
 <%= dm_form_for [@thing, @takeover], title: title do |f| %>
   <%= f.dm_error_notification %>  
     <% if @takeover.new_record? %>  
-      <%= content_tag :div, data: { controller: "dsa-awesomplete", dsa_awesomplete_users_value: @cache_users_json } do %>
-        <%= f.input :recipient_upn, required: true %>
-      <% end %>
+      <%= render DsaAwesompleteComponent.new(current_organization.id, f, :recipient_upn, hint: '') %>  
     <% end %>
 
     <%= render 'loads/numbers_form', o: f %>  
