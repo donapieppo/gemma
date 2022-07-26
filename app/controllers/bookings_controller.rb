@@ -18,7 +18,7 @@ class BookingsController < ApplicationController
         @books = @barcode ? @books.where(thing_id: @barcode.thing_id) : []
       end
       @delegations = delegations_hash
-      @cache_users = User.all_in_cache(current_organization.id, true)
+      @cache_users = User.bookers_in_cache(current_organization.id)
     else
       @books = current_user.bookings.where(organization_id: current_organization.id)
     end
@@ -80,7 +80,6 @@ class BookingsController < ApplicationController
 
     # can't create before @boo destroy or checks app/model/operation fails
     @unload = @thing.unloads.new(h)
-    @cache_users = User.all_in_cache(current_organization.id)
 
     render 'unloads/new'
   end
