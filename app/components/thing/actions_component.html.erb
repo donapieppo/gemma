@@ -1,6 +1,6 @@
 <% active_class = "class='active'".html_safe %>
 
-<ul id="thingmenu" role="tablist">
+<ul id="thingmenu" role="tablist" class="mb-5">
   <li <%= active_class if (@controller == 'unloads' && @action == 'new') %>>
     <%= link_to '<i class="fa fa-fw fa-arrow-circle-down fa-2xl"></i> scarica'.html_safe, helpers.new_thing_unload_path(@thing) %> 
   </li>
