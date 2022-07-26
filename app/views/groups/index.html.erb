@@ -6,10 +6,10 @@
   <% end %>
 </div>
 
-<div data-controller="focus">
-<%= form_with url: find_things_path, class: 'form-inline', data: { turbo: false } do %>
-  <label for="thing_string">Ricerca libera sul nome dell'articolo o codice a barre: </label>
-  <input id="search_string" name="search_string" size="6" type="text" placeholder="cerca" class="my-2" data-focus-target="input" />
-  <%= submit_tag 'Cerca', class: 'button' %>
-<% end %>
+<div class="mt-4" data-controller="focus">
+  <%= form_with url: find_things_path, class: 'form-inline', data: { turbo: false } do %>
+    <label class="d-block" for="thing_string">Ricerca libera sul nome dell'articolo o codice a barre:</label>
+    <input id="search_string" name="search_string" size="6" type="text" placeholder="cerca" class="my-2 d-inline" data-focus-target="input" />
+    <%= submit_tag 'Cerca', class: 'button ms-2' %>
+  <% end %>
 </div>
