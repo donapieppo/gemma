@@ -16,8 +16,10 @@ class PriceInput < SimpleForm::Inputs::Base
 
     if n == 'load' || n == 'price' || n == 'stock'
        res += %Q|
+       <div>
        <input name="price_with_iva" type="radio" value="n" #{object.price ? '' : 'checked="checked"'} /> iva esclusa
        <input name="price_with_iva" type="radio" value="y" #{object.price ? 'checked="checked"' : ''} /> iva inclusa
+       </div>
        |
     end
     res.html_safe
