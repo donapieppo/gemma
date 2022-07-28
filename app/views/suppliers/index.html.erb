@@ -1,11 +1,12 @@
 <h1><%= @title %></h1>
 
-<p class="info">
-<% if @for == 'ddt' %>
-  Per registrare un nuovo ddt/fattura/scontrino fiscale, clicca sul nome del fornitore che ha emesso il documento.
-<% end %>
-È possibile registrare un nuovo fornitore se non presente in elenco ma si tenga presente che i fornitori sono <strong>comuni a tutte le strutture</strong>.
-</p>
+<div class="info">
+  <% if @for == 'ddt' %>
+    Per registrare un nuovo ddt/fattura/scontrino fiscale, clicca sul nome del fornitore che ha emesso il documento.
+  <% end %>
+  È possibile registrare un nuovo fornitore se non presente in elenco 
+  ma si tenga presente che i fornitori sono <strong>comuni a tutte le strutture</strong>.
+</div>
 
 <div class="row">
   <div class="col-md-3">
