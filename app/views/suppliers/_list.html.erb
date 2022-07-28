@@ -3,7 +3,9 @@
     <tr>
       <th>fornitore</th>
       <th>partita iva</th>
-      <th>azioni</th>
+      <% unless what_for == 'ddt' %>  
+        <th>azioni</th>
+      <% end %>
     </tr>
   </thead>
   <tbody id="suppliers">
@@ -17,7 +19,9 @@
           <% end %>
         </td>
         <td><%= supplier.pi %></td>
-        <td><%= link_to_edit edit_supplier_path(supplier) %></td>
+        <% unless what_for == 'ddt' %>  
+          <td><%= link_to_edit edit_supplier_path(supplier) %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
