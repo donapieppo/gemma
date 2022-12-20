@@ -7,7 +7,9 @@
       <% val = @total_from_orders ? @total_from_orders : @numbers[dep.id] %>  
       <input type="number" class="form-control required numeric integer mt-2 mb-0 me-1" name="numbers[<%= dep.id %>]" value="<%= val %>" step="1" size="5" />
       <% @total_from_orders = nil if @total_from_orders %>
-      in <strong><%= dep.location %></strong> (attualmente sono <%= dep.actual %>) 
+      <div class="mt-1 mb-2">
+        in <strong><%= dep.location %></strong> <small>(attualmente sono <%= dep.actual %>)</small>
+      </div>
     <% end %>
   </div>
 </div>
