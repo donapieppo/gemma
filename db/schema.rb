@@ -183,30 +183,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_25_142402) do
     t.text "price_operations"
     t.integer "division_id"
     t.boolean "from_booking"
+    t.datetime "created_at", precision: nil
     t.index ["ddt_id"], name: "index_operations_on_ddt_id"
     t.index ["organization_id"], name: "organization_id"
     t.index ["recipient_id"], name: "recipientid"
     t.index ["thing_id"], name: "index_operations_on_thing_id"
-    t.index ["user_id"], name: "userid"
-  end
-
-  create_table "orderingcalendars", id: :integer, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
-    t.integer "group_id", null: false
-    t.date "from", null: false
-    t.date "until", null: false
-    t.index ["group_id"], name: "index_orderingcalendars_on_group_id"
-  end
-
-  create_table "orders", id: :integer, charset: "utf8mb4", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "thing_id", null: false
-    t.integer "number", null: false
-    t.integer "organization_id", null: false
-    t.integer "division_id"
-    t.date "date", null: false
-    t.string "note"
-    t.index ["organization_id"], name: "index_orders_on_organization_id"
-    t.index ["thing_id"], name: "index_orders_on_thing_id"
     t.index ["user_id"], name: "userid"
   end
 
@@ -289,8 +270,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_25_142402) do
   add_foreign_key "operations", "ddts", name: "operations_ibfk_2"
   add_foreign_key "operations", "organizations", name: "operations_ibfk_3"
   add_foreign_key "operations", "things", name: "operations_ibfk_1"
-  add_foreign_key "orders", "organizations", name: "orders_ibfk_2"
-  add_foreign_key "orders", "things", name: "orders_ibfk_1"
   add_foreign_key "permissions", "organizations", name: "fk_organization_permission"
   add_foreign_key "permissions", "users", name: "fk_user_permission"
   add_foreign_key "things", "groups", name: "things_ibfk_2"
