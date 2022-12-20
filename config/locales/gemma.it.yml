@@ -122,13 +122,13 @@ it:
   fixprice_description: È possibile inserire un prezzo stabilito. In questo modo non vengono considerati i prezzi di carico.
   pricing_option: È possibile assegnare un prezzo ai carichi o agli oggetti in modo da calcolare il costo totale degli scarichi.
 
-  can_read:   può leggere
-  can_order:  può ordinare
-  can_book:   può prenotare
-  can_unload: può scaricare
-  can_give:   può scaricare a nome di altri
-  can_admin:  può amministrare
-  can_edit:   responsabile struttura (Direttore amministrativo)
+  can_read:   Può leggere
+  can_order:  Può ordinare
+  can_book:   Può prenotare
+  can_unload: Può scaricare
+  can_give:   Può scaricare a nome di altri
+  can_admin:  Può amministrare
+  can_edit:   Responsabile struttura (Direttore amministrativo)
   is_cesia:   Amministratore Cesia
 
   date:
@@ -139,3 +139,4 @@ it:
   Unload: Scarico
   Load: Carico
   Takeover: Presa
+
