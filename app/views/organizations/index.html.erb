@@ -9,7 +9,7 @@
 
 <table class="table table-sm">
   <% @organizations.each do |organization| %>
-    <%= content_tag :tr, class: (@this_year_counts[organization.id] ? 'table-info' : '') do %>
+    <%= content_tag :tr, class: (@this_year_counts[organization.id] ? 'table-info' : 'table-secondary') do %>
       <th><%= organization.code.upcase %></th>
       <th><%= organization.id %></th>
       <td><%= link_to organization.description.upcase, current_organization_edit_path(__org__: organization.code) %></td>
@@ -17,9 +17,14 @@
       <td><%= dmicon('euro-sign')     if organization.pricing %></td>
       <td><%= dmicon('envelope')      if organization.sendmail %></td>
       <td class="number" nowrap>
-        <%= @last_year_counts[organization.id] || 0 %>  
-        (<%= @counts[organization.id] || 0 %> - <%= @arch_counts[organization.id] || 0 %>)
+        <small>
+          tot: <%= @counts[organization.id] || 0 %> 
+        arc: <%= @arch_counts[organization.id] || 0 %>
+        </small>
       </td>
+      <th class="number">
+        <%= @last_year[organization.id].try(:year) || 0 %>
+      </th>
       <th class="number">
         <%= @this_year_counts[organization.id] || 0 %>
       </th>

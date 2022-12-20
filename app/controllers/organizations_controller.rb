@@ -6,8 +6,8 @@ class OrganizationsController < ApplicationController
     authorize Organization
     @organizations    = Organization.order(:code)
     @counts           = Operation.group(:organization_id).count
-    @this_year_counts = Operation.where('YEAR(date) = YEAR(NOW())').group(:organization_id).count
-    @last_year_counts = Operation.where('YEAR(date) = YEAR(NOW()) - 1 ').group(:organization_id).count
+    @this_year_counts = Operation.where('YEAR(date) > YEAR(NOW()) -1').group(:organization_id).count
+    @last_year        = Operation.group(:organization_id).maximum(:date)
     @arch_counts      = ArchOperation.group(:organization_id).count
   end
 

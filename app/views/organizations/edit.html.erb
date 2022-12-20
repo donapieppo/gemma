@@ -3,21 +3,21 @@
 <%= render partial: 'form' %>
 
 <%= dm_card title: "Utenti" do %>
-  <dl>
+  <ul>
     <% @permissions_hash.each do |authlevel, permissions| %>
       <% if permissions.any? %>  
-        <dt><%= Authorization.level_description(authlevel).upcase %></dt>
-        <dd>
-          <% permissions.each do |p| %>
-            <span class="px-2"><%= p.user ? p.user : p.network %></span>
-          <% end %>
-        </dd>
-      <% end %>
-      <% if current_user.is_cesia? %>  
-        <%= link_to 'Modifica', dm_unibo_common.organization_permissions_path(current_organization), class: 'btn btn-primary mb-4' %>  
+        <% permissions.each do |p| %>
+        <li>
+          <span class="ps-2 py-1"><%= p.user ? p.user : p.network %>
+        <%= Authorization.level_description(authlevel).downcase %>
+        </li>
+        <% end %>
       <% end %>
     <% end %>
-  </dl>
+    <% if current_user.is_cesia? %>  
+      <%= link_to 'Modifica', dm_unibo_common.organization_permissions_path(current_organization), class: 'btn btn-primary my-2' %>  
+    <% end %>
+  </ul>
 <% end %>
 
 <div class="row">
