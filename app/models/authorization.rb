@@ -5,7 +5,7 @@
 # TO_BOOK:   può prenotare 
 # TO_UNLOAD: può scaricare 
 # TO_GIVE:   può scaricare a nome di altri
-# TO_ADMIN:  può amministrare la struttura 
+# TO_MANAGE: può amministrare la struttura 
 # TO_EDIT:   può editare la struttura (direttore amministrativo). Aggiungendo utenti.
 # TO_CESIA:  amministratore del programma (super admin)
 #
