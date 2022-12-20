@@ -1,5 +1,5 @@
 class OperationMailer < ApplicationMailer
-  add_template_helper(PriceHelper)
+  helper PriceHelper
 
   def notify_unload(unload)
     @unload       = unload
