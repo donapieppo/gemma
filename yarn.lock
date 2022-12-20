@@ -85,8 +85,9 @@ braces@~3.0.2:
   optionalDependencies:
     fsevents "~2.3.2"
 
-"dm_unibo_common@file:../gems/dm_unibo_common":
+dm_unibo_common@donapieppo/dm_unibo_common.git#turbo:
   version "0.1.0"
+  resolved "https://codeload.github.com/donapieppo/dm_unibo_common/tar.gz/38a888c2111dc019c533696d39076e79e27ceda4"
   dependencies:
     "@fortawesome/fontawesome-free" "^6.1.1"
     "@hotwired/stimulus" "^3.0.1"
