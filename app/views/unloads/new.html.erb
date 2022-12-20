@@ -23,7 +23,7 @@
   <%= f.input :note %>
 
   <% if policy(current_organization).give? %>
-    <%= f.input :date, as: :date, html5: true %>
+    <%= f.input :date, html5: true %>
 
     <% if params[:batch] == 'y' %>  
       <%= f.input :recipient_upn, label: 'Indirizzi mail dei riceventi', 
