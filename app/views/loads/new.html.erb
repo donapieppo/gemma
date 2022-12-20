@@ -1,9 +1,9 @@
 <% @stock_possible = (! @thing.has_operation?) %>  
-<% @all_ddts = current_organization.ddts.includes(:supplier).order('ddts.number desc') %>
+<% @all_ddts = current_organization.ddts.includes(:supplier).order('ddts.number desc').where('date > (NOW() - INTERVAL 366 DAY)') %>
 
 <% if @stock_possible %>
   <p class="alert alert-warning">
-  <%= dmicon('exclamation-circle', size: 36) %>  <strong>Attenzione!</strong> 
+  <%= dmicon('exclamation-circle', size: 36) %> <strong>Attenzione!</strong> 
   Non è ancora stato registrato alcun carico di questo materiale.<br/>
   Per indicare che questo carico proviene da una <strong>giacenza iniziale</strong>, scegliere 
   <%= link_to "Carico da Giacenza Iniziale", new_thing_stock_path(@thing), class: 'btn btn-success' %>.
