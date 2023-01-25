@@ -1,20 +1,24 @@
 <%= report_layout do %>  
   <h2>Ddt</h2>
 
-  <%= form_with url: ddts_reports_path, data: { turbo: false } do %>
-    <%= render partial: "format" %>
+  <% if @ddts.any? %>
+    <%= simple_form_for :report, url: ddts_reports_path, data: { turbo: false } do |f| %>
+      <%= render Report::FormatComponent.new(f) %>  
 
-    <p>
-    <label>Selezionare i ddt da stampare:</label><br/>
-    <% @ddts.each do |ddt| %>  
-      <input type="checkbox" name="ddt_ids[]" value="<%= ddt.id %>"/> 
-      <strong>n.<%= ddt.number %></strong> del <%= l ddt.date %> di 
-      <em><%= ddt.supplier %></em>  <br/>
+      <p>
+      <label>Selezionare i ddt da stampare:</label><br/>
+      <% @ddts.each do |ddt| %>  
+        <input type="checkbox" name="ddt_ids[]" value="<%= ddt.id %>"/> 
+        <strong>n.<%= ddt.number %></strong> del <%= l ddt.date %> di 
+        <em><%= ddt.supplier %></em>  <br/>
+      <% end %>
+      </p>
+
+      <%= f.submit "Scarica", input_html: { data: { disable_with: false }} %>
     <% end %>
-    </p>
-
-    <p>
-    <%= submit_tag "Scarica", data: { disable_with: false } %>
-    </p>
+  <% else %>
+    <div class="alert alert-warning">
+      Non sono ancora stati registrati ddt
+    </div>
   <% end %>
 <% end %>

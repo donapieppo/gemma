@@ -1,31 +1,12 @@
 <%= report_layout do %>  
   <h2>Giacenze</h2>
 
-  <%= form_with url: giacenza_reports_path, data: { turbo: false } do %>
-    <%= render partial: "format" %>
+  <%= simple_form_for :report, url: giacenza_reports_path, data: { turbo: false } do |f| %>
+    <%= render Report::FormatComponent.new(f) %>  
 
-    <p>
-    <label>Presso</label><br/>
-    <select id="location_id" name="location[id]">
-      <option value="0">intera struttura</option>
-      <% @locations.each do |location| %>
-        <option value="<%= location.id %>"><%= location %></option>
-      <% end %>
-    </select>
-    </p>
+    <%= f.input :location_id, collection: @locations, include_blank: 'Intera struttura', label: 'Presso' %>
+    <%= f.input :group_id, collection: @groups, include_blank: 'Tutte', label: 'Categoria' %>
 
-    <p>
-    <label>Categoria</label><br/>
-    <select id="group_id" name="group[id]">
-      <option value="0">tutte</option>
-      <% @groups.each do |group| %>
-        <option value="<%= group.id %>"><%= group.to_s %></option>
-      <% end %>
-    </select>
-    </p>
-
-    <p>
-    <%= submit_tag "Scarica", data: { disable_with: false } %>
-    </p>
+    <%= f.submit "Scarica", input_html: { data: { disable_with: false }} %>
   <% end %>
 <% end %>

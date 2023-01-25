@@ -1,27 +1,10 @@
 <%= report_layout do %>  
   <h2>Ricevute</h2>
 
-  <%= form_with url: receipt_reports_path, data: { turbo: false } do %>
+  <%= simple_form_for :report, url: receipt_reports_path, data: { turbo: false } do |f| %>
+    <%= f.input :from, as: :date, html5: true, label: 'data', start_date: Date.today %>  
+    <%= f.input :user_id, collection: @cache_users, label_method: :cn_militar, label: "Scarichi a nome dell'utente", include_blank: false %>  
 
-    <p>
-    <label>Data</label><br/>
-    <%- t = Date.today %>  
-    <%= select_date t, prefix: 'from' %> 
-    </p>
-
-    <p>
-    <label>Scarichi a nome dell'utente</label><br/>
-    <%= collection_select(:user, :id, @cache_users, "id", "cn_militar", { include_blank: false }) %>
-    </p>
-
-    <% if false %>
-      <input type="hidden" name="bookings" value="1" />  
-    <% end %>
-
-    <p>
-    <%= submit_tag "Scarica", data: { disable_with: false } %>
-    </p>
-
+    <%= f.submit "Scarica", input_html: { data: { disable_with: false }} %>
   <% end %>
 <% end %>
-

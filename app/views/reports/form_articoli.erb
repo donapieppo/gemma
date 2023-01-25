@@ -1,18 +1,12 @@
 <%= report_layout do %>  
   <h2>Elenco articoli</h2>
 
-  <%= form_with url: articoli_reports_path, data: { turbo: false } do %>
+  <%= simple_form_for :report, url: articoli_reports_path, data: { turbo: false } do |f| %>
 
-    <%= render partial: "format" %>
+    <%= render Report::FormatComponent.new(f) %>  
 
-    <p>
-    <input type="checkbox" name="different_pages" /> 
-    <label>Nuova pagina per ogni categoria</label>
-    </p>
+    <%= f.input :different_pages, label: 'Nuova pagina per ogni categoria', as: :boolean %>  
 
-    <p>
-    <%= submit_tag "Scarica", data: { disable_with: false } %>
-    </p>
+    <%= f.submit "Scarica", input_html: { data: { disable_with: false }} %>
   <% end %>
 <% end %>
-

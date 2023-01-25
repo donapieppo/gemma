@@ -1,7 +1,7 @@
 <p>
   <label>Periodo</label><br/>
   dal
-  <%= select_day(inizio_anno,   prefix: 'from') %> /
+  <%= select_day(inizio_anno,   prefix: 'from', class: 'form-select') %> /
   <%= select_month(inizio_anno, prefix: 'from') %> /
   <%= select_year(inizio_anno,  prefix: 'from', start_year: 2008, end_year: Date.today.year) %>
   al 
@@ -9,3 +9,4 @@
   <%= select_month(inizio_prossimo_mese, prefix: 'to') %> /
   <%= select_year(inizio_prossimo_mese,  prefix: 'to', start_year: 2008, end_year: Date.today.year) %>
 </p>
+

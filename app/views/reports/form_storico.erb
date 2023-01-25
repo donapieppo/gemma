@@ -1,24 +1,24 @@
 <%= report_layout do %>  
   <h2>Storico movimenti</h2>
 
-  <%= form_with url: storico_reports_path, data: { turbo: false } do %>
+  <%= simple_form_for :report, url: storico_reports_path, data: { turbo: false } do |f| %>
+    <%# <%= render partial: "format" %1> %>
+    <%# <%= render partial: "period", locals: {f: f} %1> %>
+    <%= render Report::FormatComponent.new(f) %>  
+    <%= render Report::PeriodComponent.new(f) %>  
 
-    <%= render partial: "format" %>
-    <%= render partial: "period" %>
+    <%# <p> %>
+    <%# <label>Materiale</label><br/> %>
+    <%# <%= collection_select(:thing, :id, @things, :id, :short_name, { include_blank: 'Qualsiasi' } ) %1> %>
+    <%# </p> %>
+    <%= f.input :thing_id, collection: @things, label: 'Materiale', include_blank: 'Qualsiasi' %>
 
-    <p>
-    <label>Materiale</label><br/>
-    <%= collection_select(:thing, :id, @things, :id, :short_name, { include_blank: 'Qualsiasi' } ) %>
-    </p>
+    <%# <p> %>
+    <%# <input type="checkbox" name="only_loads"></input> %>
+    <%# <label>Mostra solo carichi</label> %> 
+    <%# </p> %>
+    <%= f.input :only_loads, as: :boolean, label: 'Mostra solo carichi'  %>  
 
-    <p>
-    <input type="checkbox" name="only_loads"></input>
-    <label>Mostra solo carichi</label> 
-    </p>
-
-    <p>
-    <%= submit_tag "Scarica", data: { disable_with: false } %>
-    </p>
-
+    <%= f.submit "Scarica", input_html: { data: { disable_with: false }} %>
   <% end %>
 <% end %>

@@ -9,12 +9,12 @@ class ReportsController < ApplicationController
 
   def articoli 
     authorize :report
-    report = GemmaReport.new(current_organization, params[:format])
+    report = GemmaReport.new(current_organization, params[:report][:format])
 
     report.title     = 'Elenco articoli'
     report.fields    = [:thing]
     report.separator = :group_name
-    report.separator_page_break = params[:different_pages]
+    report.separator_page_break = params[:report][:different_pages] == '1'
 
     report.query  = "SELECT things.name as thing, groups.name as group_name
                        FROM things
@@ -35,14 +35,14 @@ class ReportsController < ApplicationController
 
   def giacenza
     authorize :report
-    report = GemmaReport.new(current_organization, params[:format])
+    report = GemmaReport.new(current_organization, params[:report][:format])
 
-    location = (params[:location] && params[:location][:id].to_i > 0) ? Location.find(params[:location][:id]) : nil
-    group    = (params[:group]    && params[:group][:id].to_i > 0) ? Group.find(params[:group][:id]) : nil
+    location = (params[:report][:location_id].to_i > 0) ? Location.find(params[:report][:location_id]) : nil
+    group    = (params[:report][:group_id].to_i > 0) ? Group.find(params[:report][:group_id]) : nil
 
     report.title  =  'Giacenza '
     report.title  +=  " in #{location}" if location
-    report.title  +=  " categoria: #{group}" if group
+    report.title  +=  "  per la categoria: #{group}" if group
 
     report.fields = [:actual, :thing]
     report.fields << :location unless (current_organization.locations.size <= 1 || location)
@@ -68,7 +68,7 @@ class ReportsController < ApplicationController
 
   def sottoscorta
     authorize :report
-    report = GemmaReport.new(current_organization, params[:format])
+    report = GemmaReport.new(current_organization, params[:report][:format])
 
     report.title  = 'Articoli sottoscorta'
     report.fields = [:total, :minimum, :thing]
@@ -92,20 +92,20 @@ class ReportsController < ApplicationController
 
   def scarichi
     authorize :report
-    report = GemmaReport.new(current_organization, params[:format])
+    report = GemmaReport.new(current_organization, params[:report][:format])
 
     leggi_date
 
-    @user = (params[:user] && params[:user][:id].to_i > 0) ? User.find(params[:user][:id]) : nil
+    @user = (params[:report][:user_id].to_i > 0) ? User.find(params[:report][:user_id]) : nil
     user_select = @user ? "AND (recipient_id = '#{@user.id}' OR (recipient_id IS NULL AND user_id = '#{@user.id}')) " : ""
 
-    @thing_id = (params[:thing] && params[:thing][:id].to_i > 0) ? params[:thing][:id].to_i : nil
+    @thing_id = (params[:report][:thing_id].to_i > 0) ? params[:report][:thing_id].to_i : nil
     thing_select = @thing_id ? "AND thing_id = #{@thing_id}" : '' 
 
-    @note = params[:note].blank? ? nil : params[:note].gsub(/[^a-zA-Z0-9 ]/, '')
+    @note = params[:report][:note].blank? ? nil : params[:report][:note].gsub(/[^a-zA-Z0-9 ]/, '')
     note_select = @note ? "AND note LIKE '%#{@note}%'" : ''
 
-    @group_id = (params[:group] && params[:group][:id].to_i > 0) ? params[:group][:id].to_i : nil
+    @group_id = (params[:report][:group_id].to_i > 0) ? params[:report][:group_id].to_i : nil
     group_select = @group_id ? "AND group_id = #{@group_id}" : '' 
 
     report.title = 'Scarichi'
@@ -114,7 +114,7 @@ class ReportsController < ApplicationController
     report.title += @note ? " con parola #{@note}" : ''
 
     report.separator = :upn
-    report.separator_page_break = params[:different_pages]
+    report.separator_page_break = params[:report][:different_pages] == '1'
 
     report.fields = [:date, :number, :thing, :description, :note]
     report.accumulator = :number if (@thing_id or @group_id)
@@ -128,15 +128,15 @@ class ReportsController < ApplicationController
     order = "upn, operations.date"
     order = "upn, things.name, operations.date" if @group_id
 
-    report.query = "SELECT DATE_FORMAT(operations.date,'%e/%m/%Y') AS date, 
+    report.query = "SELECT operations.date AS date, 
                            users.upn, 
                            ABS(number) as number, things.name as thing, description, operations.note, (price/100) AS price, price_operations
                       FROM operations 
            LEFT OUTER JOIN things ON operations.thing_id = things.id 
            LEFT OUTER JOIN users  ON COALESCE(recipient_id, user_id)= users.id 
                      WHERE operations.organization_id = #{current_organization.id}
-                       AND operations.date >= '#{@from.to_s}'
-                       AND operations.date <= '#{@to.to_s}'
+                       AND operations.date >= '#{@from}'
+                       AND operations.date <= '#{@to}'
                        AND operations.number < 0  
                        #{user_select}
                        #{thing_select}
@@ -158,11 +158,11 @@ class ReportsController < ApplicationController
 
     leggi_date
 
-    @user = (params[:user] && params[:user][:id].to_i > 0) ? User.find(params[:user][:id]) : nil
+    @user = params[:report][:user_id].to_i > 0 ? User.find(params[:report][:user_id]) : nil
     user_select = @user ? "AND (recipient_id = #{@user.id} OR (recipient_id IS NULL AND user_id = #{@user.id})) " : ""
     user_select_bookings = @user ? "AND user_id = #{@user.id} AND from_booking IS NOT NULL" : ""
 
-    report.title = "Ricevuta scarichi del giorno #{I18n.l @from}"
+    report.title = "Ricevuta scarichi del giorno #{@from}"
     report.separator_page_break = true
     report.intro = "Il sottoscritto #{@user} dichiara di avere ricevuto il seguente materiale:"
     report.bye_bye = "In fede, #{@user}"
@@ -177,15 +177,15 @@ class ReportsController < ApplicationController
       report.price_accumulator = true
     end
 
-    report.query = "SELECT DATE_FORMAT(operations.date,'%e/%m/%Y') AS date, 
+    report.query = "SELECT operations.date AS date, 
                            users.upn, 
                            ABS(number) as number, things.name as thing, description, operations.note, (price/100) AS price
                       FROM operations 
            LEFT OUTER JOIN things ON operations.thing_id = things.id 
            LEFT OUTER JOIN users  ON COALESCE(recipient_id, user_id)= users.id 
                      WHERE operations.organization_id = #{current_organization.id}
-                           #{params[:bookings] ? user_select_bookings : user_select}
-                       AND operations.date = '#{@from.to_s}'
+                           #{params[:report][:bookings] == '1' ? user_select_bookings : user_select}
+                       AND operations.date = '#{@from}'
                        AND operations.number < 0  
                   ORDER BY upn, things.name, operations.date"
 
@@ -199,32 +199,32 @@ class ReportsController < ApplicationController
 
   def storico
     authorize :report
-    report = GemmaReport.new(current_organization, params[:format])
+    report = GemmaReport.new(current_organization, params[:report][:format])
 
     leggi_date
 
-    thing = (params[:thing] && params[:thing][:id].to_i > 0) ? Thing.find(params[:thing][:id].to_i) : nil
+    thing = params[:report][:thing_id].to_i > 0 ? Thing.find(params[:thing_id]) : nil
 
     loc_query = ''
     # se ci limitiamo ad un oggetto
     loc_query += " AND operations.thing_id = #{thing.id} " if thing
     # se ci limitiamo ai ddt
-    loc_query += " AND operations.type = 'Load'" if params[:only_loads]
+    loc_query += " AND operations.type = 'Load'" if params[:report][:only_loads] == "1"
 
     report.title = 'Storico '
     report.title += "di #{thing}" if thing
-    report.title += " periodo dal #{I18n.l @from} al #{I18n.l @to}"
+    report.title += " periodo dal #{@from} al #{@to}"
 
     report.separator = :thing
     report.fields    = [:date, :number, :type, :upn] 
     report.fields    = [:date, :number, :type, :upn, :price] if current_organization.pricing
-    report.separator_page_break = params[:different_pages]
+    report.separator_page_break = params[:report][:different_pages] == '1'
 
-    report.query = "SELECT DATE_FORMAT(operations.date,'%e/%m/%Y') AS date, 
+    report.query = "SELECT operations.date AS date, 
                            operations.number, type, (price/100) AS price,
                            things.name as thing, things.id AS thing_id, 
                            ddts.name as ddt, ddts.gen, ddts.number AS dnumber, suppliers.name as supplier, 
-                           DATE_FORMAT(ddts.date,'%e/%m/%Y') AS ddate, 
+                           ddts.date AS ddate, 
                            users.upn
                      FROM operations
                      LEFT OUTER JOIN things     ON operations.thing_id             = things.id
@@ -234,8 +234,8 @@ class ReportsController < ApplicationController
                     WHERE operations.organization_id = #{current_organization.id}
                           #{loc_query}
                       AND operations.number != 0
-                      AND operations.date >= '#{@from.to_s}'
-                      AND operations.date <= '#{@to.to_s}'
+                      AND operations.date >= '#{@from}'
+                      AND operations.date <= '#{@to}'
                  ORDER BY things.name, operations.date"
                     
     # giacenza iniziale al periodo
@@ -244,12 +244,12 @@ class ReportsController < ApplicationController
                LEFT OUTER JOIN things ON operations.thing_id = things.id
               WHERE operations.organization_id = #{current_organization.id}
                 #{loc_query}
-                AND operations.date < '#{@from.to_s}'
+                AND operations.date < '#{@from}'
            GROUP BY thing_id"
     report.separator_first_line = Hash.new
     report.separator_first_line_field = 'thing_id'
     ActiveRecord::Base.connection.execute(query).each do |r|
-      report.separator_first_line[r[0].to_s] = sprintf("#{report.initial_space}            %5i  Valore iniziale %s ", r[1], I18n.l(@from))
+      report.separator_first_line[r[0].to_s] = sprintf("#{report.initial_space}            %5i  Valore iniziale %s ", r[1], @from)
     end
 
     # giacenza finale al periodo
@@ -258,12 +258,12 @@ class ReportsController < ApplicationController
                LEFT OUTER JOIN things ON operations.thing_id = things.id
               WHERE operations.organization_id = #{current_organization.id}
                 #{loc_query}
-                AND operations.date <= '#{@to.to_s}'
+                AND operations.date <= '#{@to}'
            GROUP BY thing_id"
     report.separator_last_line = Hash.new
     report.separator_last_line_field = 'thing_id'
     ActiveRecord::Base.connection.execute(query).each do |r|
-      report.separator_last_line[r[0].to_s] = sprintf("#{report.initial_space}            %5i  Giacenza %s", r[1], I18n.l(@to))
+      report.separator_last_line[r[0].to_s] = sprintf("#{report.initial_space}            %5i  Giacenza %s", r[1], @to)
     end
 
     send_data report.render, filename: report.filename, type: report.type
@@ -271,15 +271,15 @@ class ReportsController < ApplicationController
 
   def form_ddts
     authorize :report
-    @ddts = current_organization.ddts.includes(:supplier).order('number desc').where('YEAR(date) = ?', Date.today.year)
+    @ddts = current_organization.ddts.includes(:supplier).order('number desc').where('YEAR(date) = ?', Date.today.year).to_a
   end
 
   def ddts
     authorize :report
-    ddt_ids       = params[:ddt_ids] ? params[:ddt_ids].map(&:to_i).join(',') : nil
+    ddt_ids       = params[:report][:ddt_ids] ? params[:report][:ddt_ids].map(&:to_i).join(',') : nil
     ddt_ids_query = ddt_ids ? "AND ddts.id IN (#{ddt_ids})" : ''
 
-    report = GemmaReport.new(current_organization, params[:format])
+    report = GemmaReport.new(current_organization, params[:report][:format])
 
     leggi_date
 
@@ -288,12 +288,12 @@ class ReportsController < ApplicationController
     report.separator = :ddt
     report.fields    = [:date, :number, :thing] 
 
-    report.query = "SELECT DATE_FORMAT(operations.date,'%e/%m/%Y') AS date, 
+    report.query = "SELECT operations.date AS date, 
                            operations.number, type,
                            things.name as thing, things.id AS thing_id, 
                            concat(ddts.gen, ' ', ddts.name, ' num. ', ddts.number, ' del ', ddts.date, ' - ', suppliers.name) as ddt,
                            ddts.gen, ddts.number AS dnumber, suppliers.name as supplier, 
-                           DATE_FORMAT(ddts.date,'%e/%m/%Y') AS ddate 
+                           ddts.date AS ddate 
                      FROM operations
                      LEFT OUTER JOIN things     ON operations.thing_id             = things.id
                      LEFT OUTER JOIN ddts       ON operations.ddt_id               = ddts.id 
@@ -309,10 +309,10 @@ class ReportsController < ApplicationController
   # get 'reports/ddts/(:id)', to: "reports#ddt", as: 'ddt_report'
   def ddt
     authorize :report
-    ddt   = Ddt.includes(:supplier).find(params[:id])
+    ddt   = Ddt.includes(:supplier).find(params[:report][:id])
     loads = ddt.loads.includes(:thing)
 
-    report = GemmaReport.new(current_organization, params[:format])
+    report = GemmaReport.new(current_organization, params[:report][:format])
     report.title = "Documento N. #{ddt.number}"
 
     report.body = "Documento Record N. #{ddt.number} - #{ddt.gen} #{ddt} del #{ddt.date}\r\n"
@@ -337,11 +337,11 @@ class ReportsController < ApplicationController
 
   def provision
     authorize :report
-    report = GemmaReport.new(current_organization, params[:format])
+    report = GemmaReport.new(current_organization, params[:report][:format])
     leggi_date
 
     report.title = 'Storico per programmazione'
-    report.title += " periodo dal #{I18n.l @from} al #{I18n.l @to}"
+    report.title += " periodo dal #{@from} al #{@to}"
 
     report.separator = :thing
     report.fields    = [:date, :number] 
@@ -353,8 +353,8 @@ class ReportsController < ApplicationController
                      LEFT OUTER JOIN things ON operations.thing_id = things.id
                     WHERE operations.organization_id = #{current_organization.id}
                       AND operations.number < 0
-                      AND operations.date >= '#{@from.to_s}'
-                      AND operations.date <= '#{@to.to_s}'
+                      AND operations.date >= '#{@from}'
+                      AND operations.date <= '#{@to}'
                  GROUP BY things.id"
                     
     # giacenza finale al periodo
@@ -362,12 +362,12 @@ class ReportsController < ApplicationController
                FROM operations 
                LEFT OUTER JOIN things ON operations.thing_id = things.id
               WHERE operations.organization_id = #{current_organization.id}
-                AND operations.date <= '#{@to.to_s}'
+                AND operations.date <= '#{@to}'
            GROUP BY thing_id"
     report.separator_last_line = Hash.new
     report.separator_last_line_field = 'thing_id'
     ActiveRecord::Base.connection.execute(query).each do |r|
-      report.separator_last_line[r[0].to_s] = sprintf("#{report.initial_space}            %5i  Giacenza %s", r[1], I18n.l(@to))
+      report.separator_last_line[r[0].to_s] = sprintf("#{report.initial_space}            %5i  Giacenza %s", r[1], @to)
     end
 
     send_data report.render, filename: report.filename, type: report.type
@@ -379,22 +379,8 @@ class ReportsController < ApplicationController
 
   private
 
-  def set_date(y, m, d)
-    if Date.valid_date?(y, m, d)
-      Date.new(y, m, d)
-    else
-      Date.today
-    end
-  end
-
-  # "from"=>{"day"=>"1", "month"=>"1", "year"=>"2015"}, "to"=>{"day"=>"1", "month"=>"2", "year"=>"2015"}
   def leggi_date
-    today = Date.today
-
-    params['from'] ||= { day: 1, month: today.month, year: today.year }
-    params['to']   ||= { day: today.day, month: today.month, year: today.year }
-
-    @from = set_date(params['from']['year'].to_i, params['from']['month'].to_i, params['from']['day'].to_i)
-    @to   = set_date(params['to']['year'].to_i, params['to']['month'].to_i, params['to']['day'].to_i)
+    @from = params[:report][:start_date] || Date.today.to_s
+    @to   = params[:report][:end_date]   || Date.tomorrow.to_s
   end
 end

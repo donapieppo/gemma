@@ -1,13 +1,8 @@
 <%= report_layout do %>  
   <h2>Articoli sottoscorta</h2>
 
-  <%= form_with url: sottoscorta_reports_path, data: { turbo: false } do %>
-
-    <%= render partial: "format" %>
-
-    <p>
-    <%= submit_tag "Scarica", data: { disable_with: false } %>
-    </p>
-
+  <%= simple_form_for :report, url: sottoscorta_reports_path, data: { turbo: false } do |f| %>
+    <%= render Report::FormatComponent.new(f) %>  
+    <%= f.submit "Scarica", input_html: { data: { disable_with: false }} %>
   <% end %>
 <% end %>

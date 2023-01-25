@@ -1,39 +1,17 @@
 <%= report_layout do %>  
   <h2>Scarichi utente</h2>
 
-  <%= form_with url: scarichi_reports_path, data: { turbo: false } do %>
+  <%= simple_form_for :report, url: scarichi_reports_path, data: { turbo: false } do |f| %>
+    <%= render Report::FormatComponent.new(f) %>  
+    <%= render Report::PeriodComponent.new(f) %>  
 
-    <%= render partial: "format" %>
-    <%= render partial: "period" %>
+    <%= f.input :user_id, collection: @cache_users, label_method: :cn_militar, label: "Scarichi a nome dell'utente", include_blank: 'Tutti' %>  
+    <%= f.input :thing_id, collection: @things, label_method: :short_name, label: "Del materiale", include_blank: 'Qualsiasi' %>  
+    <%= f.input :group_id, collection: @groups, label: "Ricerca tra articoli di genere", include_blank: 'Qualsiasi' %>  
 
-    <p>
-    <label>Scarichi a nome dell'utente</label><br/>
-    <%= collection_select(:user, :id, @cache_users, "id", "upn", { include_blank: 'Tutti' }) %>
-    </p>
+    <%= f.input :note, label: "Ricerca parola nelle note" %>  
+    <%= f.input :different_pages, label: "Una pagina per ogni utente", as: :boolean %>  
 
-    <p>
-    <label>Del Materiale</label><br/>
-    <%= collection_select(:thing, :id, @things, :id, :short_name, { include_blank: 'Qualsiasi' }) %>
-    </p>
-
-    <p>
-    <label>Ricerca tra articoli di genere</label><br/>
-    <%= collection_select(:group, :id, @groups, :id, :name, { include_blank: 'Qualsiasi' }) %>
-    </p>
-
-    <p>
-    <label>Ricerca parola nelle note</label><br/>
-    <%= text_field_tag(:note) %>
-    </p>
-
-    <p>
-    <input type="checkbox" name="different_pages" /> 
-    <label>Una pagina per ogni utente</label>
-    </p>
-
-    <p>
-    <%= submit_tag "Scarica", data: { disable_with: false } %>
-    </p>
-
+    <%= f.submit "Scarica", input_html: { data: { disable_with: false }} %>
   <% end %>
 <% end %>
