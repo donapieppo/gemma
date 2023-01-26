@@ -2,7 +2,6 @@
   <div class="dm-card">
     <div class="dm-card-title"><%= booking_title %></div>
     <div class="dm-card-body">
-
       <% @things_cache = Hash.new {|h,v| h[v] = 0} %>  
       <% old_user = nil %>  
       <table class="table table-sm">
@@ -14,7 +13,7 @@
             <% else %>
               <th style="border: 0"></th>
             <% end %>
-            <td title="<%= book.created_at %>">
+            <td title="creato il <%= l book.created_at %>">
               <strong><%= book.number.abs %> <%= book.thing %></strong> 
               <%= "per #{h book.recipient}" if book.recipient %> 
               <%= "(#{book.note})" unless book.note.blank? %>
@@ -32,7 +31,7 @@
 
   <% if @things_cache.size > 1 %>  
     <div class="dm-card">
-      <div class="dm-card-title">Oggetti prenotati</div>
+      <div class="dm-card-title">Riassunto oggetti prenotati</div>
       <div class="dm-card-body">
 
         <ul class="booking-things">
@@ -45,9 +44,11 @@
   <% end %>
 
   <%= form_with url: barcode_bookings_path, method: :get do %>
-    <label>Ricerca attraverso codice a barre: </label>
-    <%= search_field_tag 'barcode' %>  
-    <%= submit_tag "cerca" %> - <%= link_to('tutti', bookings_path) %>  
+    <div class="input-group">
+      <span class="input-group-text">Ricerca attraverso codice a barre:</span>
+      <input type="search" class="form-control" name="barcode"/>
+      <%= submit_tag "cerca" %> <%= link_to 'mostra tutti', bookings_path, class: 'ms-4' %>  
+    </div>
   <% end %>
 
 <% else %>
@@ -61,16 +62,11 @@
   <div class="dm-form">
     <div class="dm-form-title">Ricevute</div>
     <div class="dm-form-body">
-      <%= form_with url: receipt_reports_path, data: { turbo: false } do %>
-        <label class="me-2">Scarichi dell'utente</label>
-        <%= collection_select(:user, :id, @cache_users, "id", "cn_militar", { include_blank: false }) %>
-
-        <label class="m-2">in data</label>
-        <%- t = Date.today %>  
-        <%= select_date t, prefix: 'from' %> 
-
+      <%= simple_form_for :report, url: receipt_reports_path, data: { turbo: false } do |f| %>
+        <%= f.input :user_id, collection: @cache_users, label_method: :cn_militar, include_blank: false, label: "Scarichi dell'utente" %>  
+        <%= f.input :date, as: :date, html5: true, label: 'Data', input_html: { value: Date.today } %>  
         <input type="hidden" name="bookings" value="1" />  
-        <%= submit_tag "Scarica", class: 'button ms-2' %>
+        <%= f.submit "Scarica report" %>  
       <% end %>
     </div>
   </div>
