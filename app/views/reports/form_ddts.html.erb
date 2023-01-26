@@ -1,6 +1,4 @@
-<%= report_layout do %>  
-  <h2>Ddt</h2>
-
+<%= report_layout title: Ddt do %>  
   <% if @ddts.any? %>
     <%= simple_form_for :report, url: ddts_reports_path, data: { turbo: false } do |f| %>
       <%= render Report::FormatComponent.new(f) %>  

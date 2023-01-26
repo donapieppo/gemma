@@ -1,6 +1,4 @@
-<%= report_layout do %>  
-  <h2>Ricevute</h2>
-
+<%= report_layout title: "Ricevute" do %>  
   <%= simple_form_for :report, url: receipt_reports_path, data: { turbo: false } do |f| %>
     <%= f.input :from, as: :date, html5: true, label: 'data', start_date: Date.today %>  
     <%= f.input :user_id, collection: @cache_users, label_method: :cn_militar, label: "Scarichi a nome dell'utente", include_blank: false %>  
