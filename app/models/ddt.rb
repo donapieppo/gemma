@@ -25,6 +25,10 @@ class Ddt < ApplicationRecord
     "#{self.gen} n.#{self.number}"
   end
 
+  def short_description_with_date
+    "#{self.gen} n.#{self.number} del #{self.date}"
+  end
+
   # FIXME
   def description
     "#{self.name} (#{self.supplier})"
