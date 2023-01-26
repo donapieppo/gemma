@@ -274,10 +274,11 @@ class ReportsController < ApplicationController
     @ddts = current_organization.ddts.includes(:supplier).order('number desc').where('YEAR(date) = ?', Date.today.year).to_a
   end
 
+  # empty selection: "ddt_ids"=>[""] -> ddt_ids = [0]
   def ddts
     authorize :report
-    ddt_ids       = params[:report][:ddt_ids] ? params[:report][:ddt_ids].map(&:to_i).join(',') : nil
-    ddt_ids_query = ddt_ids ? "AND ddts.id IN (#{ddt_ids})" : ''
+    ddt_ids       = params[:report][:ddt_ids].map(&:to_i).join(',')
+    ddt_ids_query = "AND ddts.id IN (#{ddt_ids})" # if empty ddts.id IN (0)
 
     report = GemmaReport.new(current_organization, params[:report][:format])
 
