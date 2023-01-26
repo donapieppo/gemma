@@ -63,6 +63,7 @@ module Gemma
         new_attributes.delete('avoid_history_coherent')
         new_attributes.delete('avoid_price_updating')
         new_attributes.delete('id')
+        new_attributes.delete('created_at')
         new_attributes['upn']       = User.find(operation.user_id).upn
         new_attributes['recipient'] = User.find(operation.recipient_id).upn if operation.recipient_id.to_i > 0
         new_attributes['oldid']     = operation.id
