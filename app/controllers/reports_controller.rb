@@ -184,7 +184,7 @@ class ReportsController < ApplicationController
            LEFT OUTER JOIN things ON operations.thing_id = things.id 
            LEFT OUTER JOIN users  ON COALESCE(recipient_id, user_id)= users.id 
                      WHERE operations.organization_id = #{current_organization.id}
-                           #{params[:report][:bookings] == '1' ? user_select_bookings : user_select}
+                           #{params[:bookings] == '1' ? user_select_bookings : user_select}
                        AND operations.date = '#{@from}'
                        AND operations.number < 0  
                   ORDER BY upn, things.name, operations.date"
