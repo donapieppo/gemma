@@ -6,19 +6,10 @@
   </p>
 
   <% if @years.size > 0 %>  
-    <%= form_with url: archs_list_path, data: { turbo: false } do %>
-      <%= render partial: "reports/format" %>
-      <p>
-      <label>Anno:</label>
-      <select name="year">
-        <%= @years.each do |year| %>  
-          <option value="<%= year %>"><%= year %></option>
-        <% end %>
-      </select>
-      </p>
-      <p>
-      <%= submit_tag "Scarica Report", class: 'button' %>
-      </p>
+    <%= simple_form_for :report, url: archs_list_path, data: { turbo: false } do |f|%>
+      <%= render Report::FormatComponent.new(f) %>  
+      <%= f.input :year, collection: @years, label: 'Anno'%>  
+      <%= f.submit "Scarica", input_html: { data: { disable_with: false }} %>
     <% end %>
   <% else %>
     <p>
