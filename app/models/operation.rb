@@ -2,10 +2,10 @@
 # prezzo calcolato come 50 prezzo totale 20 euro dal carico 198986
 class Operation < ApplicationRecord
   belongs_to :user
-  belongs_to :recipient, class_name: 'User'
-  belongs_to :ddt
   belongs_to :thing
   belongs_to :organization
+  belongs_to :recipient, class_name: 'User', optional: true
+  belongs_to :ddt, optional: true
   has_many   :moves
 
   serialize  :price_operations, Array
