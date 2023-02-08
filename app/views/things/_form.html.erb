@@ -9,9 +9,11 @@
     <% if @locations.size > 1 %>
       <%= thing.association :locations, collection: @locations, as: :check_boxes %>  
     <% end %>
-    <div class='col-sm-9 offset-sm-3'>
-      <input type="checkbox" name="insert_barcodes"/> 
-      <label>Voglio inserire i codici a barre dopo aver salvato l'articolo</label>
+    <div class='col-sm-9 offset-sm-3 my-2'>
+      <label>
+      <input type="checkbox" name="insert_barcodes" class="form-check-input"/> 
+        Voglio inserire i codici a barre dopo aver salvato l'articolo.
+      </label>
     </div>
   <% end %>
 
