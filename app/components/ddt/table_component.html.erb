@@ -2,8 +2,12 @@
   <tbody>
     <% @ddts.each do |ddt| %>
       <tr>
-        <th><%= ddt.gen %> num. <%= ddt.number %></th>
-        <td>del <%= l ddt.date %> - <%= ddt %> <br/>di <%= ddt.supplier %></td>
+        <th>
+          <%= ddt.gen %> num. <%= ddt.number %>
+        </th>
+        <td>
+          del <%= l ddt.date %> - <%= ddt %> <br/><small class="text-muted">di <%= ddt.supplier %></small>
+        </td>
         <td nowrap="nowrap">
           <%= link_to_show ddt %>
           <%= link_to_edit edit_ddt_path(ddt) %>  
