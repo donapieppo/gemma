@@ -9,7 +9,7 @@
   <% tot = 0 %>
 
   <div class="m-3 font-weight-bold">
-    <%= title %> <span class="text-muted small">(Per operare su un singolo movimento cliccare sulla riga).</span>
+    <%= title %> <br/><span class="text-muted small">(Per operare su un singolo movimento cliccare sulla riga).</span>
   </div>
 
   <%= render Pagination::MovesYearComponent.new(@first_year, @last_year, @display_year, @thing, @deposit) %>  
