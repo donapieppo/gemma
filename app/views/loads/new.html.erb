@@ -22,7 +22,7 @@
   <% if current_organization.pricing %>  
     <%= o.input :price, as: :price, hint: 'Euro e centesimi' %>
   <% end %>
-  <%= o.input :ycia,  as: :rif_cia, hint: 'Anno / numero' %>  
+  <%= o.input :ycia, as: :rif_cia, hint: 'Anno / numero' %>  
   <%= o.input :note %>
 
   <%= o.submit %> - <%= link_to_back thing_moves_path(@thing) %>  
