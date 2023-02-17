@@ -10,7 +10,7 @@ class Notification
       puts "---- analizzo: #{organization.description} dalla data #{@from} -----"
 
       # prima riempio con elenco di tutti gli scarichi diviso per utente
-      all_unloads = Hash.new { |hash, key| hash[key] = "" }
+      all_unloads = Hash.new { |hash, key| hash[key] = [] }
 
       organization.unloads.where(['date >= ? AND date <= ?', @from, @to])
                           .order(:date)
@@ -22,13 +22,14 @@ class Notification
         note  = (unload.note =~ /\w+/) ? "(#{unload.note})" : ''
 
         operator = unload.recipient ? "(da #{unload.user.upn})" : ""
-        all_unloads[to] += " #{data} - #{num}  #{thing} #{note} #{operator}\n"
+        all_unloads[to] << " #{data} - #{num}  #{thing} #{note} #{operator}\n"
       end
 
       all_unloads.each do |user, elenco|
         puts "Trovato #{user.inspect} con i seguenti unloads:"
         puts elenco
         SystemMailer.notify_unloads(user, organization, @from, @to, @subject, elenco).deliver_now
+        sleep 5
       end
     end
   end
