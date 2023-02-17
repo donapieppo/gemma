@@ -2,11 +2,11 @@
   <%= form_tag find_user_path, class: 'simple_form mb-3' do %>
     <div class="form-group row">
       <label class="col-sm-3 col-form-label">Nome (<i>opzionale</i>):</label>
-      <div class="col-sm-9"><%= text_field :dsauser, 'nome', size: 20 %></div>
+      <div class="col-sm-9"><%= text_field :dsauser, 'nome', size: 20, class: 'form-control string' %></div>
     </div>
-    <div class="form-group row">
+    <div class="form-group row my-2">
       <label class="col-sm-3 col-form-label">Cognome:</label>
-      <div class="col-sm-9"> <%= text_field :dsauser, 'cognome', size: 20 %></div>
+      <div class="col-sm-9"> <%= text_field :dsauser, 'cognome', size: 20, class: 'form-control string' %></div>
     </div>
     <%= submit_tag "Cerca" %>
   <% end %>
