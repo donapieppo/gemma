@@ -1,4 +1,4 @@
-<h1><%= current_organization.description %> <small><%= current_organization.id %></small></h1>
+<h1><%= current_organization.description %> <small class="text-muted"><%= current_organization.id %></small></h1>
 
 <%= render partial: 'form' %>
 
@@ -28,10 +28,10 @@
         <div class="list-group-item py-2">
           <%= link_to group, group_things_path(group) %>
           <span class="float-end">
-            <%= link_to_edit [:edit, group] %>
             <% if group.things.empty? %>  
               <%= link_to_delete group_path(group) %>  
             <% end %>
+            <%= link_to_edit [:edit, group] %>
           </span>
         </div>
       <% end %>
