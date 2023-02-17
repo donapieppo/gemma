@@ -6,6 +6,9 @@ gem 'dm_unibo_common',      git: 'https://github.com/donapieppo/dm_unibo_common.
 #gem 'dm_unibo_common',      path: '/home/rails/gems/dm_unibo_common/'
 
 gem "sprockets-rails"
+gem "jsbundling-rails"
+gem "cssbundling-rails", "~> 1.1"
+gem "turbo-rails"
 gem "importmap-rails"
 
 gem "chunky_png"

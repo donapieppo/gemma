@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/donapieppo/dm_unibo_common.git
-  revision: fff203924d42e65ca753d7d403ac7b63b5179b9f
+  revision: 0fd03c0a19f33019d3defedebc29489982115d86
   branch: turbo
   specs:
     dm_unibo_common (5.0.0)
@@ -402,6 +402,7 @@ DEPENDENCIES
   barby
   capybara
   chunky_png
+  cssbundling-rails (~> 1.1)
   cucumber-rails
   database_cleaner
   debug
@@ -411,12 +412,14 @@ DEPENDENCIES
   faker
   image_processing
   importmap-rails
+  jsbundling-rails
   prawn
   prawn-labels
   prawn-table
   rspec-rails (~> 6.0.0)
   selenium-webdriver
   sprockets-rails
+  turbo-rails
   web-console
   webdrivers
 
