@@ -44,8 +44,10 @@
   <% end %> 
 
   <div class='col-sm-9 offset-sm-3'>
-    <input type="checkbox" id="unload_sendmail" name="sendmail" <%= current_organization.sendmail == 'y' ? 'checked="checked"' : '' %> />
-    <%= f.label "Avvisa ora l'utente dell'operazione tramite mail." %>
+    <label>
+      <input type="checkbox" id="unload_sendmail" name="sendmail" <%= current_organization.sendmail == 'y' ? 'checked="checked"' : '' %> />
+      Avvisa ora l'utente dell'operazione tramite mail.
+    </label>
     <% if current_organization.sendmail == 'w' %>
       <%= f.hint "(in base a come è attualmente configurata la struttura, l'utente verrà comunque avvisato dei suoi scarchi ogni settimana)." %>
     <% elsif current_organization.sendmail == 'm' %>
