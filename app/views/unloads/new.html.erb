@@ -9,7 +9,7 @@
   number_hint += ". Numero di oggetti da consegnare ad ogni persona." if params[:batch] 
 %>  
 
-<%= dm_form_for [@thing, @unload], title: form_title, data: { turbo: false } do |f| %>
+<%= dm_form_for [@thing, @unload], title: form_title do |f| %>
   <%= f.dm_error_notification %>  
   <input type="hidden" name="batch" value="<%= params[:batch] %>" />
   <%= f.input :number, hint: number_hint, required: true %>
@@ -32,7 +32,9 @@
       <%= render DsaAwesompleteComponent.new(current_organization.id, f, :recipient_upn, hint: recipient_hint(@unload)) %>  
       <div class="col-sm-9 offset-sm-3 mb-4"> 
         È possibile 
-        <%= link_to dmicon('search') + " cercare l'utente", popup_find_user_path(modal: 1), data: { turbo_frame: :modal } %>
+
+        <%= link_to dmicon('search') + " cercare l'utente", popup_find_user_path, data: { turbo_frame: :modal } %>
+
         <% if @unload.is_a?(Unload) %>  
           , richiamare l'<span data-controller="dsa" data-dsa-lastupn-value="<%= @last_recipient_upn %>" data-action="click->dsa#setLastUpn" style="cursor: pointer; text-decoration: underline">ultimo utente inserito</span>
         <% end %> 
