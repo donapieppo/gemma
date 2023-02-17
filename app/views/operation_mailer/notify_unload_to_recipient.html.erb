@@ -1,0 +1,31 @@
+<p>Gentile <%= @unload.recipient %>,</p>
+
+<p>
+in data <%= l @unload.date %> Lei ha ritirato, in presenza dell'addetto
+<%= @unload.user %>,
+</p>
+
+<p style="margin-left: 1rem">
+numero <%= @unload.number.to_i.abs %> di <i>"<%= @unload.thing %>"</i>
+<% if @unload.note =~ /\w/ %>(<%= @unload.note %>)<% end %>
+<%= "al costo totale: #{print_price(@unload.price)}." if (@unload.organization.pricing && (@unload.price > 0)) %>  
+</p>
+
+<p>
+presso la struttura <i><%= @unload.organization.description %></i>.
+</p>
+
+<p>
+L'amministrazione Le ha inviato questa mail come promemoria.
+</p>
+
+
+<p style="margin-left: 1rem">
+Con i migliori saluti
+</p>
+
+<p>
+Amministrazione 
+<%= @unload.organization.description %>
+</p>
+

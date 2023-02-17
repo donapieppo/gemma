@@ -1,0 +1,27 @@
+<p>
+Gentile <%= @user %>,
+</p>
+
+<p>
+con la presente siamo a notificarLe che nel periodo 
+dal <%= @data_inizio %> al <%= @data_fine %> sono stati registrati a suo nome 
+i seguenti scarichi di materiale di consumo presso la Struttura<br/>
+<i><%= @organization %></i>:
+</p>
+
+<ul>
+  <% @elenco.each do |line| %>
+    <li><%= line %></li>
+  <% end %>
+</ul>
+
+<p>
+Con i migliori saluti,
+</p>
+
+<p>
+Amministrazione 
+<%= @organization %>
+</p>
+
+

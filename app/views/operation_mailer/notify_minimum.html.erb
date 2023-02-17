@@ -1,0 +1,24 @@
+<p>
+Gentile Amministrazione
+</p>
+
+<p>
+con lo scarico odierno 
+di nr. <%= @unload.number.to_i.abs %> 
+<i>"<%= @thing %>"</i>, 
+restano <%= @thing.total %> oggetti nella struttura 
+<%= @thing.organization %>. 
+</p>
+
+<p>
+La giacenza minima prevista è <%= @thing.minimum %>.
+</p>
+
+<p style="margin-left: 2rem">
+Con i migliori saluti
+</p>
+
+<p>
+Amministrazione 
+<%= @thing.organization %>
+</p>
