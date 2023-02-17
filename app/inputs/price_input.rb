@@ -10,15 +10,21 @@ class PriceInput < SimpleForm::Inputs::Base
     # load/unload/thing
     n = object.model_name.to_s.downcase
     res = %Q|
-       <input class="form-control-inline numeric integer" type="text" size="6" name="#{n}[price_int]" value="#{object.price_int}"></input>
+       <input class="form-select w-auto d-inline numeric integer" type="text" size="6" name="#{n}[price_int]" value="#{object.price_int}"></input>
        <b> , </b>
-       <input class="form-control-inline numeric integer numeric-cents" type="text" size="2" name="#{n}[price_dec]" value="#{object.price_dec}"></input> &euro; | 
+       <input class="form-select w-auto d-inline numeric integer numeric-cents" type="text" size="2" name="#{n}[price_dec]" value="#{object.price_dec}"></input> &euro; | 
 
     if n == 'load' || n == 'price' || n == 'stock'
        res += %Q|
        <div>
-       <input name="price_with_iva" type="radio" value="n" #{object.price ? '' : 'checked="checked"'} /> iva esclusa
-       <input name="price_with_iva" type="radio" value="y" #{object.price ? 'checked="checked"' : ''} /> iva inclusa
+         <label>
+           <input name="price_with_iva" type="radio" value="n" #{object.price ? '' : 'checked="checked"'} /> 
+           iva esclusa
+         </label>
+         <label>
+           <input name="price_with_iva" type="radio" value="y" #{object.price ? 'checked="checked"' : ''} /> 
+           iva inclusa
+         </label>
        </div>
        |
     end
