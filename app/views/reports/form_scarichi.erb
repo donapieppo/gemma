@@ -7,7 +7,7 @@
     <%= f.input :thing_id, collection: @things, label_method: :short_name, label: "Del materiale", include_blank: 'Qualsiasi' %>  
     <%= f.input :group_id, collection: @groups, label: "Ricerca tra articoli di genere", include_blank: 'Qualsiasi' %>  
 
-    <%= f.input :note, label: "Ricerca parola nelle note" %>  
+    <%= f.input :note, label: "Ricerca parola nelle note", required: false %>  
     <%= f.input :different_pages, label: "Una pagina per ogni utente", as: :boolean %>  
 
     <%= f.submit "Scarica", input_html: { data: { disable_with: false }} %>
