@@ -9,7 +9,7 @@
 
 <!-- method post -->
 <% if @other_locations.size > 0 %>  
-  <%= dm_form_for @thing, url: thing_deposits_path(@thing), method: :post, title: 'Aggiungi ubicazioni', html: { data: { turbo: false }} do |thing| %>
+  <%= dm_form_for @thing, url: thing_deposits_path(@thing), method: :post, title: 'Aggiungi ubicazioni', data: { turbo: false } do |thing| %>
     <%= thing.association :locations, collection: @other_locations, as: :check_boxes, label: 'Altre ubicazioni disponibili' %>  
     <%= thing.submit "Aggiungi" %> - <%= link_to_back edit_thing_path(@thing) %>  
   <% end %>
