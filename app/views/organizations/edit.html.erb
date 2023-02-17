@@ -76,7 +76,7 @@
         <% @operations.each do |o| %>  
           <li title="<%= o.thing %>">
             <%= l o.date %> - <%= o.user %> <%= " per #{o.recipient}" if o.recipient_id %> 
-            (<%= t o.type %>) <%= o.price if current_organization.pricing %>
+            (<%= t o.type %> di <%= o.number %>)
           </li>
         <% end %>
       </ul>
@@ -86,7 +86,8 @@
     <%= dm_card title: "Ultimi ddt/fatture" do  %>  
       <ul>
         <% for ddt in @ddts do %>  
-          <li><%= ddt.gen %> n.<%= ddt.number %> del <%= l ddt.date %></li>
+          <li>
+            <%= ddt.gen %> n.<%= link_to ddt.number, ddt %> del <%= l ddt.date %></li>
         <% end %>
       </ul>
     <% end %>
