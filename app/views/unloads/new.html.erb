@@ -9,7 +9,7 @@
   number_hint += ". Numero di oggetti da consegnare ad ogni persona." if params[:batch] 
 %>  
 
-<%= dm_form_for [@thing, @unload], title: form_title, html: { turbo: false } do |f| %>
+<%= dm_form_for [@thing, @unload], title: form_title, data: { turbo: false } do |f| %>
   <%= f.dm_error_notification %>  
   <input type="hidden" name="batch" value="<%= params[:batch] %>" />
   <%= f.input :number, hint: number_hint, required: true %>
