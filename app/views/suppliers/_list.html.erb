@@ -1,28 +1,8 @@
-<table class="table table-sm table-hover" id="suppliers_list">
-  <thead>
-    <tr>
-      <th>fornitore</th>
-      <th>partita iva</th>
-      <% unless what_for == 'ddt' %>  
-        <th>azioni</th>
-      <% end %>
-    </tr>
-  </thead>
-  <tbody id="suppliers">
-    <% suppliers.each do |supplier| %>  
-      <tr>
-        <td>
-          <% if what_for == 'ddt' %>
-            <%= link_to supplier, new_supplier_ddt_path(supplier) %>
-          <% else %>
-            <%= supplier %>
-          <% end %>
-        </td>
-        <td><%= supplier.pi %></td>
-        <% unless what_for == 'ddt' %>  
-          <td><%= link_to_edit edit_supplier_path(supplier) %></td>
-        <% end %>
-      </tr>
+<div class="list-group" id="suppliers_list">
+  <% suppliers.each do |supplier| %>
+    <% action = (what_for == 'ddt') ? new_supplier_ddt_path(supplier) : edit_supplier_path(supplier) %>  
+    <%= link_to action, class: 'list-group-item list-group-item-action' do %>
+      <%= supplier %>  <span class="float-end"><%= supplier.pi %></span>
     <% end %>
-  </tbody>
-</table>
+  <% end %>
+</div>
