@@ -310,10 +310,10 @@ class ReportsController < ApplicationController
   # get 'reports/ddts/(:id)', to: "reports#ddt", as: 'ddt_report'
   def ddt
     authorize :report
-    ddt   = Ddt.includes(:supplier).find(params[:report][:id])
+    ddt   = Ddt.includes(:supplier).find(params[:id])
     loads = ddt.loads.includes(:thing)
 
-    report = GemmaReport.new(current_organization, params[:report][:format])
+    report = GemmaReport.new(current_organization, params[:format])
     report.title = "Documento N. #{ddt.number}"
 
     report.body = "Documento Record N. #{ddt.number} - #{ddt.gen} #{ddt} del #{ddt.date}\r\n"
