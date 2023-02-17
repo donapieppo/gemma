@@ -8,14 +8,12 @@ Da questa pagina è possibile consultare e cancellare le proprie prenotazioni.
   <% @books.each do |o|  %>  
     <%= content_tag :div, class: "bookings-list-item #{o.class}" do %>
       <div class="row ">
-        <div class="col-2 col-md-2 col-lg-1">
+        <div class="col-2 col-lg-1">
           <div class="move-number py-1 px-2"><%= o.number.abs %></div>
         </div>
 
-        <div class="col my-1">
-          <span class="me-2">
-            <%= l o.date %>
-          </span>
+        <div class="col">
+          <span class="pe-2"><%= l o.date %></span>
           <span class="font-weight-bold"><%= o.thing %></span>
           <span class="float-end">
             <%= link_to_delete booking_path(o) %>
