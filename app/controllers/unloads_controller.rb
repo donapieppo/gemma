@@ -118,7 +118,7 @@ class UnloadsController < ApplicationController
 
   def send_unload_mails
     # da utente stesso
-    if current_organization.sendmail == 'y' && @unload.recipient !~ /\w\.\w/
+    if current_organization.sendmail == 'y' && @unload.recipient.nil?
       OperationMailer.notify_unload(@unload.reload).deliver_now
     end
 
