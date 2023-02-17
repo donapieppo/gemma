@@ -14,7 +14,7 @@
               <th style="border: 0"></th>
             <% end %>
             <td title="creato il <%= l book.created_at %>">
-              <strong><%= book.number.abs %> <%= book.thing %></strong> 
+              <strong><%= book.number.abs %></strong> <%= book.thing %>
               <%= "per #{h book.recipient}" if book.recipient %> 
               <%= "(#{book.note})" unless book.note.blank? %>
             </td>
@@ -58,7 +58,7 @@
   </div>
 <% end %>
 
-<% unless @cache_users.empty? %>  
+<% if @cache_users.any? %>  
   <div class="dm-form">
     <div class="dm-form-title">Ricevute</div>
     <div class="dm-form-body">
