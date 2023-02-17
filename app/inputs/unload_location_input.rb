@@ -7,8 +7,12 @@ class UnloadLocationInput < SimpleForm::Inputs::Base
     res = ""
     object.thing.deposits.each do |dep|
       disabled = dep.actual < 1 ? %Q|disabled="disabled"| : ""
-      res += %Q|<input id="id_#{dep.id}" type="radio" value="#{dep.id}" name="unload[deposit_id]" #{disabled}></input>
-                <span>#{dep.location} (#{dep.actual} disponibili)</span><br/>|.html_safe
+      res += %Q|
+         <label>
+           <input id="id_#{dep.id}" type="radio" value="#{dep.id}" name="unload[deposit_id]" #{disabled}></input>
+           #{dep.location} (#{dep.actual} disponibili)
+         </label>
+         <br/>|.html_safe
     end
     res
   end
