@@ -1,6 +1,11 @@
 <% tot = 0 %>  
 
-<h2>I miei scarichi presso <%= current_organization %> <small>(Anno <%= Date.today.year %>)</small>.</h2>
+<h1>I miei scarichi</h1>
+
+<div class="info">
+  I miei scarichi nell'anno <%= Date.today.year %> presso <br/>
+  <%= current_organization %>.
+</div>
 
 <div class="unloads-list my-3">
   <% @unloads.each do |o|  %>  
