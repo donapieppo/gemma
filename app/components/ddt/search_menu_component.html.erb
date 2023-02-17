@@ -43,8 +43,12 @@
 
 <%= form_tag search_cia_ddts_path do %>
   <%= dm_card title: 'Rif. CIA - Nr. Prot.' do %>
-    <p><%= select_tag "ycia", options_for_select(@years_cia), { include_blank: false } %></p>
-    <p><%= text_field_tag "ncia", '', size: 10 %> <%= submit_tag 'Cerca' %></p>
+    <div class="my-2">
+      <%= select_tag "ycia", options_for_select(@years_cia), { include_blank: false, class: 'form-select select' } %>
+    </div>
+    <div>
+      <%= text_field_tag "ncia", '', size: 10, class: 'form-control' %> <%= submit_tag 'Cerca', class: 'my-2' %>
+    </div>
   <% end %>
 <% end %>
 
