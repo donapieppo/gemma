@@ -10,7 +10,7 @@ body {
   @extend .nav;
   @extend .nav-pills;
   @extend .nav-fill;
-  font-size: 12px;
+  font-size: 13px;
   li {
     @extend .nav-item;
     a, button { @extend .nav-link; }
