@@ -13,7 +13,7 @@
             <% else %>
               <th style="border: 0"></th>
             <% end %>
-            <td title="creato il <%= l book.created_at %>">
+            <td title="creato il <%= l(book.created_at) if book.created_at %>">
               <strong><%= book.number.abs %></strong> <%= book.thing %>
               <%= "per #{h book.recipient}" if book.recipient %> 
               <%= "(#{book.note})" unless book.note.blank? %>
