@@ -134,6 +134,9 @@ it:
   date:
     formats:
       in_list: ! '%d/%m/%y'
+  time:
+    formats:
+      booking: ! "%d/%m %H:%M"
 
   Shift: Spostamento
   Unload: Scarico
