@@ -19,6 +19,9 @@
               <%= "(#{book.note})" unless book.note.blank? %>
             </td>
             <td nowrap="nowrap">
+              <small><%= l(book.created_at, format: :booking) if book.created_at %></small>
+            </td>
+            <td nowrap="nowrap" class="text-end">
               <%= link_to_check confirm_booking_path(book) %> 
               <%= link_to_delete booking_path(book) %> 
               <%= link_to_change_and_confirm edit_booking_path(book) %>
