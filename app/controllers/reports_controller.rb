@@ -28,7 +28,7 @@ class ReportsController < ApplicationController
   def form_giacenza
     authorize :report
     @locations = current_organization.locations.order(:name)
-    @groups    = current_organization.groups
+    @groups    = current_organization.groups.order(:name)
     # se solo uno non c'e' da scegliere :-)
     @locations = [] if @locations.size == 1
   end
@@ -64,19 +64,38 @@ class ReportsController < ApplicationController
 
   def form_sottoscorta
     authorize :report
+    @locations = current_organization.locations.order(:name)
+    @groups    = current_organization.groups.order(:name)
+    # se solo uno non c'e' da scegliere :-)
+    @locations = [] if @locations.size == 1
   end
 
   def sottoscorta
     authorize :report
     report = GemmaReport.new(current_organization, params[:report][:format])
 
+    location = (params[:report][:location_id].to_i > 0) ? Location.find(params[:report][:location_id]) : nil
+    group    = (params[:report][:group_id].to_i > 0) ? Group.find(params[:report][:group_id]) : nil
+
     report.title  = 'Articoli sottoscorta'
+    report.title  =  'Articoli sottoscorta '
+    report.title  +=  " in #{location}" if location
+    report.title  +=  "  per la categoria: #{group}" if group
+
     report.fields = [:total, :minimum, :thing]
+    report.fields << :location unless (current_organization.locations.size <= 1 || location)
+
+    loc_query   = location ? " AND deposits.location_id = #{location.id} " : ""
+    group_query = group    ? " AND things.group_id = #{group.id} " : ""
 
     report.query = "SELECT things.name as thing, total, minimum 
-                      FROM things 
+                      FROM deposits 
+                      LEFT OUTER JOIN things ON deposits.thing_id = things.id 
+                      LEFT OUTER JOIN locations ON deposits.location_id = locations.id 
                 WHERE things.organization_id = #{current_organization.id}
                   AND total < things.minimum
+                      #{loc_query}
+                      #{group_query}
              ORDER BY things.name"
 
     send_data report.render, filename: report.filename, type: report.type
@@ -376,6 +395,33 @@ class ReportsController < ApplicationController
 
   def unavailable
     authorize :report
+  end
+
+  def bookings
+    authorize :report
+    report = GemmaReport.new(current_organization, 'pdf')
+
+    report.title = 'Prenotazioni'
+    report.separator = :upn
+
+    report.fields = [:date, :number, :thing, :description, :note]
+    report.accumulator = :number if (@thing_id or @group_id)
+    report.separator = :thing if @group_id
+
+    order = "upn, operations.date"
+
+    report.query = "SELECT operations.date AS date, 
+                           users.upn, 
+                           ABS(number) as number, things.name as thing, description
+                      FROM operations 
+           LEFT OUTER JOIN things ON operations.thing_id = things.id 
+           LEFT OUTER JOIN users  ON COALESCE(recipient_id, user_id)= users.id 
+                     WHERE operations.organization_id = #{current_organization.id}
+                       AND operations.type = 'Booking'
+                       AND operations.number < 0  
+                  ORDER BY date"
+
+    send_data report.render, filename: report.filename, type: report.type
   end
 
   private
