@@ -30,6 +30,9 @@
         <% end %>
       </table>
     </div>
+    <div class="my-2 text-end">
+      <%= button_to '<i class="fa-regular fa-file-pdf fa-xl"></i> scarica pdf'.html_safe, bookings_reports_path, form: { data: { turbo: false }} %>  
+    </div>
   </div>
 
   <% if @things_cache.size > 1 %>  
