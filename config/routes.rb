@@ -29,7 +29,7 @@ Rails.application.routes.draw do
       get "reports/#{action}", controller: 'reports', action: action
     end
 
-    %w(articoli giacenza sottoscorta scarichi receipt storico ddts orders provision).each do |action|
+    %w(articoli giacenza sottoscorta scarichi receipt storico ddts orders provision bookings).each do |action|
       post "reports/#{action}", controller: 'reports', action: action, as: "#{action}_reports"
     end
     
