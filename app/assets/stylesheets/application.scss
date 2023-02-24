@@ -33,6 +33,7 @@ body {
   font-size: 100%;
   &.empty { @extend .bg-danger; }
   &.full  { @extend .bg-success; }
+  &.warning  { @extend .bg-warning; }
 }
 .number {
   text-align: right;
