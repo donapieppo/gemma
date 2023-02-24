@@ -11,10 +11,18 @@
     <% disabled_class  = thing_actions_enabled? ? "" : " disabled " %>  
     <% highlight_class = (params[:from_thing] && params[:from_thing].to_i == thing.id) ? " bg-light " : "" %>  
     <% number       = @location ? @actuals[thing.id] : thing.total %>  
-    <% number_class = "actual-number " + (number > 0 ? 'full' : 'empty') %>
+    <% color_class = case 
+                     when number == 0
+                       'empty'
+                     when number < thing.minimum 
+                       'warning'
+                     else
+                       'full'
+                     end
+                   %>  
     <%= link_to thing_actions_url(thing), class: "list-group-item list-group-item-action py-2" + disabled_class + highlight_class do %> 
       <%= thing.to_s_with_description%>
-      <%= content_tag :span, number, class: number_class %>
+      <%= content_tag :span, number, class: "actual-number #{color_class}" %>
     <% end %>
   <% end %>
 </div>
