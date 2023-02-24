@@ -42,17 +42,17 @@
                 <% end %>
               </div>
 
-              <div class="secondary-information mt-2">
+              <div class="secondary-information">
                 <span class="text-muted">
                   <% unless o.ncia.blank? %> 
                     rif.cia: <%= o.ycia %>/<%= o.ncia %> 
-                <% end %>
-                <% unless o.note.blank? %>
-                  <%= o.note %> 
-                <% end %>
-                <% if current_organization.pricing && o.price && o.price > 0 && o.number < 0 %>
-                  <br/>origine prezzo: <%= show_price_origins(o) %>
-              <% end %>
+                  <% end %>
+                  <% unless o.note.blank? %>
+                    <%= o.note %> 
+                  <% end %>
+                  <% if current_organization.pricing && o.price && o.price > 0 && o.number < 0 %>
+                    <br/>origine prezzo: <%= show_price_origins(o) %>
+                  <% end %>
                 </span>
                 <span class="float-end">
                   <%= move_action_icons(o, number).html_safe %>
