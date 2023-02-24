@@ -66,5 +66,8 @@ class ReportPolicy < ApplicationPolicy
   def receipt?
     current_organization_manager?
   end
-end
 
+  def bookings?
+    current_organization_manager?
+  end
+end
