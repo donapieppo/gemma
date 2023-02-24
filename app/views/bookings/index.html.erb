@@ -46,11 +46,15 @@
     </div>
   <% end %>
 
+  <div class="my-2 text-end">
+    <%= link_to 'mostra tutti', bookings_path, class: 'ms-4' %>  
+  </div>
+
   <%= form_with url: barcode_bookings_path, method: :get do %>
     <div class="input-group">
       <span class="input-group-text">Ricerca attraverso codice a barre:</span>
       <input type="search" class="form-control" name="barcode"/>
-      <%= submit_tag "cerca" %> <%= link_to 'mostra tutti', bookings_path, class: 'ms-4' %>  
+      <%= submit_tag "cerca" %>
     </div>
   <% end %>
 
