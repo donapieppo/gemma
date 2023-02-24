@@ -40,9 +40,9 @@ class ReportsController < ApplicationController
     location = (params[:report][:location_id].to_i > 0) ? Location.find(params[:report][:location_id]) : nil
     group    = (params[:report][:group_id].to_i > 0) ? Group.find(params[:report][:group_id]) : nil
 
-    report.title  =  'Giacenza '
+    report.title  =  "Giacenza "
     report.title  +=  " in #{location}" if location
-    report.title  +=  "  per la categoria: #{group}" if group
+    report.title  +=  " per la categoria: #{group}" if group
 
     report.fields = [:actual, :thing]
     report.fields << :location unless (current_organization.locations.size <= 1 || location)
@@ -77,10 +77,9 @@ class ReportsController < ApplicationController
     location = (params[:report][:location_id].to_i > 0) ? Location.find(params[:report][:location_id]) : nil
     group    = (params[:report][:group_id].to_i > 0) ? Group.find(params[:report][:group_id]) : nil
 
-    report.title  = 'Articoli sottoscorta'
-    report.title  =  'Articoli sottoscorta '
+    report.title  = "Articoli sottoscorta "
     report.title  +=  " in #{location}" if location
-    report.title  +=  "  per la categoria: #{group}" if group
+    report.title  +=  " per la categoria: #{group}" if group
 
     report.fields = [:total, :minimum, :thing]
     report.fields << :location unless (current_organization.locations.size <= 1 || location)
