@@ -1,6 +1,10 @@
 <%= report_layout title: "Articoli sottoscorta" do %>  
   <%= simple_form_for :report, url: sottoscorta_reports_path, data: { turbo: false } do |f| %>
     <%= render Report::FormatComponent.new(f) %>  
+
+    <%= f.input :location_id, collection: @locations, include_blank: 'Intera struttura', label: 'Presso' %>
+    <%= f.input :group_id, collection: @groups, include_blank: 'Tutte', label: 'Categoria' %>
+
     <%= f.submit "Scarica", input_html: { data: { disable_with: false }} %>
   <% end %>
 <% end %>
