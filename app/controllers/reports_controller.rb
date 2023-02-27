@@ -95,6 +95,7 @@ class ReportsController < ApplicationController
                   AND total < things.minimum
                       #{loc_query}
                       #{group_query}
+                      GROUP BY things.id
              ORDER BY things.name"
 
     send_data report.render, filename: report.filename, type: report.type
@@ -409,6 +410,20 @@ class ReportsController < ApplicationController
 
     order = "upn, operations.date"
 
+    # report.query = "SELECT operations.date AS date, 
+    #                        users.upn, 
+    #                        ABS(number) as number, things.name as thing, description,
+    #                        locations.name as location
+    #                   FROM operations 
+    #        LEFT OUTER JOIN things ON operations.thing_id = things.id 
+    #        LEFT OUTER JOIN users  ON COALESCE(recipient_id, user_id)= users.id 
+    #        LEFT OUTER JOIN deposits ON deposits.thing_id = things.id
+    #        LEFT OUTER JOIN locations ON deposits.location_id = locations.id 
+    #                  WHERE operations.organization_id = #{current_organization.id}
+    #                    AND operations.type = 'Booking'
+    #                    AND operations.number < 0  
+    #               ORDER BY date"
+    
     report.query = "SELECT operations.date AS date, 
                            users.upn, 
                            ABS(number) as number, things.name as thing, description
