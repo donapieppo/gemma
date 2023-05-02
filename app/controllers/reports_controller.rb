@@ -222,7 +222,7 @@ class ReportsController < ApplicationController
 
     leggi_date
 
-    thing = params[:report][:thing_id].to_i > 0 ? Thing.find(params[:thing_id]) : nil
+    thing = params[:report][:thing_id].to_i > 0 ? Thing.find(params[:report][:thing_id]) : nil
 
     loc_query = ''
     # se ci limitiamo ad un oggetto
