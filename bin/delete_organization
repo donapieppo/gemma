@@ -8,7 +8,7 @@ then
   exit 1
 fi
 
-doc/reset_organization $ORG
+bin/reset_organization $ORG
 
 echo "PROSEGUO CON TUTT IL RESTO???? Crtl+C"
 
