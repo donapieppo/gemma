@@ -3,7 +3,7 @@ class GroupsController < ApplicationController
 
   def index
     @groups = current_organization.groups.order(:name)
-    authorize Group
+    authorize :group
   end
 
   def new
