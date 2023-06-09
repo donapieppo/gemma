@@ -4,8 +4,7 @@ Rails.application.routes.draw do
   get '/logins/logout', to: 'dm_unibo_common/logins#logout'
 
   get '/stats/organization/:id', to: "stats#organization", as: "organization_stats"
-  get '/choose_organization',    to: "organizations#choose_organization", as: "choose_organization"
-  get '/no_access',              to: "logins#no_access", as: "no_access"
+  get '/choose_organization', to: "organizations#choose_organization", as: "choose_organization"
 
   # cesia list (more than dm_unibo_common)
   get '/organizations',          to: 'organizations#index', as: "organizations"
