@@ -9,17 +9,22 @@
 
 <table class="table table-sm">
   <% @organizations.each do |organization| %>
-    <%= content_tag :tr, class: (@this_year_counts[organization.id] ? 'table-info' : 'table-secondary') do %>
-      <th><%= organization.code.upcase %></th>
-      <th><%= organization.id %></th>
-      <td><%= link_to organization.description.upcase, current_organization_edit_path(__org__: organization.code) %></td>
+    <% c = @this_year_counts[organization.id] ? 'table-success' : 'table-secondary' %>  
+    <% c = "table-danger" if @admins[organization.id].to_i == 0 %>  
+    <%= content_tag :tr, class: c do %>
+      <td class="number"><%= organization.id %></td>
+      <th class="number"><%=  link_to organization.code.upcase, current_organization_edit_path(__org__: organization.code) %></th>
+      <td>
+        <%= organization.name.upcase %>
+        <small><%= organization.description %></small>
+      </td>
       <td><%= dmicon('shopping-cart') if organization.booking %></td>
       <td><%= dmicon('euro-sign')     if organization.pricing %></td>
       <td><%= dmicon('envelope')      if organization.sendmail %></td>
       <td class="number" nowrap>
         <small>
           tot: <%= @counts[organization.id] || 0 %> 
-        arc: <%= @arch_counts[organization.id] || 0 %>
+          arc: <%= @arch_counts[organization.id] || 0 %>
         </small>
       </td>
       <th class="number">
@@ -28,6 +33,9 @@
       <th class="number">
         <%= @this_year_counts[organization.id] || 0 %>
       </th>
+      <td class="numebr">
+        <%= @admins[organization.id] || 0 %>  
+      </td>
     <% end %>
   <% end %>
 </table>

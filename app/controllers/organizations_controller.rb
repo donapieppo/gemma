@@ -9,6 +9,7 @@ class OrganizationsController < ApplicationController
     @this_year_counts = Operation.where('YEAR(date) > YEAR(NOW()) -1').group(:organization_id).count
     @last_year        = Operation.group(:organization_id).maximum(:date)
     @arch_counts      = ArchOperation.group(:organization_id).count
+    @admins           = DmUniboCommon::Permission.group(:organization_id).count
   end
 
   def edit
