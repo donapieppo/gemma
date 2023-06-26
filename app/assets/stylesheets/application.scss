@@ -27,6 +27,14 @@ body {
   } 
 }
 
+.booking-number {
+  text-align: right;
+  @extend .badge;
+  font-size: 100%;
+  &.empty { @extend .bg-danger; }
+  &.full  { @extend .bg-success; }
+  &.warning  { @extend .bg-warning; }
+}
 .actual-number {
   @extend .badge;
   @extend .float-end;
