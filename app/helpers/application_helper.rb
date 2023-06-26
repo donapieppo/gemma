@@ -4,7 +4,7 @@ module ApplicationHelper
   end
 
   def inizio_prossimo_mese
-    (Date.today >> 1).change(day: 1) # Return a new Date object that is n months later than the current one. 
+    (Date.today >> 1).change(day: 1) # Return a new Date object that is n months later than the current one.
   end
 
   def thing_actions_menu
@@ -15,15 +15,15 @@ module ApplicationHelper
 
   def readonly_warning
     if policy(current_organization).only_read?
-      content_tag(:p, 'Da questo computer avete accesso alla sola consultazione del materiale', class: "alert alert-warning", role: "alert")
+      content_tag(:p, "Da questo computer avete accesso alla sola consultazione del materiale", class: "alert alert-warning", role: "alert")
     end
   end
 
   def barcode_scanner_link
-    if request.user_agent =~ /Android/   
+    if request.user_agent.match?(/Android/)
       '<a href="zxing://scan/?ret=https%3A%2F%2Ftester.dm.unibo.it%2Fgemma%2Fzxing_search%2F%7BCODE%7D"><i class="fas fa-barcode" style="font-size: 30px"></i></a>'.html_safe
     else
-      ''
+      ""
     end
   end
 end
