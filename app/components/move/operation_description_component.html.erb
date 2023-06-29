@@ -1,0 +1,20 @@
+<% if @operation.is_load? %>
+  carico da ddt <%= @operation.ddt.number %>
+<% elsif @operation.is_unload? || @operation.is_takeover? %>
+  <% if @operation.recipient %>
+    <%= @operation.recipient.upn %> 
+    <small class='text-muted'>(da <%= @operation.user.cn %>)</small>
+  <% else %>
+    <%= @operation.user.cn %>
+  <% end %>
+  <% if @operation.is_booking? %>
+    <small>(prenotazione)</small>
+  <% end %>
+<% elsif @operation.is_stock? %>
+  giacenza iniziale
+<% elsif @operation.is_shift? %>
+  <b>spostamento</b> <small>(registrato da <%= @operation.user.upn %></small>
+<% elsif @operation.is_price? %>
+  &euro; cambio prezzo
+<% end %>
+

@@ -1,0 +1,43 @@
+<%= content_tag :div, class: "moves-list-item #{@operation.class}" do %>
+  <div class="row">
+    <div class="col-2 col-md-2 col-lg-1">
+      <div class="move-number py-1 px-2"><%= @number %></div>
+    </div>
+
+    <div class="col">
+      <div class="main-information my-1" onClick="show_secondary(event, this)">
+        <%= l @operation.date, format: :in_list %> 
+        <span class="ms-2 font-weight-bold">
+          <%= render Move::OperationDescriptionComponent.new(@operation) %>
+        </span>
+        <span class="move-remaining float-end px-2 <%= 'move-negative' if @total < 0 %>">
+          <%= @total %>
+        </span>
+        <% if @pricing && @operation.price %>
+          <span class="float-end me-2"><%= @operation.price_string %></span>
+        <% end %>
+      </div>
+
+      <div class="secondary-information">
+        <span class="text-muted">
+          <% unless @operation.ncia.blank? %> 
+            rif.cia: <%= @operation.ycia %> / <%= @operation.ncia %> 
+          <% end %>
+          <% unless @operation.note.blank? %>
+            <%= @operation.note %> 
+          <% end %>
+          <% if @pricing && @operation.price && @operation.price > 0 && @operation.number < 0 %>
+            <br/>origine prezzo: <%= show_price_origins(@operation) %>
+          <% end %>
+          <% if @operation.is_load? %>
+            <br/><%= link_to @operation.ddt.long_description, ddt_path(@operation.ddt) %>
+          <% end %>
+        </span>
+        <span class="float-end">
+          <%= render Move::ActionsComponent.new(@move) %>
+        </span>
+      </div>
+    </div>
+  </div>
+<% end %>
+
