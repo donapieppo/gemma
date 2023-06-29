@@ -1,0 +1,13 @@
+<h1>Laboratori</h1>
+
+<div class="centered">
+  <%= link_to 'Nuovo Laboratorio', new_lab_path, class: 'btn btn-primary' %>  
+</div>
+
+<div class="list-group my-2">
+  <% @labs.each do |lab|
+    <%= link_to [:edit, lab], class: "list-group-item list-group-item-action" do %>
+      <%= lab %>
+    <% end %>
+  <% end %>
+</div>

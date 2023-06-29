@@ -2,7 +2,6 @@ it:
   activerecord:
     models:
       organization: Struttura
-      division: Gruppo di spesa / reparto
       supplier: Fornitore
       ddt: Ddt/Fattura
       load: Carico
@@ -17,6 +16,7 @@ it:
       barcode: Codice a barre
       delegation: Delega
       thingcode: Codice
+      lab: Laboratorio
     attributes:
       admin:
         user_upn: Indirizzo mail
@@ -27,7 +27,7 @@ it:
         booking: Abilitazione prenotazione materiale
         ordering: Abilitazione richiesta acquisti
         pricing: Abilitazione inserimento prezzi acquisti
-        division: Abilitazione Gruppi di spesa / Reparti
+        lab: Laboratorio
       network: 
         name: Rete
         organization: Struttua
@@ -60,13 +60,13 @@ it:
         recipient_upn: Indirizzo mail di chi consegna il materiale
       unload:
         number: Numero articoli da scaricare
-        division: Gruppo di spesa / reparto
         date: Data della consegna 
         deposit_id: Scegliere la provenienza
         note: Eventuali annotazioni
       booking:
         number: Numero di articoli da prenotare
         recipient_id: Destinatario/resposabile scarico
+        lab: Laboratorio
       shift:
         date: Data
         number: Numero
@@ -83,10 +83,6 @@ it:
         name: Nome dell'ubicazione
       operation: 
         recipient_upn: Indirizzo mail del ricevente
-      division:
-        name:  Nome del gruppo di spesa / reparto
-        description: Descrizione
-        email: Indirizzo di posta elettronica
       supplier:
         name: Nome fornitore
         pi: Partita IVA
@@ -98,7 +94,7 @@ it:
         booking: Prenotazione materiale
         ordering: Richiesta acquisti 
         pricing: Prezzi
-        division: Reparti
+        with_labs: Laboratori
       delegation:
         delegator_upn: Delegante
         delegate_upn: Delegato
@@ -106,13 +102,14 @@ it:
         code: Codice 
       barcode:
         name: Codice a barre
+      lab:
+        name: Nome
 
   simple_form:
     hints:
       delegation:
         delegator_upn: Indirizzo email del responsabile dei fondi.
         delegate_upn: Indirizzo email della persona delegata a ritirale in materiale in nome del delegante sopra.
-
 
   sottoscorta_message:  È possibile scegliere l'indirizzo mail a cui inviare gli avvisi (nel caso di più indirizzi, separarli con una virgola).
   sendmail_message:     È possibile impostare la modalità di invio delle mail che notificano agli utenti la registrazione dello scarico. Indipendentemente dall'opzione attivata, nella maschera di scarico l'utente amministratore può sempre attivare l'invio della singola mail per notificare quella specifica operazione.
