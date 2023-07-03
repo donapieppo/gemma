@@ -1,7 +1,7 @@
 class Takeover < Operation
   belongs_to :thing
   belongs_to :organization
-  has_many   :moves, foreign_key: 'operation_id' 
+  has_many :moves, foreign_key: "operation_id"
 
   validate :validate_numbers 
 

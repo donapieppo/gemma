@@ -21,7 +21,7 @@ class Thing < ApplicationRecord
 
   validates :organization_id, :group_id, presence: true
   validates :name, uniqueness: {scope: [:organization_id], message: "L'articolo esiste già.", case_sensitive: false},
-                   presence: true
+                   presence: true # standard:disable all
   validates :minimum, numericality: {greater_than_or_equal_to: 0}
 
   validate :check_group_organization
@@ -33,8 +33,8 @@ class Thing < ApplicationRecord
     Location.find(location_ids).each do |loc|
       (loc.organization_id == self.organization_id) or raise DmUniboCommon::MismatchOrganization, "Struttura non permessa."
       loc.deposits.create(thing_id: self.id,
-                          organization_id: self.organization_id,
-                          actual: 0) or return false
+                          organization_id: self.organization_id, # standard:disable all
+                          actual: 0) or return false # standard:disable all
     end
   end
 

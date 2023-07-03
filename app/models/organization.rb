@@ -15,12 +15,13 @@ class Organization < ApplicationRecord
   has_many :bookings
   has_many :barcodes
   has_many :delegations
+  has_many :labs
 
   has_many :arch_operations
   has_many :arch_things
   has_many :arch_ddts
 
-  validates :name, uniqueness: { message: 'Struttura già presente.', case_sensitive: false }
+  validates :name, uniqueness: {message: "Struttura già presente.", case_sensitive: false}
 
   validate :check_mail_parameters
 
@@ -44,7 +45,7 @@ class Organization < ApplicationRecord
   end
 
   def last_recipient_upn
-    operation = self.operations.where('operations.recipient_id is not null').order('date desc').first
+    operation = self.operations.where("operations.recipient_id is not null").order("date desc").first
     operation&.recipient ? operation.recipient.upn : nil
   end
 
@@ -52,19 +53,19 @@ class Organization < ApplicationRecord
     self.operations.count == 0
   end
 
-  private 
+  private
 
   def check_mail_parameters
-    Configuration::NOTIFY_FREQUENCIES.include?(self.sendmail) or self.sendmail = 'n'
+    Configuration::NOTIFY_FREQUENCIES.include?(self.sendmail) or self.sendmail = "n"
 
     # se abbiamo adminmail lo controlliamo
     self.adminmail.nil? and return true
     self.adminmail.gsub!(/\s+/, '')
 
-    self.adminmail.split(/,/).each do |mail|
+    self.adminmail.split(",").each do |mail|
       (mail =~ /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/) and next
-      errors.add(:adminmail, 'indirizzo mail non corretto')
-      throw(:abort) 
+      errors.add(:adminmail, "indirizzo mail non corretto")
+      throw(:abort)
     end
 
     true

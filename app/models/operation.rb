@@ -4,38 +4,39 @@ class Operation < ApplicationRecord
   belongs_to :user
   belongs_to :thing
   belongs_to :organization
-  belongs_to :recipient, class_name: 'User', optional: true
+  belongs_to :recipient, class_name: "User", optional: true
   belongs_to :ddt, optional: true
-  has_many   :moves
+  belongs_to :lab, optional: true
+  has_many :moves
 
-  serialize  :price_operations, Array
+  serialize :price_operations, Array
 
   attribute :avoid_history_coherent, :boolean, default: false # quando creiamo a volte sappiamo che non serve perchè safe
-  attribute :avoid_price_updating,   :boolean, default: false # se non viene modificato il prezzo o il numero di oggetti
+  attribute :avoid_price_updating, :boolean, default: false # se non viene modificato il prezzo o il numero di oggetti
 
   validates :date, :organization_id, :user_id, presence: true
 
-  before_validation :fix_date 
+  before_validation :fix_date
 
   validate :validate_user,
-           :validate_recipient,
-           :check_organization,
-           :validate_date,
-           :validate_deposits
+    :validate_recipient,
+    :check_organization,
+    :validate_date,
+    :validate_deposits
 
   after_save :update_moves
   after_save :rewrite_totals
 
   # per essere coerente con i costraint di mysql
   before_destroy :delete_moves
-  after_destroy  :rewrite_totals
-  after_destroy  :history_coherent?
-                 
-  # IMPORTANTISSIMO, 
+  after_destroy :rewrite_totals
+  after_destroy :history_coherent?
+
+  # IMPORTANTISSIMO,
   # la svolta per mettere date al posto di datetime e risolvere una tonnellata di problemi
   # ha solo il difetto che con stock e loads nella stessa giornata l'ordine non e' ottimale
-  scope :ordered, -> { order('operations.date ASC, operations.number DESC') }
-  scope :in_last_years, -> num { where('YEAR(date) >= ?', num) }
+  scope :ordered, -> { order("operations.date ASC, operations.number DESC") }
+  scope :in_last_years, -> num { where("YEAR(date) >= ?", num) }
 
   def is_stock?    ; self.is_a?(Stock)    end
   def is_price?    ; self.is_a?(Price)    end
@@ -49,26 +50,26 @@ class Operation < ApplicationRecord
   # undefined method `deposit_id' for {}:Hash
 
   def numbers
-    @_numbers ||= self.moves.each_with_object({}) do |move, res| 
+    @_numbers ||= self.moves.each_with_object({}) do |move, res|
       res[move.deposit_id] = move.number
     end
   end
 
   # I form ci mandano i numbers = { depoit_id => number } con stringhe
-  # settiamo anche il number totale dell'operazione 
+  # settiamo anche il number totale dell'operazione
   # {1=>4, 2=>6}
   def numbers=(nums)
     Rails.logger.debug("Operation numbers with #{nums.inspect}")
-    
+
     # Rails6 From controller h is <ActionController::Parameters {"11459"=>"3"} permitted: true>
     nums = nums.to_hash if nums.is_a? ActionController::Parameters
 
-    @_numbers = Hash.new
+    @_numbers = {}
     if nums.is_a?(Hash)
       self.number = 0
-      nums.each do |dep_id, num| 
+      nums.each do |dep_id, num|
         if num.to_i != 0
-          @_numbers[dep_id.to_i] = num.to_i 
+          @_numbers[dep_id.to_i] = num.to_i
           self.number += num.to_i
         end
       end
@@ -77,7 +78,7 @@ class Operation < ApplicationRecord
 
   # recupera hash con { deposit_id => number }
   def numbers_hash
-    self.moves.inject({}) {|n, m| n[m.deposit_id] = m.number; n}
+    self.moves.inject({}) { |n, m| n[m.deposit_id] = m.number; n }
   end
 
   def fix_date
@@ -118,10 +119,10 @@ class Operation < ApplicationRecord
 
     # aggiorniamo con quello che è stato passato
     h.each do |k, v|
-      self.send("#{k}=", v) 
+      self.send("#{k}=", v)
     end
 
-    avoid_price_updating   = true unless self.price_changed? || self.date_changed? || changed_numbers
+    avoid_price_updating = true unless self.price_changed? || self.date_changed? || changed_numbers
     avoid_history_coherent = true unless self.date_changed? || changed_numbers # FIXME: 
 
     self.save
@@ -141,24 +142,24 @@ class Operation < ApplicationRecord
   end
 
   def price_string
-    '%d,%02d€' % [self.price_int, self.price_dec]
+    "%d,%02d€" % [self.price_int, self.price_dec]
   end
 
   def date_afternoon(date)
-    # FIXME 
+    # FIXME
     # dovrebbe essere il controller, ma tant'e', con datepicker
     # cosi' il load sono in 00:00 e gli unload alle 12
     if date && (date.to_s =~ /00:00/ || date.to_s !~ /\d+:\d+/)
-      date = date.to_s + ' 12:00' 
+      date = date.to_s + " 12:00"
     end
-    date 
+    date
   end
 
-  protected 
+  protected
 
   def validate_user
     begin
-      User.find(self.user_id) 
+      User.find(self.user_id)
     rescue => e
       self.errors.add(:user, e.to_s)
     end
@@ -182,29 +183,29 @@ class Operation < ApplicationRecord
   end
 
   def validate_date
-    errors.add(:date, "La data non può essere successiva a oggi.") if (self.date > Date.today) 
+    errors.add(:date, "La data non può essere successiva a oggi.") if self.date > Date.today
   end
 
   def recalculate_prices
     if self.organization.pricing
-      if avoid_price_updating 
+      if avoid_price_updating
         Rails.logger.debug("SKIP update_next_prices") and return
       end
       self.thing.recalculate_prices
     end
   end
 
-  # Depositi corretti, relativi allo stesso materiale 
+  # Depositi corretti, relativi allo stesso materiale
   def validate_deposits
     # a volte non ci sono i numbers (tipo per aggiornamento di date)
     if @_numbers
       @_numbers.each_key do |dep_id|
         if (dep = Deposit.find_by_id(dep_id))
-          if (dep.thing_id != self.thing_id) 
-            errors.add(:base, 'Oggetti differenti in deposit and operation. Contattare amministratore.') and return 
+          if (dep.thing_id != self.thing_id)
+            errors.add(:base, 'Oggetti differenti in deposit and operation. Contattare amministratore.') and return
           end
         else
-          errors.add(:base, 'È necessario selezionare una provenienza corretta.') and return
+          errors.add(:base, "È necessario selezionare una provenienza corretta.") and return
         end
       end
     end
