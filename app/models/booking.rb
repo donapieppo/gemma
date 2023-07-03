@@ -1,7 +1,7 @@
 class Booking < Unload
   belongs_to :thing
   belongs_to :organization
-  has_many   :moves, foreign_key: :operation_id
+  has_many :moves, foreign_key: :operation_id
 
   # only on creation. Admin can update and confirm
   before_create :validate_delegation
@@ -9,7 +9,7 @@ class Booking < Unload
   def initialize(attributes = nil)
     if attributes.is_a?(Hash)
       attributes[:ddt_id] = nil
-      attributes[:date]   = date_afternoon(attributes[:date]) if attributes[:date]
+      attributes[:date] = date_afternoon(attributes[:date]) if attributes[:date]
     end
     super(attributes)
   end
@@ -18,7 +18,7 @@ class Booking < Unload
   # lo rende Unload
   def confirm
     self.number < 0 or return nil
-    ApplicationRecord.connection.execute("UPDATE operations SET type='Unload', date=NOW(), from_booking = 1 WHERE id=#{self.id}")
+    ApplicationRecord.connection.execute("UPDATE operations SET type='Unload', date=NOW(), from_booking = 1 WHERE id=#{self.id.to_i}")
     true
   end
 
@@ -33,12 +33,10 @@ class Booking < Unload
       else
         Rails.logger.info("Wrong delegation: #{self.user} not delegated by #{self.recipient}")
         self.recipient_id = nil
-        self.errors.add(:recipient_id, 'Non autorizzato.')
-        throw(:abort) 
+        errors.add(:recipient_id, "Non autorizzato.")
+        throw(:abort)
       end
     end
     true
   end
 end
-
-
