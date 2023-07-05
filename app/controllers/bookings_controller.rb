@@ -5,7 +5,7 @@ class BookingsController < ApplicationController
   def index
     authorize Booking
     if policy(current_organization).give?
-      @books = current_organization.bookings.includes(:user, :recipient, :thing).order("users.surname, date")
+      @books = current_organization.bookings.includes(:user, :recipient, :thing).order("date")
       if params[:user_id]
         @user = User.find(params[:user_id])
         @books = @books.where(user: @user)
@@ -75,6 +75,8 @@ class BookingsController < ApplicationController
     # @unload.recipient_id = @book.user_id unless @book.recipient_id
     h = {recipient_id: (@book.recipient_id or @book.user_id),
          date: @book.date, # try to keep because of prices different in different times
+         lab_id: @book.lab_id,
+         note: @book.note,
          number: @book.number * -1}
     @book.destroy
 
@@ -105,7 +107,7 @@ class BookingsController < ApplicationController
   private
 
   def booking_params
-    params[:booking].permit(:note, :recipient_id, numbers: params[:booking][:numbers].try(:keys))
+    params[:booking].permit(:note, :recipient_id, :lab_id, numbers: params[:booking][:numbers].try(:keys))
   end
 
   def set_booking_and_check_permission
