@@ -1,4 +1,4 @@
-<%= dm_form_for current_organization, url: current_organization_update_path, title: 'Configurazioni' do |o| %>
+<%= dm_form_for current_organization, url: current_organization_update_path, title: "Configurazioni" do |o| %>
   <%= o.dm_error_notification %>  
   <% if current_user.is_cesia? %>  
     <%= o.input :code %>
@@ -8,6 +8,7 @@
   <% end %>
 
   <%= o.input :pricing, hint: t(:pricing_option) %>
+  <%= o.input :with_labs, hint: "Possibile associare agli scarichi un laboratorio." %>
   <%= o.input :adminmail, hint: t(:sottoscorta_message).html_safe %>
   <%= o.input :sendmail, collection: Configuration::SELECT_COLLECTION, hint: t(:sendmail_message) %>  
   <%= o.submit 'Salva configurazione' %> - <%= link_to_back root_path %>  
