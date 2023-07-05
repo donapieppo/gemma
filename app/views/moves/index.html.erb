@@ -5,65 +5,29 @@
 
 <% at_last_one = false %>  
 
-<% if @operations.size > 0 %>
-  <% tot = 0 %>
+<% if @moves.size > 0 %>
+  <% total = 0 %>
 
   <div class="m-3 font-weight-bold">
-    <%= title %> <br/><span class="text-muted small">(Per operare su un singolo movimento cliccare sulla riga).</span>
+    <div><%= title %></div>
+    <div class="text-muted small">(Per operare su un singolo movimento cliccare sulla riga).</div>
   </div>
 
   <%= render Pagination::MovesYearComponent.new(@first_year, @last_year, @display_year, @thing, @deposit) %>  
 
   <div class="moves-list">
-    <% @operations.each do |o| %>
+    <% @moves.each do |move| %>
+      <% operation = move.operation %>
+      <% next if (!@deposit && operation.is_shift?) %>
+      <% number = (@deposit || operation.is_shift?) ? move.number : operation.number %>
+      <% total += number %>
 
-      <% (o.is_shift? and next) unless @deposit %>
-      <% number = @deposit ? o.moves.first.number : o.number %>
-      <% tot += number %>
-
-      <% if @display_year == o.date.year %>  
+      <% if @display_year == operation.date.year %>  
         <% at_last_one = true %>  
-        <%= content_tag :div, class: "moves-list-item #{o.class}" do %>
-          <div class="row">
-            <div class="col-2 col-md-2 col-lg-1">
-              <div class="move-number py-1 px-2"><%= number %></div>
-            </div>
-
-            <div class="col">
-              <div class="main-information my-1" onClick="show_secondary(event, this)">
-                <i class="fas fa-caret-right mx-2"></i>
-                <%= l o.date %> 
-                <span class="ms-2 font-weight-bold"><%= operation_description(o) %></span>
-                <span class="move-remaining float-end px-2 <%= 'move-negative' if tot < 0 %>">
-                  <%= tot %>
-                </span>
-                <% if current_organization.pricing && o.price %>
-                  <span class="float-end me-2"><%= o.price_string %></span>
-                <% end %>
-              </div>
-
-              <div class="secondary-information">
-                <span class="text-muted">
-                  <% unless o.ncia.blank? %> 
-                    rif.cia: <%= o.ycia %>/<%= o.ncia %> 
-                  <% end %>
-                  <% unless o.note.blank? %>
-                    <%= o.note %> 
-                  <% end %>
-                  <% if current_organization.pricing && o.price && o.price > 0 && o.number < 0 %>
-                    <br/>origine prezzo: <%= show_price_origins(o) %>
-                  <% end %>
-                </span>
-                <span class="float-end">
-                  <%= move_action_icons(o, number).html_safe %>
-                </span>
-              </div>
-            </div>
-          </div>
-        <% end %><!-- content_tag -->
-      <% end %> <!-- if year -->
-    <% end %> <!-- operations -->
-  </div><!-- moves-list -->
+        <%= render Move::LineComponent.new(move, number, total, current_organization.pricing) %>
+      <% end %>
+    <% end %>
+  </div>
 
 <% end %>
 
@@ -74,7 +38,7 @@
 <%= content_tag :div, class: "my-2 row" do %>
   <div class="col-8 offset-2 col-sm-10 offset-sm-1 pr-0">
     <span class="text-success font-weight-bold float-end">
-      Tot. Disponibili: <%= tot %> 
+      Tot. Disponibili: <%= total %> 
     <% if current_organization.pricing %>
       &nbsp; [ <%= show_future_prices(@thing) %> ]
     <% end %>
@@ -90,13 +54,13 @@
           <tr>
             <th class="number"><%= dep.actual %></th>
             <td>in <%= dep.location %></td>
-            <td><%= link_to dmicon('search') + " mostra movimenti", deposit_moves_path(dep, y: @display_year), title: 'visualizza, modifica ed elimina carichi e scarichi.' %></td>
+            <td><%= link_to dm_icon("search", text: "mostra movimenti"), deposit_moves_path(dep, y: @display_year), title: 'visualizza, modifica ed elimina carichi e scarichi.' %></td>
           </tr> 
         <% end %>
         <tr>
           <th class="number"><%= @thing.total %></th>
           <td><strong>nell'intera struttura</strong></td>
-          <td><%= link_to dmicon('search') + " mostra movimenti", thing_moves_path(@thing) %></td>
+          <td><%= link_to dm_icon("search", text: " mostra movimenti"), thing_moves_path(@thing) %></td>
         </tr>
       </table> 
       <%= link_to "Sposta giacenze tra ubicazioni", new_thing_shift_path(@thing), class: :button %>
@@ -113,3 +77,4 @@
     element.nextElementSibling.style.display = 'block'
   }
 <% end %>
+
