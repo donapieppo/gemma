@@ -112,6 +112,10 @@ class Thing < ApplicationRecord
     self.barcodes.create(organization_id: self.organization_id, name: str)
   end
 
+  def under_minimum?
+    self.total <= self.minimum
+  end
+
   protected
 
   def strip_name_blanks
