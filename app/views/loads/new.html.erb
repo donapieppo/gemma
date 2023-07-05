@@ -1,13 +1,13 @@
 <% @stock_possible = (! @thing.has_operation?) %>  
-<% @all_ddts = current_organization.ddts.includes(:supplier).order('ddts.number desc').where('date > (NOW() - INTERVAL 366 DAY)') %>
+<% @all_ddts = current_organization.ddts.includes(:supplier).order('ddts.number desc').where('date > (NOW() - INTERVAL 376 DAY)') %>
 
 <% if @stock_possible %>
-  <p class="alert alert-warning">
-  <%= dmicon('exclamation-circle', size: 36) %> <strong>Attenzione!</strong> 
-  Non è ancora stato registrato alcun carico di questo materiale.<br/>
-  Per indicare che questo carico proviene da una <strong>giacenza iniziale</strong>, scegliere 
-  <%= link_to "Carico da Giacenza Iniziale", new_thing_stock_path(@thing), class: 'btn btn-success' %>.
-  </p>
+  <div class="alert alert-warning">
+    <%= dm_icon('exclamation-circle', size: :xl) %> <strong>Attenzione!</strong> 
+    Non è ancora stato registrato alcun carico di questo materiale.<br/>
+    Per indicare che questo carico proviene da una <strong>giacenza iniziale</strong>, scegliere 
+    <%= link_to "Carico da Giacenza Iniziale", new_thing_stock_path(@thing), class: 'btn btn-success' %>.
+  </div>
 <% end %>
 
 <%= render Thing::ActionsComponent.new(current_user, @thing) %>
@@ -28,4 +28,3 @@
   <%= o.submit %> - <%= link_to_back thing_moves_path(@thing) %>  
   <%= thing_image(@thing) %>  
 <% end %>
-

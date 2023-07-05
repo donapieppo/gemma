@@ -3,57 +3,57 @@
 <%= render DmUniboCommon::MenuComponent.new(sso_user_upn, current_organization: current_organization, search_component: search_component) do %>  
   <% if current_user && current_organization %>  
     <!-- categorie -->
-    <%= dropdown_menu :category, big_dmicon('list') + ' Cat.' do %>  
+    <%= dropdown_menu :category, dm_icon('list', text: "Cat.") do %>  
       <% current_organization.groups.order(:name).each do |g| %>
-        <li><%= link_to fwdmicon('angle-right') + g.to_s, group_things_path(g) %></li>
+        <li><%= link_to dm_icon('angle-right', text: g.to_s), group_things_path(g) %></li>
       <% end %>
       <% if current_organization && policy(current_organization).manage? %>  
         <div class="dropdown-divider"></div>
-        <li><%= link_to fwdmicon('plus') + ' nuova categoria', new_group_path %></li>
+        <li><%= link_to dm_icon('plus', text: "Nuova categoria"), new_group_path %></li>
       <% end %>
     <% end %>
     <!-- categorie -->
 
     <% if current_organization.booking %>
-      <li><%= link_to big_dmicon('shopping-cart') + ' Carrello', bookings_path %></li>
+      <li><%= link_to dm_icon('shopping-cart', text: "Carrello"), bookings_path %></li>
     <% end %>
 
     <!-- amministrazione -->
     <% if current_organization && policy(current_organization).manage? %>  
-      <%= dropdown_menu :amm, big_dmicon('cogs') + ' Amm.' do  %>
-        <li><%= link_to fwdmicon('cubes')     + ' Ubicazioni',  locations_path %></li>
-        <li><%= link_to fwdmicon('file-alt')  + ' DDT/Fatture', ddts_path %></li>
-        <li><%= link_to fwdmicon('truck')     + ' Fornitori',   suppliers_path %></li>
-        <li><%= link_to fwdmicon('search')    + ' Reports e Ricerche', reports_path %></li>
+      <%= dropdown_menu :amm, dm_icon('cogs', text: "Amm.") do  %>
+        <li><%= link_to dm_icon('cubes', text: "Ubicazioni"), locations_path %></li>
+        <li><%= link_to dm_icon('file-alt', text: "DDT/Fatture"), ddts_path %></li>
+        <li><%= link_to dm_icon('truck', text: "Fornitori"), suppliers_path %></li>
+        <li><%= link_to dm_icon('search', text: "Reports e Ricerche"), reports_path %></li>
         <% if current_organization.booking %>  
-          <li><%= link_to fwdmicon('handshake') + ' Deleghe', delegations_path %></li>
+          <li><%= link_to dm_icon('handshake', text: "Deleghe"), delegations_path %></li>
         <% end %>
-        <li><%= link_to fwdmicon('wrench') + 'Configurazioni', current_organization_edit_path %></li>
+        <li><%= link_to dm_icon('wrench', text: "Configurazioni"), current_organization_edit_path %></li>
         <!-- CESIA -->
         <% if current_user.is_cesia? %>
           <div class="dropdown-divider"></div>
           <h6 class="dropdown-header">Cesia</h6>
-          <li><%= link_to fwdmicon('building')   + ' Strutture',      dm_unibo_common.organizations_path %></li>
-          <li><%= link_to fwdmicon('user')       + ' Autorizzazioni', dm_unibo_common.permissions_path %></li>
-          <li><%= link_to fwdmicon('chart-line') + ' Statistiche',    infos_path %></li>
+          <li><%= link_to dm_icon('building', text: "Strutture"), dm_unibo_common.organizations_path %></li>
+          <li><%= link_to dm_icon('user', text: "Autorizzazioni"), dm_unibo_common.permissions_path %></li>
+          <li><%= link_to dm_icon('chart-line', text: "Statistiche"), infos_path %></li>
         <% end %>
       <% end %>
     <% else %>
-      <li><%= link_to big_dmicon('clipboard-list') + ' I miei scarichi', unloads_path %></li>
+      <li><%= link_to dm_icon('clipboard-list', "I miei scarichi"), unloads_path %></li>
     <% end %>
 
     <!-- organization -->
     <% if policy(current_organization).manage? %>  
-      <%= dropdown_menu :institution, big_dmicon('building') + " " + current_organization.name do  %>
-        <li><%= link_to fwdmicon('home') + current_organization.short_description, current_organization_edit_path %></li>
+      <%= dropdown_menu :institution, dm_icon('building', text: current_organization.name) do  %>
+        <li><%= link_to dm_icon('home', text: current_organization.short_description), current_organization_edit_path %></li>
         <% if current_user.multi_organizations? %>
-          <li><%= link_to fwdmicon('exchange-alt') + ' cambia struttura', choose_organization_path %></li>
+          <li><%= link_to dm_icon('exchange-alt', text: "cambia struttura"), choose_organization_path %></li>
         <% end %>
       <% end %>
     <% end %>
 
     <% if current_user.is_cesia? %>  
-      <li><%= link_to big_dmicon('list'), organizations_path %></li>
+      <li><%= link_to dm_icon('list'), organizations_path %></li>
     <% end %>
   <% end %>  
 <% end %>  
