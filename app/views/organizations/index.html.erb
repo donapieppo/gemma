@@ -18,9 +18,9 @@
         <%= organization.name.upcase %>
         <small><%= organization.description %></small>
       </td>
-      <td><%= dmicon('shopping-cart') if organization.booking %></td>
-      <td><%= dmicon('euro-sign')     if organization.pricing %></td>
-      <td><%= dmicon('envelope')      if organization.sendmail %></td>
+      <td><%= dm_icon('shopping-cart') if organization.booking %></td>
+      <td><%= dm_icon('euro-sign') if organization.pricing %></td>
+      <td><%= dm_icon('envelope') if organization.sendmail %></td>
       <td class="number" nowrap>
         <small>
           tot: <%= @counts[organization.id] || 0 %> 
@@ -39,4 +39,3 @@
     <% end %>
   <% end %>
 </table>
-

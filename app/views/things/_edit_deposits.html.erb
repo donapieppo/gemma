@@ -23,7 +23,7 @@
     <p>
     <%= link_to_new "Aggiungi ubicazione", new_thing_deposit_path(@thing) %>
     <% if @deposits.size > 1 and possible_shift_number > 0 %> 
-      - <%= link_to dmicon('angle-double-right') + " Sposta giacenze", new_thing_shift_path(@thing), class: "button" %><br/>
+      - <%= link_to dm_icon('angle-double-right', text: "Sposta giacenze"), new_thing_shift_path(@thing), class: "button" %><br/>
     <% end %>
     </p>
   </div>
