@@ -1,38 +1,41 @@
 class OrganizationsController < ApplicationController
-  skip_before_action :after_current_user_and_organization, only: [:booking_accept, :start_booking] 
+  skip_before_action :after_current_user_and_organization, only: [:booking_accept, :start_booking]
 
   # only cesia from _menu
   def index
     authorize Organization
-    @organizations    = Organization.order(:code)
-    @counts           = Operation.group(:organization_id).count
-    @this_year_counts = Operation.where('YEAR(date) > YEAR(NOW()) -1').group(:organization_id).count
-    @last_year        = Operation.group(:organization_id).maximum(:date)
-    @arch_counts      = ArchOperation.group(:organization_id).count
-    @admins           = DmUniboCommon::Permission.group(:organization_id).count
+    @organizations = Organization.order(:code)
+    @counts = Operation.group(:organization_id).count
+    @this_year_counts = Operation.where("YEAR(date) > YEAR(NOW()) -1").group(:organization_id).count
+    @last_year = Operation.group(:organization_id).maximum(:date)
+    @arch_counts = ArchOperation.group(:organization_id).count
+    @admins = DmUniboCommon::Permission.group(:organization_id).count
   end
 
   def edit
     authorize current_organization
 
-    @ddts = current_organization.ddts.order('date desc').limit(10)
-    @operations = current_organization.operations.includes(:thing, :user).order('date desc').limit(10)
+    @ddts = current_organization.ddts.order("date desc").limit(10)
+    @operations = current_organization.operations.includes(:thing, :user).order("date desc").limit(10)
 
-    q = "SELECT count(*) from arch_operations WHERE organization_id =#{current_organization.id.to_i}"
+    # sanitize_sql_array(["name=? and group_id=?", "foo'bar", 4])
+    q = "SELECT count(*) from arch_operations WHERE organization_id = #{current_organization.id.to_i}"
     @arch_number = ApplicationRecord.connection.execute(q).first[0]
-    @operations_number = current_organization.operations.where('YEAR(date) = YEAR(NOW())').count
+    @operations_number = current_organization.operations.where("YEAR(date) = YEAR(NOW())").count
 
     @permissions_hash = Hash.new { |hash, key| hash[key] = [] }
 
-    current_organization.permissions.includes(:user).order('authlevel desc, users.upn asc').references(:user).each do |permission|
+    current_organization.permissions.includes(:user).order("authlevel desc, users.upn asc").references(:user).each do |permission|
       @permissions_hash[permission.authlevel] << permission
     end
+
+    @locations = current_organization.locations.order(:name)
   end
 
   def update
     authorize current_organization
     if current_organization.update(organization_params)
-      redirect_to current_organization_edit_path, notice: 'La Struttura è stata modificata.'
+      redirect_to current_organization_edit_path, notice: "La Struttura è stata modificata."
     else
       render action: :edit, status: :unprocessable_entity
     end
@@ -56,9 +59,9 @@ class OrganizationsController < ApplicationController
     authorize current_organization
     if current_organization.destroyable?
       current_organization.destroy
-      flash[:notice] = 'Organizzazione cancellata.'
+      flash[:notice] = "Organizzazione cancellata."
     else
-      flash[:error] = 'Operazione non possibile.'
+      flash[:error] = "Operazione non possibile."
     end
     redirect_to organizations_path
   end
@@ -66,7 +69,7 @@ class OrganizationsController < ApplicationController
   private
 
   def organization_params
-    p =  [:pricing, :sendmail, :adminmail]
+    p = [:pricing, :sendmail, :adminmail, :with_labs]
     p += [:name, :description, :code, :booking] if current_user.is_cesia?
     params[:organization].permit(p)
   end
