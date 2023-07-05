@@ -4,34 +4,34 @@
     <div class="dm-card-body">
       <% @things_cache = Hash.new {|h,v| h[v] = 0} %>  
       <% old_user = nil %>  
-      <table class="table table-sm">
-        <% @books.each do |book| %>
-          <tr>
-            <% @things_cache[book.thing] += book.number.abs %>
-            <% if ! @user and old_user != (old_user = book.user) %>  
-              <th><%= link_to book.user, user_bookings_path(book.user_id) %></th>
-            <% else %>
-              <th style="border: 0"></th>
-            <% end %>
-            <td>
-              <strong><%= book.number.abs %></strong> <%= book.thing %>
+      <% @books.each do |book| %>
+        <% @things_cache[book.thing] += book.number.abs %>
+        <% if !@user && old_user != (old_user = book.user) %>  
+          <div class="my-2">
+            <%= link_to book.user, user_bookings_path(book.user_id) %>
+          </div>
+        <% end %>
+        <div class="row my-1">
+          <div class="col-md-9 ps-4">
+            <span class="fw-bold pe-2"><%= book.number.abs %></span>
+            <%= book.thing %>
+            <span class="ps-2 text-secondary">
               <%= "per #{h book.recipient}" if book.recipient %> 
               <%= "(#{book.note})" unless book.note.blank? %>
               <% if book.lab_id %>
-                <span class="text-secondary"><%= " - #{book.lab}" %></span>
+                <%= " - #{book.lab}" %>
               <% end %>
-            </td>
-            <td nowrap="nowrap">
-              <small><%= l(book.created_at, format: :booking) if book.created_at %></small>
-            </td>
-            <td nowrap="nowrap" class="text-end">
-              <%= link_to_check confirm_booking_path(book) %> 
-              <%= link_to_delete "", booking_path(book) %> 
-              <%= link_to_change_and_confirm edit_booking_path(book) %>
-            </td>
-          </tr>
-        <% end %>
-      </table>
+            </span>
+          </div>
+
+          <div class="col-md-3 text-end">
+            <span class="text-secondary pe-2"><%= l(book.created_at, format: :booking) if book.created_at %></span>
+            <%= link_to_check confirm_booking_path(book) %> 
+            <%= link_to_delete "", booking_path(book) %> 
+            <%= link_to_change_and_confirm edit_booking_path(book) %>
+          </div>
+        </div>
+      <% end %>
     </div>
     <div class="my-2 text-end">
       <%# <%= link_to dm_icon("arrow-up-1-9", text: "Ordina per data"), "" %> 
@@ -92,8 +92,8 @@
 <% end %>
 
 <%= javascript_tag do %>
-        // Reload the page every 10 minutes (600,000 milliseconds)
-        setInterval(function() {
-            location.reload();
-        }, 600000);
+  // Reload the page every 10 minutes (600,000 milliseconds)
+  setInterval(function() {
+  location.reload();
+  }, 600000);
 <% end %>

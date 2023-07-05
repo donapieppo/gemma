@@ -10,8 +10,8 @@ module BookingHelper
     button_to url, form: {
       data: {"turbo-confirm": "Siete sicuri di voler confermare la prenotazione?"},
       class: "d-inline px-0 mx-0"
-    }, title: "Conferma la prenotazione." do
-      dm_icon "circle-check", "regular"
+    }, title: "Conferma la prenotazione.", class: "px-0 mx-0" do
+      dm_icon "circle-check", "regular", size: :lg
     end
   end
 
