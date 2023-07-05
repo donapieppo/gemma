@@ -25,8 +25,11 @@
     </tbody>
   </table>
 
-  <p>
-  <%= link_to big_dmicon('file-pdf') + " stampa pdf", ddt_report_path(@ddt.id, format: :pdf), class: :button %> 
-  <%= link_to big_dmicon('file-alt') + " scarica elenco", ddt_report_path(@ddt.id, format: :txt), class: :button %>  
-  </p>
+  <div>
+    <%= link_to dm_icon("file-pdf", size: "lg", text: "stampa pdf"), ddt_report_path(@ddt.id, format: :pdf), class: :button %> 
+    <%= link_to dm_icon("file-alt", size: "lg", text: "scarica elenco"), ddt_report_path(@ddt.id, format: :txt), class: :button %>  
+    <% if policy(@ddt).edit? %>
+      <%= link_to dm_icon("edit", size: "lg", text: "modifica il ddt"), [:edit, @ddt], class: :button %>  
+    <% end %>
+  </div>
 <% end %>
