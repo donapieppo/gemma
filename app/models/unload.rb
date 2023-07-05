@@ -1,9 +1,9 @@
 class Unload < Operation
   belongs_to :thing
   belongs_to :organization
-  has_many   :moves, foreign_key: :operation_id # in realta' has one diverso da load
+  has_many :moves, foreign_key: :operation_id # in realta' has one diverso da load
 
-  validate   :validate_numbers
+  validate :validate_numbers
   after_save :recalculate_prices
 
   # un solo deposito
@@ -15,7 +15,7 @@ class Unload < Operation
   # pensare a after_initialize
   def initialize(attributes = nil)
     if attributes.is_a?(Hash)
-      attributes[:ddt_id] = nil 
+      attributes[:ddt_id] = nil
       attributes[:date] = date_afternoon(attributes[:date]) if attributes[:date]
     end
     super(attributes)
@@ -24,14 +24,14 @@ class Unload < Operation
   # FIXME da fare dry con Load
   def validate_numbers
     if !self.numbers || self.numbers.empty?
-      errors.add(:number, 'È necessario indicare la quantità di oggetti.')
-      throw(:abort) 
+      errors.add :number, "È necessario indicare la quantità di oggetti."
+      throw(:abort)
     end
 
     self.numbers.each_value do |num|
       if num >= 0
-        errors.add(:number, 'Il numero di oggetti da scaricare deve essere positivo.')
-        throw(:abort) 
+        errors.add :number, "Il numero di oggetti da scaricare deve essere positivo."
+        throw(:abort)
       end
     end
   end
@@ -47,10 +47,8 @@ class Unload < Operation
     # sara' sempre vero (possiamo solo calare i numeri legati agli scarichi)
     (num > single_move.number) and avoid_history_coherent = true
 
-    self.numbers = { single_move.deposit_id => num } 
+    self.numbers = {single_move.deposit_id => num}
 
     self.save
   end
 end
-
-
