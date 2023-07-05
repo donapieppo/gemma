@@ -9,7 +9,7 @@
           <tr>
             <% @things_cache[book.thing] += book.number.abs %>
             <% if ! @user and old_user != (old_user = book.user) %>  
-              <th><%= link_to(book.user, user_bookings_path(book.user_id)) %></th>
+              <th><%= link_to book.user, user_bookings_path(book.user_id) %></th>
             <% else %>
               <th style="border: 0"></th>
             <% end %>
@@ -17,13 +17,16 @@
               <strong><%= book.number.abs %></strong> <%= book.thing %>
               <%= "per #{h book.recipient}" if book.recipient %> 
               <%= "(#{book.note})" unless book.note.blank? %>
+              <% if book.lab_id %>
+                <span class="text-secondary"><%= " - #{book.lab}" %></span>
+              <% end %>
             </td>
             <td nowrap="nowrap">
               <small><%= l(book.created_at, format: :booking) if book.created_at %></small>
             </td>
             <td nowrap="nowrap" class="text-end">
               <%= link_to_check confirm_booking_path(book) %> 
-              <%= link_to_delete booking_path(book) %> 
+              <%= link_to_delete "", booking_path(book) %> 
               <%= link_to_change_and_confirm edit_booking_path(book) %>
             </td>
           </tr>
@@ -31,7 +34,10 @@
       </table>
     </div>
     <div class="my-2 text-end">
-      <%= button_to '<i class="fa-regular fa-file-pdf fa-xl"></i> scarica pdf'.html_safe, bookings_reports_path, form: { data: { turbo: false }} %>  
+      <%# <%= link_to dm_icon("arrow-up-1-9", text: "Ordina per data"), "" %> 
+      <%= button_to bookings_reports_path, form: { data: { turbo: false }, class: "d-inline"} do %>  
+        <%= dm_icon("file-pdf", "regular", size: "xl", text: "scarica pdf") %>
+      <% end %>
     </div>
   </div>
 
@@ -42,7 +48,10 @@
 
         <ul class="booking-things">
           <% @things_cache.each do |thing, num| %>  
-            <li><span class="number me-3"><%= num %></span> <%= link_to thing, thing_bookings_path(thing.id) %></li>
+            <li class="my-1">
+              <span class="booking-number me-3 <%= thing_color_class(thing, num) %>"><%= num %></span> 
+              <%= link_to thing, thing_bookings_path(thing.id) %>
+            </li>
           <% end %>
         </ul>
       </div>
@@ -74,7 +83,7 @@
     <div class="dm-form-body">
       <%= simple_form_for :report, url: receipt_reports_path, data: { turbo: false } do |f| %>
         <%= f.input :user_id, collection: @cache_users, label_method: :cn_militar, include_blank: false, label: "Scarichi dell'utente" %>  
-        <%= f.input :date, as: :date, html5: true, label: 'Data', input_html: { value: Date.today } %>  
+        <%= f.input :date, as: :date, html5: true, label: 'Data', input_html: {value: Date.today} %>  
         <input type="hidden" name="bookings" value="1" />  
         <%= f.submit "Scarica report" %>  
       <% end %>
@@ -82,3 +91,9 @@
   </div>
 <% end %>
 
+<%= javascript_tag do %>
+        // Reload the page every 10 minutes (600,000 milliseconds)
+        setInterval(function() {
+            location.reload();
+        }, 600000);
+<% end %>
