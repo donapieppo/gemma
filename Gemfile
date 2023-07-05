@@ -1,9 +1,9 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-gem 'dm_unibo_user_search', git: 'https://github.com/donapieppo/dm_unibo_user_search.git'
-gem 'dm_unibo_common',      git: 'https://github.com/donapieppo/dm_unibo_common.git', branch: 'turbo'
-#gem 'dm_unibo_common',      path: '/home/rails/gems/dm_unibo_common/'
+gem "dm_unibo_user_search", git: "https://github.com/donapieppo/dm_unibo_user_search.git"
+gem "dm_unibo_common", git: "https://github.com/donapieppo/dm_unibo_common.git", branch: "master"
+# gem "dm_unibo_common", path: "/home/rails/gems/dm_unibo_common/"
 
 gem "sprockets-rails"
 gem "jsbundling-rails"
@@ -21,11 +21,11 @@ gem "prawn-labels"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
-  gem "debug", platforms: %i[ mri mingw x64_mingw ]
+  gem "debug", platforms: %i[mri mingw x64_mingw]
 end
 
 group :development, :test do
-  gem "rspec-rails", '~> 6.0.0'
+  gem "rspec-rails", "~> 6.0.0"
   gem "factory_bot_rails"
   gem "faker"
 end
@@ -46,6 +46,9 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
   gem "webdrivers"
-  gem 'cucumber-rails', require: false
-  gem 'database_cleaner'
+  gem "cucumber-rails", require: false
+  gem "database_cleaner"
+  gem "standard"
+  gem "ruby-lsp"
+  gem "ruby-lsp-rails"
 end
