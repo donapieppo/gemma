@@ -11,7 +11,7 @@
         <%= image_tag image.photo.variant(resize_to_limit: [300, 300]) %>
       </div>
       <div>
-        <%= link_to_delete image_path(image) %>
+        <%= link_to_delete "", image_path(image) %>
       </div>
     <% end %>
   <% end %>
