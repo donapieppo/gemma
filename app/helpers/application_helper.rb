@@ -33,6 +33,5 @@ include DmUniboCommonHelper
 include BookingHelper
 include ThingHelper
 include OperationHelper
-include MoveHelper
 include ReportHelper
 include PriceHelper
