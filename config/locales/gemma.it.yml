@@ -63,6 +63,7 @@ it:
         date: Data della consegna 
         deposit_id: Scegliere la provenienza
         note: Eventuali annotazioni
+        lab: Laboratorio
       booking:
         number: Numero di articoli da prenotare
         recipient_id: Destinatario/resposabile scarico
