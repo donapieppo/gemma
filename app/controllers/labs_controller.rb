@@ -1,5 +1,5 @@
 class LabsController < ApplicationController
-  before_action :set_lab_and_check_permission, only: [:show, :edit, :update, :delete]
+  before_action :set_lab_and_check_permission, only: [:show, :edit, :update, :destroy]
 
   def index
     authorize :lab
@@ -38,6 +38,13 @@ class LabsController < ApplicationController
   end
 
   def destroy
+    if @lab.destroy
+      flash[:notice] = "Il laboratorio è stato cancellato come richiesto."
+    else
+      flash[:error] = "Ci sono scarichi/prenotazioni legati al laboratorio. Non è possibile eseguire l'operazione."
+    end
+
+    redirect_to [:edit, @lab]
   end
 
   private
