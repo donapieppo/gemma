@@ -1,8 +1,8 @@
 <h1><%= booking_title %></h1>
 
-<p class="info">
+<div class="info">
 Da questa pagina è possibile consultare e cancellare le proprie prenotazioni.
-</p>
+</div>
 
 <div class="bookings-list my-3">
   <% @books.each do |o|  %>  
@@ -16,11 +16,14 @@ Da questa pagina è possibile consultare e cancellare le proprie prenotazioni.
           <span class="pe-2"><%= l o.date %></span>
           <span class="font-weight-bold"><%= o.thing %></span>
           <span class="float-end">
-            <%= link_to_delete booking_path(o) %>
+            <%= link_to_delete "", booking_path(o) %>
           </span>
           <br/>
           <% if o.recipient_id %>
             Responsabile: <%= o.recipient %>
+          <% end %>
+          <% if o.lab_id %>
+            (per <%= o.lab %>)
           <% end %>
           <span style="margin-left: 6em" class="text-muted">
             <%= o.note %>
