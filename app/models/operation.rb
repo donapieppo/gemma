@@ -36,15 +36,21 @@ class Operation < ApplicationRecord
   # la svolta per mettere date al posto di datetime e risolvere una tonnellata di problemi
   # ha solo il difetto che con stock e loads nella stessa giornata l'ordine non e' ottimale
   scope :ordered, -> { order("operations.date ASC, operations.number DESC") }
-  scope :in_last_years, -> num { where("YEAR(date) >= ?", num) }
+  scope :in_last_years, ->(num) { where("YEAR(date) >= ?", num) }
 
-  def is_stock?    ; self.is_a?(Stock)    end
-  def is_price?    ; self.is_a?(Price)    end
-  def is_load?     ; self.is_a?(Load)     end
-  def is_takeover? ; self.is_a?(Takeover) end
-  def is_unload?   ; self.is_a?(Unload)   end 
-  def is_booking?  ; self.is_a?(Booking)  end
-  def is_shift?    ; self.is_a?(Shift)    end
+  def is_stock? = self.is_a?(Stock)
+
+  def is_price? = self.is_a?(Price)
+
+  def is_load? = self.is_a?(Load)
+
+  def is_takeover? = self.is_a?(Takeover)
+
+  def is_unload? = self.is_a?(Unload)
+
+  def is_booking? = self.is_a?(Booking)
+
+  def is_shift? = self.is_a?(Shift)
 
   # in questo modo @_numbers diventa una cache (se è settato con numbers=)
   # undefined method `deposit_id' for {}:Hash
@@ -134,10 +140,10 @@ class Operation < ApplicationRecord
 
   # possiamo passare 'pietro.donatini' 'pietro.donatini@unibo.it' 'Pietro donatini pietro.donatini@unibo.it'
   def recipient_upn=(upn)
-    if upn =~ /(\w+\.\w+)/ 
-      @_recipient_upn = "#{$1}@unibo.it"
+    @_recipient_upn = if upn =~ /(\w+\.\w+)/
+      "#{$1}@unibo.it"
     else
-      @_recipient_upn = upn
+      upn
     end
   end
 
@@ -158,11 +164,9 @@ class Operation < ApplicationRecord
   protected
 
   def validate_user
-    begin
-      User.find(self.user_id)
-    rescue => e
-      self.errors.add(:user, e.to_s)
-    end
+    User.find(self.user_id)
+  rescue => e
+    self.errors.add(:user, e.to_s)
   end
 
   def validate_recipient
@@ -172,7 +176,7 @@ class Operation < ApplicationRecord
       u = User.find_or_syncronize(@_recipient_upn)
       self.recipient_id = u.id
     rescue => e
-      Rails.logger.info "#{e.to_s} while validating recipient_upn=#{@_recipient_upn}"
+      Rails.logger.info "#{e} while validating recipient_upn=#{@_recipient_upn}"
       self.errors.add(:recipient_upn, e.to_s)
       self.errors.add(:base, e.to_s)
     end
@@ -201,8 +205,8 @@ class Operation < ApplicationRecord
     if @_numbers
       @_numbers.each_key do |dep_id|
         if (dep = Deposit.find_by_id(dep_id))
-          if (dep.thing_id != self.thing_id)
-            errors.add(:base, 'Oggetti differenti in deposit and operation. Contattare amministratore.') and return
+          if dep.thing_id != self.thing_id
+            errors.add(:base, "Oggetti differenti in deposit and operation. Contattare amministratore.") and return
           end
         else
           errors.add(:base, "È necessario selezionare una provenienza corretta.") and return
@@ -222,12 +226,12 @@ class Operation < ApplicationRecord
 
     # aggiorno gli esistenti. move => deposit_id => number
     # I numbers sono la situazione attuale corretta. Non un'unione con i vecchi.
-    # Quindi se in un vecchio location_id c'era un move e ora questo location_id non 
+    # Quindi se in un vecchio location_id c'era un move e ora questo location_id non
     # e' nei numbers, lo togliamo!!!!
     self.moves.each do |move|
       if tmp_numbers[move.deposit_id]
-        if move.number != tmp_numbers[move.deposit_id] 
-          move.update(number: tmp_numbers[move.deposit_id].to_i) or raise('NON SALVO MOVE IN update_moves')
+        if move.number != tmp_numbers[move.deposit_id]
+          move.update(number: tmp_numbers[move.deposit_id].to_i) or raise("NON SALVO MOVE IN update_moves")
           @deposits_to_check << move.deposit_id
         else
           # FIXME per ora mettiamo cosi' perche' non sappiamo se la data e' cambiata................. 
@@ -235,7 +239,7 @@ class Operation < ApplicationRecord
           @deposits_to_check << move.deposit_id
         end
       else
-        move.destroy or raise('NON CANCELLO MOVE IN update_moves')
+        move.destroy or raise("NON CANCELLO MOVE IN update_moves")
         @deposits_to_check << move.deposit_id
       end
       tmp_numbers.delete(move.deposit_id)
@@ -244,8 +248,7 @@ class Operation < ApplicationRecord
     # aggiungiamo i nuovi
     tmp_numbers.each do |dep_id, num|
       if num.to_i != 0
-        self.moves.create(deposit_id: dep_id,
-                          number:     num)
+        self.moves.create(deposit_id: dep_id, number: num)
         @deposits_to_check << dep_id
       end
     end
@@ -262,23 +265,23 @@ class Operation < ApplicationRecord
     self.instance_of?(Booking) and avoid_history_coherent = true
 
     self.moves.each do |m|
-      @deposits_to_check << m.deposit_id 
-      m.destroy or raise 'non cancello in delete_moves'
+      @deposits_to_check << m.deposit_id
+      m.destroy or raise "non cancello in delete_moves"
     end
     true
   end
 
   # vanno controllati tutti i deposit con moves sia presenti che cancellati (passati)
   def history_coherent?
-    if avoid_history_coherent 
-      Rails.logger.debug('SKIP history_coherent? and return true')
+    if avoid_history_coherent
+      Rails.logger.debug("SKIP history_coherent? and return true")
       return true
     end
     @deposits_to_check.each do |dep_id|
-      sum = 0 
+      sum = 0
       Move.includes(:operation)
-          .order('operations.date asc, operations.number desc, operations.id asc').references(:operations)
-          .where('deposit_id = ?', dep_id).each do |m|
+        .order("operations.date asc, operations.number desc, operations.id asc").references(:operations)
+        .where("deposit_id = ?", dep_id).each do |m|
         sum += m.number
         Rails.logger.debug("history_coherent?: move = #{m.inspect} sum = #{sum}")
         (sum < 0) and raise Gemma::NegativeDeposit
