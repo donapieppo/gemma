@@ -6,19 +6,21 @@ class DepositsController < ApplicationController
     authorize @deposit
 
     @actual_locations = @thing.locations
-    @other_locations  = current_organization.locations - @actual_locations
+    @other_locations = current_organization.locations - @actual_locations
   end
 
   # "thing"=>{"location_ids"=>["222", "223", ""]}, "commit"=>"Aggiungi", "thing_id"=>"12058"}
   def create
     if params[:thing] && params[:thing][:location_ids]
       params[:thing][:location_ids].each do |loc_id|
-        next if loc_id.blank? 
-        @deposit = current_organization.deposits.new(thing_id:    @thing.id,
-                                                     location_id: loc_id,
-                                                     actual:      0)
+        next if loc_id.blank?
+        @deposit = current_organization.deposits.new(
+          thing_id: @thing.id,
+          location_id: loc_id,
+          actual: 0
+        )
         authorize @deposit
-        if ! @deposit.save
+        if !@deposit.save
           redirect_to new_thing_deposit_path(@thing), alert: "Errore nell'aggiunta dell'articolo."
           return                      
         end
@@ -31,7 +33,7 @@ class DepositsController < ApplicationController
   end
 
   def destroy
-    deposit = current_organization.deposits.find(params[:id]) 
+    deposit = current_organization.deposits.find(params[:id])
     authorize deposit
 
     if deposit.destroy
@@ -43,9 +45,9 @@ class DepositsController < ApplicationController
     redirect_to edit_thing_path(deposit.thing_id)
   end
 
-  private 
+  private
 
   def set_thing
-    @thing = current_organization.things.find(params[:thing_id]) 
+    @thing = current_organization.things.find(params[:thing_id])
   end
 end

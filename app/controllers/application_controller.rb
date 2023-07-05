@@ -7,7 +7,7 @@ class ApplicationController < DmUniboCommon::ApplicationController
   # and have no authorization in current_organization
   def after_current_user_and_organization
     if current_organization
-      if session[:booking] != current_organization.id && current_organization.booking && (!policy(current_organization).unload?)
+      if session[:booking] != current_organization.id && current_organization.booking && !policy(current_organization).unload?
         redirect_to current_organization_booking_accept_path
       end
     elsif current_user
