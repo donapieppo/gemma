@@ -18,7 +18,10 @@
       <% end %>
     </main><!-- container -->
 
-    <%= render partial: 'layouts/footer' %>
+    <%= render DmUniboCommon::FooterComponent.new current_user, 
+          contact_mail: Rails.configuration.contact_mail,
+          documentation_path: helps_path %>  
+    <%= render DmUniboCommon::ImpersonationComponent.new current_user, true_user %>  
   </body>
 </html>
 
