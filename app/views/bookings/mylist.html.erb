@@ -23,7 +23,7 @@ Da questa pagina è possibile consultare e cancellare le proprie prenotazioni.
             Responsabile: <%= o.recipient %>
           <% end %>
           <% if o.lab_id %>
-            (per <%= o.lab %>)
+            (per laboratorio <strong><%= o.lab %></strong>)
           <% end %>
           <span style="margin-left: 6em" class="text-muted">
             <%= o.note %>
