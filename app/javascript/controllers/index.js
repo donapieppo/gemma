@@ -6,5 +6,6 @@ import FocusController from "./focus"
 application.register("focus", FocusController)
 import DsaAwesomplete from "./dsa_awesomplete.js"
 application.register("dsa-awesomplete", DsaAwesomplete)
-import { DmTest, TurboModalController } from "dm_unibo_common"
+import { DmTest, TurboModalController, LimitVisibleController } from "dm_unibo_common"
 application.register("turbo-modal", TurboModalController)
+application.register("limit-visible", LimitVisibleController)
