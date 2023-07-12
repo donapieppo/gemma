@@ -4,7 +4,7 @@
   <% form_title += " (#{show_future_prices(@thing)})" %>
 <% end %>
 
-<div data-controller="limit-visible`">
+<div data-controller="limit-visible">
   <%= dm_form_for [@thing, @book], title: form_title do |f| %>
     <%= f.dm_error_notification %>
     <% if @delegators.size > 1 %>  
