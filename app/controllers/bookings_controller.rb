@@ -5,10 +5,10 @@ class BookingsController < ApplicationController
   def index
     authorize Booking
     if policy(current_organization).give?
-      @books = current_organization.bookings.includes(:user, :recipient, :thing).order("date")
+      @books = current_organization.bookings.includes(:user, :recipient, :thing, :lab).order("date")
       if params[:user_id]
         @user = User.find(params[:user_id])
-        @books = @books.where(user: @user)
+        @books = @books.where(user: @user).or(@books.where(recipient: @user))
       elsif params[:thing_id]
         @thing = Thing.find(params[:thing_id])
         @books = @books.where(thing: @thing)
@@ -20,7 +20,9 @@ class BookingsController < ApplicationController
       @delegations = delegations_hash
       @cache_users = User.bookers_in_cache(current_organization.id)
     else
-      @books = current_user.bookings.where(organization_id: current_organization.id)
+      @books = current_user.bookings
+        .where(organization_id: current_organization.id)
+        .includes(:user, :recipient, :thing, :lab)
     end
     @books = @books.to_a
 
