@@ -21,11 +21,11 @@ class DelegationsController < ApplicationController
       res = false
     end
 
-    if res 
-      flash[:notice] = 'La delega è stata assegnata.'
+    if res
+      flash[:notice] = "La delega è stata assegnata."
       redirect_to delegations_path
     else
-      render action: 'new', status: :unprocessable_entity
+      render action: "new", status: :unprocessable_entity
     end
   end
 
