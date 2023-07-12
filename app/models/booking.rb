@@ -39,4 +39,8 @@ class Booking < Unload
     end
     true
   end
+
+  def didattica?
+    !!lab_id
+  end
 end
