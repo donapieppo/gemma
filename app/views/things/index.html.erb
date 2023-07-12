@@ -11,7 +11,7 @@
     <% disabled_class  = thing_actions_enabled? ? "" : " disabled " %>  
     <% highlight_class = (params[:from_thing] && params[:from_thing].to_i == thing.id) ? " bg-light " : "" %>  
     <% number = @location ? @actuals[thing.id] : thing.total %>  
-    <%= link_to thing_actions_url(thing), class: "list-group-item list-group-item-action py-2" + disabled_class + highlight_class do %> 
+    <%= link_to thing_actions_url(thing), data: {turbo: false}, class: "list-group-item list-group-item-action py-2" + disabled_class + highlight_class do %> 
       <%= thing.to_s_with_description%>
       <%= content_tag :span, number, class: "actual-number #{thing_color_class(thing, number)}" %>
     <% end %>
@@ -25,7 +25,7 @@
     <% thing.images.each do |image| %>  
       <% if image.photo.attached? %>  
         <div class="col-6 col-md-3">
-          <%= link_to thing_actions_url(thing), class: disabled_class do %>
+          <%= link_to thing_actions_url(thing), class: disabled_class, data: {turbo: false} do %>
             <div class="card h-100 p-3">
               <%= image_tag image.photo, class: 'card-img-top', alt: thing.to_s, style: '' %>
               <div class="card-body">
