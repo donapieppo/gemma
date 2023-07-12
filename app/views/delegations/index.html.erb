@@ -12,7 +12,7 @@
     <div class="list-group-item hide_and_show" style="display: none">
       <ul>
       <% @delegations[delegator].each do |delegation| %>
-        <li><%= delegation.delegate %> (<%= delegation.delegate.upn %>) <%= link_to_delete delegation %></li>
+        <li><%= delegation.delegate %> (<%= delegation.delegate.upn %>) <%= link_to_delete "", delegation %></li>
       <% end %>
       </ul>
     </div>
