@@ -6,9 +6,10 @@
       <% old_user = nil %>  
       <% @books.each do |book| %>
         <% @things_cache[book.thing] += book.number.abs %>
-        <% if !@user && old_user != (old_user = book.user) %>  
+        <% to_user = (book.recipient or book.user) %>
+        <% if !@user && old_user != (old_user = to_user) %>  
           <div class="my-2">
-            <%= link_to book.user, user_bookings_path(book.user_id) %>
+            <%= link_to to_user, user_bookings_path(to_user.id) %>
           </div>
         <% end %>
         <div class="row my-1">
@@ -16,11 +17,11 @@
             <span class="fw-bold pe-2"><%= book.number.abs %></span>
             <%= book.thing %>
             <span class="ps-2 text-secondary">
-              <%= "per #{h book.recipient}" if book.recipient %> 
               <%= "(#{book.note})" unless book.note.blank? %>
               <% if book.lab_id %>
-                <%= " - #{book.lab}" %>
+                <%= dm_icon "flask-vial", text: "Per lab. #{book.lab}" %>
               <% end %>
+              <%= "da #{h book.user}" if book.user != to_user %> 
             </span>
           </div>
 
