@@ -1,5 +1,6 @@
-delete from organizations where id=223;
 alter table organizations drop column division;
+alter table operations drop column division_id;
+
 alter table organizations add column `with_labs` bool default false after `pricing`; 
 
 CREATE TABLE `labs` (
@@ -10,7 +11,6 @@ CREATE TABLE `labs` (
   CONSTRAINT `fk_labs_organizations` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`id`)
 );
 
-alter table operations drop column division_id;
 alter table operations add column lab_id int(11) unsigned after `ddt_id`;
 ALTER TABLE operations ADD CONSTRAINT `operations_labfk` FOREIGN KEY (lab_id) REFERENCES labs(id);
 
