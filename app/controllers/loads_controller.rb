@@ -5,9 +5,9 @@ class LoadsController < ApplicationController
   def new
     if @thing.deposits.empty?
       skip_authorization
-      redirect_to edit_thing_path(@thing), alert: 'Non è stata ancora definita una ubicazione per il materiale.'
-    else 
-      @load    = @thing.loads.new(date: Date.today, organization_id: current_organization.id)
+      redirect_to edit_thing_path(@thing), alert: "Non è stata ancora definita una ubicazione per il materiale."
+    else
+      @load = @thing.loads.new(date: Date.today, organization_id: current_organization.id)
       @numbers = {}
       authorize @load
     end
@@ -16,14 +16,14 @@ class LoadsController < ApplicationController
   # load: {"thing_id"=>"3998", "numbers"=>{"4003"=>"12", "4005"=>"21"}, "price_int"=>"2", "price_dec"=>"0"}
   def create
     params[:load][:numbers] = @numbers = params[:numbers].permit!
-    fix_prices(params[:load], params['price_with_iva'])
+    fix_prices(params[:load], params["price_with_iva"])
 
     @load = @thing.loads.new(load_params)
 
     @load.organization_id = current_organization.id
     @load.user_id = current_user.id
 
-    authorize @load 
+    authorize @load
 
     # il create non vede raisare perche' sempre history_coherent
     if @load.save
@@ -40,10 +40,10 @@ class LoadsController < ApplicationController
   end
 
   def update
-    fix_prices(params[:load], params['price_with_iva'])
+    fix_prices(params[:load], params["price_with_iva"])
     params[:load][:numbers] = @numbers = params[:numbers]
 
-    begin 
+    begin
       res = @load.aggiorna(load_params)
     rescue Gemma::NegativeDeposit => e
       @load.errors.add(:base, e.to_s)
@@ -51,7 +51,7 @@ class LoadsController < ApplicationController
     end
 
     if res
-      redirect_to thing_moves_path(@load.thing_id), notice: 'Aggiornamento avvenuto correttamente.'
+      redirect_to thing_moves_path(@load.thing_id), notice: "Aggiornamento avvenuto correttamente."
     else
       render action: :new, status: :unprocessable_entity
     end
@@ -65,8 +65,8 @@ class LoadsController < ApplicationController
       res = false
     end
 
-    if res 
-      flash[:notice] = 'Carico eliminato. '
+    if res
+      flash[:notice] = "Carico eliminato."
       if @load.ddt.operations.count < 1
         flash[:notice] += "Avviso: Non ci sono più carichi associati al ddt/fattura Record N. #{@load.ddt.number}."
       end
@@ -81,8 +81,10 @@ class LoadsController < ApplicationController
 
   # remember update e' in realta' un aggiorna nel load module (operation)
   def load_params
-    params[:load].permit(:number, :recipient, :date, :ddt_id, :note, :ycia, :ncia, :price, :price_int, :price_dec, 
-                         numbers: params[:load][:numbers].try(:keys))
+    params[:load].permit(
+      :number, :recipient, :date, :ddt_id, :note, :ycia, :ncia, :price, :price_int, :price_dec,
+      numbers: params[:load][:numbers].try(:keys)
+    )
   end
 
   def set_thing
