@@ -27,8 +27,10 @@ class UnloadsController < ApplicationController
     end
   end
 
-  # TODO "unload"=>{ "didattica"=>"on"
   def create
+    # lab only if didattica is on
+    params[:unload].delete(:lab_id) unless params[:didattica] == "on"
+
     if params[:batch] == "y" && params[:unload][:recipient_upn]
       authorize :unload, :batch_unloads?
       @batch_unloads = BatchUnload.new(current_user, current_organization, @thing, unload_params)
