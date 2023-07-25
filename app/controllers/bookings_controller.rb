@@ -41,6 +41,9 @@ class BookingsController < ApplicationController
   end
 
   def create
+    # lab only if didattica is on
+    params[:booking].delete(:lab_id) unless params[:didattica] == "on"
+
     params[:booking][:numbers] = {params[:booking].delete(:deposit_id) => params[:booking].delete(:number).to_i * -1}
 
     @book = @thing.bookings.new(booking_params)
