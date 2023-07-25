@@ -15,7 +15,15 @@
   <%= f.input :number, hint: number_hint, required: true %>
 
   <% if current_organization.with_labs %>
-    <%= f.association :lab, collection: current_organization.labs, as: :radio_buttons %>
+    <div data-controller="limit-visible">
+      <div class="form-check offset-sm-3 my-4">
+        <input type="checkbox" name="didattica" class="form-check-input" id="didattica" data-action="change->limit-visible#update"></input>
+        <label for="didattica" class="form-check-label">Per la didattica</label>
+      </div>
+      <div id="lab_div" style="display: none" data-limit-visible-target="item" data-text="true">
+        <%= f.association :lab, collection: current_organization.labs, as: :radio_buttons %>
+      </div>
+    </div>
   <% end %>
 
   <% if @thing.deposits.size > 1 %>  
