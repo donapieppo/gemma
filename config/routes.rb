@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  mount DmUniboCommon::Engine => "/dm_unibo_common"
+  mount DmUniboCommon::Engine => "/dm_unibo_common", :as => "dm_unibo_common"
 
   get "/logins/logout", to: "dm_unibo_common/logins#logout"
 
