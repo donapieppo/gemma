@@ -17,7 +17,7 @@
             <span class="fw-bold pe-2"><%= book.number.abs %></span>
             <%= book.thing %>
             <% if book.thing.under_minimum? %>
-              <span class="text-warning"><%= dm_icon "circle-exclamation" %></span>
+              <span class="text-warning" title="sotto scorta minima"><%= dm_icon "circle-exclamation" %></span>
             <% end %>
             <span class="ps-2 text-secondary">
               <%= "(#{book.note})" unless book.note.blank? %>
