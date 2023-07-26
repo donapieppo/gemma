@@ -12,7 +12,7 @@ class ApplicationController < DmUniboCommon::ApplicationController
       end
     elsif current_user
       logger.info("No current_organization for #{params[:__org__]}. Redirect #{current_user&.upn} to NO ACCESS")
-      redirect_to no_access_path(__failed_org__: params[:__org__])
+      redirect_to dm_unibo_common.no_access_path(__failed_org__: params[:__org__])
     end
   end
 
