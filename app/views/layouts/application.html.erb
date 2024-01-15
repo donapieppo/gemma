@@ -4,19 +4,14 @@
   <body>
     <%= render partial: 'layouts/menu' %>
 
-    <%= turbo_frame_tag :modal %>
-
     <main role="main" class="container">
       <%= render "shared/breadcrumbs" %>
-      <%= bootstrap_flash %>
+      <%= render DmUniboCommon::PrivacyAlertComponent.new(cookies) %>  
+      <%= render DmUniboCommon::BootstrapAlertComponent.new(flash) %>  
+      <%= turbo_frame_tag :modal %>
       <%= render "shared/recipe" if params[:from_unload] %>
-
-      <% begin %>  
-        <%= yield %>
-      <% rescue => errore %>
-        <%= errore %>
-      <% end %>
-    </main><!-- container -->
+      <%= yield %>
+    </main>
 
     <%= render DmUniboCommon::FooterComponent.new current_user, 
                                                   contact_mail: Rails.configuration.contact_mail,
