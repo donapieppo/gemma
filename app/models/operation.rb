@@ -9,7 +9,7 @@ class Operation < ApplicationRecord
   belongs_to :lab, optional: true
   has_many :moves
 
-  serialize :price_operations, Array
+  serialize :price_operations, coder: YAML, type: Array
 
   attribute :avoid_history_coherent, :boolean, default: false # quando creiamo a volte sappiamo che non serve perchè safe
   attribute :avoid_price_updating, :boolean, default: false # se non viene modificato il prezzo o il numero di oggetti

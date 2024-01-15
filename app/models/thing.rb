@@ -15,7 +15,7 @@ class Thing < ApplicationRecord
   has_many :barcodes, dependent: :destroy
   has_many :images, dependent: :destroy
 
-  serialize :future_prices, Array
+  serialize :future_prices, coder: YAML, type: Array
 
   before_validation :strip_name_blanks
 
