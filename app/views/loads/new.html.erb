@@ -1,5 +1,5 @@
 <% @stock_possible = (! @thing.has_operation?) %>  
-<% @all_ddts = current_organization.ddts.includes(:supplier).order('ddts.number desc').where('date > (NOW() - INTERVAL 376 DAY)') %>
+<% @all_ddts = current_organization.ddts.includes(:supplier).order('ddts.number desc').where('date > (NOW() - INTERVAL 500 DAY)') %>
 
 <% if @stock_possible %>
   <div class="alert alert-warning">
