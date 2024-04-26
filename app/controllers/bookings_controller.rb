@@ -1,11 +1,11 @@
 class BookingsController < ApplicationController
   before_action :set_thing, only: [:new, :create]
-  before_action :set_booking_and_check_permission, only: [:destroy, :edit, :update, :confirm]
+  before_action :set_booking_and_check_permission, only: [:destroy, :edit, :confirm]
 
   def index
     authorize Booking
     if policy(current_organization).give?
-      @books = current_organization.bookings.includes(:user, :recipient, :thing, :lab).order("date")
+      @books = current_organization.bookings.includes(:user, :recipient, :thing, :lab)
       if params[:user_id]
         @user = User.find(params[:user_id])
         @books = @books.where(user: @user).or(@books.where(recipient: @user))
@@ -24,7 +24,7 @@ class BookingsController < ApplicationController
         .where(organization_id: current_organization.id)
         .includes(:user, :recipient, :thing, :lab)
     end
-    @books = @books.to_a
+    @books = @books.order("date").to_a
 
     render :mylist unless policy(current_organization).give?
   end
