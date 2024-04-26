@@ -3,9 +3,9 @@
 <% elsif @operation.is_unload? || @operation.is_takeover? %>
   <% if @operation.recipient %>
     <%= @operation.recipient.upn %> 
-    <small class='text-muted'>(da <%= @operation.user.cn %>)</small>
+    <small class='text-muted'>(da <%= @operation.user.upn %>)</small>
   <% else %>
-    <%= @operation.user.cn %>
+    <%= @operation.user.upn %>
   <% end %>
   <% if @operation.is_booking? %>
     <small>(prenotazione)</small>
