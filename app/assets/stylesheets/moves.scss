@@ -12,10 +12,6 @@
   .secondary-information {
     display: none;
   }
-  .moves-list-item:hover .secondary-information {
-    display: block;
-    @extend .my-1;
-  }
 
   .move-remaining {
     @extend .number;
