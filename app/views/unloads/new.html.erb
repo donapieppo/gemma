@@ -1,15 +1,24 @@
 <%= render Thing::ActionsComponent.new(current_user, @thing) %>
 
+<% deposits = @thing.deposits %>
+
 <% 
-  form_title = "Modulo di scarico di #{h @thing} " 
-  form_title += "(#{show_future_prices(@thing)})" if current_organization.pricing 
-  form_title += "- presso #{@thing.deposits.first.location}" unless @thing.deposits.size == 1 
-  form_title += "- Scarichi multipli Cesia" if params[:batch] 
   number_hint = "(massimo: #{@thing.max_actual_in_deposits})" 
   number_hint += ". Numero di oggetti da consegnare ad ogni persona." if params[:batch] 
 %>  
 
-<%= dm_form_for [@thing, @unload], title: form_title do |f| %>
+<div class="dm-card">
+  <div class="dm-card-title">
+    <%= @thing %><br/>
+    <small>
+      Modulo di scarico 
+      <%= "presso #{@thing.deposits.first.location}" if deposits.size == 1 %>
+      <%= "- Scarichi multipli Cesia" if params[:batch] %>
+      <%= "(#{show_future_prices(@thing)})" if current_organization.pricing %>
+    </small>
+  </div>
+  <div class="dm-card-body">
+<%= simple_form_for [@thing, @unload] do |f| %>
   <%= f.dm_error_notification %>  
   <input type="hidden" name="batch" value="<%= params[:batch] %>" />
   <%= f.input :number, hint: number_hint, required: true %>
@@ -26,10 +35,10 @@
     </div>
   <% end %>
 
-  <% if @thing.deposits.size > 1 %>  
+  <% if deposits.size > 1 %>  
     <%= f.input :deposit_id, as: :unload_location %>  
   <% else %>
-    <%= f.hidden_field :deposit_id, value: @thing.deposits.first.id %>  
+    <%= f.hidden_field :deposit_id, value: deposits.first.id %>  
   <% end %>
 
   <%= f.input :note %>
@@ -75,3 +84,5 @@
 
   <%= thing_image(@thing) %>  
 <% end %>
+  </div>
+  </div>
