@@ -36,7 +36,7 @@
         <% end %>
       <% end %>
     <% else %>
-      <li><%= link_to dm_icon('clipboard-list', "I miei scarichi", size: :xl), unloads_path %></li>
+      <li><%= link_to dm_icon('clipboard-list', text: "I miei scarichi", size: :xl), unloads_path %></li>
     <% end %>
 
     <% if policy(current_organization).manage? %>  
