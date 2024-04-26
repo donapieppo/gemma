@@ -14,7 +14,7 @@
         <% end %>
         <div class="row my-1">
           <div class="col-md-9 ps-4">
-            <span class="fw-bold pe-2"><%= book.number.abs %></span>
+            <span class="fw-bold pe-2" style="text-align: right; display: inline-block; min-width: 2em"><%= book.number.abs %></span>
             <%= book.thing %>
             <% if book.thing.under_minimum? %>
               <span class="text-warning" title="sotto scorta minima"><%= dm_icon "circle-exclamation" %></span>
@@ -51,11 +51,12 @@
     <div class="dm-card">
       <div class="dm-card-title">Riassunto oggetti prenotati</div>
       <div class="dm-card-body">
-
-        <ul class="booking-things">
+        <ul class="booking-things ps-0">
           <% @things_cache.each do |thing, num| %>  
             <li class="my-1">
-              <span class="booking-number me-3 <%= thing_color_class(thing, num) %>"><%= num %></span> 
+              <span class="booking-number me-3 <%= thing_color_class(thing, num) %>">
+                <%= num %>
+              </span> 
               <%= link_to thing, thing_bookings_path(thing.id) %>
             </li>
           <% end %>
