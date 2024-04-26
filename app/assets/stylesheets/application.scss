@@ -31,6 +31,8 @@ body {
   text-align: right;
   @extend .badge;
   font-size: 100%;
+  min-width: 3em;
+  display: inline-block;
   &.empty { @extend .bg-danger; }
   &.full  { @extend .bg-success; }
   &.warning  { @extend .bg-warning; }
