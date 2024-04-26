@@ -1,6 +1,6 @@
 class MovesController < ApplicationController
   def index
-    skip_authorization
+    authorize :move
 
     if params[:thing_id]
       @thing = current_organization.things.find(params[:thing_id])
