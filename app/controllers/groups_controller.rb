@@ -2,8 +2,8 @@ class GroupsController < ApplicationController
   before_action :set_group_and_check_permission, only: [:edit, :update, :destroy]
 
   def index
-    @groups = current_organization.groups.order(:name)
     authorize :group
+    @groups = current_organization.groups.order(:name)
   end
 
   def new
