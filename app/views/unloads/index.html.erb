@@ -3,7 +3,7 @@
 <h1>I miei scarichi</h1>
 
 <div class="info">
-  I miei scarichi nell'anno <%= Date.today.year %> presso <br/>
+  I miei scarichi nell'<strong>anno <%= Date.today.year %></strong> presso <br/>
   <%= current_organization %>.
 </div>
 
@@ -38,8 +38,10 @@
 </div>
 
 <% if current_organization.pricing && tot > 0 %>
-  <div class="btn btn-outline-success float-end" style="font-size: 100%; font-weight: bold">
-    Totale: <%= print_price(tot) %>  
+  <div class="text-end">
+    <div class="btn btn-lg btn-outline-success text-end w-full font-bold">
+      Totale: <%= print_price(tot) %>  
+    </div>
   </div>
 <% end %>
 
