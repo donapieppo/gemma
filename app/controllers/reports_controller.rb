@@ -290,7 +290,7 @@ class ReportsController < ApplicationController
 
   def form_ddts
     authorize :report
-    @ddts = current_organization.ddts.includes(:supplier).order("number desc").where("YEAR(date) = ?", Date.today.year).to_a
+    @ddts = current_organization.ddts.includes(:supplier).order("number desc").where("YEAR(date) = ?", Date.today.year - 1).to_a
   end
 
   # empty selection: "ddt_ids"=>[""] -> ddt_ids = [0]
@@ -306,7 +306,7 @@ class ReportsController < ApplicationController
     report.title = "Carichi"
 
     report.separator = :ddt
-    report.fields = [:date, :number, :thing] 
+    report.fields = [:date, :number, :thing]
 
     report.query = "SELECT operations.date AS date,
                            operations.number, type,
