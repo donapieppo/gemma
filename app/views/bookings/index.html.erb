@@ -15,7 +15,7 @@
         <div class="row my-1">
           <div class="col-md-9 ps-4">
             <span class="fw-bold pe-2" style="text-align: right; display: inline-block; min-width: 2em"><%= book.number.abs %></span>
-            <%= book.thing %>
+            <%= book.thing.to_s_with_description %>
             <% if book.thing.under_minimum? %>
               <span class="text-warning" title="sotto scorta minima"><%= dm_icon "circle-exclamation" %></span>
             <% end %>
