@@ -6,8 +6,7 @@ class UnloadsController < ApplicationController
   # current_user unloads
   def index
     authorize Unload
-    @unloads = current_organization
-      .unloads
+    @unloads = current_organization.unloads
       .includes(:thing, :user)
       .where(type: "Unload")
       .where("recipient_id = ? OR user_id = ?", current_user.id, current_user.id)
