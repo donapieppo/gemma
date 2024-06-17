@@ -1,0 +1,27 @@
+<div class="row mb-3 price optional load_price">
+  <label class="col-sm-3 col-form-label price optional" for="load_price">
+    Costo totale del carico
+  </label>
+  <div class="col-sm-9">
+    <input class="form-select w-auto d-inline numeric integer" 
+           type="text" 
+           size="6" name="<%= @form.object.model_name.to_s.downcase %>[price_int]" value="<%= @form.object.price_int %>"></input>
+    <b> , </b>
+    <input class="form-select w-auto d-inline numeric integer numeric-cents" 
+           type="text" 
+           size="2" 
+           name="<%= @form.object.model_name.to_s.downcase %>[price_dec]" value="<%= @form.object.price_dec %>"></input> &euro;
+     <div>
+       <label>
+         <input name="price_with_iva" type="radio" value="n" <%= @form.object.price ? '' : 'checked="checked"' %> />
+         iva inclusa
+       </label><br/>
+       <% IVAS.each do |iva| %>
+         <label>
+           <input name="price_with_iva" type="radio" value="<%= iva %>" <%= @form.object.price ? '' : 'checked="checked"' %>  />
+           iva <%= (iva * 100 - 100).to_i %>% esclusa
+         </label><br/>
+       <% end %>
+     </div>
+  </div>
+</div>
