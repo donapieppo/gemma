@@ -28,7 +28,7 @@ class PriceInput < SimpleForm::Inputs::Base
 
   def no_iva_input
     %(
-     <br/><label> <input name="price_add_iva" type="radio" value="n" checked="checked"/> iva inclusa</label>
+     <br/><label> <input name="price_add_iva" type="radio" value="0" checked="checked"/> iva inclusa</label>
     )
   end
 

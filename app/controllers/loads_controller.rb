@@ -1,4 +1,6 @@
 class LoadsController < ApplicationController
+  include PriceMethods
+
   before_action :set_thing, only: [:new, :create]
   before_action :set_load_and_thing_and_check_permission, only: [:edit, :update, :destroy]
 
@@ -16,7 +18,7 @@ class LoadsController < ApplicationController
   # load: {"thing_id"=>"3998", "numbers"=>{"4003"=>"12", "4005"=>"21"}, "price_int"=>"2", "price_dec"=>"0"}
   def create
     params[:load][:numbers] = @numbers = params[:numbers].permit!
-    fix_prices(params[:load], params["price_with_iva"])
+    params[:load] = fix_prices(params[:load], params["price_add_iva"])
 
     @load = @thing.loads.new(load_params)
 
@@ -27,7 +29,7 @@ class LoadsController < ApplicationController
 
     # il create non vede raisare perche' sempre history_coherent
     if @load.save
-      flash[:notice] = "Carico di #{@load.number} <strong>#{view_context.link_to(@thing, thing_moves_path(@thing))}</strong> registrato correttamente e associato al ddt/fattura con RECORD N. #{@load.ddt.number.to_i}.".html_safe
+      flash[:notice] = "Carico di #{@load.number} <strong>#{view_context.link_to(@thing, thing_moves_path(@thing)).html_safe}</strong> registrato correttamente e associato al ddt/fattura con RECORD N. #{@load.ddt.number.to_i}.".html_safe
       redirect_to group_things_path(@thing.group_id, from_thing: @thing.id)
     else
       render action: :new, status: :unprocessable_entity
@@ -40,7 +42,7 @@ class LoadsController < ApplicationController
   end
 
   def update
-    fix_prices(params[:load], params["price_with_iva"])
+    params[:load] = fix_prices(params[:load], params["price_add_iva"])
     params[:load][:numbers] = @numbers = params[:numbers]
 
     begin
