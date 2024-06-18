@@ -1,26 +1,26 @@
 <%= form_tag search_ddts_path do %>
-  <%= dm_card title: 'Fornitore' do %>
+  <%= helpers.dm_card title: 'Fornitore' do %>
     <%= text_field_tag "supplier", '', size: 10 %>
     <%= submit_tag 'Cerca' %>
   <% end %>
 <% end %>
 
 <%= form_tag search_ddts_path do %>
-  <%= dm_card title: 'Num. Record' do %>
+  <%= helpers.dm_card title: 'Num. Record' do %>
     <%= text_field_tag "number", '', size: 10 %>
     <%= submit_tag 'Cerca' %>
   <% end %>
 <% end %>
 
 <%= form_tag search_ddts_path do %>
-  <%= dm_card title: 'Dettaglio (n. ddt/fatt)' do %>
+  <%= helpers.dm_card title: 'Dettaglio (n. ddt/fatt)' do %>
     <%= text_field_tag "like", '', size: 10 %>
     <%= submit_tag 'Cerca' %>
   <% end %>
 <% end %>
 
 <%= form_tag search_ddts_path do %>
-  <%= dm_card title: 'Ricerca per data documento' do %>
+  <%= helpers.dm_card title: 'Ricerca per data documento' do %>
     <div class="row mb-3">
       <div class="col-sm-2">
         <label class="control-label">dal:</label>
@@ -42,7 +42,7 @@
 <% end %>
 
 <%= form_tag search_cia_ddts_path do %>
-  <%= dm_card title: 'Rif. CIA - Nr. Prot.' do %>
+  <%= helpers.dm_card title: 'Rif. CIA - Nr. Prot.' do %>
     <div class="my-2">
       <%= select_tag "ycia", options_for_select(@years_cia), { include_blank: false, class: 'form-select select' } %>
     </div>

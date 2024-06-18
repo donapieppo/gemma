@@ -9,9 +9,9 @@
           del <%= l ddt.date %> - <%= ddt %> <br/><small class="text-muted">di <%= ddt.supplier %></small>
         </td>
         <td nowrap="nowrap">
-          <%= link_to_show "", ddt %>
-          <%= link_to_edit "", edit_ddt_path(ddt) %>  
-          <%= link_to_delete "", ddt_path(ddt) %>  
+          <%= helpers.link_to_show "", ddt %>
+          <%= helpers.link_to_edit "", edit_ddt_path(ddt) %>  
+          <%= helpers.link_to_delete "", ddt_path(ddt) %>  
         </td>
       </tr>
     <% end %>

@@ -27,7 +27,7 @@
             <%= @operation.note %> 
           <% end %>
           <% if @pricing && @operation.price && @operation.price > 0 && @operation.number < 0 %>
-            <br/>origine prezzo: <%= show_price_origins(@operation) %>
+            <br/>origine prezzo: <%= helpers.show_price_origins(@operation) %>
           <% end %>
           <% if @operation.is_load? %>
             <br/><%= link_to @operation.ddt.long_description, ddt_path(@operation.ddt) %>
