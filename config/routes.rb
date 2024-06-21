@@ -12,6 +12,9 @@ Rails.application.routes.draw do
   get "/logins/choose_organization", to: "helps#old_url"
   get "/logins/form", to: "helps#old_url"
 
+  get "/home", to: "home#index", as: "home"
+  get "helps", to: "helps#index"
+
   scope ":__org__" do
     # current_organization implicit
     get "/edit", to: "organizations#edit", as: "current_organization_edit"
