@@ -4,12 +4,16 @@
 </h1>
 
 <% if current_user %>
-  <h3 class="my-3">Scegli la struttura su cui vuoi operare</h3>
+  <% if @available_organizations.any? %>
+    <h3 class="my-3">Scegli la struttura su cui vuoi operare</h3>
 
-  <% current_user.my_organizations(ordering: :code).each do |o| %>
-    <div class="py-1">
-      <%= link_to o, groups_path(__org__: o.code), class: "btn btn-outline-primary btn-lg w-100" %>
-    </div>
+    <% @available_organizations.each do |o| %>
+      <div class="py-1">
+        <%= link_to o, groups_path(__org__: o.code), class: "btn btn-outline-primary btn-lg w-100" %>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="alert alert-danger">Non hai accesso a nessuna struttura organizzativa.</div>
   <% end %>
 <% else %>
   <div class="text-center my-3">
