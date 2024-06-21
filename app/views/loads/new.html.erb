@@ -12,19 +12,20 @@
 
 <%= render Thing::ActionsComponent.new(current_user, @thing) %>
 
-<%= dm_form_for [@thing, @load], title: "Modulo di carico di #{@thing}" do |o| %>
-  <%= o.dm_error_notification %>  
-  <%= o.association :ddt, collection: @all_ddts, label_method: :description_with_date, required: true, hint: "Ddt/Fattura con cui è arrivato il materiale oppure crea un #{link_to 'nuovo ddt.', new_ddt_path}".html_safe %>
+<%= dm_form_for [@thing, @load], title: "Modulo di carico di #{@thing}" do |f| %>
+  <%= f.dm_error_notification %>  
+  <%= f.association :ddt, collection: @all_ddts, label_method: :description_with_date, required: true, hint: "Ddt/Fattura con cui è arrivato il materiale oppure crea un #{link_to 'nuovo ddt.', new_ddt_path}".html_safe %>
 
-  <%= render 'loads/numbers_form', o: o %>  
+  <%= render 'loads/numbers_form', f: f %>  
 
-  <%= o.input :date, as: :date, html5: true %>
+  <%= f.input :date, as: :date, html5: true %>
   <% if current_organization.pricing %>  
-    <%= o.input :price, as: :price, hint: 'Euro e centesimi' %>
+    <%= f.input :price, as: :price, hint: 'Euro e centesimi' %>
   <% end %>
-  <%= o.input :ycia, as: :rif_cia, hint: 'Anno / numero' %>  
-  <%= o.input :note %>
 
-  <%= o.submit %> - <%= link_to_back thing_moves_path(@thing) %>  
+  <%= f.input :ycia, as: :rif_cia, hint: 'Anno / numero' %>  
+  <%= f.input :note %>
+
+  <%= f.submit %> - <%= link_to_back thing_moves_path(@thing) %>  
   <%= thing_image(@thing) %>  
 <% end %>

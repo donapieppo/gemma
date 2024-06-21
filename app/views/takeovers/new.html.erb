@@ -9,7 +9,7 @@
       <%= render DsaAwesompleteComponent.new(current_organization.id, f, :recipient_upn, hint: '') %>  
     <% end %>
 
-    <%= render 'loads/numbers_form', o: f %>  
+    <%= render 'loads/numbers_form', f: f %>  
 
     <%= f.input :date, as: :date, html5: true %>
     <%= f.input :note %>

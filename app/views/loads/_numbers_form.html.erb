@@ -1,7 +1,7 @@
 <% str = @thing.deposits.size > 1 ? "Numero di oggetti da caricare in ogni ubicazione" : "Numero oggetti da caricare" %>  
 
 <div class="form-group row required">
-  <%= o.label str, class: 'col-sm-3 col-form-label required', required: true %>
+  <%= f.label str, class: 'col-sm-3 col-form-label required', required: true %>
   <div class="col-sm-9">
     <% @thing.deposits.each do |dep| %>  
       <% val = @total_from_orders ? @total_from_orders : @numbers[dep.id] %>  

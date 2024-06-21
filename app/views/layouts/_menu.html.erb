@@ -1,4 +1,7 @@
-<% search_path = current_user.is_cesia? ? admin_search_path : find_things_path %>  
+<% if true_user && current_user && current_organization %>  
+  <% search_path = current_user.is_cesia? ? admin_search_path : find_things_path %>  
+<% end %>
+
 <% search_component = DmUniboCommon::SearchComponent.new(search_path: search_path, placeholder: "Cerca", title: "Cerca il materiale", type: "string") %>  
 <%= render DmUniboCommon::MenuComponent.new(sso_user_upn, current_organization: current_organization, search_component: search_component) do %>  
   <% if current_user && current_organization %>  
