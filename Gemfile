@@ -5,6 +5,8 @@ gem "dm_unibo_user_search", git: "https://github.com/donapieppo/dm_unibo_user_se
 gem "dm_unibo_common", git: "https://github.com/donapieppo/dm_unibo_common.git", branch: "master"
 # gem "dm_unibo_common", path: "/home/rails/gems/dm_unibo_common/"
 
+gem "puma"
+
 gem "jsbundling-rails"
 gem "cssbundling-rails"
 
@@ -15,6 +17,12 @@ gem "image_processing"
 gem "prawn"
 gem "prawn-table"
 gem "prawn-labels"
+
+gem "aws-sdk-s3", require: false
+
+# gem 'sprockets-rails', "=3.4.2", require: 'sprockets/railtie'
+gem "sprockets-rails"
+gem "omniauth-rails_csrf_protection"
 
 group :development, :test do
   gem "rspec-rails", "~> 6.0.0"
