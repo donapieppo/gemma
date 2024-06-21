@@ -2,14 +2,15 @@ class Image < ApplicationRecord
   belongs_to :user
   belongs_to :thing
 
-  after_create_commit :photo_format
+  # after_create_commit :photo_format
 
   has_one_attached :photo
 
+  private
+
   def resize_photo
     photo.blob.open do |file|
-      resized = ImageProcessing::MiniMagick.source(file)
-                                           .resize_to_limit!(200, 200)
+      resized = ImageProcessing::MiniMagick.source(file).resize_to_limit!(200, 200)
       v_filename = photo.filename
       v_content_type = photo.content_type
       photo.purge
@@ -17,12 +18,10 @@ class Image < ApplicationRecord
     end
   end
 
-  private
-
   def photo_format
     return unless photo.attached?
 
-    if photo.blob.content_type.start_with? 'image/'
+    if photo.blob.content_type.start_with? "image/"
       resize_photo
     else
       photo.purge
