@@ -26,12 +26,12 @@ module ApplicationHelper
       ""
     end
   end
+
+  include DmUniboCommonHelper
+
+  include BookingHelper
+  include ThingHelper
+  include OperationHelper
+  include ReportHelper
+  include PriceHelper
 end
-
-include DmUniboCommonHelper
-
-include BookingHelper
-include ThingHelper
-include OperationHelper
-include ReportHelper
-include PriceHelper
