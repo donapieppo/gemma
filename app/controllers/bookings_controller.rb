@@ -5,7 +5,10 @@ class BookingsController < ApplicationController
   def index
     authorize Booking
     if policy(current_organization).give?
-      @books = current_organization.bookings.includes(:user, :recipient, :thing, :lab)
+      @books = current_organization
+        .bookings
+        .includes(:user, :recipient, :thing, :lab)
+        .order(:date)
       if params[:user_id]
         @user = User.find(params[:user_id])
         @books = @books.where(user: @user).or(@books.where(recipient: @user))
@@ -21,10 +24,10 @@ class BookingsController < ApplicationController
       @cache_users = User.bookers_in_cache(current_organization.id)
     else
       @books = current_user.bookings
+        .order(:date)
         .where(organization_id: current_organization.id)
         .includes(:user, :recipient, :thing, :lab)
     end
-    @books = @books.order("date").to_a
 
     render :mylist unless policy(current_organization).give?
   end
