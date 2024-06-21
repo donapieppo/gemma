@@ -4,12 +4,12 @@ module Gemma
 
     def initialize(org_id, options = {})
       @organization = Organization.find(org_id.to_i)
-      @conn = ActiveRecord::Base.connection.instance_variable_get(:@connection)
+      @conn = ActiveRecord::Base.connection.raw_connection
 
       @year, @user_id = get_year_and_user
-      if ! (@year && @user_id) 
+      if !(@year && @user_id)
         puts "Non abbiamo operazioni. Puoi cancellare tutto :-)"
-        return 
+        return
       end
 
       @upn = User.find(@user_id).upn
@@ -23,13 +23,13 @@ module Gemma
       puts "\n\t\tInizializzata chisura anno di #{@organization.description} anno #{@year}\n\n"
     end
 
-    private 
+    private
 
     def get_year_and_user
       @conn.query("SELECT MIN(YEAR(date)), user_id
-                     FROM operations LEFT JOIN organizations ON organizations.id = operations.organization_id 
+                     FROM operations LEFT JOIN organizations ON organizations.id = operations.organization_id
                     WHERE organization_id=#{@organization.id}").first
-    end 
+    end
 
     # verifiche includono che non ci siano ddt nell'anno precedente
     def check_ddts
@@ -44,6 +44,5 @@ module Gemma
        raise "Ci sono ddt nell'anno precedente. Puoi eseguire gli update sopra."
      end
     end
-
   end
 end
