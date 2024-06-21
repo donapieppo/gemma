@@ -1,4 +1,4 @@
-# price_operations: [{:id=>198986, :n=>50, :p=>2000.0, :desc=>"ddt n. 158"}] 
+# price_operations: [{:id=>198986, :n=>50, :p=>2000.0, :desc=>"ddt n. 158"}]
 # prezzo calcolato come 50 prezzo totale 20 euro dal carico 198986
 class Operation < ApplicationRecord
   belongs_to :user
@@ -202,15 +202,13 @@ class Operation < ApplicationRecord
   # Depositi corretti, relativi allo stesso materiale
   def validate_deposits
     # a volte non ci sono i numbers (tipo per aggiornamento di date)
-    if @_numbers
-      @_numbers.each_key do |dep_id|
-        if (dep = Deposit.find_by_id(dep_id))
-          if dep.thing_id != self.thing_id
-            errors.add(:base, "Oggetti differenti in deposit and operation. Contattare amministratore.") and return
-          end
-        else
-          errors.add(:base, "È necessario selezionare una provenienza corretta.") and return
+    @_numbers&.each_key do |dep_id|
+      if (dep = Deposit.find_by_id(dep_id))
+        if dep.thing_id != self.thing_id
+          errors.add(:base, "Oggetti differenti in deposit and operation. Contattare amministratore.") and return
         end
+      else
+        errors.add(:base, "È necessario selezionare una provenienza corretta.") and return
       end
     end
   end
@@ -280,8 +278,10 @@ class Operation < ApplicationRecord
     @deposits_to_check.each do |dep_id|
       sum = 0
       Move.includes(:operation)
-        .order("operations.date asc, operations.number desc, operations.id asc").references(:operations)
-        .where("deposit_id = ?", dep_id).each do |m|
+        .order("operations.date asc, operations.number desc, operations.id asc")
+        .references(:operations)
+        .where("deposit_id = ?", dep_id)
+        .each do |m|
         sum += m.number
         Rails.logger.debug("history_coherent?: move = #{m.inspect} sum = #{sum}")
         (sum < 0) and raise Gemma::NegativeDeposit
