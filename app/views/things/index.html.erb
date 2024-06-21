@@ -26,7 +26,7 @@
       <% if image.photo.attached? %>  
         <%= link_to thing_actions_url(thing), class: "col #{disabled_class}", data: {turbo: false} do %>
           <div class="card h-100 my-2">
-            <%= image_tag image.photo, class: 'card-img-top h-75', alt: thing.to_s, style: '' %>
+            <%= image_tag image.photo.variant(resize_to_limit: [300, 300]), class: 'card-img-top h-75', alt: thing.to_s, style: '' %>
             <div class="card-footer small h-25">
               <div class="text-decoration-none fst-normal text-secondary text-center">
                 <%= thing %>
