@@ -1,13 +1,13 @@
 <%= render Thing::ActionsComponent.new(current_user, @thing) %>
 
-<%= dm_form_for [@thing, @stock], title: "Giacenza iniziale di #{@thing}" do |o| %>
-  <%= o.dm_error_notification %>  
+<%= dm_form_for [@thing, @stock], title: "Giacenza iniziale di #{@thing}" do |f| %>
+  <%= f.dm_error_notification %>  
 
   <%= render 'loads/numbers_form', f: f %>  
 
-  <%= o.input :price, as: :price, hint: 'Euro e centesimi' if current_organization.pricing %>
-  <%= o.input :date, as: :date, html5: true %>
-  <%= o.input :note %>
-  <%= o.submit %>
+  <%= f.input :price, as: :price, hint: 'Euro e centesimi' if current_organization.pricing %>
+  <%= f.input :date, as: :date, html5: true %>
+  <%= f.input :note %>
+  <%= f.submit %>
 <% end %>
 
