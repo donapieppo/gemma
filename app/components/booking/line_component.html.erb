@@ -1,0 +1,31 @@
+<div class="list-group-item">
+  <div class="row">
+    <div class="col-md-9">
+      <div>
+        <span class="fw-bold"><%= @booking.number.abs %></span>
+        <%= @booking.thing.to_s_with_description %>
+        <% if @booking.thing.under_minimum? %>
+          <span class="text-warning" title="sotto scorta minima"><%= helpers.dm_icon "circle-exclamation" %></span>
+        <% end %>
+      </div>
+      <div class="ps-3">
+        per 
+        <%= link_to @to_user, user_bookings_path(@to_user.id) %>
+        <%= "(#{@booking.note})" unless @booking.note.blank? %>
+        <% if @booking.user != @to_user %>
+          <span class="text-secondary small">da <%= link_to @booking.user, user_bookings_path(@booking.user) %></span>
+        <% end %>
+        <% if @booking.lab_id %>
+          <%= helpers.dm_icon "flask", text: "Per lab. #{@booking.lab}" %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="col-md-3 text-end">
+      <span class="text-secondary"><%= l(@booking.created_at, format: :booking) if @booking.created_at %></span><br/>
+      <%= helpers.link_to_check confirm_booking_path(@booking) %> 
+      <%= helpers.link_to_delete "", booking_path(@booking) %> 
+      <%= helpers.link_to_change_and_confirm edit_booking_path(@booking) %>
+    </div>
+  </div>
+</div>

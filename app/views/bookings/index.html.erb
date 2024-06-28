@@ -1,50 +1,18 @@
-<% if @books.size > 0 %>  
-  <div class="dm-card">
-    <div class="dm-card-title"><%= booking_title %></div>
-    <div class="dm-card-body">
-      <% @things_cache = Hash.new {|h,v| h[v] = 0} %>  
-      <% old_user = nil %>  
-      <% @books.each do |book| %>
-        <% @things_cache[book.thing] += book.number.abs %>
-        <% to_user = (book.recipient or book.user) %>
-        <% if old_user != (old_user = to_user) %>  
-          <div class="my-2">
-            <%= link_to to_user, user_bookings_path(to_user.id) %>
-          </div>
-        <% end %>
-        <div class="row my-1">
-          <div class="col-md-9 ps-4">
-            <span class="fw-bold pe-2" style="text-align: right; display: inline-block; min-width: 2em"><%= book.number.abs %></span>
-            <%= book.thing.to_s_with_description %>
-            <% if book.thing.under_minimum? %>
-              <span class="text-warning" title="sotto scorta minima"><%= dm_icon "circle-exclamation" %></span>
-            <% end %>
-            <span class="ps-2 text-secondary">
-              <%= "(#{book.note})" unless book.note.blank? %>
-              <% if book.user != to_user %>
-                da <%= link_to book.user, user_bookings_path(book.user) %>
-              <% end %>
-              <% if book.lab_id %>
-                <%= dm_icon "flask", text: "Per lab. #{book.lab}" %>
-              <% end %>
-            </span>
-          </div>
+<%= booking_title %>
 
-          <div class="col-md-3 text-end">
-            <span class="text-secondary pe-2"><%= l(book.created_at, format: :booking) if book.created_at %></span>
-            <%= link_to_check confirm_booking_path(book) %> 
-            <%= link_to_delete "", booking_path(book) %> 
-            <%= link_to_change_and_confirm edit_booking_path(book) %>
-          </div>
-        </div>
-      <% end %>
-    </div>
-    <div class="my-2 text-end">
-      <%# <%= link_to dm_icon("arrow-up-1-9", text: "Ordina per data"), "" %> 
-      <%= button_to bookings_reports_path, form: { data: { turbo: false }, class: "d-inline"} do %>  
-        <%= dm_icon("file-pdf", "regular", size: "xl", text: "scarica pdf") %>
-      <% end %>
-    </div>
+<% if @books.size > 0 %>  
+  <% @things_cache = Hash.new {|h,v| h[v] = 0} %>  
+  <div class="list-group">
+  <% @books.each do |book| %>
+    <% @things_cache[book.thing] += book.number.abs %>
+    <%= render Booking::LineComponent.new(book) %>
+  <% end %>
+  </div>
+  <div class="my-2 text-end">
+    <%= button_to bookings_reports_path, form: {data: {turbo: false}, class: "d-inline"} do %>  
+      <%= dm_icon("file-pdf", "regular", size: "xl", text: "scarica pdf") %>
+    <% end %>
+  </div>
   </div>
 
   <% if @things_cache.size > 1 %>  
