@@ -1,9 +1,9 @@
 module BookingHelper
   def booking_title
-    u = @user ? "di #{h @user}" : ""
+    u = @user ? "di #{h @user} <small>(#{h @user.upn})</small>" : ""
     t = @thing ? "per #{h @thing}" : ""
 
-    "Prenotazioni <span class='font-weight-normal'>#{u} #{t}</span>".html_safe
+    "<h1>Prenotazioni<br/><small>#{u} #{t}</small></h1>".html_safe
   end
 
   def link_to_check url
