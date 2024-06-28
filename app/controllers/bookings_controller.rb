@@ -5,8 +5,7 @@ class BookingsController < ApplicationController
   def index
     authorize Booking
     if policy(current_organization).give?
-      @books = current_organization
-        .bookings
+      @books = current_organization.bookings
         .includes(:user, :recipient, :thing, :lab)
         .order(:date)
       if params[:user_id]
