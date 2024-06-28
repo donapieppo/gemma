@@ -1,26 +1,26 @@
-<%= form_tag search_ddts_path do %>
-  <%= helpers.dm_card title: 'Fornitore' do %>
-    <%= text_field_tag "supplier", '', size: 10 %>
-    <%= submit_tag 'Cerca' %>
+<%= helpers.dm_card title: 'Fornitore' do %>
+  <% form_with url: search_ddts_path do |f| %>
+    <%= f.text_field "supplier", size: 10 %>
+    <%= f.submit 'Cerca', class: "btn btn-sm" %>
   <% end %>
 <% end %>
 
-<%= form_tag search_ddts_path do %>
-  <%= helpers.dm_card title: 'Num. Record' do %>
-    <%= text_field_tag "number", '', size: 10 %>
-    <%= submit_tag 'Cerca' %>
+<%= helpers.dm_card title: 'Num. Record' do %>
+  <% form_with url: search_ddts_path do  |f| %>
+    <%= f.text_field "number", size: 10 %>
+    <%= f.submit 'Cerca', class: "btn btn-sm" %>
   <% end %>
 <% end %>
 
-<%= form_tag search_ddts_path do %>
-  <%= helpers.dm_card title: 'Dettaglio (n. ddt/fatt)' do %>
-    <%= text_field_tag "like", '', size: 10 %>
-    <%= submit_tag 'Cerca' %>
+<%= helpers.dm_card title: 'Dettaglio (n. ddt/fatt)' do %>
+  <% form_with url: search_ddts_path do |f| %>
+    <%= f.text_field "like", size: 10 %>
+    <%= f.submit 'Cerca', class: "btn btn-sm" %>
   <% end %>
 <% end %>
 
-<%= form_tag search_ddts_path do %>
-  <%= helpers.dm_card title: 'Ricerca per data documento' do %>
+<%= helpers.dm_card title: 'Ricerca per data documento' do %>
+  <% form_with url: search_ddts_path do |f| %>
     <div class="row mb-3">
       <div class="col-sm-2">
         <label class="control-label">dal:</label>
@@ -37,17 +37,18 @@
         <%= text_field_tag :datafine, l(Date.today, format: :date_html5), type: 'date', class: 'form-control' %>
       </div>
     </div>
-    <%= submit_tag 'Cerca' %>
+    <%= f.submit 'Cerca', class: "btn btn-sm" %>
   <% end %>
 <% end %>
 
-<%= form_tag search_cia_ddts_path do %>
-  <%= helpers.dm_card title: 'Rif. CIA - Nr. Prot.' do %>
+<%= helpers.dm_card title: 'Rif. CIA - Nr. Prot.' do %>
+  <% form_with url: search_cia_ddts_path do |f| %>
     <div class="my-2">
-      <%= select_tag "ycia", options_for_select(@years_cia), { include_blank: false, class: 'form-select select' } %>
+      <%= f.select "ycia", options_for_select(@years_cia), {include_blank: false, class: 'form-select select'} %>
     </div>
     <div>
-      <%= text_field_tag "ncia", '', size: 10, class: 'form-control' %> <%= submit_tag 'Cerca', class: 'my-2' %>
+      <%= f.text_field "ncia", size: 10, class: 'form-control' %> 
+      <%= f.submit 'Cerca', class: "btn btn-sm" %>
     </div>
   <% end %>
 <% end %>
