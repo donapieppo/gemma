@@ -22,21 +22,22 @@
   <% @things.each do |thing| %>
     <% (thing.images.size > 0) or next %>
     <% disabled_class = thing_actions_enabled? ? "" : "disabled" %>  
-    <% thing.images.limit(10).each do |image| %>  
+    <% thing.images.limit(3).each do |image| %>  
       <% if image.photo.attached? %>  
         <%= link_to thing_actions_url(thing), class: "col #{disabled_class}", data: {turbo: false} do %>
-          <div class="card h-100 my-2">
-            <%= image_tag image.photo.variant(resize_to_limit: [300, 300]), class: 'card-img-top h-75', alt: thing.to_s, style: '' %>
-            <div class="card-footer small h-25">
+          <div class="card h-100 my-2 p-2">
+            <%= image_tag image.photo, class: 'card-img-top', alt: thing.to_s, style: '' %>
+            <%# image_tag image.photo.variant(resize_to_limit: [300, 300]), class: 'card-img-top h-75', alt: thing.to_s, style: '' %>
+            <div class="small" style="margin-top: auto">
               <div class="text-decoration-none fst-normal text-secondary text-center">
                 <%= thing %>
               </div>
             </div>
           </div>
-          <% end %>
         <% end %>
       <% end %>
     <% end %>
+  <% end %>
 </div>
 
 <% if @group && policy(current_organization).manage? %>
