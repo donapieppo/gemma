@@ -1,10 +1,9 @@
 <%= render Thing::ActionsComponent.new(current_user, @thing) %>
 
-<% deposits = @thing.deposits %>
-
 <% 
-  number_hint = "(massimo: #{@thing.max_actual_in_deposits})" 
-  number_hint += ". Numero di oggetti da consegnare ad ogni persona." if params[:batch] 
+    deposits = @thing.deposits
+number_hint = "(massimo: #{@thing.max_actual_in_deposits})" 
+number_hint += ". Numero di oggetti da consegnare ad ogni persona." if params[:batch] 
 %>  
 
 <div class="dm-card">
@@ -18,71 +17,71 @@
     </small>
   </div>
   <div class="dm-card-body">
-<%= simple_form_for [@thing, @unload] do |f| %>
-  <%= f.dm_error_notification %>  
-  <input type="hidden" name="batch" value="<%= params[:batch] %>" />
-  <%= f.input :number, hint: number_hint, required: true %>
+    <%= simple_form_for [@thing, @unload] do |f| %>
+      <%= f.dm_error_notification %>  
+      <input type="hidden" name="batch" value="<%= params[:batch] %>" />
+      <%= f.input :number, hint: number_hint, required: true %>
 
-  <% if current_organization.with_labs %>
-    <div data-controller="limit-visible">
-      <div class="form-check offset-sm-3 my-4">
-        <input type="checkbox" name="didattica" class="form-check-input" id="didattica" data-action="change->limit-visible#update"></input>
-        <label for="didattica" class="form-check-label">Per la didattica</label>
+      <% if current_organization.with_labs %>
+        <div data-controller="limit-visible">
+          <div class="form-check offset-sm-3 my-4">
+            <input type="checkbox" name="didattica" class="form-check-input" id="didattica" data-action="change->limit-visible#update"></input>
+            <label for="didattica" class="form-check-label">Per la didattica</label>
+          </div>
+          <div id="lab_div" style="display: none" data-limit-visible-target="item" data-text="true">
+            <%= f.association :lab, collection: current_organization.labs, as: :radio_buttons %>
+          </div>
+        </div>
+      <% end %>
+
+      <% if deposits.size > 1 %>  
+        <%= f.input :deposit_id, as: :unload_location %>  
+      <% else %>
+        <%= f.hidden_field :deposit_id, value: deposits.first.id %>  
+      <% end %>
+
+      <%= f.input :note %>
+
+      <% if policy(current_organization).give? %>
+        <%= f.input :date, html5: true %>
+
+        <% if params[:batch] == 'y' %>  
+          <%= f.input :recipient_upn, label: 'Indirizzi mail dei riceventi', 
+            hint: 'Separare gli indirizzi con la virgola. Usare meno di 20 indirizzi per volta.', as: :text %>
+        <% else %>
+          <%= render DsaAwesompleteComponent.new(current_organization.id, f, :recipient_upn, hint: recipient_hint(@unload)) %>  
+          <div class="col-sm-9 offset-sm-3 mb-4"> 
+            È possibile 
+
+            <%= link_to dm_icon('search', text: "Cercare l'utente"), popup_find_user_path, data: { turbo_frame: :modal } %>
+
+            <% if @unload.is_a?(Unload) %>  
+              , richiamare l'<span data-controller="dsa" data-dsa-lastupn-value="<%= @last_recipient_upn %>" data-action="click->dsa#setLastUpn" style="cursor: pointer; text-decoration: underline">ultimo utente inserito</span>
+            <% end %> 
+            o scrivere l'indirizzo email.
+          </div>
+        <% end %>
+      <% end %> 
+
+      <div class='col-sm-9 offset-sm-3'>
+        <label>
+          <input type="checkbox" id="unload_sendmail" name="sendmail" <%= current_organization.sendmail == 'y' ? 'checked="checked"' : '' %> />
+          Avvisa ora l'utente dell'operazione tramite mail.
+        </label>
+        <% if current_organization.sendmail == 'w' %>
+          <%= f.hint "(in base a come è attualmente configurata la struttura, l'utente verrà comunque avvisato dei suoi scarchi ogni settimana)." %>
+        <% elsif current_organization.sendmail == 'm' %>
+          <%= f.hint "(in base a come è attualmente configurata la struttura, l'utente verrà comunque avvisato dei suoi scarchi ogni mese)." %>
+        <% end %>
       </div>
-      <div id="lab_div" style="display: none" data-limit-visible-target="item" data-text="true">
-        <%= f.association :lab, collection: current_organization.labs, as: :radio_buttons %>
-      </div>
-    </div>
-  <% end %>
 
-  <% if deposits.size > 1 %>  
-    <%= f.input :deposit_id, as: :unload_location %>  
-  <% else %>
-    <%= f.hidden_field :deposit_id, value: deposits.first.id %>  
-  <% end %>
+      <%= f.submit %>
+      <% if current_organization.code == 'cesia' %>  
+        <br/>
+        <%= link_to 'Scarichi Multipli Cesia', new_thing_unload_path(@thing, batch: 'y'), class: "float-end" %>  
+      <% end %>
 
-  <%= f.input :note %>
-
-  <% if policy(current_organization).give? %>
-    <%= f.input :date, html5: true %>
-
-    <% if params[:batch] == 'y' %>  
-      <%= f.input :recipient_upn, label: 'Indirizzi mail dei riceventi', 
-                                  hint: 'Separare gli indirizzi con la virgola. Usare meno di 20 indirizzi per volta.', as: :text %>
-    <% else %>
-      <%= render DsaAwesompleteComponent.new(current_organization.id, f, :recipient_upn, hint: recipient_hint(@unload)) %>  
-      <div class="col-sm-9 offset-sm-3 mb-4"> 
-        È possibile 
-
-        <%= link_to dm_icon('search', text: "Cercare l'utente"), popup_find_user_path, data: { turbo_frame: :modal } %>
-
-        <% if @unload.is_a?(Unload) %>  
-          , richiamare l'<span data-controller="dsa" data-dsa-lastupn-value="<%= @last_recipient_upn %>" data-action="click->dsa#setLastUpn" style="cursor: pointer; text-decoration: underline">ultimo utente inserito</span>
-        <% end %> 
-        o scrivere l'indirizzo email.
-      </div>
+      <%= thing_image(@thing) %>  
     <% end %>
-  <% end %> 
-
-  <div class='col-sm-9 offset-sm-3'>
-    <label>
-      <input type="checkbox" id="unload_sendmail" name="sendmail" <%= current_organization.sendmail == 'y' ? 'checked="checked"' : '' %> />
-      Avvisa ora l'utente dell'operazione tramite mail.
-    </label>
-    <% if current_organization.sendmail == 'w' %>
-      <%= f.hint "(in base a come è attualmente configurata la struttura, l'utente verrà comunque avvisato dei suoi scarchi ogni settimana)." %>
-    <% elsif current_organization.sendmail == 'm' %>
-      <%= f.hint "(in base a come è attualmente configurata la struttura, l'utente verrà comunque avvisato dei suoi scarchi ogni mese)." %>
-    <% end %>
   </div>
-
-  <%= f.submit %>
-  <% if current_organization.code == 'cesia' %>  
-    <br/>
-    <%= link_to 'Scarichi Multipli Cesia', new_thing_unload_path(@thing, batch: 'y'), class: "float-end" %>  
-  <% end %>
-
-  <%= thing_image(@thing) %>  
-<% end %>
-  </div>
-  </div>
+</div>
