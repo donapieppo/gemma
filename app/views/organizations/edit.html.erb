@@ -2,43 +2,44 @@
 
 <%= render partial: "form" %>
 
-<%= dm_card title: "Utenti" do %>
-  <ul>
-    <% @permissions_hash.each do |authlevel, permissions| %>
-      <% if permissions.any? %>  
+<div class="row">
+  <div class="col-md-6">
+    <h2 class="my-3">Utenti</h2>
+    <ul class="list-group">
+      <% @permissions_hash.each do |authlevel, permissions| %>
         <% permissions.each do |p| %>
-          <li>
-            <span class="ps-2 py-1"><%= p.user ? p.user : p.network %>
+          <li class="list-group-item">
+            <span class="pe-2"><%= p.user ? p.user : p.network %></span>
             <%= Authorization.level_description(authlevel).downcase %>
           </li>
         <% end %>
       <% end %>
-    <% end %>
-    <% if current_user.is_cesia? %>  
-      <%= link_to 'Modifica', dm_unibo_common.organization_permissions_path(current_organization), class: 'btn btn-primary my-2' %>  
-    <% end %>
-  </ul>
-<% end %>
-
-<% if current_organization.with_labs %>
-  <%= dm_card title: "Laboratori" do %>
-    <div class="list-group my-2">
-      <% current_organization.labs.each do |lab| %>
-        <%= link_to [:edit, lab], class: "list-group-item list-group-item-action" do %>
-          <%= lab %>
-        <% end %>
+      <% if current_user.is_cesia? %>  
+        <%= link_to 'Modifica', dm_unibo_common.organization_permissions_path(current_organization), class: 'btn btn-primary my-2' %>  
       <% end %>
-    </div>
-    <% if policy(:lab).new? %>
-      <%= link_to "Aggiungi Laboratorio", new_lab_path, class: "btn btn-primary my-2" %>
+    </ul>
+  </div>
+  <div class="col-md-6">
+    <% if current_organization.with_labs %>
+      <h2 class="my-3">Laboratori</h2>
+      <div class="list-group">
+        <% current_organization.labs.each do |lab| %>
+          <%= link_to [:edit, lab], class: "list-group-item list-group-item-action" do %>
+            <%= lab %>
+          <% end %>
+        <% end %>
+      </div>
+      <% if policy(:lab).new? %>
+        <%= link_to "Nuovo laboratorio", new_lab_path, class: "btn btn-primary my-2" %>
+      <% end %>
     <% end %>
-  <% end %>
-<% end %>
+  </div>
+</div>
 
 <div class="row">
   <div class="col-md-6">
-    <h2>Categorie</h2>
-    <div class="list-group mb-3">
+    <h2 class="my-3">Categorie</h2>
+    <div class="list-group">
       <% current_organization.groups.order('groups.name').each do |group| %>  
         <div class="list-group-item py-2">
           <%= link_to group, group_things_path(group) %>
@@ -52,13 +53,13 @@
       <% end %>
     </div>
     <div>
-      <%= link_to_new 'Nuova categoria', new_group_path %> - 
+      <%= link_to 'Nuova categoria', new_group_path, class: "btn btn-primary my-2" %> - 
       <%= link_to dm_icon("cut", text: "Mostra materiale senza movimentazioni"), inactive_things_path %>
     </div>
   </div>
   <div class="col-md-6">
-    <h2>Ubicazioni</h2>
-    <div class="list-group mb-3">
+    <h2 class="my-3">Ubicazioni</h2>
+    <div class="list-group">
       <% @locations.each do |location| %>  
         <div class="list-group-item py-2">
           <%= link_to location, location_things_path(location) %>
@@ -73,7 +74,7 @@
     </div>
 
     <div>
-      <%= link_to_new "Nuova ubicazione", new_location_path %> 
+      <%= link_to "Nuova ubicazione", new_location_path, class: "btn btn-primary my-2" %> 
     </div>
   </div>
 </div>
@@ -98,9 +99,10 @@
   <div class="col-md-4">
     <%= dm_card title: "Ultimi ddt/fatture" do  %>  
       <ul>
-        <% for ddt in @ddts do %>  
+        <% @ddts.each do |ddt| %>  
           <li>
-            <%= ddt.gen %> n.<%= link_to ddt.number, ddt %> del <%= l ddt.date %></li>
+            <%= ddt.gen %> n.<%= link_to ddt.number, ddt %> <small>(<%= l ddt.date %>)</small>
+          </li>
         <% end %>
       </ul>
     <% end %>
