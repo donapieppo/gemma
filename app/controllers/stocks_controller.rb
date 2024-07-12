@@ -46,7 +46,7 @@ class StocksController < ApplicationController
   end
 
   def update
-    fix_prices(params[:stock], params["price_add_iva"])
+    params[:stock] = fix_prices(params[:stock], params["price_add_iva"])
 
     params[:stock][:numbers] = params[:numbers].permit!
 
