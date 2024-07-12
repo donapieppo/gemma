@@ -1,4 +1,6 @@
 class HelpsController < ApplicationController
+  skip_before_action :after_current_user_and_organization
+
   def index
     authorize :help
   end
@@ -11,4 +13,3 @@ class HelpsController < ApplicationController
     authorize :help
   end
 end
-
