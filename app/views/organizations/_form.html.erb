@@ -11,5 +11,5 @@
   <%= o.input :with_labs, hint: "Possibile associare agli scarichi un laboratorio." %>
   <%= o.input :adminmail, hint: t(:sottoscorta_message).html_safe %>
   <%= o.input :sendmail, collection: Configuration::SELECT_COLLECTION, hint: t(:sendmail_message) %>  
-  <%= o.submit 'Salva configurazione' %> - <%= link_to_back root_path %>  
+  <%= o.submit "Salva configurazione", class: "my-2" %> - <%= link_to_back root_path %>  
 <% end %>
