@@ -46,7 +46,10 @@ class User < ApplicationRecord
     #                                                       AND operations.date > DATE_SUB(NOW(), INTERVAL 2 YEAR))
     #                                   ORDER BY surname"
 
-    User.joins("INNER JOIN operations ON (operations.user_id = users.id OR operations.recipient_id = users.id) AND operations.organization_id = #{organization_id.to_i} AND operations.date > DATE_SUB(NOW(), INTERVAL 1 YEAR) AND operations.from_booking IS NOT NULL").select(:id, :name, :surname, :upn).distinct
+    User.joins("INNER JOIN operations ON (operations.user_id = users.id OR operations.recipient_id = users.id)
+                                     AND operations.organization_id = #{organization_id.to_i}
+                                     AND operations.date > DATE_SUB(NOW(), INTERVAL 1 YEAR)
+                                     AND operations.from_booking IS NOT NULL").select(:id, :name, :surname, :upn).distinct
 
     # User.find_by_sql "SELECT DISTINCT users.id, users.name, users.surname, users.upn FROM users
     #                        INNER JOIN operations ON (operations.user_id = users.id OR operations.recipient_id = users.id)
@@ -58,8 +61,8 @@ class User < ApplicationRecord
 
   def self.recipient_cache(organization_id, interval = 365)
     User.find_by_sql "SELECT DISTINCT users.id, users.name, users.surname, users.upn FROM users
-                           INNER JOIN operations ON operations.recipient_id = users.id 
-                                                AND operations.organization_id = #{organization_id.to_i} 
+                           INNER JOIN operations ON operations.recipient_id = users.id
+                                                AND operations.organization_id = #{organization_id.to_i}
                                                 AND operations.date > DATE_SUB(NOW(), INTERVAL #{interval} DAY)
                              ORDER BY surname"
   end
