@@ -1,3 +1,11 @@
+include DmUniboCommonHelper
+
+include BookingHelper
+include ThingHelper
+include OperationHelper
+include ReportHelper
+include PriceHelper
+
 module ApplicationHelper
   def inizio_anno
     Date.parse("01-01-#{Date.today.year}")
@@ -26,12 +34,4 @@ module ApplicationHelper
       ""
     end
   end
-
-  include DmUniboCommonHelper
-
-  include BookingHelper
-  include ThingHelper
-  include OperationHelper
-  include ReportHelper
-  include PriceHelper
 end
