@@ -141,10 +141,6 @@ ActiveRecord::Schema[7.1].define(version: 2022_05_25_142402) do
     t.integer "thing_id", null: false, unsigned: true
     t.integer "user_id", unsigned: true
     t.datetime "created_at", precision: nil
-    t.string "photo_file_name", limit: 200
-    t.string "photo_content_type", limit: 100
-    t.integer "photo_file_size", unsigned: true
-    t.datetime "photo_updated_at", precision: nil
     t.index ["user_id"], name: "userid"
   end
 
