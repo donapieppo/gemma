@@ -1,6 +1,6 @@
 <h1 class="h1">
   GE.M.MA <br/>
-  <small>GEstione Multiutente MAteriale di consumo</small>
+  <span class="small">GEstione Multiutente MAteriale di consumo</span>
 </h1>
 
 <% if current_user %>
@@ -14,12 +14,13 @@
     <% end %>
   <% else %>
     <div class="alert alert-danger">Non hai accesso a nessuna struttura organizzativa.<br/>
-      Se la struttura a cui vuoi accedere permette la prenotazione del materiale devi utilizzare l'indirizzo corretto (del tipo https://gemma.unibo.it/codice_struttura).
+      Se la struttura a cui vuoi accedere permette la prenotazione del materiale devi utilizzare l'indirizzo corretto 
+      (del tipo <i>https://gemma.unibo.it/codice_struttura</i> come fornito dal resposabile della struttura).
     </div>
   <% end %>
 <% else %>
   <div class="text-center my-3">
-    <h3 class="my-3">Per accedere usare le credenziali Unibo</h3>
+    <h3 class="my-3">Per accedere usare le credenziali di Ateneo.</h3>
     <% if Rails.env.development? && Rails.configuration.dm_unibo_common[:omniauth_provider] == :developer %>
       <%= form_with url: "/dm_unibo_common/auth/developer", data: {turbo: false} do |f| %> 
         <%= f.button dm_icon('sign-in', text: " Developer login", size: :lg), class: "btn btn-primary" %> 
