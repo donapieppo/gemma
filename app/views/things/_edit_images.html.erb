@@ -1,5 +1,5 @@
-<%= dm_form_for [@thing, @image], html: { multipart: true }, title: 'Immagine' do |form| %>
-  <p class="alert alert-info">ogni articolo può essere associato a una immagine</p>
+<%= dm_form_for [@thing, @image], html: {multipart: true}, title: 'Immagine', data: { turbo: false } do |form| %>
+  <p class="alert alert-info">Ogni articolo può essere associato a una immagine</p>
   <%= form.file_field :photo %>
   <%= form.submit "Aggiungi immagine" %>  
 <% end %>
@@ -11,7 +11,7 @@
         <%= image_tag image.photo.variant(resize_to_limit: [300, 300]) %>
       </div>
       <div>
-        <%= link_to_delete "", image_path(image) %>
+        <%= link_to_delete "Cancella la foto", image_path(image) %>
       </div>
     <% end %>
   <% end %>
