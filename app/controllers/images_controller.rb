@@ -33,11 +33,11 @@ class ImagesController < ApplicationController
   private
 
   def image_params
-    params[:image].permit(:photo)
+    params.require(:image).permit(:photo)
   end
 
   def resize_image
-    if params[:image][:photo]
+    if params[:image] && params[:image][:photo]
       path = params[:image][:photo].tempfile.path
       image = ImageProcessing::Vips.source(path)
       result = image.resize_to_limit!(600, 600)
