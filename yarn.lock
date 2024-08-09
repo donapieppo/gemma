@@ -347,7 +347,7 @@ dependency-graph@^0.11.0:
 
 dm_unibo_common@donapieppo/dm_unibo_common.git#master:
   version "0.1.0"
-  resolved "https://codeload.github.com/donapieppo/dm_unibo_common/tar.gz/b7ecc413e8f8192cc02a3b1818639a000683d308"
+  resolved "https://codeload.github.com/donapieppo/dm_unibo_common/tar.gz/194b73227bf2e590fe4cb3876ec8482a88938bdd"
   dependencies:
     "@fortawesome/fontawesome-free" "^6.4.0"
     "@hotwired/stimulus" "^3.2.2"

@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/donapieppo/dm_unibo_common.git
-  revision: b7ecc413e8f8192cc02a3b1818639a000683d308
+  revision: 194b73227bf2e590fe4cb3876ec8482a88938bdd
   branch: master
   specs:
     dm_unibo_common (5.1.3)
@@ -18,7 +18,7 @@ GIT
       pretender
       puma (~> 6.0)
       pundit
-      rack (< 3)
+      rack (~> 3.1)
       rails (~> 7.1)
       simple_form (~> 5.1)
       sprockets-rails
@@ -28,11 +28,12 @@ GIT
 
 GIT
   remote: https://github.com/donapieppo/dm_unibo_user_search.git
-  revision: f1b734d26c5a915960cdbdd739683c8dfd01fb8f
+  revision: 82fd64263b42c5fc1753ad8774d6326060271d85
   specs:
     dm_unibo_user_search (0.2.0)
+      rack (~> 3.1)
       rails (~> 7.0)
-      savon (~> 2.13.0)
+      savon (~> 2.15.0)
 
 GEM
   remote: https://rubygems.org/
@@ -220,11 +221,11 @@ GEM
       builder (>= 2.1.2)
       rexml (~> 3.0)
     hashie (5.0.0)
-    httpi (3.0.2)
+    httpi (4.0.4)
       base64
       mutex_m
       nkf
-      rack (< 3)
+      rack (>= 2.0, < 4)
     i18n (1.14.5)
       concurrent-ruby (~> 1.0)
     image_processing (1.13.0)
@@ -347,17 +348,17 @@ GEM
     pundit (2.3.2)
       activesupport (>= 3.0.0)
     racc (1.8.1)
-    rack (2.2.9)
-    rack-protection (3.2.0)
+    rack (3.1.7)
+    rack-protection (4.0.0)
       base64 (>= 0.1.0)
-      rack (~> 2.2, >= 2.2.4)
-    rack-session (1.0.2)
-      rack (< 3)
+      rack (>= 3.0.0, < 4)
+    rack-session (2.0.0)
+      rack (>= 3.0.0)
     rack-test (2.1.0)
       rack (>= 1.3)
-    rackup (1.0.0)
-      rack (< 3)
-      webrick
+    rackup (2.1.0)
+      rack (>= 3)
+      webrick (~> 1.8)
     rails (7.1.3.4)
       actioncable (= 7.1.3.4)
       actionmailbox (= 7.1.3.4)
@@ -443,15 +444,15 @@ GEM
       ffi (~> 1.12)
       logger
     rubyzip (2.3.2)
-    savon (2.13.1)
+    savon (2.15.1)
       akami (~> 1.2)
       builder (>= 2.1.2)
       gyoku (~> 1.2)
-      httpi (>= 2.4.5)
+      httpi (>= 4, < 5)
       mail (~> 2.5)
       nokogiri (>= 1.8.1)
       nori (~> 2.4)
-      wasabi (~> 3.4)
+      wasabi (>= 3.7, < 6)
     selenium-webdriver (4.10.0)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
@@ -505,10 +506,10 @@ GEM
       activesupport (>= 5.2.0, < 8.0)
       concurrent-ruby (~> 1.0)
       method_source (~> 1.0)
-    wasabi (3.8.0)
+    wasabi (5.0.3)
       addressable
-      httpi (~> 3.0)
-      nokogiri (>= 1.4.2)
+      faraday (>= 1.9, < 3)
+      nokogiri (>= 1.13.9)
     webdrivers (5.3.1)
       nokogiri (~> 1.6)
       rubyzip (>= 1.3.0)
