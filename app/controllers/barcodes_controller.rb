@@ -3,7 +3,7 @@ require "barby/outputter/png_outputter"
 require "prawn/labels"
 
 class BarcodesController < ApplicationController
-  before_action :set_thing, only: [:new, :create, :generate]
+  before_action :set_thing, only: [:new, :create]
 
   def show
     @barcode = current_organization.barcodes.find(params[:id])
@@ -33,7 +33,7 @@ class BarcodesController < ApplicationController
     authorize barcode
 
     if barcode.destroy
-      flash[:notice] = "Il codice a barre è stato cancellato come richiesto"
+      flash[:notice] = "Il codice a barre è stato cancellato come richiesto."
     else
       flash[:error] = "Non è stato possibile cancellare il codice a barre."
     end
@@ -57,7 +57,7 @@ class BarcodesController < ApplicationController
   private
 
   def barcode_params
-    params[:barcode].permit(:name)
+    params.require(:barcode).permit(:name)
   end
 
   def set_thing
