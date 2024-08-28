@@ -20,16 +20,19 @@ class User < ApplicationRecord
     #                                             AND operations.organization_id = #{organization_id.to_i}
     #                                             AND operations.date > DATE_SUB(NOW(), INTERVAL 1 YEAR)
     #                          ORDER BY surname"
-    # User.find_by_sql "SELECT DISTINCT users.id, users.upn, name, surname
-    #                              FROM users
-    #                             WHERE id IN
-    #                                   (SELECT
-    #                                    DISTINCT recipient_id FROM operations WHERE recipient_id IS NOT NULL AND organization_id = #{organization_id.to_i} AND operations.date > DATE_SUB(NOW(), INTERVAL 1 YEAR)
-    #                                    UNION SELECT
-    #                                    DISTINCT user_id FROM operations WHERE organization_id = #{organization_id.to_i} AND operations.date > DATE_SUB(NOW(), INTERVAL 1 YEAR))
-    #                          ORDER BY surname"
 
-    User.joins("INNER JOIN operations ON (operations.user_id = users.id OR operations.recipient_id = users.id) AND operations.organization_id = #{organization_id.to_i} AND operations.date > DATE_SUB(NOW(), INTERVAL 1 YEAR)").select(:id, :name, :surname, :upn).distinct
+    # User.joins("INNER JOIN operations ON (operations.user_id = users.id OR operations.recipient_id = users.id)
+    #             AND operations.organization_id = #{organization_id.to_i}
+    #             AND operations.date > DATE_SUB(NOW(), INTERVAL 1 YEAR)").select(:id, :name, :surname, :upn).order(:surname).distinct
+
+    User.find_by_sql "SELECT DISTINCT users.id, users.upn, users.name, users.surname
+                                 FROM users
+                                WHERE id IN
+                                      (SELECT
+                                       DISTINCT recipient_id FROM operations WHERE recipient_id IS NOT NULL AND organization_id = #{organization_id.to_i} AND operations.date > DATE_SUB(NOW(), INTERVAL 1 YEAR)
+                                      UNION SELECT
+                                       DISTINCT user_id FROM operations WHERE organization_id = #{organization_id.to_i} AND operations.date > DATE_SUB(NOW(), INTERVAL 1 YEAR))
+                             ORDER BY surname"
   end
 
   def self.bookers_in_cache(organization_id)
