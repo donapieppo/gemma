@@ -24,6 +24,7 @@ class Operation < ApplicationRecord
     :validate_date,
     :validate_deposits
 
+  after_create :log_creation
   after_save :update_moves
   after_save :rewrite_totals
 
@@ -293,5 +294,9 @@ class Operation < ApplicationRecord
   def rewrite_totals
     self.moves.each { |m| m.deposit.update_actual }
     self.thing.update_total
+  end
+
+  def log_creation
+    Rails.logger.info(self.inspect)
   end
 end
