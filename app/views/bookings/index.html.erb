@@ -1,9 +1,7 @@
 <%= booking_title %>
 <%= old_user = nil %>
 
-<% @books = @books.to_a %>
-
-<% if @books.size > 0 %>  
+<% if @books.load.any? %>  
   <% @things_cache = Hash.new {|h,v| h[v] = 0} %>  
   <div class="list-group">
   <% @books.each do |book| %>
