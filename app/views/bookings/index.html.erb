@@ -1,10 +1,14 @@
 <%= booking_title %>
+<%= old_user = nil %>
 
 <% if @books.size > 0 %>  
   <% @things_cache = Hash.new {|h,v| h[v] = 0} %>  
   <div class="list-group">
   <% @books.each do |book| %>
     <% @things_cache[book.thing] += book.number.abs %>
+    <% if old_user != (old_user = book.user) %>
+      <h3 class="mt-3"><%= book.user %></h3>
+    <% end %>
     <%= render Booking::LineComponent.new(book) %>
   <% end %>
   </div>

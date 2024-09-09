@@ -1,23 +1,27 @@
 class BookingsController < ApplicationController
   before_action :set_thing, only: [:new, :create]
-  before_action :set_booking_and_check_permission, only: [:destroy, :edit, :confirm]
+  before_action :set_booking_and_check_permission, only: [:destroy, :confirm]
 
   def index
     authorize Booking
     if policy(current_organization).give?
       @books = current_organization.bookings
         .includes(:user, :recipient, :thing, :lab)
-        .order(:date)
       if params[:user_id]
         @user = User.find(params[:user_id])
-        @books = @books.where(user: @user).or(@books.where(recipient: @user))
+        @books = @books
+          .where(user: @user)
+          .or(@books.where(recipient: @user))
+          .order("things.name, date")
       elsif params[:thing_id]
         @thing = Thing.find(params[:thing_id])
-        @books = @books.where(thing: @thing)
+        @books = @books.where(thing: @thing).order("date")
       elsif params[:barcode]
         @barcode = current_organization.barcodes.includes(:thing).where(name: params[:barcode]).first
         @thing = @barcode.thing if @barcode
-        @books = @barcode ? @books.where(thing_id: @barcode.thing_id) : []
+        @books = @barcode ? @books.where(thing_id: @barcode.thing_id).order("date") : []
+      else
+        @books = @books.order("users.surname, date")
       end
       @delegations = delegations_hash
       @cache_users = User.bookers_in_cache(current_organization.id)
@@ -26,9 +30,8 @@ class BookingsController < ApplicationController
         .order(:date)
         .where(organization_id: current_organization.id)
         .includes(:user, :recipient, :thing, :lab)
+      render :mylist unless policy(current_organization).give?
     end
-
-    render :mylist unless policy(current_organization).give?
   end
 
   def new
@@ -45,14 +48,26 @@ class BookingsController < ApplicationController
   def create
     # lab only if didattica is on
     params[:booking].delete(:lab_id) unless params[:didattica] == "on"
+    number = params[:booking].delete(:number).to_i
+    deposit_id = params[:booking].delete(:deposit_id)
 
-    params[:booking][:numbers] = {params[:booking].delete(:deposit_id) => params[:booking].delete(:number).to_i * -1}
+    @book = @thing.bookings.new(
+      organization_id: current_organization.id,
+      user_id: current_user.id,
+      date: Date.today
+    )
+    @book.assign_attributes(booking_params)
 
-    @book = @thing.bookings.new(booking_params)
-
-    @book.organization_id = current_organization.id
-    @book.user_id = current_user.id
-    @book.date = Date.today
+    if deposit_id
+      @book.numbers = {deposit_id => number * -1}
+    else
+      skip_authorization
+      @book.number = number
+      @book.errors.add(:number, "Selezionare la provenienza")
+      @delegators = current_user.get_delegators(current_organization.id).to_a.push(current_user)
+      render action: :new, status: :unprocessable_entity
+      return
+    end
 
     authorize @book
     begin
@@ -71,27 +86,31 @@ class BookingsController < ApplicationController
     end
   end
 
+  # def edit
+  # end
+
   # can confirm or edit
   # if edit we delete the booking and show a precompiled new unload
   # FIXME don't care for deposits, chooses the operator
-  def edit
-    @thing = @book.thing
-
-    # deleghe. Se non delega nessuno l'operatore scarica per l'utente stesso
-    # se c'e' delega il delegato sparisce e l'operatore fa lo scarico.
-    # @unload.recipient_id = @book.user_id unless @book.recipient_id
-    h = {recipient_id: (@book.recipient_id or @book.user_id),
-         date: @book.date, # try to keep because of prices different in different times
-         lab_id: @book.lab_id,
-         note: @book.note,
-         number: @book.number * -1}
-    @book.destroy
-
-    # can't create before @boo destroy or checks app/model/operation fails
-    @unload = @thing.unloads.new(h)
-
-    render "unloads/new"
-  end
+  # def delete_and_new_unload
+  #   @thing = Thing.find(params[:thing_id])
+  #
+  #   if @book
+  #     Rails.logger.info("delete_and_new_unload: delete #{@book.inspect}")
+  #     @book.destroy
+  #   end
+  #
+  #   # can't create before @boo destroy or checks app/model/operation fails
+  #   @unload = @thing.unloads.new(
+  #     recipient_id: params[:recipient_id],
+  #     date: params[:date],
+  #     lab_id: params[:lab_id],
+  #     note: params[:note],
+  #     number: params[:number]
+  #   )
+  #
+  #   render "unloads/new"
+  # end
 
   def destroy
     if @book.destroy

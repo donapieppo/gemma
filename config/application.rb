@@ -25,7 +25,7 @@ module Gemma
       edit: 50
     }
 
-    config.lograge.enabled = true
+    # config.lograge.enabled = true
 
     config.dm_unibo_common = ActiveSupport::HashWithIndifferentAccess.new config_for(:dm_unibo_common)
     config.active_record.yaml_column_permitted_classes = [Symbol]

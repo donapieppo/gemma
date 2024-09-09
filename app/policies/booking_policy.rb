@@ -5,22 +5,25 @@ class BookingPolicy < ApplicationPolicy
   end
 
   def create?
-    @user && 
-    @record.organization.booking &&
-    OrganizationPolicy.new(@user, @record.organization).book? && 
-    @record.organization_id == @record.thing.organization_id 
+    @user &&
+      @record.organization.booking &&
+      OrganizationPolicy.new(@user, @record.organization).book? &&
+      @record.organization_id == @record.thing.organization_id
   end
 
   def confirm?
     current_organization_manager?
   end
 
-  def edit?
-    record_organization_manager?
-  end
+  # def edit?
+  #   record_organization_manager?
+  # end
+  #
+  # def delete_and_new_unload?
+  #   record_organization_manager?
+  # end
 
   def destroy?
     owner_or_record_organization_manager?
   end
 end
-

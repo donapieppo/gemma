@@ -80,9 +80,10 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :bookings do
-      get :barcode, on: :collection, action: :index
+    resources :bookings, except: [:show, :edit, :update] do
       post :confirm, on: :member
+      # get :barcode, on: :collection, action: :index
+      # patch :delete_and_new_unload, on: :member
     end
     resources :users do
       resources :bookings
