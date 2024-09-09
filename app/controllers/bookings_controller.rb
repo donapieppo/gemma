@@ -47,8 +47,6 @@ class BookingsController < ApplicationController
   def create
     # lab only if didattica is on
     params[:booking].delete(:lab_id) unless params[:didattica] == "on"
-    number = params[:booking].delete(:number).to_i
-    deposit_id = params[:booking].delete(:deposit_id)
 
     @book = @thing.bookings.new(
       organization_id: current_organization.id,
@@ -56,18 +54,6 @@ class BookingsController < ApplicationController
       date: Date.today
     )
     @book.assign_attributes(booking_params)
-
-    if deposit_id
-      @book.numbers = {deposit_id => number * -1}
-    else
-      skip_authorization
-      @book.number = number
-      @book.errors.add(:number, "Selezionare la provenienza")
-      @delegators = current_user.get_delegators(current_organization.id).to_a.push(current_user)
-      render action: :new, status: :unprocessable_entity
-      return
-    end
-
     authorize @book
     begin
       res = @book.save
@@ -79,7 +65,7 @@ class BookingsController < ApplicationController
     if res
       redirect_to bookings_path(highlight: @book), notice: "Prenotazione effettuata correttamente."
     else
-      @book.number = @book.number * -1
+
       @delegators = current_user.get_delegators(current_organization.id).to_a.push(current_user)
       render action: :new, status: :unprocessable_entity
     end
@@ -132,7 +118,12 @@ class BookingsController < ApplicationController
   private
 
   def booking_params
-    params[:booking].permit(:note, :recipient_id, :lab_id, numbers: params[:booking][:numbers].try(:keys))
+    if (deposit_id = params[:booking].delete(:deposit_id))
+      number = params[:booking].delete(:number).to_i * -1
+      params[:booking][:numbers] = {deposit_id => number}
+    end
+
+    params[:booking].permit(:number, :note, :recipient_id, :lab_id, numbers: params[:booking][:numbers].try(:keys))
   end
 
   def set_booking_and_check_permission

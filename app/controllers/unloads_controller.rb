@@ -40,7 +40,6 @@ class UnloadsController < ApplicationController
     end
 
     @unload = @thing.unloads.new(unload_params)
-
     @unload.organization_id = current_organization.id
     @unload.user_id = current_user.id
 
@@ -65,7 +64,6 @@ class UnloadsController < ApplicationController
 
       redirect_to group_things_path(@thing.group_id, from_unload: @unload.id, from_thing: @thing.id)
     else
-      @unload.number = @unload.number * -1
       render action: :new, status: :unprocessable_entity
     end
   end
@@ -144,7 +142,10 @@ class UnloadsController < ApplicationController
     params[:unload][:date] = Date.today unless policy(current_organization).give?
 
     # ricorda che per avere permit la key deve essere string
-    params[:unload][:numbers] = {params[:unload].delete(:deposit_id) => (params[:unload].delete(:number).to_i * -1)}
+    if (deposit_id = params[:unload].delete(:deposit_id))
+      number = params[:unload].delete(:number).to_i * -1
+      params[:unload][:numbers] = {deposit_id => number}
+    end
 
     pars = [:number, :date, :lab_id, :note, :price, numbers: params[:unload][:numbers].try(:keys)]
     pars << :recipient_upn if policy(current_organization).give?
