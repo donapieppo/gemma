@@ -4,21 +4,23 @@ class BookingsController < ApplicationController
 
   def index
     authorize Booking
+
+    @user = User.find(params[:user_id]) if params[:user_id]
+    @thing = Thing.find(params[:thing_id]) if params[:thing_id]
+    @barcode = current_organization.barcodes.includes(:thing).where(name: params[:barcode]).first if params[:barcode]
+
+    @books = current_organization.bookings.includes(:user, :recipient, :thing, :lab)
+
     if policy(current_organization).give?
-      @books = current_organization.bookings
-        .includes(:user, :recipient, :thing, :lab)
-      if params[:user_id]
-        @user = User.find(params[:user_id])
+      if @user
         @books = @books
           .where(user: @user)
           .or(@books.where(recipient: @user))
           .order("things.name, date")
-      elsif params[:thing_id]
-        @thing = Thing.find(params[:thing_id])
+      elsif @thing
         @books = @books.where(thing: @thing).order("date")
-      elsif params[:barcode]
-        @barcode = current_organization.barcodes.includes(:thing).where(name: params[:barcode]).first
-        @thing = @barcode.thing if @barcode
+      elsif @barcode
+        @thing = @barcode.thing
         @books = @barcode ? @books.where(thing_id: @barcode.thing_id).order("date") : []
       else
         @books = @books.order("users.surname, date")
@@ -26,10 +28,7 @@ class BookingsController < ApplicationController
       @delegations = delegations_hash
       @cache_users = User.bookers_in_cache(current_organization.id)
     else
-      @books = current_user.bookings
-        .order(:date)
-        .where(organization_id: current_organization.id)
-        .includes(:user, :recipient, :thing, :lab)
+      @books = @books.order(:date).where(user_id: current_user.id)
       render :mylist unless policy(current_organization).give?
     end
   end
