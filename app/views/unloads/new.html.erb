@@ -1,9 +1,9 @@
 <%= render Thing::ActionsComponent.new(current_user, @thing) %>
 
 <% 
-    deposits = @thing.deposits
-number_hint = "(massimo: #{@thing.max_actual_in_deposits})" 
-number_hint += ". Numero di oggetti da consegnare ad ogni persona." if params[:batch] 
+  deposits = @thing.deposits
+  number_hint = "(massimo: #{@thing.max_actual_in_deposits})" 
+  number_hint += ". Numero di oggetti da consegnare ad ogni persona." if params[:batch] 
 %>  
 
 <div class="dm-card">
@@ -35,7 +35,7 @@ number_hint += ". Numero di oggetti da consegnare ad ogni persona." if params[:b
       <% end %>
 
       <% if deposits.size > 1 %>  
-        <%= f.input :deposit_id, as: :unload_location %>  
+        <%= f.input :deposit_id, as: :unload_location, required: true %>  
       <% else %>
         <%= f.hidden_field :deposit_id, value: deposits.first.id %>  
       <% end %>
