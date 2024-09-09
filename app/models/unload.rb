@@ -23,12 +23,12 @@ class Unload < Operation
 
   # FIXME da fare dry con Load
   def validate_numbers
-    if !self.numbers || self.numbers.empty?
-      errors.add :number, "È necessario indicare la quantità di oggetti."
+    if !numbers || numbers.empty?
+      errors.add :number, "È necessario indicare la quantità di oggetti e la loro provenienza."
       throw(:abort)
     end
 
-    self.numbers.each_value do |num|
+    numbers.each_value do |num|
       if num >= 0
         errors.add :number, "Il numero di oggetti da scaricare deve essere positivo."
         throw(:abort)
