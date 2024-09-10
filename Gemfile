@@ -29,7 +29,7 @@ gem "bootsnap", require: false
 gem "lograge"
 
 group :development, :test do
-  gem "rspec-rails", "~> 6.0.0"
+  gem "rspec-rails", "~> 7.0.0"
   gem "factory_bot_rails"
   # gem "faker"
 end
@@ -43,6 +43,8 @@ group :development do
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
+  gem "standard"
+  gem "ruby-lsp"
 end
 
 group :test do
@@ -52,7 +54,4 @@ group :test do
   gem "webdrivers"
   gem "cucumber-rails", require: false
   gem "database_cleaner"
-  gem "standard"
-  gem "ruby-lsp"
-  gem "ruby-lsp-rails"
 end
