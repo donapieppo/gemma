@@ -1,16 +1,17 @@
 <%= booking_title %>
-<%= old_user = nil %>
+
+<% @users_bookings = @books.inject(Hash.new { |h, k| h[k] = [] }) { |memo, book| memo[(book.recipient&.cn_militar or book.user&.cn_militar)] << book; memo } %>
 
 <% if @books.load.any? %>  
   <% @things_cache = Hash.new {|h,v| h[v] = 0} %>  
   <div class="list-group">
-  <% @books.each do |book| %>
-    <% @things_cache[book.thing] += book.number.abs %>
-    <% if old_user != (old_user = book.user) %>
-      <h3 class="mt-3"><%= book.user.cn_militar %></h3>
+    <% @users_bookings.keys.sort.each do |user| %>
+      <h2 class="mt-2"><%= user %></h2>
+      <% @users_bookings[user].each do |book| %>
+        <% @things_cache[book.thing] += book.number.abs %>
+        <%= render Booking::LineComponent.new(book) %>
+      <% end %>
     <% end %>
-    <%= render Booking::LineComponent.new(book) %>
-  <% end %>
   </div>
   <div class="my-2 text-end">
     <%= button_to bookings_reports_path, form: {data: {turbo: false}, class: "d-inline"} do %>  
@@ -52,6 +53,7 @@
 <% else %>
   <div class="alert alert-danger">Non ci sono prenotazioni.
     <%= "per l'utente #{@user}" if @user  %> 
+    <%= "per #{@thing}" if @thing  %> 
     <%= "con il codice a barre richiesto" if params[:barcode] %>   
   </div>
 <% end %>

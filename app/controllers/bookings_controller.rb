@@ -9,27 +9,22 @@ class BookingsController < ApplicationController
     @thing = Thing.find(params[:thing_id]) if params[:thing_id]
     @barcode = current_organization.barcodes.includes(:thing).where(name: params[:barcode]).first if params[:barcode]
 
-    @books = current_organization.bookings.includes(:user, :recipient, :thing, :lab)
+    @books = current_organization.bookings.includes(:recipient, :user, :thing, :lab).order(:date)
 
     if policy(current_organization).give?
       if @user
-        @books = @books
-          .where(user: @user)
-          .or(@books.where(recipient: @user))
-          .order("things.name, date")
+        @books = @books.where(user: @user).or(@books.where(recipient: @user))
       elsif @thing
-        @books = @books.where(thing: @thing).order("date")
+        @books = @books.where(thing: @thing)
       elsif @barcode
         @thing = @barcode.thing
-        @books = @barcode ? @books.where(thing_id: @barcode.thing_id).order("date") : []
-      else
-        @books = @books.order("users.surname, date")
+        @books = @barcode ? @books.where(thing_id: @barcode.thing_id) : Booking.none
       end
       @delegations = delegations_hash
       @cache_users = User.bookers_in_cache(current_organization.id)
     else
-      @books = @books.order(:date).where(user_id: current_user.id)
-      render :mylist unless policy(current_organization).give?
+      @books = @books.where(user_id: current_user.id)
+      render :mylist
     end
   end
 
@@ -55,6 +50,7 @@ class BookingsController < ApplicationController
     )
     @book.assign_attributes(booking_params)
     authorize @book
+
     begin
       res = @book.save
     rescue Gemma::NegativeDeposit => e
@@ -65,7 +61,6 @@ class BookingsController < ApplicationController
     if res
       redirect_to bookings_path(highlight: @book), notice: "Prenotazione effettuata correttamente."
     else
-
       @delegators = current_user.get_delegators(current_organization.id).to_a.push(current_user)
       render action: :new, status: :unprocessable_entity
     end
