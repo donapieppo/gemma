@@ -13,12 +13,12 @@ class ArchsController < ApplicationController
     report.title     = "Movimenti anno #{@year}"
     report.separator = :thing
     report.fields    = [:type, :date, :number, :upn, :description]
-    report.query = "SELECT type, arch_operations.number, COALESCE(recipient, upn) AS upn, 
-                           arch_things.name as thing, arch_ddts.name as ddt, gen, arch_ddts.number AS dnumber, 
+    report.query = "SELECT type, arch_operations.number, COALESCE(recipient, upn) AS upn,
+                           arch_things.name as thing, arch_ddts.name as ddt, gen, arch_ddts.number AS dnumber,
                            arch_operations.date AS date, suppliers.name AS supplier
                       FROM arch_operations
-                      LEFT OUTER JOIN arch_things ON arch_operations.thing_id = arch_things.id 
-                      LEFT OUTER JOIN arch_ddts   ON arch_operations.ddt_id   = arch_ddts.id 
+                      LEFT OUTER JOIN arch_things ON arch_operations.thing_id = arch_things.id
+                      LEFT OUTER JOIN arch_ddts   ON arch_operations.ddt_id   = arch_ddts.id
                       LEFT OUTER JOIN suppliers   ON arch_ddts.supplier_id    = suppliers.id
                      WHERE arch_operations.organization_id = #{current_organization.id}
                        AND YEAR(arch_operations.date) = #{@year}

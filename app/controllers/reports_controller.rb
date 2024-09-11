@@ -152,7 +152,7 @@ class ReportsController < ApplicationController
                            ABS(number) as number, things.name as thing, description, operations.note, (price/100) AS price, price_operations
                       FROM operations
            LEFT OUTER JOIN things ON operations.thing_id = things.id
-           LEFT OUTER JOIN users  ON COALESCE(recipient_id, user_id)= users.id
+           LEFT OUTER JOIN users  ON COALESCE(recipient_id, user_id) = users.id
                      WHERE operations.organization_id = #{current_organization.id}
                        AND operations.date >= '#{@from}'
                        AND operations.date <= '#{@to}'
