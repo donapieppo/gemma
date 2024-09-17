@@ -1,5 +1,5 @@
 <div>
-  <% if !(@operation.is_unload? && @operation.number >= -1) %>
+  <% if !(@operation.is_unload? && @operation.number >= -1) && !@operation.is_booking? %>
     <%= helpers.link_to_edit "", [:edit, @operation] %>
   <% end %>
   <%= helpers.link_to_delete "", @operation %>
