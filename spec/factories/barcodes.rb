@@ -1,10 +1,8 @@
 FactoryBot.define do
-  factory :barcode do 
+  factory :barcode do
     sequence(:name) { |n| "SpecBarcode#{n}" }
 
-    association  :thing
+    association :thing
     organization { thing.organization }
   end
 end
-
-

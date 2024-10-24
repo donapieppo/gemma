@@ -1,17 +1,17 @@
 FactoryBot.define do
   factory :load do
-    transient do 
+    transient do
       number_of_deposits { 2 }
-      number_in_deposits { [4,6] }
+      number_in_deposits { [4, 6] }
     end
 
     user
-    thing        { FactoryBot.create(:thing, :with_deposits, number_of_deposits: number_of_deposits) }
+    thing { FactoryBot.create(:thing, :with_deposits, number_of_deposits: number_of_deposits) }
     organization { thing.organization }
-    ddt          { FactoryBot.create(:ddt, organization: thing.organization) }
+    ddt { FactoryBot.create(:ddt, organization: thing.organization) }
 
-    numbers      { 
-      n = Hash.new
+    numbers {
+      n = {}
       thing.deposits.each_with_index do |deposit, i|
         n[deposit.id] = number_in_deposits[i]
       end
@@ -19,9 +19,6 @@ FactoryBot.define do
     }
 
     recipient_id { nil }
-    date         { GEMMA_TEST_NOW }
+    date { GEMMA_TEST_NOW }
   end
 end
-
-
-

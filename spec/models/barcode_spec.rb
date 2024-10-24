@@ -1,9 +1,8 @@
 require "rails_helper"
 
 describe Barcode do
-
-  let (:barcode)    { FactoryBot.create(:barcode) }
-  let (:thing)      { barcode.thing }
+  let(:barcode) { FactoryBot.create(:barcode) }
+  let(:thing) { barcode.thing }
 
   it "does create two barcodes for the same thing" do
     expect(FactoryBot.create(:barcode, thing: barcode.thing)).to be
@@ -15,7 +14,7 @@ describe Barcode do
   end
 
   it "does not create two equal barcodes on things in the same organization" do
-    thing2   = FactoryBot.create(:thing, group: thing.group, organization: thing.organization)
+    thing2 = FactoryBot.create(:thing, group: thing.group, organization: thing.organization)
     barcode2 = FactoryBot.build(:barcode, name: barcode.name, thing: thing2)
     expect(barcode2).not_to be_valid
     expect(barcode2.errors[:name].first).to match(/Codice a barre già presente/)

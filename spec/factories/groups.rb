@@ -4,4 +4,3 @@ FactoryBot.define do
     organization
   end
 end
-

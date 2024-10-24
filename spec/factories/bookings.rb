@@ -3,9 +3,7 @@ FactoryBot.define do
     user
     thing
     organization { thing.organization }
-    recipient    { nil }
-    date         { GEMMA_TEST_NOW }
+    recipient { nil }
+    date { GEMMA_TEST_NOW }
   end
 end
-
-

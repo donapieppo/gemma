@@ -1,11 +1,10 @@
 require "rails_helper"
 
 describe Ddt do
-
-  let (:ddt) { FactoryBot.create(:ddt) }
-  let (:ddt_build) { FactoryBot.build(:ddt, organization: organization, supplier: supplier) }
-  let (:organization) { FactoryBot.create(:organization) }
-  let (:supplier) { FactoryBot.create(:supplier) }
+  let(:ddt) { FactoryBot.create(:ddt) }
+  let(:ddt_build) { FactoryBot.build(:ddt, organization: organization, supplier: supplier) }
+  let(:organization) { FactoryBot.create(:organization) }
+  let(:supplier) { FactoryBot.create(:supplier) }
 
   it "can be valid :-)" do
     expect(ddt_build).to be_valid
@@ -33,13 +32,13 @@ describe Ddt do
   end
 
   it "does not change number when updates name and gen" do
-    ddt.gen  = 'fatt'
-    ddt.name = 'di prova due'
+    ddt.gen = "fatt"
+    ddt.name = "di prova due"
     expect(ddt.save).to be
     expect(ddt.reload.number).to eq(ddt.number)
   end
 
-  it "gets a new number unique in structure" 
+  it "gets a new number unique in structure"
   context "Given a ddt" do
     it "another ddt with same attributes in the other year is valid" do
       expect(FactoryBot.build(:ddt, ddt.attributes.merge(id: nil, date: (ddt.date - 366.days)))).to be_valid
@@ -50,6 +49,4 @@ describe Ddt do
       expect(FactoryBot.build(:ddt, ddt.attributes.merge(id: nil, date: (ddt.date - 2.days)))).not_to be_valid
     end
   end
-
 end
-

@@ -1,10 +1,9 @@
-require 'rails_helper'
+require "rails_helper"
 
 describe Load do
-
-  let (:load)    { FactoryBot.create(:load) }
-  let (:thing)   { load.thing }
-  let (:deposit) { thing.deposits.first }
+  let(:load) { FactoryBot.create(:load) }
+  let(:thing) { load.thing }
+  let(:deposit) { thing.deposits.first }
 
   it "is valid with valid attributes" do
     expect(load).to be_valid
@@ -20,7 +19,7 @@ describe Load do
 
   it "does raise DmUniboCommon::MismatchOrganization when create in other organization" do
     o = FactoryBot.create(:organization)
-    expect {FactoryBot.create(:load, organization: o)}.to raise_error(DmUniboCommon::MismatchOrganization)
+    expect { FactoryBot.create(:load, organization: o) }.to raise_error(DmUniboCommon::MismatchOrganization)
   end
 
   it "does not create a load without :user" do
@@ -47,13 +46,13 @@ describe Load do
 
   it "does not create a load with a date before ddt date" do
     ddt = FactoryBot.create(:ddt)
-    load2 = FactoryBot.build(:load, date: ( ddt.date - 10 ))
+    load2 = FactoryBot.build(:load, date: (ddt.date - 10))
     expect(load2).not_to be_valid
     expect(load2.errors[:date]).to include("La data del carico non può essere anteriore alla data del ddt.")
   end
 
   it "does not create a move with date after today" do
-    expect(FactoryBot.build(:load, date: ( Date.tomorrow ))).not_to be_valid
+    expect(FactoryBot.build(:load, date: Date.tomorrow)).not_to be_valid
   end
 
   it "does not create load in year different than ddt" do
@@ -71,14 +70,12 @@ describe Load do
 
   it "can not be deleted if has unloads depending on it" do
     actual = load.reload.number
-    unload = FactoryBot.create(:unload, numbers:  { deposit.id => -1 },
-                                         thing:    thing,
-                                         organization: thing.organization,
-                                         date:     GEMMA_TEST_NOW + 5)
+    unload = FactoryBot.create(:unload, numbers:  {deposit.id => -1},
+      thing:    thing,
+      organization: thing.organization,
+      date:     GEMMA_TEST_NOW + 5)
 
     expect { load.destroy }.to raise_error(Gemma::NegativeDeposit)
     expect(load.reload.number).to eq actual
   end
 end
-
-

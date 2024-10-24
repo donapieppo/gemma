@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec::Matchers.define :int_eq do |expected|
   match do |actual|
@@ -7,8 +7,8 @@ RSpec::Matchers.define :int_eq do |expected|
 end
 
 describe Load do
-  let (:thing)   { FactoryBot.create(:thing, :with_deposits) }
-  let (:deposit) { thing.deposits.first }
+  let(:thing) { FactoryBot.create(:thing, :with_deposits) }
+  let(:deposit) { thing.deposits.first }
 
   before(:each) do
     thing.organization.update_attribute(:pricing, true)
@@ -21,12 +21,11 @@ describe Load do
     expect(unvalid_load.errors[:price]).to include("Il prezzo deve essere positivo.")
   end
 
-  it ".price_int is 21 with price 2112" do 
+  it ".price_int is 21 with price 2112" do
     expect(FactoryBot.build(:load, price: 2112).price_int).to eq 21
   end
 
-  it ".price_dec is 12 with price 2112" do 
+  it ".price_dec is 12 with price 2112" do
     expect(FactoryBot.build(:load, price: 2112).price_dec).to eq 12
   end
 end
-

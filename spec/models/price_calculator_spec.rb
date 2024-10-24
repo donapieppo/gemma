@@ -1,11 +1,11 @@
-require 'rails_helper'
+require "rails_helper"
 
 describe PriceCalculator do
-  context "given 2 loads of 2 at 1 euro and 3 at 2 euro" do 
-    let (:thing)   { FactoryBot.create(:thing, :with_deposits) }
-    let (:deposit) { thing.deposits.first }
-    let (:load1)   { FactoryBot.create(:load, thing: thing, numbers: { deposit.id => 2 }, price: 100) }
-    let (:load2)   { FactoryBot.create(:load, thing: thing, numbers: { deposit.id => 3 }, price: 200) }
+  context "given 2 loads of 2 at 1 euro and 3 at 2 euro" do
+    let(:thing) { FactoryBot.create(:thing, :with_deposits) }
+    let(:deposit) { thing.deposits.first }
+    let(:load1) { FactoryBot.create(:load, thing: thing, numbers: {deposit.id => 2}, price: 100) }
+    let(:load2) { FactoryBot.create(:load, thing: thing, numbers: {deposit.id => 3}, price: 200) }
 
     it ".get(2) returns [load1, 2, 50]" do
       pc = PriceCalculator.new

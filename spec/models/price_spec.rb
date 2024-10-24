@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec::Matchers.define :int_eq do |expected|
   match do |actual|
@@ -7,15 +7,15 @@ RSpec::Matchers.define :int_eq do |expected|
 end
 
 describe Load do
-  let (:thing)   { FactoryBot.create(:thing, :with_deposits) }
-  let (:deposit) { thing.deposits.first }
+  let(:thing) { FactoryBot.create(:thing, :with_deposits) }
+  let(:deposit) { thing.deposits.first }
 
   before(:each) do
     thing.organization.update_attribute(:pricing, true)
   end
 
-  context "given a today load of 10 things for 200 cents" do 
-    let (:load) { FactoryBot.create(:load, thing: thing, numbers: { deposit.id => 10 }, price: 200) }
+  context "given a today load of 10 things for 200 cents" do
+    let(:load) { FactoryBot.create(:load, thing: thing, numbers: {deposit.id => 10}, price: 200) }
 
     it ".price returns 200" do
       expect(load.price).to int_eq 200
@@ -31,17 +31,14 @@ describe Load do
     end
 
     it ".aggiorna num to 20 does not change price" do
-      load.aggiorna(numbers: { deposit.id => 20 })
+      load.aggiorna(numbers: {deposit.id => 20})
       expect(load.reload.price).to int_eq 200
     end
 
     it ".aggiorna num to 20 does change .thing.get_price to 200/20" do
-      load.aggiorna(numbers: { deposit.id => 20 })
+      load.aggiorna(numbers: {deposit.id => 20})
       # [{:id=>175, :n=>20, :p=>4.35}]:Array
-      expect(load.thing.reload.future_prices.first[:p]).to int_eq 200/20
+      expect(load.thing.reload.future_prices.first[:p]).to int_eq 200 / 20
     end
   end
 end
-
-
-
