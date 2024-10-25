@@ -5,7 +5,7 @@ class Thing::ActionsComponent < ViewComponent::Base
   end
 
   def before_render
-    @controller = controller.controller_name 
+    @controller = controller.controller_name
     @action = controller.action_name
   end
 end
