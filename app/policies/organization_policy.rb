@@ -11,7 +11,7 @@ class OrganizationPolicy < DmUniboCommon::OrganizationPolicy
   end
 
   def book?
-    @user && @user.current_organization && @user.current_organization.booking && (! @user.authorization.can_only_book?(@user.current_organization))
+    @user && @user.current_organization && @user.current_organization.booking && !@user.authorization.can_only_book?(@user.current_organization)
   end
 
   def show?
@@ -42,4 +42,3 @@ class OrganizationPolicy < DmUniboCommon::OrganizationPolicy
     true
   end
 end
-
