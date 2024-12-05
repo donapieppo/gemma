@@ -1,8 +1,8 @@
-Given /^organization (\S+)$/ do |organization_name|
+Given(/^organization (\S+)$/) do |organization_name|
   @organization = FactoryBot.create(:organization, name: organization_name)
 end
 
-Given /^one organization with thing$/ do 
+Given(/^one organization with thing$/) do
   @thing = create(:thing, :with_deposits)
   @organization = @thing.organization
 end
