@@ -14,7 +14,7 @@
     </main>
 
     <%= render DmUniboCommon::FooterComponent.new current_user, 
-                                                  contact_mail: Rails.configuration.contact_mail,
+                                                  contact_mail: Rails.configuration.unibo_common.contact_mail,
                                                   documentation_path: (current_user ? helps_path : nil) %>  
     <%= render DmUniboCommon::ImpersonationComponent.new current_user, true_user, 
                                                          who_impersonate_path: dm_unibo_common.who_impersonate_path, 
