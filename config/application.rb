@@ -10,11 +10,14 @@ module Gemma
   class Application < Rails::Application
     config.load_defaults 7.1
 
-    config.hosts << "gemma.unibo.it"
-
     config.autoload_paths << "#{Rails.root}/app/pdfs"
     config.time_zone = "Rome"
     config.i18n.default_locale = :it
+
+    config.hosts += ENV.fetch("ALLOWED_HOSTS", "").split(",")
+    config.host_authorization = {
+      exclude: ->(request) { request.path.include?("up") }
+    }
 
     config.authlevels = {
       read: 10,
@@ -27,7 +30,7 @@ module Gemma
 
     # config.lograge.enabled = true
 
-    config.dm_unibo_common = ActiveSupport::HashWithIndifferentAccess.new config_for(:dm_unibo_common)
+    config.unibo_common = config_for(:unibo_common)
     config.active_record.yaml_column_permitted_classes = [Symbol]
   end
 end

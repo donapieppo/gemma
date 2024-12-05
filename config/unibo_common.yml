@@ -1,0 +1,27 @@
+shared:
+  superusers: ["pietro.donatini@unibo.it"]
+  html_title: "GE.M.MA - GEstione Multiutente MAteriale di consumo"
+  html_description: "Gestione Multiutente MAteriale di consumo. Università di Bologna."
+  header_title: "Ge.M.Ma"
+  header_subtitle: "Gestione Multiutente MAteriale di consumo"
+  header_icon: "shopping-cart"
+  contact_mail: "pietro.donatini@unibo.it"
+  domain_name: "unibo.it"
+  support_mail: "pietro.donatini@unibo.it"
+  default_from: "pietro.donatini@unibo.it"
+  reply_to: "pietro.donatini@unibo.it"
+  login_method: :allow_if_email
+  no_students: true
+  message_footer: ""
+  impersonate_admins: ["pietro.donatini@unibo.it"]
+  interceptor_mails: ["donatini@dm.unibo.it"]
+  main_impersonations: []
+  home_description: |
+    home description
+
+development:
+  omniauth_provider:   :developer 
+  searchable_provider: true
+  host:                localhost
+  smtp_unibo:          true
+
