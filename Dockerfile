@@ -1,49 +1,76 @@
-FROM ruby:3.2 AS donapieppo_ruby
-MAINTAINER Donapieppo <donapieppo@yahoo.it>
+# syntax = docker/dockerfile:1
 
-ENV DEBIAN_FRONTEND noninteractive
+# Make sure RUBY_VERSION matches the Ruby version in .ruby-version and Gemfile
+ARG RUBY_VERSION=3.3.5
+FROM registry.docker.com/library/ruby:$RUBY_VERSION-slim AS base
+LABEL org.opencontainers.image.authors="Pietro Donatini <pietro.donatini@unibo.ir>"
+LABEL org.opencontainers.image.source="https://github.com/donapieppo/gemma" 
 
-WORKDIR /app
+# Rails app lives here
+WORKDIR /rails
 
-ARG UID=1000
-ARG GID=1000
+# Set production environment
+ENV RAILS_ENV="production" \
+    BUNDLE_DEPLOYMENT="1" \
+    BUNDLE_PATH="/usr/local/bundle" \
+    BUNDLE_WITHOUT="development"
 
-RUN apt-get update \
-    && apt-get install -yq --no-install-recommends build-essential gnupg2 curl git vim locales libvips libmariadb-dev
 
-RUN curl -sL https://deb.nodesource.com/setup_20.x | bash -
+# Throw-away build stage to reduce size of final image
+FROM base AS build
 
-RUN apt-get update \
-    && apt-get install -yq --no-install-recommends nodejs \
-    && npm install -g yarn \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /usr/share/doc /usr/share/man \
-    && groupadd -g ${GID} ruby \
-    && useradd --create-home --no-log-init -u ${UID} -g ${GID} ruby \
-    && chown ruby:ruby -R /app
- 
-FROM donapieppo_ruby AS donapieppo_gemma_bundle
+# Install packages needed to build gems and node modules
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y build-essential git curl default-libmysqlclient-dev libvips node-gyp pkg-config python-is-python3
 
-USER ruby
+# Install JavaScript dependencies
+ARG NODE_VERSION=20.17.0
+ARG YARN_VERSION=1.22.22
+ENV PATH=/usr/local/node/bin:$PATH
+RUN curl -sL https://github.com/nodenv/node-build/archive/master.tar.gz | tar xz -C /tmp/ && \
+    /tmp/node-build-master/bin/node-build "${NODE_VERSION}" /usr/local/node && \
+    npm install -g yarn@$YARN_VERSION && \
+    rm -rf /tmp/node-build-master
 
-COPY --chown=ruby:ruby Gemfile* ./
-RUN bundle install
+# Install application gems
+COPY Gemfile Gemfile.lock ./
+RUN bundle install && \
+    rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
+    bundle exec bootsnap precompile --gemfile
 
-COPY --chown=ruby:ruby package.json *yarn* ./
-RUN yarn install
+# Install node modules
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
 
-FROM donapieppo_gemma_bundle AS donapieppo_gemma
+# Copy application code
+COPY . .
 
-COPY --chown=ruby:ruby . .
+# Precompile bootsnap code for faster boot times
+RUN bundle exec bootsnap precompile app/ lib/
 
-RUN ./bin/rails assets:precompile
+# Precompiling assets for production without requiring secret RAILS_MASTER_KEY
+RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
 
-# configuration
-RUN ["/bin/cp", "doc/docker_database.yml", "config/database.yml"]
-RUN ["/bin/cp", "doc/docker_omniauth.rb", "config/initializers/omniauth.rb"]
-RUN ["/bin/cp", "doc/dm_unibo_common_docker.yml", "config/dm_unibo_common.yml"]
-RUN ["/bin/cp", "doc/gemma_example.rb", "config/initializers/gemma.rb"]
+# Final stage for app image
+FROM base
 
+# Install packages needed for deployment
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y curl default-mysql-client libvips && \
+    rm -rf /var/lib/apt/lists /var/cache/apt/archives
+
+# Copy built artifacts: gems, application
+COPY --from=build /usr/local/bundle /usr/local/bundle
+COPY --from=build /rails /rails
+
+# Run and own only the runtime files as a non-root user for security
+RUN useradd rails --create-home --shell /bin/bash && \
+    chown -R rails:rails db log storage tmp
+USER rails:rails
+
+RUN echo 'alias ll="ls -l"' >> ~/.bashrc
+RUN echo 'PS1="DOCKER \w: "' >> ~/.bashrc
+
+# Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
-
-CMD ["rails", "server", "-b", "0.0.0.0"]
+CMD ["./bin/rails", "server"]
