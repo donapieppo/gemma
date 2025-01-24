@@ -1,23 +1,26 @@
 shared:
-  superusers: ["pietro.donatini@unibo.it"]
+  superusers: ["pietro.dona@example.it"]
   html_title: "GE.M.MA - GEstione Multiutente MAteriale di consumo"
   html_description: "Gestione Multiutente MAteriale di consumo. Università di Bologna."
   header_title: "Ge.M.Ma"
   header_subtitle: "Gestione Multiutente MAteriale di consumo"
   header_icon: "shopping-cart"
-  contact_mail: "pietro.donatini@unibo.it"
-  domain_name: "unibo.it"
-  support_mail: "pietro.donatini@unibo.it"
-  default_from: "pietro.donatini@unibo.it"
-  reply_to: "pietro.donatini@unibo.it"
+  contact_mail: "pietro.dona@example.it"
+  domain_name: "example.it"
+  support_mail: "dipmat-gemma@example.it"
+  default_from: "Ge.M.Ma <notifica.inviodlist.08218@example.it>"
+  reply_to: "pietro.dona@example.it"
   login_method: :allow_if_email
   no_students: true
   message_footer: ""
-  impersonate_admins: ["pietro.donatini@unibo.it"]
-  interceptor_mails: ["donatini@dm.unibo.it"]
-  main_impersonations: []
+  impersonate_admins: ["pietro.dona@example.it"]
+  interceptor_mails: ["dona@dm.example.it"]
+  main_impersonations: ["pietro.dona@example.it", "maria@example.it", "sandro@example.it"]
   home_description: |
-    home description
+    <p>Applicativo per la gestione del <strong>materiale di consumo</strong> presso le strutture dell'Università di Bologna.</p>
+    <p>L'applicativo permette di tenere traccia dei materiale di consumo (materiale non soggetto ad inventariazione, di modico valore
+    o facile usura e veloce obsolescenza) dall'acquisto alla consegna.
+    Per le strutture che ne fanno richiesta è possibile permettere ai colleghi la prenotazione del materiale presente in magazzino.</p>
 
 development:
   omniauth_provider:   :developer 
