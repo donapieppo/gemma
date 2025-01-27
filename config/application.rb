@@ -15,9 +15,9 @@ module Gemma
     config.i18n.default_locale = :it
 
     config.hosts += ENV.fetch("ALLOWED_HOSTS", "").split(",")
-    config.host_authorization = {
-      exclude: ->(request) { request.path == "/up" }
-    }
+    # config.host_authorization = {
+    #   exclude: ->(request) { request.path == "/up" }
+    # }
 
     config.authlevels = {
       read: 10,
