@@ -3,9 +3,10 @@ namespace :gemma do
     desc "Import things in an organization from csv"
     task import_things: :environment do
       org = Organization.find 223
+      u = User.find_by_upn("pietro.modigliani@example.it")
+
       g = org.groups.first
       l = org.locations.first
-      u = User.find_by_upn("giacomo.modigliani@unibo.it")
       p org
       p g
       p l
@@ -19,11 +20,14 @@ namespace :gemma do
         p num
         if t.save
           t.create_deposits([l.id])
-          s = t.stocks.new(organization_id: org.id, user_id: u.id, numbers: {t.deposits.first.id => num})
-          s.save!
+          if num > 0
+            s = t.stocks.new(organization_id: org.id, user_id: u.id, numbers: {t.deposits.first.id => num})
+            s.save!
+          end
         else
           p t.errors
         end
+        gets
       end
     end
   end
