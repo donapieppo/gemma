@@ -5,7 +5,6 @@ class ApplicationController < DmUniboCommon::ApplicationController
     :update_authorization,
     :force_sso_user,
     :set_current_organization,
-    :log_current_user,
     :after_current_user_and_organization,
     :set_locale
 
