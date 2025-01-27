@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   mount DmUniboCommon::Engine => "/dm_unibo_common", :as => "dm_unibo_common"
 
+  get "up", to: "rails/health#show", as: :rails_health_check
+
   get "/logins/logout", to: "dm_unibo_common/logins#logout"
 
   get "/stats/organization/:id", to: "stats#organization", as: "organization_stats"
