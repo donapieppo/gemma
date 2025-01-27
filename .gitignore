@@ -35,8 +35,5 @@
 
 /node_modules
 
-config/initializers/gemma.rb
-config/dm_unibo_common.yml
-config/credentials.yml.enc
 tags
 public/system
