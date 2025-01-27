@@ -16,7 +16,7 @@ module Gemma
 
     config.hosts += ENV.fetch("ALLOWED_HOSTS", "").split(",")
     config.host_authorization = {
-      exclude: ->(request) { request.path.include?("up") }
+      exclude: ->(request) { request.path == "/up" }
     }
 
     config.authlevels = {
