@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/donapieppo/dm_unibo_common.git
-  revision: 93485c881cf0e96263dee659c4403b629d4c1c3a
+  revision: cd7abc6b978ee397797182e10c2de3b784c2574c
   branch: master
   specs:
     dm_unibo_common (5.1.3)
@@ -413,7 +413,7 @@ GEM
     rake (13.2.1)
     rbs (3.8.1)
       logger
-    rdoc (6.11.0)
+    rdoc (6.12.0)
       psych (>= 4.0.0)
     regexp_parser (2.10.0)
     reline (0.6.0)
@@ -421,7 +421,7 @@ GEM
     request_store (1.7.0)
       rack (>= 1.4)
     rexml (3.4.0)
-    rspec-core (3.13.2)
+    rspec-core (3.13.3)
       rspec-support (~> 3.13.0)
     rspec-expectations (3.13.3)
       diff-lcs (>= 1.2.0, < 2.0)
