@@ -9,6 +9,15 @@
     <%= render partial: 'edit_deposits' %>
     <%= render partial: 'edit_barcodes' %>
     <%= render partial: 'edit_images' %>
+
+    <div class="alert alert-danger text-end">
+      <%= 
+        button_to dm_icon("trash-alt", text: "Elimina l'articolo", size: "xl"), 
+          thing_path(@thing), 
+          method: :delete,
+          form: {data: {"turbo-confirm": "Sicuro di volere cancelare il materiale?"}}
+        %> 
+    </div>
   </div>
 </div>
 
