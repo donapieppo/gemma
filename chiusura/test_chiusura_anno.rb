@@ -18,13 +18,12 @@ puts "insert into ddts set (number='1', organization_id='#{organization_id}', ge
 
 ddt_id = 1111
 
-res.each(:as => :hash) do |row|  
-  thing_id = row['thing_id']
-  sum      = row['sum']
+res.each(as: :hash) do |row|
+  thing_id = row["thing_id"]
+  sum = row["sum"]
 
   puts "delete from moves where thing_id = #{thing_id} and AND YEAR(date) = '#{year}'"
   puts "insert into moves set (upn='pietro.donatini', thing_id = #{thing_id}, number=#{sum}, date='#{year}-01-01', ip='137.204.134.32', ddt_id=#{ddt_id}, operation='l', organization_id=#{organization_id}"
 
   # Dobbiamo sostituire all'elenco di moves una giacenza iniziale
 end
-
