@@ -48,7 +48,7 @@ module Gemma
                                    AND YEAR(date)        <= #{@year}
                               GROUP BY deposit_id")
 
-        res_move.each(:as => :hash) do |row_move|
+        res_move.each(as: :hash) do |row_move|
           (row_move["sum"].to_i > 0) or next
           new_move = @conn.query("INSERT INTO moves SET
                                                operation_id = #{last_id},
