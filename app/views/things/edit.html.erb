@@ -10,12 +10,15 @@
     <%= render partial: 'edit_barcodes' %>
     <%= render partial: 'edit_images' %>
 
-    <div class="alert alert-danger text-end">
+    <div class="alert alert-light text-end">
       <%= 
         button_to dm_icon("trash-alt", text: "Elimina l'articolo", size: "xl"), 
           thing_path(@thing), 
           method: :delete,
-          form: {data: {"turbo-confirm": "Sicuro di volere cancelare il materiale?"}}
+          form: {
+            data: {"turbo-confirm": "Sicuro di volere cancelare il materiale?"}
+          },
+          class: "btn btn-danger"
         %> 
     </div>
   </div>
