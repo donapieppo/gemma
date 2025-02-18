@@ -21,7 +21,8 @@ FROM base AS build
 
 # Install packages needed to build gems and node modules
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential git curl default-libmysqlclient-dev libvips node-gyp pkg-config python-is-python3 fonts-liberation
+    apt-get install --no-install-recommends -y curl default-mysql-client libjemalloc2 libvips fonts-liberation && \
+    rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Install JavaScript dependencies
 ARG NODE_VERSION=20.17.0
@@ -56,7 +57,7 @@ FROM base
 
 # Install packages needed for deployment
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl default-mysql-client libvips fonts-liberation && \
+    apt-get install --no-install-recommends -y build-essential default-libmysqlclient-dev git node-gyp pkg-config python-is-python3 && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Copy built artifacts: gems, application
