@@ -30,7 +30,7 @@ class Notification
         puts "Trovato #{user.inspect} con i seguenti unloads:"
         puts elenco
         SystemMailer.notify_unloads(user, organization, @from, @to, @subject, elenco).deliver_now
-        sleep 35
+        sleep 5
       end
     end
   end
