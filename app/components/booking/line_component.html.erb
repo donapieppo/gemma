@@ -13,7 +13,7 @@
         <%= link_to @booking.user, user_bookings_path(@booking.user) %>
         <%= "(#{@booking.note})" unless @booking.note.blank? %>
         <% if @booking.recipient %>
-          <span class="text-secondary small">per <%= link_to @booking.recipient, user_bookings_path(@booking.recipient) %></span>
+          <span class="text-body-secondary small">per <%= link_to @booking.recipient, user_bookings_path(@booking.recipient) %></span>
         <% end %>
         <% if @booking.lab_id %>
           <%= helpers.dm_icon "flask", text: "Per lab. #{@booking.lab}" %>
@@ -22,7 +22,7 @@
     </div>
 
     <div class="col-md-3 text-end">
-      <span class="text-secondary"><%= l(@booking.created_at, format: :booking) if @booking.created_at %></span><br/>
+      <span class="text-body-secondary"><%= l(@booking.created_at, format: :booking) if @booking.created_at %></span><br/>
       <%= helpers.link_to_check confirm_booking_path(@booking) %> 
       <%= helpers.link_to_delete "", booking_path(@booking) %> 
     </div>
