@@ -48,16 +48,6 @@ namespace :notifications do
         mail_list << user.upn
       end
     end
-    sleep 10
-    puts mail_list.join(", ")
-    sleep 60
-    puts "ok 1"
-    sleep 120
-    puts "ok 2"
-    sleep 240
-    puts "ok 3"
-    sleep 480
-    puts "ok 4"
   end
 end
 end
