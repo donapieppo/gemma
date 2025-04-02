@@ -11,8 +11,6 @@ namespace :show do
       sleep 1
       puts "#{a.user.upn} - #{a.user.id}" if c == 0
     end
-    sleep 10
-    puts mail_list.join(", ")
     sleep 60
     puts "ok 1"
     sleep 120
