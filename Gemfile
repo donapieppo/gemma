@@ -17,6 +17,7 @@ gem "image_processing"
 gem "prawn"
 gem "prawn-table"
 gem "prawn-labels"
+gem "csv"
 
 gem "aws-sdk-s3", require: false
 
