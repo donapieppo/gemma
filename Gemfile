@@ -29,6 +29,9 @@ gem "bootsnap", require: false
 
 gem "lograge"
 
+gem "sentry-ruby"
+gem "sentry-rails"
+
 group :development, :test do
   gem "rspec-rails", "~> 7.0.0"
   gem "factory_bot_rails"
