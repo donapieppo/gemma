@@ -1,3 +1,26 @@
+create table containers (
+        `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+        `volume` int(2),
+        `notes` text,
+        PRIMARY KEY (`id`)
+);
+
+create table containers_things (
+        `container_id` int(10) unsigned NOT NULL,
+        `thing_id` int(10) unsigned NOT NULL,
+        FOREIGN KEY (container_id) REFERENCES containers (id),
+        FOREIGN KEY (thing_id) REFERENCES things(id)
+);
+
+insert into containers values (1, 5, '');
+insert into containers values (1, 10, '');
+insert into containers values (1, 25, '');
+insert into containers values (1, 50, '');
+insert into containers values (1, 90, '');
+insert into containers values (1, 120, '');
+insert into containers values (1, 200, '');
+
+
 alter table organizations drop column division;
 alter table operations drop column division_id;
 
