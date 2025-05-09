@@ -2,10 +2,10 @@
 #
 # TO_READ:   può solo leggere le gicenze
 # TO_ORDER:  può ordinare l'acquisto di materiale
-# TO_BOOK:   può prenotare 
-# TO_UNLOAD: può scaricare 
+# TO_BOOK:   può prenotare
+# TO_UNLOAD: può scaricare
 # TO_GIVE:   può scaricare a nome di altri
-# TO_MANAGE: può amministrare la struttura 
+# TO_MANAGE: può amministrare la struttura
 # TO_EDIT:   può editare la struttura (direttore amministrativo). Aggiungendo utenti.
 # TO_CESIA:  amministratore del programma (super admin)
 #
@@ -16,4 +16,3 @@ class Authorization
 
   configure_authlevels
 end
-
