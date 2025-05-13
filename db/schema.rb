@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2022_05_25_142402) do
+ActiveRecord::Schema[7.2].define(version: 2022_05_25_142402) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -189,8 +189,10 @@ ActiveRecord::Schema[7.1].define(version: 2022_05_25_142402) do
     t.index ["ddt_id"], name: "index_operations_on_ddt_id"
     t.index ["lab_id"], name: "operations_labfk"
     t.index ["organization_id"], name: "organization_id"
+    t.index ["recipient_id", "organization_id"], name: "operation_recipient_organization_index"
     t.index ["recipient_id"], name: "recipientid"
     t.index ["thing_id"], name: "index_operations_on_thing_id"
+    t.index ["user_id", "organization_id"], name: "operation_user_organization_index"
     t.index ["user_id"], name: "userid"
   end
 
@@ -256,6 +258,7 @@ ActiveRecord::Schema[7.1].define(version: 2022_05_25_142402) do
     t.integer "total", default: 0, unsigned: true
     t.integer "organization_id"
     t.text "future_prices"
+    t.text "dewars"
     t.index ["group_id"], name: "group_id"
     t.index ["organization_id"], name: "organization_id"
   end
