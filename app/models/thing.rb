@@ -16,8 +16,10 @@ class Thing < ApplicationRecord
   has_many :images, dependent: :destroy
 
   serialize :future_prices, coder: YAML, type: Array
+  serialize :dewars, coder: YAML
 
   before_validation :strip_name_blanks
+  before_validation :convert_dewars_to_integers
 
   validates :organization_id, :group_id, presence: true
   validates :name, uniqueness: {scope: [:organization_id], message: "L'articolo esiste già.", case_sensitive: false},
@@ -31,40 +33,40 @@ class Thing < ApplicationRecord
   def create_deposits(location_ids)
     location_ids = location_ids.select { |i| i.to_i > 0 }
     Location.find(location_ids).each do |loc|
-      (loc.organization_id == self.organization_id) or raise DmUniboCommon::MismatchOrganization, "Struttura non permessa."
-      loc.deposits.create(thing_id: self.id,
+      (loc.organization_id == organization_id) or raise DmUniboCommon::MismatchOrganization, "Struttura non permessa."
+      loc.deposits.create(thing_id: id,
                           organization_id: self.organization_id, # standard:disable all
                           actual: 0) or return false # standard:disable all
     end
   end
 
   def has_operation?
-    self.operations.any?
+    operations.any?
   end
 
   def short_name
-    self.name[0..80]
+    name[0..80]
   end
 
   def max_actual_in_deposits
-    self.deposits.map(&:actual).max
+    deposits.map(&:actual).max
   end
 
   def update_total
     # Piu' veloce con deposits ma per ora va bene cosi'
     # sum = self.deposits.sum(:actual)
-    sum = self.operations.sum(:number)
+    sum = operations.sum(:number)
     (sum < 0) and raise Gemma::NegativeDeposit
-    self.update_attribute(:total, sum)
+    update_attribute(:total, sum)
   end
 
   def to_s
-    self.name
+    name
   end
 
   def to_s_with_description
-    d = self.description.blank? ? "" : " (#{self.description})"
-    self.name + d
+    d = description.blank? ? "" : " (#{description})"
+    name + d
   end
 
   def self.inactive(organization)
@@ -74,7 +76,7 @@ class Thing < ApplicationRecord
 
   def recalculate_prices
     pc = PriceCalculator.new
-    self.operations.ordered.each do |o|
+    operations.ordered.each do |o|
       price = 0
       price_operations = []
 
@@ -101,35 +103,44 @@ class Thing < ApplicationRecord
           price += stack_price
           number -= n
         end
-        o.update_columns(price: price, price_operations: price_operations)
+        if o.price != price || o.price_operations != price_operations
+          # to avoid after save and etc
+          o.update_columns(price: price, price_operations: price_operations)
+        end
       end
     end
-    self.update_columns(future_prices: pc.remaining_stack)
+    update_columns(future_prices: pc.remaining_stack)
   end
 
   def generate_barcode
-    str = "g-#{self.id}"
-    self.barcodes.create(organization_id: self.organization_id, name: str)
+    str = "g-#{id}"
+    barcodes.create(organization_id: organization_id, name: str)
   end
 
   def under_minimum?
-    self.total <= self.minimum
+    total <= minimum
   end
 
   protected
 
   def strip_name_blanks
-    self.name = self.name.squish
+    self.name = name.squish
+  end
+
+  def convert_dewars_to_integers
+    if dewars.is_a?(Array)
+      self.dewars = dewars.map(&:to_i).select { |c| c > 0 }
+    end
   end
 
   def check_group_organization
-    (self.group.organization_id == self.organization_id) or raise DmUniboCommon::MismatchOrganization, "Struttura non permessa."
+    (group.organization_id == organization_id) or raise DmUniboCommon::MismatchOrganization, "Struttura non permessa."
   end
 
   def check_no_associated_moves
     # FIXME: BUG risultano certe operations senza moves... da riflettere e sistemare
-    if self.moves.any? || self.operations.any?
-      self.errors.add(:base, "Ci sono carichi e scarichi associati a questo articolo che devono prima essere cancellati.")
+    if moves.any? || operations.any?
+      errors.add(:base, "Ci sono carichi e scarichi associati a questo articolo che devono prima essere cancellati.")
       throw :abort
     end
   end
