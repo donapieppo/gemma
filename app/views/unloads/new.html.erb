@@ -20,9 +20,17 @@
     <%= simple_form_for [@thing, @unload] do |f| %>
       <%= f.dm_error_notification %>  
       <input type="hidden" name="batch" value="<%= params[:batch] %>" />
-      <%= f.input :number, hint: number_hint, required: true %>
+      <% if @thing.dewars&.any? %>
+        <%= f.input :number, as: :select, label: "Dewar riempito", collection: @thing.dewars.sort.map {|x| ["#{x} litri", x]}, required: true %>
+        <div class='col-sm-9 offset-sm-3 my-2'>
+          <input type="checkbox" id="hot_dewar" name="unload[hot_dewar]" value="1" />
+          <label for="hot_dewar">Dewar caldo</label>
+        </div>
+      <% else %>
+        <%= f.input :number, hint: number_hint, required: true %>
+      <% end %>
 
-      <% if current_organization.with_labs %>
+      <% if current_organization.with_labs && current_organization.labs.any? %>
         <div data-controller="limit-visible">
           <div class="form-check offset-sm-3 my-4">
             <input type="checkbox" name="didattica" class="form-check-input" id="didattica" data-action="change->limit-visible#update"></input>
