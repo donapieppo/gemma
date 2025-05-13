@@ -139,7 +139,7 @@ class ThingsController < ApplicationController
   # if g-1234 we return thing.find(1234)
   def real_find(stringa_ricerca)
     # see Thing.generate_barcode
-    if stringa_ricerca =~ /^g\-(\d+)$/
+    if stringa_ricerca =~ /^g-(\d+)$/
       [current_organization.things.find($1)]
     else
       sql_stringa = "%#{stringa_ricerca}%"
@@ -162,6 +162,6 @@ class ThingsController < ApplicationController
   end
 
   def thing_params
-    params[:thing].permit(:name, :description, :group_id, :minimum)
+    params[:thing].permit(:name, :description, :group_id, :minimum, dewars: [])
   end
 end
