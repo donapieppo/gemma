@@ -2,15 +2,15 @@ class Load < Operation
   belongs_to :ddt
   belongs_to :thing
   belongs_to :organization
-  has_many   :moves, foreign_key: :operation_id
+  has_many :moves, foreign_key: :operation_id
 
   validate :validate_numbers,
-           :validate_ddt, 
-           :validate_cia,
-           :validate_price
+    :validate_ddt,
+    :validate_cia,
+    :validate_price
 
-  before_save   :decide_for_history_coherent
-  after_save    :recalculate_prices
+  before_save :decide_for_history_coherent
+  after_save :recalculate_prices
   after_destroy :recalculate_prices
 
   def initialize(attributes = {})
@@ -23,7 +23,7 @@ class Load < Operation
   # FIXME da fare dry con Unload
   def validate_numbers
     if !self.numbers || self.numbers.empty?
-      errors.add(:base, 'È necessario indicare la quantità di oggetti e la loro provenienza.')
+      errors.add(:base, "È necessario indicare la quantità di oggetti e la loro provenienza.")
     else
       self.numbers.each_value do |num|
         if num < 1
@@ -44,7 +44,7 @@ class Load < Operation
       (ddt.organization_id == self.organization_id) or raise DmUniboCommon::MismatchOrganization, 'MismatchOrganization in DDT.'
 
       errors.add(:date, 'La data del carico non può essere anteriore alla data del ddt.') if ddt.date > self.date 
-      errors.add(:date, "La data del carico non può essere in anno differente dalla data del ddt. Consigliamo di scegliere come data l'ultimo giorno dell'anno del ddt.") if ddt.date.year != self.date.year 
+      errors.add(:date, "La data del carico non può essere in anno differente dalla data del ddt. Consigliamo di scegliere come data l'ultimo giorno dell'anno del ddt.") if ddt.date.year != self.date.year
     else
       errors.add(:base, "Non c'è il ddt.")
     end
@@ -52,7 +52,7 @@ class Load < Operation
 
   # CIA
   def validate_cia
-    if self.ncia !~ /\w/ 
+    if self.ncia !~ /\w/
       self.ncia = nil
       self.ycia = nil
     elsif self.ycia.to_i > Date.today.year.to_i || self.ycia.to_i < 1996
@@ -68,7 +68,4 @@ class Load < Operation
       self.price = nil
     end
   end
-
 end
-
-
