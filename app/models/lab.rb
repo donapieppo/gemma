@@ -13,6 +13,6 @@ class Lab < ApplicationRecord
   private
 
   def check_operations_for_delete
-    throw(:abort) if self.operations.any?
+    throw(:abort) if operations.any?
   end
 end
