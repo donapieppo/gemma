@@ -1,0 +1,6 @@
+<% if @thing.dewars&.any? %>
+  <%= dm_form_for @thing, title: "Possibili dewar" do |f| %>
+    <%= f.input :dewars, collection: Rails.configuration.possible_dewars.map{|x| ["#{x} litri", x.to_i]}, as: :check_boxes, label: false %> 
+    <%= f.submit %>
+  <% end %>
+<% end %>
