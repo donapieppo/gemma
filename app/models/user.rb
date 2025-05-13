@@ -92,10 +92,10 @@ class User < ApplicationRecord
   end
 
   def get_delegators(organization_id)
-    self.delegators.where("delegations.organization_id = ?", organization_id)
+    delegators.where("delegations.organization_id = ?", organization_id)
   end
 
   def get_delegates(organization_id)
-    self.delegates.where("delegations.organization_id = ?", organization_id)
+    delegates.where("delegations.organization_id = ?", organization_id)
   end
 end

@@ -18,7 +18,7 @@ class Unload < Operation
       attributes[:ddt_id] = nil
       attributes[:date] = date_afternoon(attributes[:date]) if attributes[:date]
     end
-    super(attributes)
+    super
   end
 
   # FIXME da fare dry con Load

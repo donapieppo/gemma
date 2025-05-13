@@ -35,7 +35,7 @@ class Operation < ApplicationRecord
 
   # IMPORTANTISSIMO,
   # la svolta per mettere date al posto di datetime e risolvere una tonnellata di problemi
-  # ha solo il difetto che con stock e loads nella stessa giornata l'ordine non e' ottimale
+  # ha solo il difetto che con stock e loads nella stessa giornata l'ordine non è ottimale
   scope :ordered, -> { order("operations.date ASC, operations.number DESC") }
   scope :in_last_years, ->(num) { where("YEAR(date) >= ?", num) }
 
@@ -85,7 +85,7 @@ class Operation < ApplicationRecord
 
   # recupera hash con { deposit_id => number }
   def numbers_hash
-    self.moves.inject({}) { |n, m| n[m.deposit_id] = m.number; n }
+    moves.inject({}) { |n, m| n[m.deposit_id] = m.number; n }
   end
 
   def fix_date
@@ -192,11 +192,11 @@ class Operation < ApplicationRecord
   end
 
   def recalculate_prices
-    if self.organization.pricing
+    if organization.pricing
       if avoid_price_updating
         Rails.logger.debug("SKIP update_next_prices") and return
       end
-      self.thing.recalculate_prices
+      thing.recalculate_prices
     end
   end
 
@@ -227,13 +227,13 @@ class Operation < ApplicationRecord
     # I numbers sono la situazione attuale corretta. Non un'unione con i vecchi.
     # Quindi se in un vecchio location_id c'era un move e ora questo location_id non
     # e' nei numbers, lo togliamo!!!!
-    self.moves.each do |move|
+    moves.each do |move|
       if tmp_numbers[move.deposit_id]
         if move.number != tmp_numbers[move.deposit_id]
           move.update(number: tmp_numbers[move.deposit_id].to_i) or raise("NON SALVO MOVE IN update_moves")
           @deposits_to_check << move.deposit_id
         else
-          # FIXME per ora mettiamo cosi' perche' non sappiamo se la data e' cambiata................. 
+          # FIXME per ora mettiamo cosi' perche' non sappiamo se la data e' cambiata.................
           # da sistemare ecchediavolo (usando changed?) http://api.rubyonrails.org/classes/ActiveRecord/Dirty.html
           @deposits_to_check << move.deposit_id
         end
@@ -284,7 +284,7 @@ class Operation < ApplicationRecord
         .where("deposit_id = ?", dep_id)
         .each do |m|
         sum += m.number
-        Rails.logger.debug("history_coherent?: move = #{m.inspect} sum = #{sum}")
+        # Rails.logger.debug("history_coherent?: move = #{m.inspect} sum = #{sum}")
         (sum < 0) and raise Gemma::NegativeDeposit
       end
     end
@@ -292,8 +292,8 @@ class Operation < ApplicationRecord
   end
 
   def rewrite_totals
-    self.moves.each { |m| m.deposit.update_actual }
-    self.thing.update_total
+    moves.each { |m| m.deposit.update_actual }
+    thing.update_total
   end
 
   def log_creation
