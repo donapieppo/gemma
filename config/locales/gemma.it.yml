@@ -80,6 +80,7 @@ it:
         description: Descrizione
         locations: Ubicazioni dove questo articolo può trovarsi
         fixprice: Prezzo
+        dewars: Possibili dewar
       location:
         name: Nome dell'ubicazione
       operation: 
