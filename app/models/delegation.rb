@@ -9,9 +9,9 @@ class Delegation < ApplicationRecord
   def validate_delegator
     throw(:abort) unless @_delegator_upn # explicitly halt callbacks.
     begin
-      _delegator = User.syncronize(@_delegator_upn)
-      Rails.logger.info _delegator.inspect
-      self.delegator_id = _delegator.id
+      user_delegator = User.syncronize(@_delegator_upn)
+      Rails.logger.info user_delegator.inspect
+      self.delegator_id = user_delegator.id
     rescue => e
       Rails.logger.info "#{e} while validating delegator: #{@_delegator_upn}"
       errors.add(:delegator, e.to_s)
@@ -22,9 +22,9 @@ class Delegation < ApplicationRecord
   def validate_delegate
     throw(:abort) unless @_delegate_upn # explicitly halt callbacks.
     begin
-      _delegate = User.syncronize(@_delegate_upn)
-      Rails.logger.info _delegate.inspect
-      self.delegate_id = _delegate.id
+      user_delegate = User.syncronize(@_delegate_upn)
+      Rails.logger.info user_delegate.inspect
+      self.delegate_id = user_delegate.id
     rescue => e
       Rails.logger.info "#{e} while validating delegate: #{@_delegate_upn}"
       errors.add(:delegate, e.to_s)
