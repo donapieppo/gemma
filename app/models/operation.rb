@@ -149,7 +149,7 @@ class Operation < ApplicationRecord
   end
 
   def price_string
-    "%d,%02d€" % [self.price_int, self.price_dec]
+    "%d,%02d€" % [price_int, price_dec]
   end
 
   def date_afternoon(date)
@@ -165,9 +165,9 @@ class Operation < ApplicationRecord
   protected
 
   def validate_user
-    User.find(self.user_id)
+    User.find(user_id)
   rescue => e
-    self.errors.add(:user, e.to_s)
+    errors.add(:user, e.to_s)
   end
 
   def validate_recipient
@@ -178,13 +178,13 @@ class Operation < ApplicationRecord
       self.recipient_id = u.id
     rescue => e
       Rails.logger.info "#{e} while validating recipient_upn=#{@_recipient_upn}"
-      self.errors.add(:recipient_upn, e.to_s)
-      self.errors.add(:base, e.to_s)
+      errors.add(:recipient_upn, e.to_s)
+      errors.add(:base, e.to_s)
     end
   end
 
   def check_organization
-    (self.thing.organization_id == self.organization_id) or raise DmUniboCommon::MismatchOrganization, "Materiale nella Struttura Sbagliata."
+    (thing.organization_id == organization_id) or raise DmUniboCommon::MismatchOrganization, "Materiale nella Struttura Sbagliata."
   end
 
   def validate_date
