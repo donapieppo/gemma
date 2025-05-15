@@ -1,22 +1,22 @@
-require 'rails_helper'
+require "rails_helper"
 
 describe Unload do
 
   before(:each) do
-    @now    = GEMMA_TEST_NOW
-    @load   = FactoryBot.create(:load)
-    @thing  = @load.thing
-    @moves  = @load.moves
+    @now = GEMMA_TEST_NOW
+    @load = FactoryBot.create(:load)
+    @thing = @load.thing
+    @moves = @load.moves
 
-    @user      = FactoryBot.create(:user)
+    @user = FactoryBot.create(:user)
     @recipient = FactoryBot.create(:user)
 
-    @ok = { organization_id: @load.organization.id,
-            numbers:         { @moves[0].deposit_id => 1 - @moves[0].number },
-            thing_id:        @load.thing_id,
-            user_id:         @user.id,
-            recipient_id:    @recipient.id,
-            date:            @now + 2.days } 
+    @ok = {organization_id: @load.organization.id,
+           numbers: {@moves[0].deposit_id => 1 - @moves[0].number},
+           thing_id: @load.thing_id,
+           user_id: @user.id,
+           recipient_id: @recipient.id,
+           date: @now + 2.days}
   end
 
   it "does create a valid unload" do
@@ -39,12 +39,12 @@ describe Unload do
     expect(Unload.new(@ok.merge(numbers: nil))).not_to be_valid
   end
 
-  it "validates user_id" do 
+  it "validates user_id" do
     expect(Unload.new(@ok.merge(user_id: nil))).not_to be_valid
   end
 
   it "validates positive number" do
-    expect(Unload.new(@ok.merge(numbers: { @moves[0].deposit_id => +3 }))).not_to be_valid
+    expect(Unload.new(@ok.merge(numbers: {@moves[0].deposit_id => +3}))).not_to be_valid
   end
 
   it "validates :deposit_id" do
@@ -52,17 +52,17 @@ describe Unload do
   end
 
   it "does not permit to unload more than we have" do
-    expect(lambda {Unload.create(@ok.merge(numbers: { @moves[0].deposit_id => -1 - @moves[0].number }))}).to raise_error(Gemma::NegativeDeposit)
+    expect(lambda { Unload.create(@ok.merge(numbers: {@moves[0].deposit_id => -1 - @moves[0].number})) }).to raise_error(Gemma::NegativeDeposit)
   end
 
   it "does create a move with date after today" do
-    expect(Unload.new(@ok.merge(date: ( Time.now + 1.day )))).not_to be_valid
+    expect(Unload.new(@ok.merge(date: (Time.now + 1.day)))).not_to be_valid
   end
 
   # FIXME come fare un mock di dsa_search
   it "does give error with recipient_upn = 'pip.pi@unibo.it'" do
     u = Unload.new(@ok)
-    u.recipient_upn = 'pip.pi@unibo.it'
+    u.recipient_upn = "pip.pi@unibo.it"
     expect(u).not_to be_valid
   end
 
@@ -73,5 +73,4 @@ describe Unload do
   #
   #  expect(u).to be_valid
   #end
-
 end
