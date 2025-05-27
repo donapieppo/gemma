@@ -88,7 +88,9 @@ Rails.application.routes.draw do
       # patch :delete_and_new_unload, on: :member
     end
     resources :users do
-      resources :bookings
+      resources :bookings do
+        post :confirm_all, on: :collection
+      end
     end
     resources :delegations
 
