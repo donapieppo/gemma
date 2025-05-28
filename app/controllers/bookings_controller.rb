@@ -110,6 +110,14 @@ class BookingsController < ApplicationController
     redirect_to bookings_path
   end
 
+  def confirm_all
+    authorize :booking
+    current_organization.bookings.where(id: params[:booking_ids], user_id: params["user_id"]).each do |booking|
+      booking.confirm
+    end
+    redirect_to bookings_path
+  end
+
   private
 
   def booking_params

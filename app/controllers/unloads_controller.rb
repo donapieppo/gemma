@@ -141,13 +141,15 @@ class UnloadsController < ApplicationController
     # solo bidelli o amministratori possono settare data (e nel caso la mettiamo con usta)
     params[:unload][:date] = Date.today unless policy(current_organization).give?
 
-    hot_dewar = params[:unload].delete(:hot_dewar).to_i > 0
+    # boolean if dewar (liters)
+    cold_dewar = params[:unload].delete(:cold_dewar).to_i > 0
 
     # ricorda che per avere permit la key deve essere string
+    # FIXME (else?)
     if (deposit_id = params[:unload].delete(:deposit_id))
       number = params[:unload].delete(:number).to_i
 
-      if hot_dewar && Rails.configuration.dewar_liters_and_hot_liters[number]
+      if !cold_dewar && Rails.configuration.dewar_liters_and_hot_liters[number]
         Rails.logger.info "Hot Dewar con number=#{number.inspect}"
         number = Rails.configuration.dewar_liters_and_hot_liters[number]
       end

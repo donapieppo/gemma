@@ -15,6 +15,10 @@ class BookingPolicy < ApplicationPolicy
     current_organization_manager?
   end
 
+  def confirm_all?
+    current_organization_manager?
+  end
+
   # def edit?
   #   record_organization_manager?
   # end
