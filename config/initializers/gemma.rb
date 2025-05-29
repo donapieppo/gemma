@@ -18,16 +18,20 @@ module Gemma
     # Per azoto: serialize :containers, coder: YAML
     # nel caso di container caldo l'azoto usato e' x * config.containers_with_multipliers[x]
     config.dewar_liters_and_hot_liters = {
-      3 => 5,
-      5 => 8,
-      10 => 15,
-      25 => 35,
-      30 => 41,
-      35 => 47,
-      50 => 65,
-      80 => 100,
-      100 => 120,
-      120 => 144
+      3 => 10,
+      4 => 11,
+      5 => 13,
+      10 => 19,
+      20 => 32,
+      25 => 39,
+      30 => 45,
+      35 => 52,
+      40 => 58,
+      50 => 71,
+      60 => 84,
+      80 => 110,
+      100 => 136,
+      120 => 162
     }
     config.possible_dewars = config.dewar_liters_and_hot_liters.keys
   end
