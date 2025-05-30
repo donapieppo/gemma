@@ -4,10 +4,12 @@
     <%= f.submit %>
   <% end %>
 
-  <div class="info small">
-    <p>Conversioni volume e litri scaricati:</p>
+  <div class="info small row">
+    <p class="col-md-12">Conversioni volume e litri scaricati:</p>
     <% Rails.configuration.dewar_liters_and_hot_liters.each do |liter, real| %>
-      <%= liter %> -> <%= real %> <br/>
+      <div class="col-md-4 col-6">
+      <%= liter %> -> <%= real %> 
+      </div>
     <% end %>
   </div>
 <% end %>
