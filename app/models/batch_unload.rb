@@ -5,7 +5,7 @@ class BatchUnload
     @user = user
     @organization = organization
     @thing = thing
-    @recipients = params.key?(:recipient_upn) ? params.delete(:recipient_upn).gsub(/\s/, '').split(',').reject { |upn| upn == ''} : []
+    @recipients = params.key?(:recipient_upn) ? params.delete(:recipient_upn).gsub(/\s/, "").split(",").reject { |upn| upn == "" } : []
     @params = params
     @deposit = @thing.deposits.find(@params[:numbers].keys.first.to_i)
     @errors = []
@@ -13,10 +13,10 @@ class BatchUnload
   end
 
   def validate_recipients
-    @errors << 'Troppi pochi indirizzi' if @recipients.size < 2 
-    @errors << 'Troppi indirizzi. Limitarsi a 20 indirizzi per volta.' if @recipients.size > 20 
+    @errors << "Troppi pochi indirizzi" if @recipients.size < 2
+    @errors << "Troppi indirizzi. Limitarsi a 20 indirizzi per volta." if @recipients.size > 20
     no_unibo = @recipients.select { |upn| upn !~ /@unibo.it/ }
-    @errors << "Gli indirizzi #{no_unibo.join(', ')} non sono mail Unibo." if no_unibo.size > 0
+    @errors << "Gli indirizzi #{no_unibo.join(", ")} non sono mail Unibo." if no_unibo.size > 0
   end
 
   def validate_number
@@ -51,4 +51,3 @@ class BatchUnload
     end
   end
 end
-
