@@ -142,7 +142,8 @@ class UnloadsController < ApplicationController
     params[:unload][:date] = Date.today unless policy(current_organization).give?
 
     # boolean if dewar (liters)
-    cold_dewar = params[:unload].delete(:cold_dewar).to_i > 0
+    # cold_dewar = params[:unload].delete(:cold_dewar).to_i > 0
+    cold_dewar = false # default dalse per ora non si modifica
 
     # ricorda che per avere permit la key deve essere string
     # FIXME (else?)
