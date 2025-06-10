@@ -22,10 +22,10 @@
       <input type="hidden" name="batch" value="<%= params[:batch] %>" />
       <% if @thing.dewars&.any? %>
         <%= f.input :number, as: :select, label: "Dewar riempito", collection: @thing.dewars.sort.map {|x| ["#{x} litri", x]}, required: true %>
-        <div class='col-sm-9 offset-sm-3 my-2'>
-          <input type="checkbox" id="cold_dewar" name="unload[cold_dewar]" value="1" />
-          <label for="cold_dewar">Dewar già freddo</label>
-        </div>
+        <%# <div class='col-sm-9 offset-sm-3 my-2'> %>
+        <%#   <input type="checkbox" id="cold_dewar" name="unload[cold_dewar]" value="1" /> %>
+        <%#   <label for="cold_dewar">Dewar già freddo</label> %>
+        <%# </div> %>
       <% else %>
         <%= f.input :number, hint: number_hint, required: true %>
       <% end %>
