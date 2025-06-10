@@ -3,4 +3,13 @@
     <%= f.input :dewars, collection: Rails.configuration.possible_dewars.map{|x| ["#{x} litri", x.to_i]}, as: :check_boxes, label: false %> 
     <%= f.submit %>
   <% end %>
+
+  <div class="info small row">
+    <p class="col-md-12">Conversioni volume e litri scaricati:</p>
+    <% Rails.configuration.dewar_liters_and_hot_liters.each do |liter, real| %>
+      <div class="col-md-4 col-6">
+      <%= liter %> -> <%= real %> 
+      </div>
+    <% end %>
+  </div>
 <% end %>

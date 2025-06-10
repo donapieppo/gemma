@@ -11,8 +11,8 @@
         <% @things_cache[book.thing] += book.number.abs %>
         <%= render Booking::LineComponent.new(book) %>
       <% end %>
-      <div class="text-end">
-        <%= button_to "conferma tutte le prenotazioni di #{user}", confirm_all_user_bookings_path(@users_bookings[user].first.user_id, booking_ids: @users_bookings[user].map(&:id)), form: {class: "btn btn-outline-success btn-sm mt-1"} %>
+      <div class="text-end my-2">
+        <%= button_to "Conferma tutte le prenotazioni di #{user}", confirm_all_user_bookings_path(@users_bookings[user].first.user_id, booking_ids: @users_bookings[user].map(&:id)) %>
       </div>
     <% end %>
   </div>
