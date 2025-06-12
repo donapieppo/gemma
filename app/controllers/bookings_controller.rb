@@ -120,6 +120,7 @@ class BookingsController < ApplicationController
 
   private
 
+  # FIXME
   def booking_params
     cold_dewar = false # default dalse per ora non si modifica
 
