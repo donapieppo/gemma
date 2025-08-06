@@ -9,7 +9,7 @@
   <% if @delegators.size > 1 %>  
     <%= f.input :recipient_id, collection: @delegators, label_method: :cn_militar, as: :radio_buttons, hint: t(:booking_recipient_hint) %>  
   <% end %>
-  <% if current_organization.with_labs %>
+  <% if current_organization.with_labs && current_organization.labs.any? %>
     <div data-controller="limit-visible">
       <div class="form-check offset-sm-3 my-4">
         <input type="checkbox" name="didattica" class="form-check-input" id="didattica" data-action="change->limit-visible#update"></input>
@@ -21,7 +21,16 @@
     </div>
   <% end %>
 
-  <%= f.input :number, hint: "Numero articoli da prenotare (massimo: #{@thing.max_actual_in_deposits})" %>
+  <%# FIXME %>
+  <% if @thing.dewars&.any? %>
+    <%= f.input :number, as: :select, label: "Dewar riempito", collection: @thing.dewars.sort.map {|x| ["#{x} litri", x]}, required: true %>
+    <%# <div class='col-sm-9 offset-sm-3 my-2'> %>
+    <%#   <input type="checkbox" id="cold_dewar" name="unload[cold_dewar]" value="1" /> %>
+    <%#   <label for="cold_dewar">Dewar già freddo</label> %>
+    <%# </div> %>
+  <% else %>
+    <%= f.input :number, hint: "Numero articoli da prenotare (massimo: #{@thing.max_actual_in_deposits})" %>
+  <% end %>
 
   <% if @thing.deposits.size > 1 %>  
     <%= f.input :deposit_id, as: :booking_location, hint: 'Ricordiamo che è possibile fare più prenotazioni successive scelte da ubicazioni diverse.' %>  

@@ -120,10 +120,20 @@ class BookingsController < ApplicationController
 
   private
 
+  # FIXME
   def booking_params
+    cold_dewar = false # default dalse per ora non si modifica
+
+    # ricorda che per avere permit la key deve essere string
+    # FIXME (else?)
     if (deposit_id = params[:booking].delete(:deposit_id))
-      number = params[:booking].delete(:number).to_i * -1
-      params[:booking][:numbers] = {deposit_id => number}
+      number = params[:booking].delete(:number).to_i
+
+      if !cold_dewar && @thing.dewars&.any? && Rails.configuration.dewar_liters_and_hot_liters[number]
+        Rails.logger.info "Hot Dewar con number=#{number.inspect}"
+        number = Rails.configuration.dewar_liters_and_hot_liters[number]
+      end
+      params[:booking][:numbers] = {deposit_id => number * -1}
     end
 
     params[:booking].permit(:number, :note, :recipient_id, :lab_id, numbers: params[:booking][:numbers].try(:keys))
