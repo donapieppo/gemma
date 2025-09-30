@@ -94,7 +94,7 @@ class BookingsController < ApplicationController
 
   def destroy
     if @book.destroy
-      flash[:notice] = "La prenotazione è stata cancellata."
+      flash[:notice] = "La prenotazione di #{view_context.link_to(@book.thing, new_thing_unload_path(@book.thing)).html_safe} è stata cancellata.".html_safe
     else
       flash[:error] = "Errore sulla cancellazione."
     end
