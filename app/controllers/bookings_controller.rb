@@ -9,7 +9,7 @@ class BookingsController < ApplicationController
     @thing = Thing.find(params[:thing_id]) if params[:thing_id]
     @barcode = current_organization.barcodes.includes(:thing).where(name: params[:barcode]).first if params[:barcode]
 
-    @books = current_organization.bookings.includes(:recipient, :user, :thing, :lab).order(:date)
+    @books = current_organization.bookings.includes(:recipient, :user, :thing, :lab, [moves: [deposit: :location]]).order(:date)
 
     if policy(current_organization).give?
       if @user

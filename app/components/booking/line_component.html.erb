@@ -2,8 +2,11 @@
   <div class="row">
     <div class="col-md-9">
       <div>
-        <span class="fw-bold"><%= @booking.number.abs %></span>
+        <div class="d-inline fw-bold me-2">
+          <%= @booking.number.abs %>
+        </div>
         <%= @booking.thing.to_s_with_description %>
+        <small class="text-body-secondary">da <%= @booking.moves.first.deposit.location %></small>
         <% if @booking.thing.under_minimum? %>
           <span class="text-warning" title="sotto scorta minima"><%= helpers.dm_icon "circle-exclamation" %></span>
         <% end %>
