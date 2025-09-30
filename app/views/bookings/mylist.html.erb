@@ -15,6 +15,7 @@ Da questa pagina è possibile consultare e cancellare le proprie prenotazioni.
         <div class="col">
           <span class="pe-2"><%= l o.date %></span>
           <span class="font-weight-bold"><%= o.thing %></span>
+          <small class="text-body-secondary">da <%= o.moves.first.deposit.location %></small>
           <span class="float-end">
             <%= link_to_delete "", booking_path(o) %>
           </span>
@@ -26,7 +27,7 @@ Da questa pagina è possibile consultare e cancellare le proprie prenotazioni.
             (per laboratorio <strong><%= o.lab %></strong>)
           <% end %>
           <span style="margin-left: 6em" class="text-muted">
-            <%= o.note %>
+            note: <%= o.note %>
           </span>
         </div>
       </div>
