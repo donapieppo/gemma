@@ -33,7 +33,7 @@ gem "sentry-ruby"
 gem "sentry-rails"
 
 group :development, :test do
-  gem "rspec-rails", "~> 7.0.0"
+  gem "rspec-rails", "~> 7.1"
   gem "factory_bot_rails"
   # gem "faker"
 end
