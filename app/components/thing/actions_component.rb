@@ -2,6 +2,11 @@ class Thing::ActionsComponent < ViewComponent::Base
   def initialize(current_user, thing)
     @current_user = current_user
     @thing = thing
+    @policy = OrganizationPolicy.new(current_user, @thing.organization)
+  end
+
+  def render?
+    @policy.manage?
   end
 
   def before_render
