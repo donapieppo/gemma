@@ -9,7 +9,7 @@ class BookingsController < ApplicationController
     @thing = Thing.find(params[:thing_id]) if params[:thing_id]
     @barcode = current_organization.barcodes.includes(:thing).where(name: params[:barcode]).first if params[:barcode]
 
-    @books = current_organization.bookings.includes(:recipient, :user, :thing, :lab).order(:date)
+    @books = current_organization.bookings.includes(:recipient, :user, :thing, :lab, [moves: [deposit: :location]]).order(:date)
 
     if policy(current_organization).give?
       if @user
@@ -94,7 +94,7 @@ class BookingsController < ApplicationController
 
   def destroy
     if @book.destroy
-      flash[:notice] = "La prenotazione è stata cancellata."
+      flash[:notice] = "La prenotazione di #{view_context.link_to(@book.thing, new_thing_unload_path(@book.thing)).html_safe} è stata cancellata.".html_safe
     else
       flash[:error] = "Errore sulla cancellazione."
     end
