@@ -12,3 +12,11 @@ ADD CONSTRAINT fk_operation_department
     REFERENCES departments(id)
     ON DELETE SET NULL
     ON UPDATE CASCADE;
+
+ALTER TABLE delegations
+ADD COLUMN department_id INT,
+ADD CONSTRAINT fk_delegation_department
+    FOREIGN KEY (department_id)
+    REFERENCES departments(id)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE;
