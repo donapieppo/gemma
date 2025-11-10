@@ -7,6 +7,7 @@ class Operation < ApplicationRecord
   belongs_to :recipient, class_name: "User", optional: true
   belongs_to :ddt, optional: true
   belongs_to :lab, optional: true
+  belongs_to :department, optional: true
   has_many :moves
 
   serialize :price_operations, coder: YAML, type: Array
