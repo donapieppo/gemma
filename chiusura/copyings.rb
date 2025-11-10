@@ -19,6 +19,7 @@ module Gemma
         new_attributes.delete("total")
         new_attributes.delete("future_prices")
         new_attributes.delete("lastprice") # ? esiste un prezzo?
+        new_attributes.delete("dewars")
         new_attributes.delete("id")
         new_attributes["oldid"] = thing.id
         new_attributes["year"] = @year
