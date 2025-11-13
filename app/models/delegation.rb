@@ -1,8 +1,9 @@
 class Delegation < ApplicationRecord
   belongs_to :organization
-  belongs_to :department
   belongs_to :delegator, class_name: "User"
   belongs_to :delegate, class_name: "User"
+  belongs_to :department, optional: true
+  belongs_to :destination, optional: true
 
   validate :validate_delegator,
     :validate_delegate
