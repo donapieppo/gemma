@@ -1,11 +1,10 @@
 -- ALTER TABLE things ADD COLUMN dewars text;
 CREATE TABLE `picking_points` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `organization_id` int(11) unsigned NOT NULL,
+  `organization_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `description` text DEFAULT NULL,
-  PRIMARY KEY (`id`)
-  KEY `organization_id` (`organization_id`),
+  PRIMARY KEY (`id`),
   CONSTRAINT `fk_picking_points_organizations` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`id`)
 );
 
