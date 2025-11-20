@@ -6,17 +6,20 @@ it:
       ddt: Ddt/Fattura
       load: Carico
       price: Prezzo
+      operation: Operazione
       takeover: Presa Consegna
       unload: Scarico
+      booking: Prenotazione
       group: Categoria
       thing: Articolo
       location: Ubicazione
-      operation: Operazione
       stock: Giacenza iniziale
       barcode: Codice a barre
       delegation: Delega
       thingcode: Codice
       lab: Laboratorio
+      picking_point: Punto di ritiro
+      department: Dipartimento
     attributes:
       admin:
         user_upn: Indirizzo mail
@@ -66,7 +69,7 @@ it:
         lab: Laboratorio
       booking:
         number: Numero di articoli da prenotare
-        recipient_id: Destinatario/resposabile scarico
+        delegation_id: Destinatario/resposabile scarico
         lab: Laboratorio
       shift:
         date: Data
@@ -85,6 +88,8 @@ it:
         name: Nome dell'ubicazione
       operation: 
         recipient_upn: Indirizzo mail del ricevente
+        department: Dipartimento
+        picking_point: Punto di ritiro
       supplier:
         name: Nome fornitore
         pi: Partita IVA
@@ -96,16 +101,21 @@ it:
         booking: Prenotazione materiale
         ordering: Richiesta acquisti 
         pricing: Prezzi
-        with_labs: Laboratori
       delegation:
         delegator_upn: Delegante
         delegate_upn: Delegato
+        department_id: Dipartimento
+        picking_point: Punto di ritiro
+        department: Dipartimento
       thingcode:
         code: Codice 
       barcode:
         name: Codice a barre
       lab:
         name: Nome
+      picking_point:
+        name: Nome
+        description: Descrizione
 
   simple_form:
     hints:
@@ -116,7 +126,7 @@ it:
   sottoscorta_message:  È possibile scegliere l'indirizzo mail a cui inviare gli avvisi (nel caso di più indirizzi, separarli con una virgola).
   sendmail_message:     È possibile impostare la modalità di invio delle mail che notificano agli utenti la registrazione dello scarico. Indipendentemente dall'opzione attivata, nella maschera di scarico l'utente amministratore può sempre attivare l'invio della singola mail per notificare quella specifica operazione.
   ddt_hint: Numero del ddt/fatt/scontrino come compare sul documento di accompagnamento emesso dal fornitore (per esempio kd/234)
-  booking_recipient_hint: Selezionare la presona reponsabile dello scarico
+  booking_recipient_hint: Selezionare la persona reponsabile dello scarico.
   minimum_description: Soglia sotto la quale l'articolo è sottoscorta e si desidera essere avvisati via <strong>mail</strong>. Inserire 0 per non abilitare il servizio su questo articolo.
   fixprice_description: È possibile inserire un prezzo stabilito. In questo modo non vengono considerati i prezzi di carico.
   pricing_option: È possibile assegnare un prezzo ai carichi o agli oggetti in modo da calcolare il costo totale degli scarichi.
@@ -137,8 +147,9 @@ it:
     formats:
       booking: ! "%d/%m %H:%M"
 
-  Shift: Spostamento
-  Unload: Scarico
-  Load: Carico
-  Takeover: Presa
+  shift: Spostamento
+  unload: Scarico
+  load: Carico
+  takeover: Presa
+  booking: Prenotazione
 
