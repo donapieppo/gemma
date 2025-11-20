@@ -1,3 +1,5 @@
+alter table organizations drop with_labs;
+
 -- ALTER TABLE things ADD COLUMN dewars text;
 CREATE TABLE `picking_points` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -38,9 +40,16 @@ ADD CONSTRAINT fk_delegation_picking_point
 
 CREATE TABLE departments (
     id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    `organization_id` int(11) NOT NULL,
     name VARCHAR(200) NOT NULL,
-    description TEXT
+    description TEXT,
+    CONSTRAINT `fk_department_organizations` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`id`)
 );
+
+insert into `departments` values (0, 255, 'CILDIC', '');
+insert into `departments` values (0, 255, 'Dipartimento di chimica', '');
+insert into `departments` values (0, 255, 'Dipartimento di chimica industriale', '');
+insert into `departments` values (0, 255, 'Dipartimento Fabit', '');
 
 ALTER TABLE operations
 ADD COLUMN department_id INT(11),

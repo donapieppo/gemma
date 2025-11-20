@@ -118,9 +118,20 @@ ActiveRecord::Schema[7.2].define(version: 2022_05_25_142402) do
     t.integer "delegator_id", null: false, unsigned: true
     t.integer "delegate_id", null: false, unsigned: true
     t.integer "organization_id", null: false
+    t.integer "picking_point_id"
+    t.integer "department_id"
     t.index ["delegate_id"], name: "delegate_id"
     t.index ["delegator_id"], name: "delegator_id"
+    t.index ["department_id"], name: "fk_delegation_department"
     t.index ["organization_id"], name: "organization_id"
+    t.index ["picking_point_id"], name: "fk_delegation_picking_point"
+  end
+
+  create_table "departments", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.integer "organization_id", null: false
+    t.string "name", limit: 200, null: false
+    t.text "description"
+    t.index ["organization_id"], name: "fk_department_organizations"
   end
 
   create_table "deposits", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
@@ -186,9 +197,13 @@ ActiveRecord::Schema[7.2].define(version: 2022_05_25_142402) do
     t.text "price_operations"
     t.boolean "from_booking"
     t.datetime "created_at", precision: nil
+    t.integer "picking_point_id"
+    t.integer "department_id"
     t.index ["ddt_id"], name: "index_operations_on_ddt_id"
+    t.index ["department_id"], name: "fk_operation_department"
     t.index ["lab_id"], name: "operations_labfk"
     t.index ["organization_id"], name: "organization_id"
+    t.index ["picking_point_id"], name: "fk_operation_picking_point"
     t.index ["recipient_id", "organization_id"], name: "operation_recipient_organization_index"
     t.index ["recipient_id"], name: "recipientid"
     t.index ["thing_id"], name: "index_operations_on_thing_id"
@@ -225,7 +240,6 @@ ActiveRecord::Schema[7.2].define(version: 2022_05_25_142402) do
     t.boolean "booking"
     t.boolean "ordering"
     t.boolean "pricing"
-    t.boolean "with_labs", default: false
     t.datetime "updated_at", precision: nil
     t.datetime "created_at", precision: nil
   end
@@ -239,6 +253,13 @@ ActiveRecord::Schema[7.2].define(version: 2022_05_25_142402) do
     t.datetime "created_at", precision: nil
     t.index ["organization_id"], name: "fk_organization_permission"
     t.index ["user_id"], name: "fk_user_permission"
+  end
+
+  create_table "picking_points", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.integer "organization_id", null: false
+    t.string "name", null: false
+    t.text "description"
+    t.index ["organization_id"], name: "fk_picking_points_organizations"
   end
 
   create_table "schema_info", id: false, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
@@ -286,22 +307,28 @@ ActiveRecord::Schema[7.2].define(version: 2022_05_25_142402) do
   add_foreign_key "arch_things", "organizations", name: "arch_things_ibfk_1"
   add_foreign_key "barcodes", "organizations", name: "barcodes_ibfk_2"
   add_foreign_key "barcodes", "things", name: "barcodes_ibfk_1"
+  add_foreign_key "delegations", "departments", name: "fk_delegation_department", on_update: :cascade, on_delete: :nullify
   add_foreign_key "delegations", "organizations", name: "delegations_ibfk_3"
+  add_foreign_key "delegations", "picking_points", name: "fk_delegation_picking_point", on_update: :cascade, on_delete: :nullify
   add_foreign_key "delegations", "users", column: "delegate_id", name: "delegations_ibfk_2"
   add_foreign_key "delegations", "users", column: "delegator_id", name: "delegations_ibfk_1"
+  add_foreign_key "departments", "organizations", name: "fk_department_organizations"
   add_foreign_key "deposits", "locations", name: "deposits_ibfk_1"
   add_foreign_key "deposits", "organizations", name: "deposits_ibfk_2"
   add_foreign_key "labs", "organizations", name: "fk_labs_organizations"
   add_foreign_key "moves", "deposits", name: "moves_ibfk_2"
   add_foreign_key "moves", "operations", name: "moves_ibfk_1"
   add_foreign_key "operations", "ddts", name: "operations_ibfk_2"
+  add_foreign_key "operations", "departments", name: "fk_operation_department", on_update: :cascade, on_delete: :nullify
   add_foreign_key "operations", "labs", name: "operations_labfk"
   add_foreign_key "operations", "organizations", name: "operations_ibfk_3"
+  add_foreign_key "operations", "picking_points", name: "fk_operation_picking_point", on_update: :cascade, on_delete: :nullify
   add_foreign_key "operations", "things", name: "operations_ibfk_1"
   add_foreign_key "orders", "organizations", name: "orders_ibfk_2"
   add_foreign_key "orders", "things", name: "orders_ibfk_1"
   add_foreign_key "permissions", "organizations", name: "fk_organization_permission"
   add_foreign_key "permissions", "users", name: "fk_user_permission"
+  add_foreign_key "picking_points", "organizations", name: "fk_picking_points_organizations"
   add_foreign_key "things", "groups", name: "things_ibfk_2"
   add_foreign_key "things", "organizations", name: "things_ibfk_1"
 end
