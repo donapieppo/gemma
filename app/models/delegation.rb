@@ -53,4 +53,8 @@ class Delegation < ApplicationRecord
   def self.delegator_permit_delegate?(delegatorid, delegateid, o_id)
     Delegation.where(delegator_id: delegatorid, delegate_id: delegateid, organization_id: o_id).count > 0
   end
+
+  def to_s
+    "#{delegator.cn_militar} #{department if department} #{picking_point if picking_point}"
+  end
 end
