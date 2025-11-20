@@ -22,9 +22,11 @@ class Operation < ApplicationRecord
 
   validate :validate_user,
     :validate_recipient,
-    :check_organization,
+    :validate_thing,
     :validate_date,
-    :validate_deposits
+    :validate_deposits,
+    :validate_department,
+    :validate_picking_point
 
   after_create :log_creation
   after_save :update_moves
@@ -131,10 +133,10 @@ class Operation < ApplicationRecord
       self.send("#{k}=", v)
     end
 
-    avoid_price_updating = true unless self.price_changed? || self.date_changed? || changed_numbers
-    avoid_history_coherent = true unless self.date_changed? || changed_numbers # FIXME: 
+    avoid_price_updating = true unless price_changed? || date_changed? || changed_numbers
+    avoid_history_coherent = true unless date_changed? || changed_numbers # FIXME: 
 
-    self.save
+    save
   end
 
   def recipient_upn
@@ -185,7 +187,7 @@ class Operation < ApplicationRecord
     end
   end
 
-  def check_organization
+  def validate_thing
     (thing.organization_id == organization_id) or raise DmUniboCommon::MismatchOrganization, "Materiale nella Struttura Sbagliata."
   end
 
@@ -213,6 +215,18 @@ class Operation < ApplicationRecord
       else
         errors.add(:base, "È necessario selezionare una provenienza corretta.") and return
       end
+    end
+  end
+
+  def validate_department
+    if department_id
+      (department.organization_id == organization_id) or raise DmUniboCommon::MismatchOrganization, "Dipartimento associato a struttura sbagliata."
+    end
+  end
+
+  def validate_picking_point
+    if picking_point_id
+      (picking_point.organization_id == organization_id) or raise DmUniboCommon::MismatchOrganization, "Dipartimento associato a struttura sbagliata."
     end
   end
 
