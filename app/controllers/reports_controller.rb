@@ -399,7 +399,7 @@ class ReportsController < ApplicationController
 
   def bookings
     authorize :report
-    report = GemmaReport.new(current_organization, "pdf")
+    report = GemmaReport.new(current_organization, params[:format])
 
     report.title = "Prenotazioni"
     report.separator = :upn
@@ -408,23 +408,8 @@ class ReportsController < ApplicationController
     report.accumulator = :number if (@thing_id || @group_id)
     report.separator = :thing if @group_id
 
-    order = "upn, operations.date"
-
-    # report.query = "SELECT operations.date AS date,
-    #                        users.upn,
-    #                        ABS(number) as number, things.name as thing, description,
-    #                        locations.name as location
-    #                   FROM operations
-    #        LEFT OUTER JOIN things ON operations.thing_id = things.id
-    #        LEFT OUTER JOIN users  ON COALESCE(recipient_id, user_id)= users.id
-    #        LEFT OUTER JOIN deposits ON deposits.thing_id = things.id
-    #        LEFT OUTER JOIN locations ON deposits.location_id = locations.id
-    #                  WHERE operations.organization_id = #{current_organization.id}
-    #                    AND operations.type = 'Booking'
-    #                    AND operations.number < 0
-    #               ORDER BY date"
-
     report.query = "SELECT operations.date AS date,
+                           operations.note,
                            users.upn,
                            ABS(number) as number, things.name as thing, description
                       FROM operations

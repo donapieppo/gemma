@@ -11,33 +11,39 @@ class Booking < Unload
       attributes[:ddt_id] = nil
       attributes[:date] = date_afternoon(attributes[:date]) if attributes[:date]
     end
-    super(attributes)
+    super
   end
 
   # passiamo da prenotazione di scarico a scarico effettivo
   # lo rende Unload
   def confirm
-    self.number < 0 or return nil
-    ApplicationRecord.connection.execute("UPDATE operations SET type='Unload', date=NOW(), from_booking = 1 WHERE id=#{self.id.to_i}")
+    number < 0 or return nil
+    ApplicationRecord.connection.execute("UPDATE operations SET type='Unload', date=NOW(), from_booking = 1 WHERE id=#{id.to_i}")
     true
   end
 
   # richiamato anche in confirm true/false
   def validate_delegation
-    if self.recipient_id == self.user_id
+    if recipient_id == user_id
       self.recipient_id = nil
-    elsif self.recipient_id
-      if Delegation.delegator_permit_delegate?(self.recipient_id, self.user_id, self.organization_id)
-        Rails.logger.info("Correct delegation: #{self.user} delegated by #{self.recipient}")
+    elsif recipient_id
+      if Delegation.delegator_permit_delegate?(recipient_id, user_id, organization_id)
+        Rails.logger.info("Correct delegation: #{user} delegated by #{recipient}")
         return true
       else
-        Rails.logger.info("Wrong delegation: #{self.user} not delegated by #{self.recipient}")
+        Rails.logger.info("Wrong delegation: #{user} not delegated by #{recipient}")
         self.recipient_id = nil
         errors.add(:recipient_id, "Non autorizzato.")
         throw(:abort)
       end
     end
     true
+  end
+
+  # There is no trace of the delegation that generated the operation (booking) by design
+  # in the form it is useful to get a possible original delegation
+  def delegation_id
+    Delegation.where(organization_id: organization_id, delegate_id: user_id, delegator_id: recipient_id).first&.id
   end
 
   def didattica?

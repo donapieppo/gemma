@@ -16,6 +16,8 @@ class Organization < ApplicationRecord
   has_many :barcodes
   has_many :delegations
   has_many :labs
+  has_many :departments
+  has_many :picking_points
 
   has_many :arch_operations
   has_many :arch_things

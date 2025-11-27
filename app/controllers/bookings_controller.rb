@@ -9,7 +9,7 @@ class BookingsController < ApplicationController
     @thing = Thing.find(params[:thing_id]) if params[:thing_id]
     @barcode = current_organization.barcodes.includes(:thing).where(name: params[:barcode]).first if params[:barcode]
 
-    @books = current_organization.bookings.includes(:recipient, :user, :thing, :lab, [moves: [deposit: :location]]).order(:date)
+    @books = current_organization.bookings.includes(:recipient, :user, :thing, :lab, :department, :picking_point, [moves: [deposit: :location]]).order(:date)
 
     if policy(current_organization).give?
       if @user
@@ -35,7 +35,7 @@ class BookingsController < ApplicationController
     else
       @book = @thing.bookings.new(organization_id: current_organization.id)
       authorize @book
-      @delegators = current_user.get_delegators(current_organization.id).to_a.push(current_user)
+      populate_delegations
     end
   end
 
@@ -61,36 +61,10 @@ class BookingsController < ApplicationController
     if res
       redirect_to bookings_path(highlight: @book), notice: "Prenotazione effettuata correttamente."
     else
-      @delegators = current_user.get_delegators(current_organization.id).to_a.push(current_user)
+      populate_delegations
       render action: :new, status: :unprocessable_entity
     end
   end
-
-  # def edit
-  # end
-
-  # can confirm or edit
-  # if edit we delete the booking and show a precompiled new unload
-  # FIXME don't care for deposits, chooses the operator
-  # def delete_and_new_unload
-  #   @thing = Thing.find(params[:thing_id])
-  #
-  #   if @book
-  #     Rails.logger.info("delete_and_new_unload: delete #{@book.inspect}")
-  #     @book.destroy
-  #   end
-  #
-  #   # can't create before @boo destroy or checks app/model/operation fails
-  #   @unload = @thing.unloads.new(
-  #     recipient_id: params[:recipient_id],
-  #     date: params[:date],
-  #     lab_id: params[:lab_id],
-  #     note: params[:note],
-  #     number: params[:number]
-  #   )
-  #
-  #   render "unloads/new"
-  # end
 
   def destroy
     if @book.destroy
@@ -136,7 +110,13 @@ class BookingsController < ApplicationController
       params[:booking][:numbers] = {deposit_id => number * -1}
     end
 
-    params[:booking].permit(:number, :note, :recipient_id, :lab_id, numbers: params[:booking][:numbers].try(:keys))
+    delegation_id = params[:booking].delete(:delegation_id)
+    if delegation_id.to_i > 0 && (delegation = current_organization.delegations.find(delegation_id))
+      params[:booking][:recipient_id] = delegation.delegator_id
+      params[:booking][:department_id] = delegation.department_id
+      params[:booking][:picking_point_id] = delegation.picking_point_id
+    end
+    params[:booking].permit(:number, :note, :lab_id, :department_id, :picking_point_id, :recipient_id, numbers: params[:booking][:numbers].try(:keys))
   end
 
   def set_booking_and_check_permission
@@ -156,5 +136,14 @@ class BookingsController < ApplicationController
     res = Hash.new { |h, v| h[v] = [] }
     current_organization.delegations.includes(:delegator, :delegate).each { |d| res[d.delegator] << d }
     res
+  end
+
+  def populate_delegations
+    @delegations = current_user.delegations_as_delegate.where(organization_id: current_organization.id)
+    @delegations_with_blank = if @delegations.any?
+      [[current_user.cn, 0]] + @delegations.map { |d| ["#{d.delegator.cn} #{d.department} #{d.picking_point}", d.id] }
+    else
+      []
+    end
   end
 end

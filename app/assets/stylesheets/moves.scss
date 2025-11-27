@@ -9,9 +9,6 @@
     cursor: pointer;
     display: block;
   }
-  .secondary-information {
-    display: none;
-  }
 
   .move-remaining {
     @extend .number;

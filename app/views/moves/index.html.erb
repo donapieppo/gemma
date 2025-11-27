@@ -74,7 +74,10 @@
 
 <%= javascript_tag do %>  
   var show_secondary = (event, element) => {
-    element.nextElementSibling.style.display = 'block'
+    const child = element.querySelector(".secondary-information");
+    if (child) {
+      child.classList.remove("visually-hidden");
+    }
   }
 <% end %>
 

@@ -2,11 +2,14 @@
   <div class="row">
     <div class="col-md-9">
       <div>
-        <div class="d-inline fw-bold me-2">
+        <span class="d-inline fw-bold pe-2">
           <%= @booking.number.abs %>
-        </div>
-        <%= @booking.thing.to_s_with_description %>
-        <small class="text-body-secondary">da <%= @booking.moves.first.deposit.location %></small>
+        </span>
+        <strong><%= @booking.thing.name %></strong>
+        <small class="text-body-secondary"><%= @booking.thing.description %></small>
+      </div>
+      <div class="ps-3">
+        <small class="text-body-secondary">presso <%= @booking.moves.first.deposit.location %></small>
         <% if @booking.thing.under_minimum? %>
           <span class="text-warning" title="sotto scorta minima"><%= helpers.dm_icon "circle-exclamation" %></span>
         <% end %>
@@ -17,17 +20,27 @@
         <%= "(#{@booking.note})" unless @booking.note.blank? %>
         <% if @booking.recipient %>
           <span class="text-body-secondary small">per <%= link_to @booking.recipient, user_bookings_path(@booking.recipient) %></span>
+          <% if (dip = @booking.department) %>
+            <%= dip %>
+          <% end %>
+          <% if (pp = @booking.picking_point) %>
+            <%= pp %>
+          <% end %>
         <% end %>
+      </div>
+      <div class="ps-3">
         <% if @booking.lab_id %>
-          <%= helpers.dm_icon "flask", text: "Per lab. #{@booking.lab}" %>
+          <%= helpers.dm_icon "flask", text: "Lab: #{@booking.lab}" %>
         <% end %>
       </div>
     </div>
 
     <div class="col-md-3 text-end">
-      <span class="text-body-secondary"><%= l(@booking.created_at, format: :booking) if @booking.created_at %></span><br/>
-      <%= helpers.link_to_check confirm_booking_path(@booking) %> 
-      <%= helpers.link_to_delete "", booking_path(@booking) %> 
+      <div class="text-body-secondary"><%= l(@booking.created_at, format: :booking) if @booking.created_at %></div>
+      <div>
+        <%= helpers.link_to_check confirm_booking_path(@booking) %> 
+        <%= helpers.link_to_delete "", booking_path(@booking) %> 
+      </div>
     </div>
   </div>
 </div>

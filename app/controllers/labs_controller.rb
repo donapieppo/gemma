@@ -1,13 +1,9 @@
 class LabsController < ApplicationController
-  before_action :set_lab_and_check_permission, only: [:show, :edit, :update, :destroy]
+  before_action :set_lab_and_check_permission, only: [:edit, :update, :destroy]
 
   def index
     authorize :lab
     @labs = current_organization.labs
-  end
-
-  def show
-    @disposals = @lab.operations
   end
 
   def new

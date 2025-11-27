@@ -160,6 +160,8 @@ class UnloadsController < ApplicationController
     pars = [:number, :date, :lab_id, :note, :price, numbers: params[:unload][:numbers].try(:keys)]
 
     pars << :recipient_upn if policy(current_organization).give?
+    pars << :department_id if policy(current_organization).manage?
+    pars << :picking_point if policy(current_organization).manage?
     params[:unload].permit(pars)
   end
 

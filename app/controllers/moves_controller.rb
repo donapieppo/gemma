@@ -12,7 +12,7 @@ class MovesController < ApplicationController
     @moves = Move
       .joins(:operation)
       .where(operation: {thing_id: @thing.id})
-      .includes(deposit: :location, operation: [:user, :recipient, ddt: :supplier])
+      .includes(deposit: :location, operation: [:picking_point, :department, :user, :recipient, ddt: :supplier])
       .order("operation.date ASC, operation.number DESC")
 
     @moves = if @deposit

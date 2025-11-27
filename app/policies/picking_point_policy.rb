@@ -1,4 +1,4 @@
-class LabPolicy < ApplicationPolicy
+class PickingPointPolicy < ApplicationPolicy
   def index?
     true
   end

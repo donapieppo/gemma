@@ -1,7 +1,7 @@
 <h1><%= booking_title %></h1>
 
 <div class="alert alert-info">
-Da questa pagina è possibile consultare e cancellare le proprie prenotazioni.
+  Da questa pagina è possibile consultare e cancellare le proprie prenotazioni.
 </div>
 
 <div class="bookings-list my-3">
@@ -13,22 +13,35 @@ Da questa pagina è possibile consultare e cancellare le proprie prenotazioni.
         </div>
 
         <div class="col">
-          <span class="pe-2"><%= l o.date %></span>
-          <span class="font-weight-bold"><%= o.thing %></span>
-          <small class="text-body-secondary">da <%= o.moves.first.deposit.location %></small>
-          <span class="float-end">
-            <%= link_to_delete "", booking_path(o) %>
-          </span>
-          <br/>
-          <% if o.recipient_id %>
-            Responsabile: <%= o.recipient %>
-          <% end %>
+          <div>
+            <span class="pe-2"><%= l o.date %></span>
+            <span class="font-weight-bold"><%= o.thing %></span>
+            <small class="text-body-secondary">da <%= o.moves.first.deposit.location %></small>
+            <span class="float-end">
+              <%= link_to_delete "", booking_path(o) %>
+            </span>
+          </div>
+          <div>
+            <% if o.recipient_id %>
+              Responsabile: <strong><%= o.recipient %></strong>
+              <% if (dip = o.department) %>
+                <%= dip %>
+              <% end %>
+              <% if (pp = o.picking_point) %>
+                <%= pp %>
+              <% end %>
+            <% end %>
+          </div>
           <% if o.lab_id %>
-            (per laboratorio <strong><%= o.lab %></strong>)
+            <div>
+              <%= dm_icon "flask", text: "Per lab. #{o.lab}" %>
+            </div>
           <% end %>
-          <span style="margin-left: 6em" class="text-muted">
-            note: <%= o.note %>
-          </span>
+          <% unless o.note.blank? %>
+            <div style="margin-left: 6em" class="text-muted">
+              note: <%= o.note %>
+            </div>
+          <% end %>
         </div>
       </div>
     <% end %>

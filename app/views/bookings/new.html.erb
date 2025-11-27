@@ -6,17 +6,17 @@
 
 <%= dm_form_for [@thing, @book], title: form_title do |f| %>
   <%= f.dm_error_notification %>
-  <% if @delegators.size > 1 %>  
-    <%= f.input :recipient_id, collection: @delegators, label_method: :cn_militar, as: :radio_buttons, hint: t(:booking_recipient_hint) %>  
+  <% if @delegations.any? %>  
+    <%= f.input :delegation_id, collection: @delegations_with_blank, as: :radio_buttons, hint: t(:booking_recipient_hint) %>  
   <% end %>
-  <% if current_organization.with_labs && current_organization.labs.any? %>
+  <% if (labs = current_organization.labs).any? %>
     <div data-controller="limit-visible">
       <div class="form-check offset-sm-3 my-4">
         <input type="checkbox" name="didattica" class="form-check-input" id="didattica" data-action="change->limit-visible#update"></input>
         <label for="didattica" class="form-check-label">Per la didattica</label>
       </div>
       <div id="lab_div" style="display: none" data-limit-visible-target="item" data-text="true">
-        <%= f.association :lab, collection: current_organization.labs, as: :radio_buttons %>
+        <%= f.association :lab, collection: labs, as: :radio_buttons %>
       </div>
     </div>
   <% end %>
