@@ -19,7 +19,7 @@ it:
       thingcode: Codice
       lab: Laboratorio
       picking_point: Punto di ritiro
-      department: Dipartimento
+      cost_center: Centro di costo
     attributes:
       admin:
         user_upn: Indirizzo mail
@@ -88,7 +88,7 @@ it:
         name: Nome dell'ubicazione
       operation: 
         recipient_upn: Indirizzo mail del ricevente
-        department: Dipartimento
+        cost_center: Centro di costo
         picking_point: Punto di ritiro
       supplier:
         name: Nome fornitore
@@ -104,9 +104,9 @@ it:
       delegation:
         delegator_upn: Delegante
         delegate_upn: Delegato
-        department_id: Dipartimento
+        cost_center_id: Centro di costo
         picking_point: Punto di ritiro
-        department: Dipartimento
+        cost_center: Centro di costo
       thingcode:
         code: Codice 
       barcode:
@@ -152,4 +152,3 @@ it:
   load: Carico
   takeover: Presa
   booking: Prenotazione
-
