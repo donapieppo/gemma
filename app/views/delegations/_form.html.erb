@@ -3,8 +3,8 @@
 
   <%= f.input :delegator_upn, required: true %>
   <%= f.input :delegate_upn, required: true %>
-  <% if (departments = current_organization.departments).any? %>
-    <%= f.association :department, collection: departments, as: :radio_buttons %>
+  <% if (cost_centers = current_organization.cost_centers).any? %>
+    <%= f.association :cost_center, collection: cost_centers, as: :radio_buttons %>
   <% end %>
   <% if (picking_points = current_organization.picking_points).any? %>
     <%= f.association :picking_point, collection: picking_points, as: :radio_buttons %>

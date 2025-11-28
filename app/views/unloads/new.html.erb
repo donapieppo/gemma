@@ -42,8 +42,8 @@
         </div>
       <% end %>
 
-      <% if (departments = current_organization.departments).any? %>
-        <%= f.association :department, collection: departments %>
+      <% if (cost_centers = current_organization.cost_centers).any? %>
+        <%= f.association :cost_center, collection: cost_centers %>
       <% end %>
       <% if (picking_points = current_organization.picking_points).any? %>
         <%= f.association :picking_point, collection: picking_points %>
