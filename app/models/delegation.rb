@@ -2,7 +2,7 @@ class Delegation < ApplicationRecord
   belongs_to :organization
   belongs_to :delegator, class_name: "User"
   belongs_to :delegate, class_name: "User"
-  belongs_to :department, optional: true
+  belongs_to :cost_center, optional: true
   belongs_to :picking_point, optional: true
 
   validate :validate_delegator,
@@ -55,6 +55,6 @@ class Delegation < ApplicationRecord
   end
 
   def to_s
-    "#{delegator.cn_militar} #{department if department} #{picking_point if picking_point}"
+    "#{delegator.cn_militar} #{cost_center if cost_center} #{picking_point if picking_point}"
   end
 end

@@ -7,7 +7,7 @@ class Operation < ApplicationRecord
   belongs_to :recipient, class_name: "User", optional: true
   belongs_to :ddt, optional: true
   belongs_to :lab, optional: true
-  belongs_to :department, optional: true
+  belongs_to :cost_center, optional: true
   belongs_to :picking_point, optional: true
   has_many :moves
 
@@ -25,7 +25,7 @@ class Operation < ApplicationRecord
     :validate_thing,
     :validate_date,
     :validate_deposits,
-    :validate_department,
+    :validate_cost_center,
     :validate_picking_point
 
   after_create :log_creation
@@ -218,15 +218,15 @@ class Operation < ApplicationRecord
     end
   end
 
-  def validate_department
-    if department_id
-      (department.organization_id == organization_id) or raise DmUniboCommon::MismatchOrganization, "Dipartimento associato a struttura sbagliata."
+  def validate_cost_center
+    if cost_center_id
+      (cost_center.organization_id == organization_id) or raise DmUniboCommon::MismatchOrganization, "Centro di costo associato a struttura sbagliata."
     end
   end
 
   def validate_picking_point
     if picking_point_id
-      (picking_point.organization_id == organization_id) or raise DmUniboCommon::MismatchOrganization, "Dipartimento associato a struttura sbagliata."
+      (picking_point.organization_id == organization_id) or raise DmUniboCommon::MismatchOrganization, "Punto di ritiro associato a struttura sbagliata."
     end
   end
 
