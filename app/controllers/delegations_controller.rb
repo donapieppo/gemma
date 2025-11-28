@@ -4,7 +4,7 @@ class DelegationsController < ApplicationController
   def index
     authorize Delegation
     @delegations = Hash.new { |h, v| h[v] = [] }
-    current_organization.delegations.includes(:delegator, :delegate, :picking_point, :department).each do |d|
+    current_organization.delegations.includes(:delegator, :delegate, :picking_point, :cost_center).each do |d|
       @delegations[d.delegator] << d
     end
   end
@@ -59,6 +59,6 @@ class DelegationsController < ApplicationController
   end
 
   def delegation_params
-    params[:delegation].permit(:delegator_upn, :delegate_upn, :department_id, :picking_point_id)
+    params[:delegation].permit(:delegator_upn, :delegate_upn, :cost_center_id, :picking_point_id)
   end
 end

@@ -9,7 +9,7 @@ class BookingsController < ApplicationController
     @thing = Thing.find(params[:thing_id]) if params[:thing_id]
     @barcode = current_organization.barcodes.includes(:thing).where(name: params[:barcode]).first if params[:barcode]
 
-    @books = current_organization.bookings.includes(:recipient, :user, :thing, :lab, :department, :picking_point, [moves: [deposit: :location]]).order(:date)
+    @books = current_organization.bookings.includes(:recipient, :user, :thing, :lab, :cost_center, :picking_point, [moves: [deposit: :location]]).order(:date)
 
     if policy(current_organization).give?
       if @user
@@ -113,10 +113,10 @@ class BookingsController < ApplicationController
     delegation_id = params[:booking].delete(:delegation_id)
     if delegation_id.to_i > 0 && (delegation = current_organization.delegations.find(delegation_id))
       params[:booking][:recipient_id] = delegation.delegator_id
-      params[:booking][:department_id] = delegation.department_id
+      params[:booking][:cost_center_id] = delegation.cost_center_id
       params[:booking][:picking_point_id] = delegation.picking_point_id
     end
-    params[:booking].permit(:number, :note, :lab_id, :department_id, :picking_point_id, :recipient_id, numbers: params[:booking][:numbers].try(:keys))
+    params[:booking].permit(:number, :note, :lab_id, :cost_center_id, :picking_point_id, :recipient_id, numbers: params[:booking][:numbers].try(:keys))
   end
 
   def set_booking_and_check_permission
@@ -141,7 +141,7 @@ class BookingsController < ApplicationController
   def populate_delegations
     @delegations = current_user.delegations_as_delegate.where(organization_id: current_organization.id)
     @delegations_with_blank = if @delegations.any?
-      [[current_user.cn, 0]] + @delegations.map { |d| ["#{d.delegator.cn} #{d.department} #{d.picking_point}", d.id] }
+      [[current_user.cn, 0]] + @delegations.map { |d| ["#{d.delegator.cn} #{d.cost_center} #{d.picking_point}", d.id] }
     else
       []
     end
