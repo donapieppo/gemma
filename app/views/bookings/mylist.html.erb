@@ -24,8 +24,8 @@
           <div>
             <% if o.recipient_id %>
               Responsabile: <strong><%= o.recipient %></strong>
-              <% if (dip = o.department) %>
-                <%= dip %>
+              <% if (cost_center = o.cost_center) %>
+                <%= cost_center %>
               <% end %>
               <% if (pp = o.picking_point) %>
                 <%= pp %>
