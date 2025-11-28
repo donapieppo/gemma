@@ -20,8 +20,8 @@
         <%= "(#{@booking.note})" unless @booking.note.blank? %>
         <% if @booking.recipient %>
           <span class="text-body-secondary small">per <%= link_to @booking.recipient, user_bookings_path(@booking.recipient) %></span>
-          <% if (dip = @booking.department) %>
-            <%= dip %>
+          <% if (cost_center = @booking.cost_center) %>
+            <%= cost_center %>
           <% end %>
           <% if (pp = @booking.picking_point) %>
             <%= pp %>

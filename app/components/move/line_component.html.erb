@@ -30,8 +30,8 @@
             <div>Origine prezzo: <%= helpers.show_price_origins(@operation) %></div>
           <% end %>
           <div>
-            <% if @operation.department %>
-              Dip: <%= @operation.department %>
+            <% if @operation.cost_center %>
+              Centro di costo: <%= @operation.cost_center %>
             <% end %>
             <% if @operation.lab %>
               Lab: <%= @operation.lab %>
@@ -51,4 +51,3 @@
     </div>
   </div>
 <% end %>
-
