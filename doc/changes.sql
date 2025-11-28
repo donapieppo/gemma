@@ -38,32 +38,32 @@ ADD CONSTRAINT fk_delegation_picking_point
     ON DELETE SET NULL
     ON UPDATE CASCADE;
 
-CREATE TABLE departments (
+CREATE TABLE cost_centers (
     id INT(11) AUTO_INCREMENT PRIMARY KEY,
     `organization_id` int(11) NOT NULL,
     name VARCHAR(200) NOT NULL,
     description TEXT,
-    CONSTRAINT `fk_department_organizations` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`id`)
+    CONSTRAINT `fk_cost_center_organizations` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`id`)
 );
 
-insert into `departments` values (0, 255, 'CILDIC', '');
-insert into `departments` values (0, 255, 'Dipartimento di chimica', '');
-insert into `departments` values (0, 255, 'Dipartimento di chimica industriale', '');
-insert into `departments` values (0, 255, 'Dipartimento Fabit', '');
+insert into `cost_centers` values (0, 255, 'CILDIC', '');
+insert into `cost_centers` values (0, 255, 'Dipartimento di chimica', '');
+insert into `cost_centers` values (0, 255, 'Dipartimento di chimica industriale', '');
+insert into `cost_centers` values (0, 255, 'Dipartimento Fabit', '');
 
 ALTER TABLE operations
-ADD COLUMN department_id INT(11),
-ADD CONSTRAINT fk_operation_department
-    FOREIGN KEY (department_id)
-    REFERENCES departments(id)
+ADD COLUMN cost_center_id INT(11),
+ADD CONSTRAINT fk_operation_cost_center
+    FOREIGN KEY (cost_center_id)
+    REFERENCES cost_centers(id)
     ON DELETE SET NULL
     ON UPDATE CASCADE;
 
 ALTER TABLE delegations
-ADD COLUMN department_id INT(11),
-ADD CONSTRAINT fk_delegation_department
-    FOREIGN KEY (department_id)
-    REFERENCES departments(id)
+ADD COLUMN cost_center_id INT(11),
+ADD CONSTRAINT fk_delegation_cost_center
+    FOREIGN KEY (cost_center_id)
+    REFERENCES cost_centers(id)
     ON DELETE SET NULL
     ON UPDATE CASCADE;
 
