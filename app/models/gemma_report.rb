@@ -17,7 +17,9 @@ class GemmaReport
               totalprice: "Prezzo Totale",
               upn: "Operatore",
               supplier: "Fornitore",
-              code: "Codice Fornitore"}
+              code: "Codice Fornitore",
+              cost_center: "Centro di costo",
+              picking_point: "Punto di ritiro"}
 
   @@format = {thing: " %.80s ",
               description: " %.60s ",
@@ -34,7 +36,9 @@ class GemmaReport
               price_operations: " %s ",
               totalprice: " %8.2f€ ",
               code: " - codice %s",
-              upn: " %s"}
+              upn: " %s",
+              cost_center: " spesa: %s",
+              picking_point: " ritiro: %s"}
 
   @@operation_to_s = {"Unlod" => "Scarico",
                       "Load" => "Carico",
