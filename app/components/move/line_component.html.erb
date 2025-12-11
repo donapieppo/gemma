@@ -29,17 +29,15 @@
           <% if @pricing && @operation.price && @operation.price > 0 && @operation.number < 0 %>
             <div>Origine prezzo: <%= helpers.show_price_origins(@operation) %></div>
           <% end %>
-          <div>
-            <% if @operation.cost_center %>
-              Centro di costo: <%= @operation.cost_center %>
-            <% end %>
-            <% if @operation.lab %>
-              Lab: <%= @operation.lab %>
-            <% end %>
-            <% if @operation.picking_point %>
-              Ritiro: <%= @operation.picking_point %>
-            <% end %>
-          </div>
+          <% if @operation.cost_center %>
+            <div>Centro di costo: <strong><%= @operation.cost_center %></strong></div>
+          <% end %>
+          <% if @operation.lab %>
+            <div>Lab: <strong><%= @operation.lab %></strong></div>
+          <% end %>
+          <% if @operation.picking_point %>
+            <div>Punto di ritiro: <strong><%= @operation.picking_point %></strong></div>
+          <% end %>
           <% if @operation.is_load? %>
             <div><%= link_to @operation.ddt.long_description, ddt_path(@operation.ddt) %></div>
           <% end %>
