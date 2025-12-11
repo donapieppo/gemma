@@ -161,7 +161,7 @@ class UnloadsController < ApplicationController
 
     pars << :recipient_upn if policy(current_organization).give?
     pars << :cost_center_id if policy(current_organization).manage?
-    pars << :picking_point if policy(current_organization).manage?
+    pars << :picking_point_id if policy(current_organization).manage?
     params[:unload].permit(pars)
   end
 
