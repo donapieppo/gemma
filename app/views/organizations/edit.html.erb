@@ -8,14 +8,14 @@
     <% permissions.each do |p| %>
       <li class="list-group-item py-1">
         <span class="pe-2"><%= p.user ? p.user : p.network %></span>
-        <span class="badge bg-secondary-subtle text-dark float-end"><%= Authorization.level_description(authlevel).downcase %></span>
+        <span class="badge bg-info-subtle text-dark float-end"><%= Authorization.level_description(authlevel).downcase %></span>
       </li>
     <% end %>
   <% end %>
   <% if current_user.is_cesia? %>  
     <%= link_to 'Modifica', dm_unibo_common.organization_permissions_path(current_organization), class: 'btn btn-primary my-2' %>  
   <% else %>
-    <div class="my-2">Per modificare la lista degli abilitati scrivere all'indirizzo <a href="mailto:dipmat-gemma@unibo.it">dipmat-gemma@unibo.it</a>.</div>
+    <div class="my-2">Per modificare la lista degli abilitati il responsabile della struttura deve scrivere all'indirizzo <a href="mailto:dipmat-gemma@unibo.it">dipmat-gemma@unibo.it</a>.</div>
   <% end %>
 </ul>
 
