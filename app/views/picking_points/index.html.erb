@@ -11,3 +11,7 @@
     <% end %>
   <% end %>
 </div>
+
+<% if policy(current_organization).manage? %>
+  <%= link_to dm_icon('wrench', text: "Altre configurazioni"), current_organization_edit_path %>
+<% end %>
