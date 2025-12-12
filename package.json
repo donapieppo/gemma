@@ -6,7 +6,7 @@
   },
   "dependencies": {
     "awesomplete": "^1.1.5",
-    "dm_unibo_common": "donapieppo/dm_unibo_common.git#master"
+    "dm_unibo_common": "donapieppo/dm_unibo_common.git#rails8"
   },
   "scripts": {
     "build": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets",
