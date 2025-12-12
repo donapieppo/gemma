@@ -1,0 +1,32 @@
+[Unit]
+Description=Rails application gemma
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+Restart=always
+User=gemma
+Group=gemma
+WorkingDirectory=/home/gemma
+
+# Directives with "=-" are allowed to fail without consequence
+ExecStartPre=-/usr/bin/docker stop %n
+ExecStartPre=-/usr/bin/docker rm %n
+ExecStart=/usr/bin/docker run \
+  --rm \
+  --name gemma \
+  --env-file /home/gemma/rails_env \
+  --log-driver=syslog \
+  --log-opt tag="gemma" \
+  --network="host" \
+  -v /home/gemma/dm_unibo_user_search:/etc/dm_unibo_user_search:ro \
+  -v /home/gemma/database.yml:/rails/config/database.yml:ro \
+  -v /home/gemma/omniauth.rb:/rails/config/initializers/omniauth.rb:ro \
+  -v /home/gemma/dm_unibo_common.yml:/rails/config/dm_unibo_common.yml:ro \
+  -v /home/gemma/gemma.rb:/rails/config/initializers/gemma.rb:ro \
+  gemma
+
+[Install]
+WantedBy=default.target
+

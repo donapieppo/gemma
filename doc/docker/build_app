@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -e 
+
+app=$1
+
+if [[ -z $app ]]
+then
+	echo "Manca il nome del servizio"
+	exit 1
+fi
+
+cd /home/$app/repo
+
+su $app -c "git pull"
+
+docker build -t $app .
+
+echo systemctl restart ${app}.service
