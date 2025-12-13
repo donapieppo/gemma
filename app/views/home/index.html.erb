@@ -30,6 +30,11 @@
         <%= f.button dm_icon('sign-in', text: " Unibo login", size: :lg), class: "btn btn-primary" %> 
       <% end %>
     <% end %>
+    <% elsif Rails.env.production? && Rails.configuration.unibo_common.omniauth_provider == :google_oauth2 %>
+      <%= form_with url: "/dm_unibo_common/auth/google_oauth2", data: {turbo: false} do |f| %> 
+        <%= f.button dm_icon('sign-in', text: " Google login", size: :lg), class: "btn btn-primary" %> 
+      <% end %>
+    <% end %>
   </div>
 <% end %>
 
