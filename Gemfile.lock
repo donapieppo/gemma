@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/donapieppo/dm_unibo_common.git
-  revision: b380af139773f9e6f2d47cdf5c3070dc0c329bda
+  revision: 06d9bc781e35a46c7cebf415cf7f9c86768ab964
   branch: rails8
   specs:
     dm_unibo_common (6.0.0)
@@ -241,7 +241,7 @@ GEM
       actionpack (>= 6.0.0)
       activesupport (>= 6.0.0)
       railties (>= 6.0.0)
-    io-console (0.8.1)
+    io-console (0.8.2)
     irb (1.15.3)
       pp (>= 0.6.0)
       rdoc (>= 4.0.0)
