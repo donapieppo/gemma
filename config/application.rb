@@ -8,7 +8,7 @@ Bundler.require(*Rails.groups)
 
 module Gemma
   class Application < Rails::Application
-    config.load_defaults 7.1
+    config.load_defaults 8.1
 
     config.autoload_paths << "#{Rails.root}/app/pdfs"
     config.time_zone = "Rome"
