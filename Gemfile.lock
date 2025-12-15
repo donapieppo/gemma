@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/donapieppo/dm_unibo_common.git
-  revision: 06d9bc781e35a46c7cebf415cf7f9c86768ab964
+  revision: 8918a041b00d13d8225f04d759115972f5e26307
   branch: rails8
   specs:
     dm_unibo_common (6.0.0)
@@ -289,7 +289,7 @@ GEM
       bigdecimal
     net-http (0.8.0)
       uri (>= 0.11.1)
-    net-imap (0.5.12)
+    net-imap (0.6.0)
       date
       net-protocol
     net-pop (0.1.2)
