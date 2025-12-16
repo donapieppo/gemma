@@ -11,7 +11,7 @@
       <div class="ps-3">
         <small class="text-body-secondary">presso <%= @booking.moves.first.deposit.location %></small>
         <% if @booking.thing.under_minimum? %>
-          <span class="text-warning" title="sotto scorta minima"><%= helpers.dm_icon "circle-exclamation" %></span>
+          <span class="text-warning" title="sotto scorta minima"><%= dm_icon "circle-exclamation" %></span>
         <% end %>
       </div>
       <div class="ps-3">
@@ -30,7 +30,7 @@
       </div>
       <div class="ps-3">
         <% if @booking.lab_id %>
-          <%= helpers.dm_icon "flask", text: "Lab: #{@booking.lab}" %>
+          <%= dm_icon "flask", text: "Lab: #{@booking.lab}" %>
         <% end %>
       </div>
     </div>
