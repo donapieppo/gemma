@@ -1,4 +1,6 @@
 class Ddt::SearchMenuComponent < ViewComponent::Base
+  include DmUniboCommon::ApplicationHelper
+
   def initialize(organization)
     @organization = organization
     oggi = Date.today.year.to_i

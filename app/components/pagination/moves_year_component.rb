@@ -1,4 +1,6 @@
 class Pagination::MovesYearComponent < ViewComponent::Base
+  include DmUniboCommon::ApplicationHelper
+
   def initialize(first_year, last_year, display_year, thing, deposit)
     @first_year = first_year
     @last_year = last_year

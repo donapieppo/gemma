@@ -2,6 +2,7 @@
 
 class Booking::LineComponent < ViewComponent::Base
   include DmUniboCommon::IconHelper
+  include DmUniboCommon::LinkHelper
 
   def initialize(booking)
     @booking = booking

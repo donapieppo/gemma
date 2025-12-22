@@ -38,8 +38,8 @@
     <div class="col-md-3 text-end">
       <div class="text-body-secondary"><%= l(@booking.created_at, format: :booking) if @booking.created_at %></div>
       <div>
-        <%= helpers.link_to_check confirm_booking_path(@booking) %> 
-        <%= helpers.link_to_delete "", booking_path(@booking) %> 
+        <%= link_to_check confirm_booking_path(@booking) %> 
+        <%= link_to_delete "", booking_path(@booking) %> 
       </div>
     </div>
   </div>
