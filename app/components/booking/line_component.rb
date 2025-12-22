@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Booking::LineComponent < ViewComponent::Base
-  include DmUniboCommon::IconHelper
+  include DmUniboCommon::ApplicationHelper
 
   def initialize(booking)
     @booking = booking

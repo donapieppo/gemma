@@ -1,5 +1,5 @@
 class Thing::ActionsComponent < ViewComponent::Base
-  include DmUniboCommon::IconHelper
+  include DmUniboCommon::ApplicationHelper
 
   def initialize(current_user, thing)
     @current_user = current_user
