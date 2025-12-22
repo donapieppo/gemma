@@ -1,10 +1,10 @@
-include BookingHelper
-include ThingHelper
-include OperationHelper
-include ReportHelper
-include PriceHelper
-
 module ApplicationHelper
+  include BookingHelper
+  include ThingHelper
+  include OperationHelper
+  include ReportHelper
+  include PriceHelper
+
   def inizio_anno
     Date.parse("01-01-#{Date.today.year}")
   end
