@@ -20,20 +20,8 @@
   <% end %>
 <% else %>
   <div class="text-center my-3">
-    <h3 class="my-3">Per accedere usare le credenziali di Ateneo.</h3>
-    <% if Rails.env.development? && Rails.configuration.unibo_common.omniauth_provider == :developer %>
-      <%= form_with url: "/dm_unibo_common/auth/developer", data: {turbo: false} do |f| %> 
-        <%= f.button dm_icon('sign-in', text: " Developer login", size: :lg), class: "btn btn-primary" %> 
-      <% end %>
-    <% elsif Rails.env.production? && Rails.configuration.unibo_common.omniauth_provider == :entra_id %>
-      <%= form_with url: "/dm_unibo_common/auth/entra_id", data: {turbo: false} do |f| %> 
-        <%= f.button dm_icon('sign-in', text: " Unibo login", size: :lg), class: "btn btn-primary" %> 
-      <% end %>
-    <% elsif Rails.env.production? && Rails.configuration.unibo_common.omniauth_provider == :google_oauth2 %>
-      <%= form_with url: "/dm_unibo_common/auth/google_oauth2", data: {turbo: false} do |f| %> 
-        <%= f.button dm_icon('sign-in', text: " Google login", size: :lg), class: "btn btn-primary" %> 
-      <% end %>
-    <% end %>
+    <%= login_link_title %>
+    <%= login_link(btn: true) %>
   </div>
 <% end %>
 
