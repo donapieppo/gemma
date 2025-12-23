@@ -1,6 +1,4 @@
 class ApplicationController < DmUniboCommon::ApplicationController
-  include DmUniboCommon::Controllers::Helpers
-
   before_action :set_current_user,
     :update_authorization,
     :force_sso_user,
