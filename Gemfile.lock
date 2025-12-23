@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/donapieppo/dm_unibo_common.git
-  revision: 245acfa2c2be74d8495f115164e20c4c4f38b5be
+  revision: cd58928884111e4483d71c8894b92715f1f76350
   branch: rails8
   specs:
     dm_unibo_common (6.0.0)
@@ -140,7 +140,7 @@ GEM
     barby (0.7.0)
     base64 (0.3.0)
     bigdecimal (3.3.1)
-    bootsnap (1.19.0)
+    bootsnap (1.20.0)
       msgpack (~> 1.2)
     builder (3.3.0)
     capybara (3.40.0)
@@ -179,11 +179,11 @@ GEM
       cucumber-tag-expressions (> 6, < 9)
     cucumber-cucumber-expressions (18.0.1)
       bigdecimal
-    cucumber-gherkin (36.1.0)
-      cucumber-messages (> 25, < 30)
-    cucumber-html-formatter (22.2.0)
-      cucumber-messages (> 19, < 31)
-    cucumber-messages (29.0.1)
+    cucumber-gherkin (37.0.1)
+      cucumber-messages (>= 31, < 32)
+    cucumber-html-formatter (22.3.0)
+      cucumber-messages (> 23, < 33)
+    cucumber-messages (31.1.0)
     cucumber-rails (4.0.0)
       capybara (>= 3.25, < 4)
       cucumber (>= 7, < 11)
@@ -424,9 +424,9 @@ GEM
       zeitwerk (~> 2.6)
     rainbow (3.1.1)
     rake (13.3.1)
-    rbs (3.9.5)
+    rbs (3.10.0)
       logger
-    rdoc (7.0.1)
+    rdoc (7.0.2)
       erb
       psych (>= 4.0.0)
       tsort
