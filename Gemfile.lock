@@ -1,12 +1,7 @@
 GIT
-  remote: https://github.com/donapieppo/dm_unibo_user_search.git
-  revision: 8f55982cb862c1d0754e0491825e69b1773d0534
-  specs:
-    dm_unibo_user_search (0.2.1)
-      savon (~> 2.15.0)
-
-PATH
-  remote: /home/rails/gems/dm_unibo_common
+  remote: https://github.com/donapieppo/dm_unibo_common.git
+  revision: 4cd4d7d1b7a10d93649c231e7fa3d58fc9b373ce
+  branch: rails8
   specs:
     dm_unibo_common (6.0.0)
       bootsnap
@@ -31,6 +26,13 @@ PATH
       stimulus-rails
       turbo-rails
       view_component (~> 4.1)
+
+GIT
+  remote: https://github.com/donapieppo/dm_unibo_user_search.git
+  revision: 8f55982cb862c1d0754e0491825e69b1773d0534
+  specs:
+    dm_unibo_user_search (0.2.1)
+      savon (~> 2.15.0)
 
 GEM
   remote: https://rubygems.org/
@@ -117,7 +119,7 @@ GEM
       nokogiri
     ast (2.4.3)
     aws-eventstream (1.4.0)
-    aws-partitions (1.1198.0)
+    aws-partitions (1.1199.0)
     aws-sdk-core (3.240.0)
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.992.0)
@@ -129,7 +131,7 @@ GEM
     aws-sdk-kms (1.118.0)
       aws-sdk-core (~> 3, >= 3.239.1)
       aws-sigv4 (~> 1.5)
-    aws-sdk-s3 (1.208.0)
+    aws-sdk-s3 (1.209.0)
       aws-sdk-core (~> 3, >= 3.234.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.5)
@@ -138,7 +140,7 @@ GEM
     barby (0.7.0)
     base64 (0.3.0)
     bigdecimal (3.3.1)
-    bootsnap (1.20.0)
+    bootsnap (1.20.1)
       msgpack (~> 1.2)
     builder (3.3.0)
     capybara (3.40.0)
@@ -171,9 +173,9 @@ GEM
       multi_test (~> 1.1)
       sys-uname (~> 1.3)
     cucumber-ci-environment (11.0.0)
-    cucumber-core (16.0.0)
-      cucumber-gherkin (> 33, < 40)
-      cucumber-messages (> 28, < 33)
+    cucumber-core (16.1.1)
+      cucumber-gherkin (> 36, < 40)
+      cucumber-messages (> 31, < 33)
       cucumber-tag-expressions (> 6, < 9)
     cucumber-cucumber-expressions (18.0.1)
       bigdecimal
@@ -209,22 +211,23 @@ GEM
       logger
     faraday-net_http (3.4.2)
       net-http (~> 0.5)
-    ffi (1.17.2-aarch64-linux-gnu)
-    ffi (1.17.2-aarch64-linux-musl)
-    ffi (1.17.2-arm-linux-gnu)
-    ffi (1.17.2-arm-linux-musl)
-    ffi (1.17.2-arm64-darwin)
-    ffi (1.17.2-x86-linux-gnu)
-    ffi (1.17.2-x86-linux-musl)
-    ffi (1.17.2-x86_64-darwin)
-    ffi (1.17.2-x86_64-linux-gnu)
-    ffi (1.17.2-x86_64-linux-musl)
+    ffi (1.17.3-aarch64-linux-gnu)
+    ffi (1.17.3-aarch64-linux-musl)
+    ffi (1.17.3-arm-linux-gnu)
+    ffi (1.17.3-arm-linux-musl)
+    ffi (1.17.3-arm64-darwin)
+    ffi (1.17.3-x86-linux-gnu)
+    ffi (1.17.3-x86-linux-musl)
+    ffi (1.17.3-x86_64-darwin)
+    ffi (1.17.3-x86_64-linux-gnu)
+    ffi (1.17.3-x86_64-linux-musl)
     globalid (1.3.0)
       activesupport (>= 6.1)
     gyoku (1.4.0)
       builder (>= 2.1.2)
       rexml (~> 3.0)
-    hashie (5.0.0)
+    hashie (5.1.0)
+      logger
     httpi (4.0.4)
       base64
       mutex_m
@@ -277,12 +280,12 @@ GEM
       logger
     mini_mime (1.1.5)
     mini_portile2 (2.8.9)
-    minitest (6.0.0)
+    minitest (6.0.1)
       prism (~> 1.5)
     msgpack (1.8.0)
     multi_test (1.1.0)
-    multi_xml (0.7.2)
-      bigdecimal (~> 3.1)
+    multi_xml (0.8.0)
+      bigdecimal (>= 3.1, < 5)
     mutex_m (0.3.0)
     mysql2 (0.5.7)
       bigdecimal
@@ -299,24 +302,24 @@ GEM
       net-protocol
     nio4r (2.7.5)
     nkf (0.2.0)
-    nokogiri (1.18.10)
+    nokogiri (1.19.0)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
-    nokogiri (1.18.10-aarch64-linux-gnu)
+    nokogiri (1.19.0-aarch64-linux-gnu)
       racc (~> 1.4)
-    nokogiri (1.18.10-aarch64-linux-musl)
+    nokogiri (1.19.0-aarch64-linux-musl)
       racc (~> 1.4)
-    nokogiri (1.18.10-arm-linux-gnu)
+    nokogiri (1.19.0-arm-linux-gnu)
       racc (~> 1.4)
-    nokogiri (1.18.10-arm-linux-musl)
+    nokogiri (1.19.0-arm-linux-musl)
       racc (~> 1.4)
-    nokogiri (1.18.10-arm64-darwin)
+    nokogiri (1.19.0-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.18.10-x86_64-darwin)
+    nokogiri (1.19.0-x86_64-darwin)
       racc (~> 1.4)
-    nokogiri (1.18.10-x86_64-linux-gnu)
+    nokogiri (1.19.0-x86_64-linux-gnu)
       racc (~> 1.4)
-    nokogiri (1.18.10-x86_64-linux-musl)
+    nokogiri (1.19.0-x86_64-linux-musl)
       racc (~> 1.4)
     nori (2.7.1)
       bigdecimal
@@ -424,7 +427,7 @@ GEM
     rake (13.3.1)
     rbs (3.10.0)
       logger
-    rdoc (7.0.2)
+    rdoc (7.0.3)
       erb
       psych (>= 4.0.0)
       tsort
@@ -462,9 +465,9 @@ GEM
       rubocop-ast (>= 1.47.1, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 4.0)
-    rubocop-ast (1.48.0)
+    rubocop-ast (1.49.0)
       parser (>= 3.3.7.2)
-      prism (~> 1.4)
+      prism (~> 1.7)
     rubocop-performance (1.26.1)
       lint_roller (~> 1.1)
       rubocop (>= 1.75.0, < 2.0)
