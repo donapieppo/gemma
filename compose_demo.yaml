@@ -1,0 +1,22 @@
+services:
+  db:
+    image: mariadb:12
+    volumes:
+    - /tmp/demo_mariadb:/var/lib/mysql
+    environment:
+      MARIADB_DATABASE: gemma_dev
+      MARIADB_USER: gemma
+      MARIADB_PASSWORD: gemma
+      MARIADB_ROOT_PASSWORD: root
+
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      RAILS_ENV: development
+      GEMMA_DATABASE_PASSWORD: gemma
+      DATABASE_URL: mysql2://gemma:gemma@db:3306/gemma_dev
+    depends_on:
+      - db
+    command: ./bin/rails s -b '0.0.0.0'
