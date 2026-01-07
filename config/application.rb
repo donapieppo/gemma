@@ -28,9 +28,10 @@ module Gemma
       edit: 50
     }
 
-    # config.lograge.enabled = true
-
     config.unibo_common = config_for(:unibo_common)
     config.active_record.yaml_column_permitted_classes = [Symbol]
+
+    # better for docker demo :-)
+    config.require_master_key = false
   end
 end
