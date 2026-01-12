@@ -13,6 +13,8 @@ services:
     build: .
     ports:
       - "3000:3000"
+    volumes:
+    - ./config/unibo_common.yml:/rails/config/unibo_common.yml
     environment:
       RAILS_ENV: development
       GEMMA_DATABASE_PASSWORD: gemma
