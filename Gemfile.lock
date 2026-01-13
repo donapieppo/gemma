@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/donapieppo/dm_unibo_common.git
-  revision: de8c1cf54b1303f74ed4e2a334f30d7879ef8d96
+  revision: 09395d4bd753cd7beefd6cd164de83d39f95346c
   branch: rails8
   specs:
     dm_unibo_common (6.0.0)
@@ -119,7 +119,7 @@ GEM
       nokogiri
     ast (2.4.3)
     aws-eventstream (1.4.0)
-    aws-partitions (1.1202.0)
+    aws-partitions (1.1203.0)
     aws-sdk-core (3.241.3)
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.992.0)
@@ -367,7 +367,7 @@ GEM
     pretender (0.6.0)
       actionpack (>= 7.1)
     prettyprint (0.2.0)
-    prism (1.7.0)
+    prism (1.8.0)
     propshaft (1.3.1)
       actionpack (>= 7.0.0)
       activesupport (>= 7.0.0)
