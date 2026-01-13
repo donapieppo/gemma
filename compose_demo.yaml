@@ -2,7 +2,7 @@ services:
   db:
     image: mariadb:12
     volumes:
-    - /tmp/demo_mariadb:/var/lib/mysql
+    - /tmp/demo_gemma_mariadb:/var/lib/mysql
     environment:
       MARIADB_DATABASE: gemma_dev
       MARIADB_USER: gemma
