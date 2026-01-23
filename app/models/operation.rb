@@ -134,7 +134,7 @@ class Operation < ApplicationRecord
     end
 
     avoid_price_updating = true unless price_changed? || date_changed? || changed_numbers
-    avoid_history_coherent = true unless date_changed? || changed_numbers # FIXME: 
+    avoid_history_coherent = true unless date_changed? || changed_numbers # FIXME:
 
     save
   end
@@ -143,10 +143,10 @@ class Operation < ApplicationRecord
     self.recipient ? self.recipient.upn : ""
   end
 
-  # possiamo passare 'pietro.donatini' 'pietro.donatini@unibo.it' 'Pietro donatini pietro.donatini@unibo.it'
+  # can submit 'pietro.donatini' 'pietro.donatini@unibo.it' 'Pietro donatini pietro.donatini@unibo.it'
   def recipient_upn=(upn)
-    @_recipient_upn = if upn =~ /(\w+\.\w+)/
-      "#{$1}@unibo.it"
+    @_recipient_upn = if !upn.include?("@") && (upn =~ /(\w+\.\w+)/)
+      "#{$1}@#{Rails.configuration.unibo_unibo.domain}"
     else
       upn
     end
