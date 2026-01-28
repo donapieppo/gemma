@@ -26,6 +26,11 @@ Per far partire il server:
 docker compose -f compose_demo.yaml up web
 ```
 
+Per sviluppo
+```
+docker compose -f compose_demo.yaml -f compose_demo_development_volumes.yaml up web
+```
+
 Connettersi quindi a `(http://127.0.0.1:3000/home)[http://127.0.0.1:3000/home]` e 
 loggarsi con utente `admin.user@example.com` (senza password)
 per essere un amministratore della struttura di prova 1.
