@@ -29,13 +29,19 @@ namespace :db do
         user.name = "USER"
       end
 
-      # u1 can admin o1 and unload in o2
+      # u1 can admin all
       u1.permissions.find_or_create_by!(organization: o1) { |permission| permission.authlevel = 50 }
-      u1.permissions.find_or_create_by!(organization: o2) { |permission| permission.authlevel = 20 }
+      u1.permissions.find_or_create_by!(organization: o2) { |permission| permission.authlevel = 50 }
+      u1.permissions.find_or_create_by!(organization: o3) { |permission| permission.authlevel = 50 }
 
-      # u2 can only unload in o1
+      # u2 can only unload in o2 and book in 03
       u2.permissions.find_or_create_by!(organization: o1) { |permission| permission.authlevel = 20 }
+      u2.permissions.find_or_create_by!(organization: o3) { |permission| permission.authlevel = 15 }
 
+      # basic data on o2 and o3. o1 in empty
+      g21 = o2.groups.find_or_create_by(name: "Carta")
+      g21.things.find_or_create_by(organization: o2, name: "Carta A3", minimum: 10)
+      g21.things.find_or_create_by(organization: o2, name: "Carta A4", minimum: 10)
       puts "Demo data loaded successfully."
       puts "Login with email admin.user@example.com to be an administrator and with simple.user@example.com to be a simple user than can unload"
     end
