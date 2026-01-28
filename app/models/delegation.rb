@@ -11,7 +11,7 @@ class Delegation < ApplicationRecord
   def validate_delegator
     throw(:abort) unless @_delegator_upn # explicitly halt callbacks.
     begin
-      user_delegator = User.find_or_syncronize((@_delegator_upn)
+      user_delegator = User.find_or_syncronize(@_delegator_upn)
       Rails.logger.info user_delegator.inspect
       self.delegator_id = user_delegator.id
     rescue => e
