@@ -6,7 +6,6 @@ class BookingPolicy < ApplicationPolicy
 
   def create?
     @user &&
-      @record.organization.booking &&
       OrganizationPolicy.new(@user, @record.organization).book? &&
       @record.organization_id == @record.thing.organization_id
   end
