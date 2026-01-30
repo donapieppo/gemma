@@ -25,7 +25,7 @@ class ThingsController < ApplicationController
     authorize Thing
 
     @search_string = params[:search_string] || ""
-    @search_string = @search_string.strip.gsub("%", "")
+    @search_string = @search_string.strip.delete("%")
 
     if @search_string.length > 2
       @things = real_find(@search_string)
