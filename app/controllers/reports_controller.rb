@@ -399,37 +399,28 @@ class ReportsController < ApplicationController
 
   def bookings
     authorize :report
-    report = GemmaReport.new(current_organization, "pdf")
+    report = GemmaReport.new(current_organization, params[:format])
 
     report.title = "Prenotazioni"
     report.separator = :upn
 
-    report.fields = [:date, :number, :thing, :description, :note]
+    report.fields = [:date, :number, :thing, :description, :note, :picking_point, :cost_center]
     report.accumulator = :number if (@thing_id || @group_id)
     report.separator = :thing if @group_id
 
-    order = "upn, operations.date"
-
-    # report.query = "SELECT operations.date AS date,
-    #                        users.upn,
-    #                        ABS(number) as number, things.name as thing, description,
-    #                        locations.name as location
-    #                   FROM operations
-    #        LEFT OUTER JOIN things ON operations.thing_id = things.id
-    #        LEFT OUTER JOIN users  ON COALESCE(recipient_id, user_id)= users.id
-    #        LEFT OUTER JOIN deposits ON deposits.thing_id = things.id
-    #        LEFT OUTER JOIN locations ON deposits.location_id = locations.id
-    #                  WHERE operations.organization_id = #{current_organization.id}
-    #                    AND operations.type = 'Booking'
-    #                    AND operations.number < 0
-    #               ORDER BY date"
-
     report.query = "SELECT operations.date AS date,
+                           operations.note,
                            users.upn,
-                           ABS(number) as number, things.name as thing, description
+                           ABS(number) as number,
+                           things.name as thing,
+                           things.description as description,
+                           picking_points.name as picking_point,
+                           cost_centers.name as cost_center
                       FROM operations
            LEFT OUTER JOIN things ON operations.thing_id = things.id
            LEFT OUTER JOIN users  ON COALESCE(recipient_id, user_id)= users.id
+           LEFT OUTER JOIN cost_centers ON cost_centers.id = operations.cost_center_id
+           LEFT OUTER JOIN picking_points ON picking_points.id = operations.picking_point_id
                      WHERE operations.organization_id = #{current_organization.id}
                        AND operations.type = 'Booking'
                        AND operations.number < 0

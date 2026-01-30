@@ -1,6 +1,6 @@
 class LabPolicy < ApplicationPolicy
   def index?
-    current_organization_manager?
+    true
   end
 
   def show?

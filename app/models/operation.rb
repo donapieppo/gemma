@@ -7,6 +7,8 @@ class Operation < ApplicationRecord
   belongs_to :recipient, class_name: "User", optional: true
   belongs_to :ddt, optional: true
   belongs_to :lab, optional: true
+  belongs_to :cost_center, optional: true
+  belongs_to :picking_point, optional: true
   has_many :moves
 
   serialize :price_operations, coder: YAML, type: Array
@@ -20,9 +22,11 @@ class Operation < ApplicationRecord
 
   validate :validate_user,
     :validate_recipient,
-    :check_organization,
+    :validate_thing,
     :validate_date,
-    :validate_deposits
+    :validate_deposits,
+    :validate_cost_center,
+    :validate_picking_point
 
   after_create :log_creation
   after_save :update_moves
@@ -129,20 +133,20 @@ class Operation < ApplicationRecord
       self.send("#{k}=", v)
     end
 
-    avoid_price_updating = true unless self.price_changed? || self.date_changed? || changed_numbers
-    avoid_history_coherent = true unless self.date_changed? || changed_numbers # FIXME: 
+    avoid_price_updating = true unless price_changed? || date_changed? || changed_numbers
+    avoid_history_coherent = true unless date_changed? || changed_numbers # FIXME:
 
-    self.save
+    save
   end
 
   def recipient_upn
     self.recipient ? self.recipient.upn : ""
   end
 
-  # possiamo passare 'pietro.donatini' 'pietro.donatini@unibo.it' 'Pietro donatini pietro.donatini@unibo.it'
+  # can submit 'pietro.donatini' 'pietro.donatini@unibo.it' 'Pietro donatini pietro.donatini@unibo.it'
   def recipient_upn=(upn)
-    @_recipient_upn = if upn =~ /(\w+\.\w+)/
-      "#{$1}@unibo.it"
+    @_recipient_upn = if !upn.include?("@") && (upn =~ /(\w+\.\w+)/)
+      "#{$1}@#{Rails.configuration.unibo_unibo.domain}"
     else
       upn
     end
@@ -183,7 +187,7 @@ class Operation < ApplicationRecord
     end
   end
 
-  def check_organization
+  def validate_thing
     (thing.organization_id == organization_id) or raise DmUniboCommon::MismatchOrganization, "Materiale nella Struttura Sbagliata."
   end
 
@@ -211,6 +215,18 @@ class Operation < ApplicationRecord
       else
         errors.add(:base, "È necessario selezionare una provenienza corretta.") and return
       end
+    end
+  end
+
+  def validate_cost_center
+    if cost_center_id
+      (cost_center.organization_id == organization_id) or raise DmUniboCommon::MismatchOrganization, "Centro di costo associato a struttura sbagliata."
+    end
+  end
+
+  def validate_picking_point
+    if picking_point_id
+      (picking_point.organization_id == organization_id) or raise DmUniboCommon::MismatchOrganization, "Punto di ritiro associato a struttura sbagliata."
     end
   end
 

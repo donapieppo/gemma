@@ -1,1 +1,1 @@
-class ArchUnload  < ArchOperation; end
+class ArchUnload < ArchOperation; end

@@ -144,6 +144,7 @@ Rails.application.routes.draw do
     end
 
     resources :labs
+    resources :picking_points
   end
 
   root to: "groups#index"

@@ -1,0 +1,29 @@
+shared:    
+  superusers: ["pietro.donatini@unibo.it"]    
+  html_title: "GE.M.MA - GEstione Multiutente MAteriale di consumo"    
+  html_description: "Gestione Multiutente MAteriale di consumo. Università di Bologna."    
+  header_title: "Ge.M.Ma"      
+  header_subtitle: "Gestione Multiutente MAteriale di consumo"    
+  header_icon: "shopping-cart"    
+  contact_mail: "pietro.donatini@unibo.it"    
+  domain_name: "unibo.it"    
+  support_mail: "dipmat-gemma@unibo.it"    
+  default_from: "Ge.M.Ma <notifica.inviodlist.08218@unibo.it>"    
+  reply_to: "pietro.donatini@unibo.it"    
+  login_method: :log_and_create
+  no_students: true    
+  message_footer: ""    
+  impersonate_admins: ["pietro.donatini@unibo.it"]    
+  main_impersonations: []    
+  search_wsdl_file: "/rails/config/DSASearch.wsdl.xml"
+  lograge: true
+  sentry_dsn: "http://6e57b66c298945da99908b6f657dd506@bugsink.bugsink.svc.cluster.local:80/2"
+  omniauth_provider: :entra_id    
+  searchable_provider: true    
+  smtp_unibo: true    
+  home_description: |    
+    <p>Applicativo per la gestione del <strong>materiale di consumo</strong> presso le strutture dell'Università di Bologna.</p>    
+    <p>L'applicativo permette di tenere traccia dei materiale di consumo (materiale non soggetto ad inventariazione, di modico valore    
+    o facile usura e veloce obsolescenza) dall'acquisto alla consegna.    
+    Per le strutture che ne fanno richiesta è possibile permettere ai colleghi la prenotazione del materiale presente in magazzino.</p>    
+

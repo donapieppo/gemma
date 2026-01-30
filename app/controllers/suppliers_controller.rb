@@ -7,20 +7,20 @@ class SuppliersController < ApplicationController
     # che dobbiamo ricordarci per tornare dopo l'inserimento del ddt
     session[:from_thing_id] = params[:remember_thing_id].to_i if params[:remember_thing_id] 
 
-    @initial = params[:in] ? params[:in][0, 1] : 'a'
+    @initial = params[:in] ? params[:in][0, 1] : "a"
 
-    @suppliers = Supplier.where(['name REGEXP ?', "^#{@initial}"]).order('name asc').to_a
+    @suppliers = Supplier.where(["name REGEXP ?", "^#{@initial}"]).order("name asc").to_a
 
     # per cosa ci serve vedere i suppliers?
     @for = params[:for]
-    if @for == 'ddt'
-      @title = 'Registrazione nuovo ddt/fattura: scelta del fornitore'
+    @title = if @for == "ddt"
+      "Registrazione nuovo ddt/fattura: scelta del fornitore"
     else
-      @title = 'Fornitori'
+      "Fornitori"
     end
     respond_to do |format|
       format.html
-      format.js 
+      format.js
     end
   end
 
@@ -34,7 +34,7 @@ class SuppliersController < ApplicationController
     @supplier = Supplier.new(supplier_params)
     authorize @supplier
     if @supplier.save
-      redirect_to suppliers_path, notice: 'Il fornitore è stato creato.' 
+      redirect_to suppliers_path, notice: "Il fornitore è stato creato."
     else
       render action: :new, status: :unprocessable_entity
     end
@@ -46,7 +46,7 @@ class SuppliersController < ApplicationController
 
   def update
     if @supplier.update(supplier_params)
-      redirect_to suppliers_path, notice: 'Il fornitore è stato aggiornato.'
+      redirect_to suppliers_path, notice: "Il fornitore è stato aggiornato."
     else
       render action: :edit, status: :unprocessable_entity
     end
@@ -57,17 +57,17 @@ class SuppliersController < ApplicationController
     @for = params[:for]
 
     if params[:supplier] && params[:supplier][:string] && params[:supplier][:string].length >= 2
-      @suppliers = Supplier.where(['name LIKE ?', "%#{params[:supplier][:string]}%"]) 
+      @suppliers = Supplier.where(["name LIKE ?", "%#{params[:supplier][:string]}%"])
     elsif params[:supplier] && params[:supplier][:pi] && params[:supplier][:pi].length >= 2
       pi = params[:supplier][:pi].to_i
-      @suppliers = Supplier.where(['pi LIKE ?', "%#{pi}%"])
+      @suppliers = Supplier.where(["pi LIKE ?", "%#{pi}%"])
     else
-      flash[:error] = 'Raffinare i parametri di ricerca.'
+      flash[:error] = "Raffinare i parametri di ricerca."
       redirect_to suppliers_path
       return
     end
-    @suppliers = @suppliers.order('suppliers.name').all
-    flash[:notice] = 'Non ci sono fornitori che soddisfino la ricerca' if @suppliers.empty?
+    @suppliers = @suppliers.order("suppliers.name").all
+    flash[:notice] = "Non ci sono fornitori che soddisfino la ricerca" if @suppliers.empty?
   end
 
   private

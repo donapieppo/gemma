@@ -1,6 +1,4 @@
 class ApplicationController < DmUniboCommon::ApplicationController
-  include DmUniboCommon::Controllers::Helpers
-
   before_action :set_current_user,
     :update_authorization,
     :force_sso_user,
@@ -17,7 +15,7 @@ class ApplicationController < DmUniboCommon::ApplicationController
         redirect_to current_organization_booking_accept_path
       end
     elsif current_user
-      logger.info("No current_organization for #{params[:__org__]}. Redirect #{current_user.upn} to home")
+      logger.info("No current_organization. Redirect #{current_user.upn} to home")
       redirect_to home_path(__org__: nil)
     end
   end

@@ -12,12 +12,15 @@
         <%= render Booking::LineComponent.new(book) %>
       <% end %>
       <div class="text-end my-2">
-        <%= button_to "Conferma tutte le prenotazioni di #{user}", confirm_all_user_bookings_path(@users_bookings[user].first.user_id, booking_ids: @users_bookings[user].map(&:id)) %>
+        <%= button_to "Conferma tutte le prenotazioni di #{user}", confirm_all_user_bookings_path(@users_bookings[user].first.user_id, booking_ids: @users_bookings[user].map(&:id)), class: "text-decoration-underline" %>
       </div>
     <% end %>
   </div>
   <div class="my-2 text-end">
-    <%= button_to bookings_reports_path, form: {data: {turbo: false}, class: "d-inline"} do %>  
+    <%= button_to bookings_reports_path(format: "csv"), form: {data: {turbo: false}, class: "d-inline"} do %>  
+      <%= dm_icon("file-excel", "regular", size: "xl", text: "scarica csv") %>
+    <% end %>
+    <%= button_to bookings_reports_path(format: "pdf"), form: {data: {turbo: false}, class: "d-inline"} do %>  
       <%= dm_icon("file-pdf", "regular", size: "xl", text: "scarica pdf") %>
     <% end %>
   </div>

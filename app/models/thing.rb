@@ -103,8 +103,8 @@ class Thing < ApplicationRecord
           price += stack_price
           number -= n
         end
+        price = price.to_i
         if o.price != price || o.price_operations != price_operations
-          # to avoid after save and etc
           o.update_columns(price: price, price_operations: price_operations)
         end
       end

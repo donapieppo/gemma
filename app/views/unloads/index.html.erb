@@ -27,6 +27,9 @@
           <br/>
           <span class="text-muted">
             <%= o.note %>
+            <% if o.recipient_id && current_user.id != o.recipient_id %>
+              (per <%= o.recipient %>)
+            <% end %>
             <% if current_user.id != o.user_id %>  
               (operatore: <%= o.user %>)
             <% end %>

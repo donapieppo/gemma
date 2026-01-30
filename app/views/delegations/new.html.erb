@@ -1,8 +1,4 @@
-<%= dm_form_for @delegation, title: 'Nuova delega' do |f| %>  
-  <%= f.dm_error_notification %>
+<h1>Nuova delega</h1>
 
-  <%= f.input :delegator_upn, required: true %>
-  <%= f.input :delegate_upn, required: true %>
+<%= render partial: 'form' %>  
 
-  <%= f.submit %>  
-<% end %>
