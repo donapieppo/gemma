@@ -20,15 +20,14 @@ shared:
   impersonate_admins: ["pietro.donatini@example.it"]
   interceptor_mails: ["dona@dm.example.it"]
   main_impersonations: ["pietro.dona@example.it", "maria@example.it", "sandro@example.it"]
+  omniauth_provider:   :developer 
+  searchable_provider: false
+  host:                localhost
+  smtp_unibo:          true
   home_description: |
     <p>Applicativo per la gestione del <strong>materiale di consumo</strong> presso le strutture dell'Università di Bologna.</p>
     <p>L'applicativo permette di tenere traccia dei materiale di consumo (materiale non soggetto ad inventariazione, di modico valore
     o facile usura e veloce obsolescenza) dall'acquisto alla consegna.
     Per le strutture che ne fanno richiesta è possibile permettere ai colleghi la prenotazione del materiale presente in magazzino.</p>
 
-development:
-  omniauth_provider:   :developer 
-  searchable_provider: true
-  host:                localhost
-  smtp_unibo:          true
 
