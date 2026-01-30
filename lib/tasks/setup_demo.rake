@@ -8,6 +8,7 @@ namespace :db do
       o1 = Organization.find_or_create_by!(code: "demo1") do |organization|
         organization.name = "Demo Organizations 1"
         organization.description = "Demo Organizations 1"
+        o1.pricing = 1
       end
       o2 = Organization.find_or_create_by!(code: "demo2") do |organization|
         organization.name = "Demo Organizations 2"
@@ -40,6 +41,8 @@ namespace :db do
 
       # basic data on o2 and o3. o1 in empty
       g21 = o2.groups.find_or_create_by(name: "Carta")
+      deposit = o2.deposist.first
+      o2.create_default_location
       g21.things.find_or_create_by(organization: o2, name: "Carta A3", minimum: 10)
       g21.things.find_or_create_by(organization: o2, name: "Carta A4", minimum: 10)
       puts "Demo data loaded successfully."
