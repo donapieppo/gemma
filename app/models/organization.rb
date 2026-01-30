@@ -42,17 +42,17 @@ class Organization < ApplicationRecord
   # 1) una ubicazione (location) fittizia 'generale' per i pigri
   # 2) una categoria (gruppo) iniziale chiamata 'Cancelleria'
   def activate
-    self.create_default_location
-    self.create_default_group
+    create_default_location
+    create_default_group
   end
 
   def last_recipient_upn
-    operation = self.operations.where("operations.recipient_id is not null").order("date desc").first
-    operation&.recipient ? operation.recipient.upn : nil
+    o = operations.where("operations.recipient_id is not null").order("date desc").first
+    o&.recipient&.upn
   end
 
   def destroyable?
-    self.operations.count == 0
+    operations.count == 0
   end
 
   private
