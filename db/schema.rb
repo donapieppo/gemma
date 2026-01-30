@@ -105,7 +105,7 @@ ActiveRecord::Schema[8.1].define(version: 2022_05_25_142402) do
     t.index ["thing_id"], name: "index_barcodes_on_thing_id"
   end
 
-  create_table "cost_centers", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "cost_centers", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.text "description"
     t.string "name", limit: 200, null: false
     t.integer "organization_id", null: false
@@ -242,6 +242,7 @@ ActiveRecord::Schema[8.1].define(version: 2022_05_25_142402) do
     t.boolean "pricing"
     t.string "sendmail", limit: 1
     t.datetime "updated_at", precision: nil
+    t.boolean "with_labs", default: false
   end
 
   create_table "permissions", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
@@ -255,7 +256,7 @@ ActiveRecord::Schema[8.1].define(version: 2022_05_25_142402) do
     t.index ["user_id"], name: "fk_user_permission"
   end
 
-  create_table "picking_points", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "picking_points", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.text "description"
     t.string "name", null: false
     t.integer "organization_id", null: false
