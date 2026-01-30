@@ -1,0 +1,16 @@
+<%= dm_card title: "Punti di ritiro (Opzionale)" do %>
+  <div class="alert alert-info">
+    Lista di possibili punti di ritiro associabili agli scarichi e alle prenotazioni.
+  </div>
+
+  <div class="list-group">
+    <% current_organization.picking_points.each do |pp| %>
+      <%= link_to [:edit, pp], class: "list-group-item list-group-item-action py-1" do %>
+        <%= pp %>
+      <% end %>
+    <% end %>
+  </div>
+  <% if policy(:picking_point).new? %>
+    <%= link_to "Nuovo punto di ritiro", new_picking_point_path, class: "btn btn-primary my-2" %>
+  <% end %>
+<% end %>

@@ -1,0 +1,13 @@
+<%= dm_card title: "Categorie" do %>
+  <div class="list-group">
+    <% current_organization.groups.order('groups.name').each do |group| %>  
+      <%= link_to [:edit, group], class: "list-group-item list-group-item-action py-1" do %>
+        <%= group %>
+      <% end %>
+    <% end %>
+  </div>
+  <div>
+    <%= link_to 'Nuova categoria', new_group_path, class: "btn btn-primary my-2" %> - 
+    <%= link_to dm_icon("cut", text: "Mostra materiale senza movimentazioni"), inactive_things_path %>
+  </div>
+<% end %>

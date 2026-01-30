@@ -1,0 +1,15 @@
+<%= dm_card title: "Laboratori (Opzionale)" do %>
+  <div class="alert alert-info">
+    Lista di possibili laboratori (per didattica) associabili agli scarichi e alle prenotazioni.
+  </div>
+  <div class="list-group">
+    <% current_organization.labs.each do |lab| %>
+      <%= link_to [:edit, lab], class: "list-group-item list-group-item-action py-1" do %>
+        <%= lab %>
+      <% end %>
+    <% end %>
+  </div>
+  <% if policy(:lab).new? %>
+    <%= link_to "Nuovo laboratorio", new_lab_path, class: "btn btn-primary my-2" %>
+  <% end %>
+<% end %>

@@ -1,0 +1,12 @@
+<%= dm_card title: "Ubicazioni" do %>
+  <div class="list-group">
+    <% @locations.each do |location| %>  
+      <%= link_to [:edit, location], class: "list-group-item list-group-item-action py-1" do %>
+        <%= location %>
+      <% end %>
+    <% end %>
+  </div>
+  <div>
+    <%= link_to "Nuova ubicazione", new_location_path, class: "btn btn-primary my-2" %> 
+  </div>
+<% end %>

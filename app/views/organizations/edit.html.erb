@@ -1,80 +1,12 @@
 <h1><%= current_organization.description %> <small class="text-muted"><%= current_organization.id %></small></h1>
 
 <%= render partial: "form" %>
+<%= render partial: "users" %>
+<%= render partial: "groups" %>
+<%= render partial: "picking_points" %>
+<%= render partial: "labs" %>
 
-<h2 class="my-3">Utenti</h2>
-<ul class="list-group">
-  <% @permissions_hash.each do |authlevel, permissions| %>
-    <% permissions.each do |p| %>
-      <li class="list-group-item py-1">
-        <span class="pe-2"><%= p.user ? p.user : p.network %></span>
-        <span class="badge bg-info-subtle text-dark float-end"><%= Authorization.level_description(authlevel).downcase %></span>
-      </li>
-    <% end %>
-  <% end %>
-</ul>
-<% if current_user.is_cesia? %>  
-  <%= link_to 'Modifica', dm_unibo_common.organization_permissions_path(current_organization), class: 'btn btn-primary my-2' %>  
-<% else %>
-  <div class="my-2">Per modificare la lista degli abilitati il responsabile della struttura deve scrivere all'indirizzo <a href="mailto:dipmat-gemma@unibo.it">dipmat-gemma@unibo.it</a>.</div>
-<% end %>
-
-<h2 class="my-3">Punti di ritiro</h2>
-<div class="alert alert-info">
-  Opzionale: lista di possibili punti di ritiro associabili agli scarichi e alle prenotazioni.
-</div>
-
-<div class="list-group">
-  <% current_organization.picking_points.each do |pp| %>
-    <%= link_to [:edit, pp], class: "list-group-item list-group-item-action py-1" do %>
-      <%= pp %>
-    <% end %>
-  <% end %>
-</div>
-<% if policy(:lab).new? %>
-  <%= link_to "Nuovo punto di ritiro", new_picking_point_path, class: "btn btn-primary my-2" %>
-<% end %>
-
-<h2 class="my-3">Laboratori</h2>
-<div class="alert alert-info">
-  Opzionale: lista di possibili laboratori (per didattica) associabili agli scarichi e alle prenotazioni.
-</div>
-<div class="list-group">
-  <% current_organization.labs.each do |lab| %>
-    <%= link_to [:edit, lab], class: "list-group-item list-group-item-action py-1" do %>
-      <%= lab %>
-    <% end %>
-  <% end %>
-</div>
-<% if policy(:lab).new? %>
-  <%= link_to "Nuovo laboratorio", new_lab_path, class: "btn btn-primary my-2" %>
-<% end %>
-
-<h2 class="my-3">Categorie</h2>
-<div class="list-group">
-  <% current_organization.groups.order('groups.name').each do |group| %>  
-    <%= link_to [:edit, group], class: "list-group-item list-group-item-action py-1" do %>
-      <%= group %>
-    <% end %>
-  <% end %>
-</div>
-<div>
-  <%= link_to 'Nuova categoria', new_group_path, class: "btn btn-primary my-2" %> - 
-  <%= link_to dm_icon("cut", text: "Mostra materiale senza movimentazioni"), inactive_things_path %>
-</div>
-
-<h2 class="my-3">Ubicazioni</h2>
-<div class="list-group">
-  <% @locations.each do |location| %>  
-    <%= link_to [:edit, location], class: "list-group-item list-group-item-action py-1" do %>
-      <%= location %>
-    <% end %>
-  <% end %>
-</div>
-
-<div>
-  <%= link_to "Nuova ubicazione", new_location_path, class: "btn btn-primary my-2" %> 
-</div>
+<hr/>
 
 <div class="my-2 alert alert-info">
   <strong><%= @operations_number %></strong> operazioni nell'anno corrente (<strong><%= @arch_number %></strong> in archivio).
