@@ -1,1 +1,1 @@
-class ArchTakeover  < ArchOperation; end
+class ArchTakeover < ArchOperation; end

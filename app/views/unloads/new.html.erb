@@ -30,16 +30,23 @@
         <%= f.input :number, hint: number_hint, required: true %>
       <% end %>
 
-      <% if current_organization.with_labs && current_organization.labs.any? %>
+      <% if (labs = current_organization.labs).any? %>
         <div data-controller="limit-visible">
           <div class="form-check offset-sm-3 my-4">
             <input type="checkbox" name="didattica" class="form-check-input" id="didattica" data-action="change->limit-visible#update"></input>
             <label for="didattica" class="form-check-label">Per la didattica</label>
           </div>
           <div id="lab_div" style="display: none" data-limit-visible-target="item" data-text="true">
-            <%= f.association :lab, collection: current_organization.labs, as: :radio_buttons %>
+            <%= f.association :lab, collection: labs, as: :radio_buttons %>
           </div>
         </div>
+      <% end %>
+
+      <% if (cost_centers = current_organization.cost_centers).any? %>
+        <%= f.association :cost_center, collection: cost_centers %>
+      <% end %>
+      <% if (picking_points = current_organization.picking_points).any? %>
+        <%= f.association :picking_point, collection: picking_points %>
       <% end %>
 
       <% if deposits.size > 1 %>  

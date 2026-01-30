@@ -8,7 +8,7 @@ Bundler.require(*Rails.groups)
 
 module Gemma
   class Application < Rails::Application
-    config.load_defaults 7.1
+    config.load_defaults 8.1
 
     config.autoload_paths << "#{Rails.root}/app/pdfs"
     config.time_zone = "Rome"
@@ -28,9 +28,10 @@ module Gemma
       edit: 50
     }
 
-    # config.lograge.enabled = true
-
     config.unibo_common = config_for(:unibo_common)
     config.active_record.yaml_column_permitted_classes = [Symbol]
+
+    # better for docker demo :-)
+    config.require_master_key = false
   end
 end

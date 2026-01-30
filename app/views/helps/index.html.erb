@@ -4,7 +4,7 @@
   <%= help_card title:'Accesso' do %>
     <p>
     Per essere inseriti tra gli <b>amministratori della propria struttura</b> è necessario inviare una mail di richiesta a 
-    <a href="mailto:dipmat-gemma@unibo.it">dipmat-gemma@unibo.it</a>.
+    <%= mail_to Rails.configuration.unibo_common.support_mail %>.
     </p>
     <p>
     Una volta abilitati potete loggarvi con le Credenziali di Ateneo.

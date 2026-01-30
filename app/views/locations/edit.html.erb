@@ -1,3 +1,10 @@
 <%= main_title('Modifica ubicazione') %>
 
 <%= render partial: 'form' %>  
+
+<h2 class="mt-4">Elenco materiale</h2>
+<ul>
+  <% @location.things.order(:name).each do |thing| %>
+    <li><%= thing %></li>
+  <% end %>
+</ul>

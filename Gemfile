@@ -2,7 +2,7 @@ source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 gem "dm_unibo_user_search", git: "https://github.com/donapieppo/dm_unibo_user_search.git"
-gem "dm_unibo_common", git: "https://github.com/donapieppo/dm_unibo_common.git", branch: "master"
+gem "dm_unibo_common", git: "https://github.com/donapieppo/dm_unibo_common.git", branch: "rails8"
 # gem "dm_unibo_common", path: "/home/rails/gems/dm_unibo_common/"
 
 gem "puma"
@@ -23,7 +23,8 @@ gem "aws-sdk-s3", require: false
 
 # gem 'sprockets-rails', "=3.4.2", require: 'sprockets/railtie'
 gem "sprockets-rails"
-gem "omniauth-rails_csrf_protection"
+# OmniAuth.config.request_validation_phase = OmniAuth::AuthenticityTokenProtection.new(key: :_csrf_token)
+# gem "omniauth-rails_csrf_protection"
 
 gem "bootsnap", require: false
 

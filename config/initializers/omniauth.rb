@@ -1,9 +1,10 @@
 require "dm_unibo_common/omniauth/strategies/test"
 
+OmniAuth.config.request_validation_phase = OmniAuth::AuthenticityTokenProtection.new(key: :_csrf_token)
+
 Rails.application.config.middleware.use OmniAuth::Builder do
   configure do |config|
     config.path_prefix = "/dm_unibo_common/auth"
-    # config.allowed_request_methods = [:get, :post]
   end
 
   if Rails.env.development?
@@ -16,6 +17,4 @@ Rails.application.config.middleware.use OmniAuth::Builder do
   if Rails.env.test?
     provider :test
   end
-
-  # provider :google_oauth2, ENV["GOT_GOOGLE_APP_ID"], ENV["GOT_GOOGLE_APP_SECRET"], {scope: "email"}
 end

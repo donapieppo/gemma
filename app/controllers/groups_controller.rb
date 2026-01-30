@@ -22,22 +22,22 @@ class GroupsController < ApplicationController
     end
   end
 
-  def edit 
+  def edit
   end
 
   def update
     if @group.update(name: params[:group][:name])
-      redirect_to current_organization_edit_path, notice: 'La categoria è stata aggiornata.'
-    else 
+      redirect_to current_organization_edit_path, notice: "La categoria è stata aggiornata."
+    else
       render action: :update, status: :unprocessable_entity
     end
   end
 
   def destroy
     if @group.things.empty?
-      @group.destroy 
+      @group.destroy
     end
-    redirect_to current_organization_edit_path, notice: 'Il gruppo è stato cancellato.'
+    redirect_to current_organization_edit_path, notice: "Il gruppo è stato cancellato."
   end
 
   private

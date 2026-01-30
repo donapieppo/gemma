@@ -1,0 +1,34 @@
+shared:
+  login_method: :allow_if_email
+  superusers: ["super.user@example.it"]
+  html_title: "GE.M.MA - GEstione Multiutente MAteriale di consumo"
+  html_description: "Gestione Multiutente MAteriale di consumo. Example word university"
+  header_title: "Ge.M.Ma"
+  header_subtitle: "Gestione Multiutente MAteriale di consumo"
+  header_icon: "shopping-cart"
+  contact_mail: "pietro.donatini@example.it"
+  domain_name: "example.it"
+  domain: "example.it"
+  support_mail: "gemma@example.it"
+  default_from: "Ge.M.Ma <notifica@example.it>"
+  reply_to: "pietro.dona@example.it"
+  search_wsdl_file: "/home/rails/gemma/config/DSASearch.wsdl.xml"
+  no_students: true
+  message_footer: ""
+  main_organization_name: "EXAMPLE-UNI"
+  main_organization_url: "https://www.example.unibo.it"
+  impersonate_admins: ["pietro.donatini@example.it"]
+  interceptor_mails: ["dona@dm.example.it"]
+  main_impersonations: ["pietro.dona@example.it", "maria@example.it", "sandro@example.it"]
+  home_description: |
+    <p>Applicativo per la gestione del <strong>materiale di consumo</strong> presso le strutture dell'Università di Bologna.</p>
+    <p>L'applicativo permette di tenere traccia dei materiale di consumo (materiale non soggetto ad inventariazione, di modico valore
+    o facile usura e veloce obsolescenza) dall'acquisto alla consegna.
+    Per le strutture che ne fanno richiesta è possibile permettere ai colleghi la prenotazione del materiale presente in magazzino.</p>
+
+development:
+  omniauth_provider:   :developer 
+  searchable_provider: true
+  host:                localhost
+  smtp_unibo:          true
+

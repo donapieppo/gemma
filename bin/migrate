@@ -1,0 +1,30 @@
+#!/bin/bash
+
+( hostname -f | grep -q 'truffaut.cesia.unibo.it' ) || exit 0
+
+ssh donatini.adm@railsdb-01 "mysqldump gemma" > tmp/gemma.mysql
+
+( hostname -f | grep -q 'truffaut.cesia.unibo.it' ) && mysql -e 'drop database gemma; create database gemma'
+( hostname -f | grep -q 'truffaut.cesia.unibo.it' ) && mysql gemma < tmp/gemma.mysql
+
+mysql gemma -e "update users set email=upn"
+
+( hostname -f | grep -q 'truffaut.cesia.unibo.it' ) && mysql gemma < doc/changes.sql
+
+( hostname -f | grep -q 'truffaut.cesia.unibo.it' ) && ./bin/rails db:schema:dump
+
+# mysql gemma -e "OPTIMIZE TABLE operations"
+# mysql gemma -e "OPTIMIZE TABLE users"
+# mysql gemma -e "OPTIMIZE TABLE things"
+# mysql gemma -e "OPTIMIZE TABLE moves"
+# mysql_upgrade  --force
+
+# ./bin/rails c ActiveStorage::VariantRecord.destroy_all
+# rm -rf storage/va/ri/variants/*
+# mkdir /tmp/images
+# cd storage
+# find */* -type f | xargs -i cp {} /tmp/images/
+# cd /tmp/images
+# aws s3 sync . s3://unibo-gemma/ --dryrun --delete
+# mysql gemma -e "update active_storage_blobs set service_name='amazon'";
+# set amazon in storage

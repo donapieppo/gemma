@@ -63,6 +63,8 @@ module Gemma
         new_attributes.delete("avoid_price_updating")
         new_attributes.delete("id")
         new_attributes.delete("created_at")
+        new_attributes.delete("cost_center_id")
+        new_attributes.delete("picking_point_id")
         new_attributes.delete("lab_id")
         new_attributes["upn"] = User.find(operation.user_id).upn
         new_attributes["recipient"] = User.find(operation.recipient_id).upn if operation.recipient_id.to_i > 0

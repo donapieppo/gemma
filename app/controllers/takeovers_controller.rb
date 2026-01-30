@@ -4,7 +4,7 @@ class TakeoversController < ApplicationController
 
   def new
     @takeover = @thing.takeovers.new(date: Date.today, organization_id: current_organization.id)
-    @numbers  = {}
+    @numbers = {}
     authorize @takeover
   end
 
@@ -16,7 +16,7 @@ class TakeoversController < ApplicationController
 
     @takeover.organization_id = current_organization.id
     @takeover.user_id = current_user.id
-    if recipient_upn =~ /(\w+\.\w+@unibo.it)/
+    if recipient_upn =~ /(\w+@\w+.\w+)/
       @takeover.recipient_upn = $1
     end
 
@@ -24,7 +24,7 @@ class TakeoversController < ApplicationController
 
     # il create non dede raisare perchè sempre history_coherent
     if @takeover.save
-      redirect_to group_things_path(@takeover.thing.group_id, from_thing: @takeover.thing.id), notice: 'Presa consegna registrata correttamente.'
+      redirect_to group_things_path(@takeover.thing.group_id, from_thing: @takeover.thing.id), notice: "Presa consegna registrata correttamente."
     else
       render action: :new, status: :unprocessable_entity
     end
@@ -46,7 +46,7 @@ class TakeoversController < ApplicationController
     end
 
     if res
-      redirect_to thing_moves_path(@takeover.thing_id), notice: 'Aggiornamento avvenuto correttamente'
+      redirect_to thing_moves_path(@takeover.thing_id), notice: "Aggiornamento avvenuto correttamente"
     else
       @numbers = @takeover.numbers_hash
       render action: :edit, status: :unprocessable_entity
@@ -54,7 +54,7 @@ class TakeoversController < ApplicationController
   end
 
   def destroy
-    begin 
+    begin
       res = @takeover.destroy
     rescue Gemma::NegativeDeposit => e
       @takeover.errors.add(:base, e.to_s)
@@ -64,7 +64,7 @@ class TakeoversController < ApplicationController
     if res
       flash[:notice] = "L'operazione di presa consegna è stata eliminata."
     else
-      flash[:error] = 'Non è stato possibile eliminare la presa consegna. Controllare che la sua cancellazione non precluda scarichi successivi.'
+      flash[:error] = "Non è stato possibile eliminare la presa consegna. Controllare che la sua cancellazione non precluda scarichi successivi."
     end
 
     redirect_to thing_moves_path(@takeover.thing_id)

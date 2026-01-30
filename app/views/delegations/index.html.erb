@@ -1,31 +1,50 @@
 <h1>Deleghe attive</h1>
 
 <p class="centered_action">
-  <%= link_to 'Nuova delega', new_delegation_path, class: 'btn btn-primary my-2' %>  
+<%= link_to 'Nuova delega', new_delegation_path, class: 'btn btn-primary my-2' %>  
 </p>
 
-<% @delegations.keys.sort_by(&:surname).each do |delegator| %>  
-  <div class="list-group">
-    <div class="list-group-item py-2" onclick="hide_and_show(this)" style="cursor: pointer">
-      <strong><%= delegator.cn.upcase %> (<%= delegator.upn %>)</strong> 
+<div class="accordion" id="accordion">
+  <% @delegations.keys.sort_by(&:surname).each do |delegator| %>  
+    <div class="accordion-item">
+      <div class="accordion-header">
+        <button class="accordion-button collapsed py-2" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#delegator-<%= delegator.id %>"
+                aria-expanded="false"
+                aria-controls="delegator-<%= delegator.id %>">
+          <strong><%= delegator.cn_militar.upcase %></strong> &nbsp; (<%= delegator.upn %>)
+        </button>
+      </div>
+      <div id="delegator-<%= delegator.id %>" class="accordion-collapse collapse" data-bs-parent="#accordion">
+        <div class="accordion-body">
+          <div class="py-2">
+            Elenco delegati:
+          </div>
+          <ul class="">
+            <% @delegations[delegator].each do |delegation| %>
+              <li class="d-flex justify-content-between">
+                <div>
+                  <%= delegation.delegate %> (<%= delegation.delegate.upn %>) 
+                </div>
+                <div>
+                  <% if delegation.cost_center %>
+                    per <strong><%= delegation.cost_center %></strong>
+                  <% end %>
+                  <% if delegation.picking_point %>
+                    presso <strong><%= delegation.picking_point %></strong>
+                  <% end %>
+                  <%= link_to_delete "", delegation %>
+                  <%= link_to_edit "", [:edit, delegation] %>
+                </div>
+              </li>
+            <% end %>
+          </ul>
+          <div class="text-end">
+            <%= link_to "Nuova delega per #{delegator}", new_delegation_path(delegator_id: delegator.id), class: "btn btn-sm btn-primary" %>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="list-group-item hide_and_show" style="display: none">
-      <ul>
-      <% @delegations[delegator].each do |delegation| %>
-        <li><%= delegation.delegate %> (<%= delegation.delegate.upn %>) <%= link_to_delete "", delegation %></li>
-      <% end %>
-      </ul>
-    </div>
-  </div>
-<% end %>
-
-<%= javascript_tag do %>  
-  function hide_and_show(e) {
-    x = e.nextElementSibling;
-    if (x.style.display === "none") {
-      x.style.display = "block";
-    } else {
-      x.style.display = "none";
-    }
-  }
-<% end %>
+  <% end %>
+</div>

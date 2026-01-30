@@ -17,7 +17,9 @@ class GemmaReport
               totalprice: "Prezzo Totale",
               upn: "Operatore",
               supplier: "Fornitore",
-              code: "Codice Fornitore"}
+              code: "Codice Fornitore",
+              cost_center: "Centro di costo",
+              picking_point: "Punto di ritiro"}
 
   @@format = {thing: " %.80s ",
               description: " %.60s ",
@@ -34,7 +36,9 @@ class GemmaReport
               price_operations: " %s ",
               totalprice: " %8.2f€ ",
               code: " - codice %s",
-              upn: " %s"}
+              upn: " %s",
+              cost_center: " spesa: %s",
+              picking_point: " ritiro: %s"}
 
   @@operation_to_s = {"Unlod" => "Scarico",
                       "Load" => "Carico",
@@ -255,7 +259,7 @@ class GemmaReport
   end
 
   def print_first_line(record)
-    if @separator_first_line && @separator_first_line.has_key?(record[@separator_first_line_field].to_s)
+    if @separator_first_line&.has_key?(record[@separator_first_line_field].to_s)
       @pdf.text @separator_first_line[record[@separator_first_line_field].to_s]
       @pdf.move_down 2
     end
@@ -266,7 +270,7 @@ class GemmaReport
   def print_last_line
     # se non siamo abbiamo ancora un vecchio gruppo con cui chiudere
     @last_record or return
-    if @last_record && @separator_last_line && @separator_last_line.has_key?(@last_record[@separator_last_line_field].to_s)
+    if @last_record && @separator_last_line&.has_key?(@last_record[@separator_last_line_field].to_s)
       @pdf.text @separator_last_line[@last_record[@separator_last_line_field].to_s]
       @pdf.move_down 2
     end

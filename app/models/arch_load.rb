@@ -1,1 +1,1 @@
-class ArchLoad    < ArchOperation; end
+class ArchLoad < ArchOperation; end
