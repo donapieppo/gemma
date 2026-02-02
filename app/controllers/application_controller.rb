@@ -9,14 +9,19 @@ class ApplicationController < DmUniboCommon::ApplicationController
   # formally accept affiliation if
   # not session booking
   # and have no authorization in current_organization
+  # if is delegated in only one organization redirect to it
   def after_current_user_and_organization
     if current_organization
       if session[:booking] != current_organization.id && current_organization.booking && !policy(current_organization).unload?
         redirect_to current_organization_booking_accept_path
       end
     elsif current_user
-      logger.info("No current_organization. Redirect #{current_user.upn} to home")
-      redirect_to home_path(__org__: nil)
+      if current_user.delegations_as_delegate.pluck(:organization_id).count == 1
+        redirect_to home_path(__org__: current_user.delegations_as_delegate.first.organization.code)
+      else
+        logger.info("No current_organization. Redirect #{current_user.upn} to home")
+        redirect_to home_path(__org__: nil)
+      end
     end
   end
 
