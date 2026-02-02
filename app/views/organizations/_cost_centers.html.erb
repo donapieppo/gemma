@@ -1,0 +1,11 @@
+<% if (cost_centers = current_organization.cost_centers).any? %>
+  <%= dm_card title: "Centri di costo" do %>
+    <div class="list-group">
+      <% cost_centers.each do |cc| %>
+        <div class="list-group-item py-1">
+          <%= cc %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

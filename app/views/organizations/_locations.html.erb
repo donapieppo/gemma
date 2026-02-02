@@ -1,6 +1,6 @@
 <%= dm_card title: "Ubicazioni" do %>
   <div class="list-group">
-    <% @locations.each do |location| %>  
+    <% current_organization.locations.order(:name).each do |location| %>  
       <%= link_to [:edit, location], class: "list-group-item list-group-item-action py-1" do %>
         <%= location %>
       <% end %>

@@ -5,18 +5,19 @@
 <%= render partial: "groups" %>
 <%= render partial: "picking_points" %>
 <%= render partial: "labs" %>
+<%= render partial: "cost_centers" %>
 
 <hr/>
 
 <div class="my-2 alert alert-info">
-  <strong><%= @operations_number %></strong> operazioni nell'anno corrente (<strong><%= @arch_number %></strong> in archivio).
+  <strong><%= current_organization.operations.where("YEAR(date) = YEAR(NOW())").count %></strong> operazioni nell'anno corrente (<strong><%= @arch_number %></strong> in archivio).
 </div>
 
 <div class="row">
   <div class="col-md-8">
     <%= dm_card title: "Ultimi movimenti" do %> 
       <ul>
-        <% @operations.each do |o| %>  
+        <% current_organization.operations.includes(:thing, :user).order("date desc").limit(10).each do |o| %>  
           <li title="<%= o.thing %>">
             <%= l o.date %> - <%= o.user %> <%= " per #{o.recipient}" if o.recipient_id %> 
             (<%= link_to (t o.type.downcase), thing_moves_path(o.thing_id) %>)
@@ -28,7 +29,7 @@
   <div class="col-md-4">
     <%= dm_card title: "Ultimi ddt/fatture" do  %>  
       <ul>
-        <% @ddts.each do |ddt| %>  
+        <% current_organization.ddts.order("date desc").limit(10).each do |ddt| %>  
           <li>
             <%= ddt.gen %> n.<%= link_to ddt.number, ddt %> <small>(<%= l ddt.date %>)</small>
           </li>

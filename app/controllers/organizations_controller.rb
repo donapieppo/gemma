@@ -15,21 +15,11 @@ class OrganizationsController < ApplicationController
   def edit
     authorize current_organization
 
-    @ddts = current_organization.ddts.order("date desc").limit(10)
-    @operations = current_organization.operations.includes(:thing, :user).order("date desc").limit(10)
-
     # sanitize_sql_array(["name=? and group_id=?", "foo'bar", 4])
     q = "SELECT count(*) from arch_operations WHERE organization_id = #{current_organization.id.to_i}"
     @arch_number = ApplicationRecord.connection.execute(q).first[0]
-    @operations_number = current_organization.operations.where("YEAR(date) = YEAR(NOW())").count
 
-    @permissions_hash = Hash.new { |hash, key| hash[key] = [] }
-
-    current_organization.permissions.includes(:user).order("authlevel desc, users.upn asc").references(:user).each do |permission|
-      @permissions_hash[permission.authlevel] << permission
-    end
-
-    @locations = current_organization.locations.order(:name)
+    fill_permission_hash
   end
 
   def update
@@ -37,6 +27,7 @@ class OrganizationsController < ApplicationController
     if current_organization.update(organization_params)
       redirect_to current_organization_edit_path, notice: "La Struttura è stata modificata."
     else
+      fill_permission_hash
       render action: :edit, status: :unprocessable_entity
     end
   end
@@ -72,5 +63,12 @@ class OrganizationsController < ApplicationController
     p = [:pricing, :sendmail, :adminmail]
     p += [:name, :description, :code, :booking] if current_user.is_cesia?
     params[:organization].permit(p)
+  end
+
+  def fill_permission_hash
+    @permissions_hash = Hash.new { |hash, key| hash[key] = [] }
+    current_organization.permissions.includes(:user).order("authlevel desc, users.upn asc").references(:user).each do |permission|
+      @permissions_hash[permission.authlevel] << permission
+    end
   end
 end
