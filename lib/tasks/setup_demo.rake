@@ -8,7 +8,7 @@ namespace :db do
       o1 = Organization.find_or_create_by!(code: "demo1") do |organization|
         organization.name = "Demo Organizations 1"
         organization.description = "Demo Organizations 1"
-        o1.pricing = 1
+        organization.pricing = 1
       end
       o2 = Organization.find_or_create_by!(code: "demo2") do |organization|
         organization.name = "Demo Organizations 2"
