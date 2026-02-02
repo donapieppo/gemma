@@ -11,7 +11,7 @@ WORKDIR /rails
 
 # Install base packages
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y git curl default-mysql-client libjemalloc2 libvips fonts-liberation && \
+    apt-get install --no-install-recommends -y git curl default-mysql-client libjemalloc2 libvips fonts-jetbrains-mono && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Set production environment

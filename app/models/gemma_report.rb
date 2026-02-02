@@ -95,12 +95,12 @@ class GemmaReport
     case @format
     when "pdf"
       @pdf = Prawn::Document.new
-      @pdf.font_families.update("LiberationMono" => {
-        bold: "/usr/share/fonts/truetype/liberation/LiberationMono-Regular.ttf",
-        normal: "/usr/share/fonts/truetype/liberation/LiberationMono-Italic.ttf",
-        italic: "/usr/share/fonts/truetype/liberation/LiberationMono-Bold.ttf"
+      @pdf.font_families.update("JetBrainsMono" => {
+        normal: "/usr/share/fonts/truetype/jetbrains-mono/JetBrainsMono-Regular.ttf",
+        italic: "/usr/share/fonts/truetype/jetbrains-mono/JetBrainsMono-Italic.ttf",
+        bold: "/usr/share/fonts/truetype/jetbrains-mono/JetBrainsMono-Bold.ttf"
       })
-      @pdf.font "LiberationMono"
+      @pdf.font "JetBrainsMono"
       @pdf.font_size = 8
       pdf_head
       pdf_intro
@@ -161,7 +161,7 @@ class GemmaReport
     @pdf.draw_text @title,
       at: [@pdf.bounds.left + 80, @pdf.bounds.top - 50], style: :bold
 
-    @pdf.move_down 40
+    @pdf.move_down 30
   end
 
   def pdf_intro
@@ -241,7 +241,7 @@ class GemmaReport
       end
 
       @pdf.text line
-      @pdf.move_down 2
+      @pdf.move_down 4
 
       @last_record = record
     end
@@ -261,7 +261,7 @@ class GemmaReport
   def print_first_line(record)
     if @separator_first_line&.has_key?(record[@separator_first_line_field].to_s)
       @pdf.text @separator_first_line[record[@separator_first_line_field].to_s]
-      @pdf.move_down 2
+      @pdf.move_down 4
     end
   end
 
@@ -272,7 +272,7 @@ class GemmaReport
     @last_record or return
     if @last_record && @separator_last_line&.has_key?(@last_record[@separator_last_line_field].to_s)
       @pdf.text @separator_last_line[@last_record[@separator_last_line_field].to_s]
-      @pdf.move_down 2
+      @pdf.move_down 4
     end
 
     if @accumulator
