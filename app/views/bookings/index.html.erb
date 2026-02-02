@@ -12,7 +12,12 @@
         <%= render Booking::LineComponent.new(book) %>
       <% end %>
       <div class="text-end my-2">
-        <%= button_to "Conferma tutte le prenotazioni di #{user}", confirm_all_user_bookings_path(@users_bookings[user].first.user_id, booking_ids: @users_bookings[user].map(&:id)), class: "text-decoration-underline" %>
+        <%= 
+          button_to "Conferma tutte le prenotazioni di #{user}",
+            confirm_all_user_bookings_path(@users_bookings[user].first.user_id, booking_ids: @users_bookings[user].map(&:id)),
+            class: "text-decoration-underline",
+            form: {data: {"turbo-confirm": "Sicuri di volere confermare TUTTE le prenotazioni?"}} 
+        %>
       </div>
     <% end %>
   </div>
