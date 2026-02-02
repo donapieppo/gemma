@@ -89,7 +89,7 @@ class BookingsController < ApplicationController
     current_organization.bookings.where(id: params[:booking_ids], user_id: params["user_id"]).each do |booking|
       booking.confirm
     end
-    redirect_to bookings_path
+    redirect_to bookings_path, notice: "Prenotazioni confermate."
   end
 
   private
