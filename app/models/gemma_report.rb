@@ -150,7 +150,7 @@ class GemmaReport
   end
 
   def pdf_head
-    @pdf.image "#{GEMMA_IMAGE_DIR}/sigillo1.png", width: 54, height: 52
+    @pdf.image "#{GEMMA_IMAGE_DIR}/logo.png", width: 54
 
     @pdf.draw_text "GEMMA: Reportistica del #{Time.now.strftime("%d/%m/%Y")}",
       at: [@pdf.bounds.left + 80, @pdf.bounds.top - 10]
@@ -161,7 +161,7 @@ class GemmaReport
     @pdf.draw_text @title,
       at: [@pdf.bounds.left + 80, @pdf.bounds.top - 50], style: :bold
 
-    @pdf.move_down 20
+    @pdf.move_down 40
   end
 
   def pdf_intro
