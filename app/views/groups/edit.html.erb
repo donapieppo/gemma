@@ -1,2 +1,9 @@
 <%= render partial: 'form' %>  
 
+Lista articoli:
+
+<ul>
+  <% @group.things.order(:name).each do |thing| %>
+    <li><%= thing %></li>
+  <% end %>
+</ul>
