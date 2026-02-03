@@ -2,7 +2,14 @@
 
 <div class="list-group">
   <% @groups.each do |group| %>
-    <%= link_to group, group_things_path(group), class: "list-group-item list-group-item-action py-2" %>
+    <% if !group.hidden || policy(current_organization).manage? %>
+      <%= link_to group_things_path(group), class: "list-group-item list-group-item-action py-2" do %>
+        <%= group %>
+        <% if group.hidden %>
+          <div class="badge bg-warning text-black float-end">Nascosto</div>
+        <% end %>
+      <% end %>
+    <% end %>
   <% end %>
 </div>
 
