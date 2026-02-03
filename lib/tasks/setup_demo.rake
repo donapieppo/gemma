@@ -19,6 +19,10 @@ namespace :db do
         organization.description = "Demo Organizations 3"
       end
 
+      o1.create_default_location
+      o2.create_default_location
+      o3.create_default_location
+
       u1 = User.find_or_create_by!(upn: "admin.user@example.com") do |user|
         user.email = "admin.user@example.com"
         user.surname = "ADMIN"
@@ -41,8 +45,6 @@ namespace :db do
 
       # basic data on o2 and o3. o1 in empty
       g21 = o2.groups.find_or_create_by(name: "Carta")
-      deposit = o2.deposist.first
-      o2.create_default_location
       g21.things.find_or_create_by(organization: o2, name: "Carta A3", minimum: 10)
       g21.things.find_or_create_by(organization: o2, name: "Carta A4", minimum: 10)
       puts "Demo data loaded successfully."
