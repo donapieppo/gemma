@@ -1,3 +1,5 @@
+ALTER TABLE `groups` ADD COLUMN `hidden` BOOL DEFAULT false;
+
 -- ALTER TABLE things ADD COLUMN dewars text;
 CREATE TABLE `picking_points` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
