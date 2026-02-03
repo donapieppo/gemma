@@ -76,6 +76,7 @@ it:
         number: Numero
       group:
         name: Categoria
+        hidden: Nascosto
       thing:
         group: Genere
         minimum: Scorta minima
@@ -119,6 +120,8 @@ it:
 
   simple_form:
     hints:
+      group:
+        hidden: Se abilitato la categoria e i suoi oggetti sono nascosti agli utenti.
       delegation:
         delegator_upn: Indirizzo email del responsabile dei fondi.
         delegate_upn: Indirizzo email della persona delegata a ritirale in materiale in nome del delegante sopra.
