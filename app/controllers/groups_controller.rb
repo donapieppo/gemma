@@ -16,7 +16,7 @@ class GroupsController < ApplicationController
     authorize @group
 
     if @group.save
-      redirect_to current_organization_edit_path, notice: 'La nuova categoria è stata creata.'
+      redirect_to current_organization_edit_path, notice: "La nuova categoria è stata creata."
     else
       render action: :new, status: :unprocessable_entity
     end
@@ -26,7 +26,7 @@ class GroupsController < ApplicationController
   end
 
   def update
-    if @group.update(name: params[:group][:name])
+    if @group.update(group_params)
       redirect_to current_organization_edit_path, notice: "La categoria è stata aggiornata."
     else
       render action: :update, status: :unprocessable_entity
@@ -48,6 +48,6 @@ class GroupsController < ApplicationController
   end
 
   def group_params
-    params[:group].permit(:name)
+    params[:group].permit(:name, :hidden)
   end
 end
