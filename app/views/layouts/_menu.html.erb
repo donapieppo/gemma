@@ -3,13 +3,16 @@
 <% end %>
 
 <% search_component = DmUniboCommon::SearchComponent.new(search_path: search_path, placeholder: "Cerca", title: "Cerca il materiale", type: "string") %>  
+
 <%= render DmUniboCommon::MenuComponent.new(sso_user_upn, current_organization: current_organization, search_component: search_component) do %>  
   <% if current_user && current_organization %>  
     <%= dropdown_menu :category, dm_icon('list', text: "Cat.", size: :xl) do %>  
       <% current_organization.groups.order(:name).each do |g| %>
+        <% if !g.hidden || policy(current_organization).manage? %>
         <li><%= link_to dm_icon('angle-right', text: g.to_s), group_things_path(g) %></li>
+        <% end %>
       <% end %>
-      <% if current_organization && policy(current_organization).manage? %>  
+      <% if policy(current_organization).manage? %>  
         <div class="dropdown-divider"></div>
         <li><%= link_to dm_icon('plus', text: "Nuova categoria"), new_group_path %></li>
       <% end %>
@@ -19,7 +22,7 @@
       <li><%= link_to dm_icon('shopping-cart', text: "Carrello", size: :xl), bookings_path %></li>
     <% end %>
 
-    <% if current_organization && policy(current_organization).manage? %>  
+    <% if policy(current_organization).manage? %>  
       <%= dropdown_menu :amm, dm_icon('cogs', text: "Amm.", size: :xl) do  %>
         <li><%= link_to dm_icon('cubes', text: "Ubicazioni"), locations_path %></li>
         <li><%= link_to dm_icon('file-alt', text: "DDT/Fatture"), ddts_path %></li>
