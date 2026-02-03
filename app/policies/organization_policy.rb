@@ -15,8 +15,7 @@ class OrganizationPolicy < DmUniboCommon::OrganizationPolicy
     (
       @user&.current_organization&.booking &&
       !@user.authorization.can_unload?(@user.current_organization)
-    ) ||
-    @user.authorization.can_only_book?(@user.current_organization)
+    ) || @user.authorization.can_only_book?(@user.current_organization)
   end
 
   def show?
