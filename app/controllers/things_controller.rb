@@ -145,9 +145,11 @@ class ThingsController < ApplicationController
       sql_stringa = "%#{stringa_ricerca}%"
       current_organization.things
         .includes(:group, :barcodes, :images)
+        .joins(:group)
         .order(:name)
+        .where(groups: { hidden: false })
         .where("things.name LIKE ? OR things.description LIKE ? OR barcodes.name LIKE ?", sql_stringa, sql_stringa, sql_stringa)
-        .references(:things, :barcodes)
+        .references(:things, :barcodes, :groups)
     end
   end
 
