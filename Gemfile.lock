@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/donapieppo/dm_unibo_common.git
-  revision: 608f45711eaa8ea032f12866ddb093b93b4bc293
+  revision: 3d0f85afc27cc73ccb3871c63645b9f2a0d3f790
   branch: rails8
   specs:
     dm_unibo_common (6.0.0)
