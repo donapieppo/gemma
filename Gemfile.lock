@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/donapieppo/dm_unibo_common.git
-  revision: 119b72dd707e74317badd0301e9a8614b6daf0c3
+  revision: 608f45711eaa8ea032f12866ddb093b93b4bc293
   branch: rails8
   specs:
     dm_unibo_common (6.0.0)
@@ -120,8 +120,8 @@ GEM
       nokogiri
     ast (2.4.3)
     aws-eventstream (1.4.0)
-    aws-partitions (1.1211.0)
-    aws-sdk-core (3.241.4)
+    aws-partitions (1.1213.0)
+    aws-sdk-core (3.242.0)
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.992.0)
       aws-sigv4 (~> 1.9)
@@ -175,7 +175,7 @@ GEM
       multi_test (~> 1.1)
       sys-uname (~> 1.3)
     cucumber-ci-environment (11.0.0)
-    cucumber-core (16.1.1)
+    cucumber-core (16.2.0)
       cucumber-gherkin (> 36, < 40)
       cucumber-messages (> 31, < 33)
       cucumber-tag-expressions (> 6, < 9)
@@ -255,7 +255,7 @@ GEM
     jmespath (1.6.2)
     jsbundling-rails (1.3.1)
       railties (>= 6.0.0)
-    json (2.18.0)
+    json (2.18.1)
     jwt (3.1.2)
       base64
     language_server-protocol (3.17.0.5)
