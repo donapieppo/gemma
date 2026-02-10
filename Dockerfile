@@ -4,6 +4,7 @@
 ARG RUBY_VERSION=3.4
 FROM registry.docker.com/library/ruby:$RUBY_VERSION-slim AS base
 LABEL org.opencontainers.image.authors="Pietro Donatini <pietro.donatini@unibo.ir>"
+LABEL org.opencontainers.image.description="Gemma"
 LABEL org.opencontainers.image.source="https://github.com/donapieppo/gemma" 
 
 # Rails app lives here
@@ -11,7 +12,7 @@ WORKDIR /rails
 
 # Install base packages
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y default-mysql-client libjemalloc2 libvips fonts-jetbrains-mono && \
+    apt-get install --no-install-recommends -y libjemalloc2 libvips fonts-jetbrains-mono default-libmysqlclient-dev && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Set production environment
@@ -25,7 +26,7 @@ FROM base AS build
 
 # Install packages needed to build gems and node modules
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential git curl default-libmysqlclient-dev libyaml-dev node-gyp pkg-config python-is-python3 && \
+    apt-get install --no-install-recommends -y build-essential git curl libyaml-dev node-gyp pkg-config python-is-python3 && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Install application gems
