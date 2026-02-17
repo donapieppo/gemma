@@ -8,15 +8,22 @@ class DsaAwesompleteComponent < ViewComponent::Base
   def initialize(current_organization_id, form, what, hint: "")
     @form = form
     @what = what
+    @hint = hint
 
+    @cache_users_json = organization_users_cache(current_organization_id)
+  end
+
+  private
+
+  def clear_users_cache
     if (Time.now - @@organization_users_cache_start) > 300
       @@organization_users_cache = {}
       @@organization_users_cache_start = Time.now
     end
-    if !@@organization_users_cache.key?(current_organization_id)
-      @@organization_users_cache[current_organization_id] ||= User.all_in_cache(current_organization_id).map { |x| "#{x} (#{x.upn})" }.to_json
-    end
+  end
 
-    @cache_users_json = @@organization_users_cache[current_organization_id]
+  def organization_users_cache(current_organization_id)
+    clear_users_cache
+    @@organization_users_cache[current_organization_id] ||= User.all_in_cache(current_organization_id).map { |x| "#{x} (#{x.upn})" }.to_json
   end
 end
