@@ -12,7 +12,7 @@ class Delegation < ApplicationRecord
     throw(:abort) unless @_delegator_upn # explicitly halt callbacks.
     begin
       user_delegator = User.find_or_syncronize(@_delegator_upn)
-      Rails.logger.info user_delegator.inspect
+      Rails.logger.info "dm_unibo_common validate_delegator with #{user_delegator.upn}"
       self.delegator_id = user_delegator.id
     rescue => e
       Rails.logger.info "#{e} while validating delegator: #{@_delegator_upn}"
@@ -25,7 +25,7 @@ class Delegation < ApplicationRecord
     throw(:abort) unless @_delegate_upn # explicitly halt callbacks.
     begin
       user_delegate = User.find_or_syncronize(@_delegate_upn)
-      Rails.logger.info user_delegate.inspect
+      Rails.logger.info "dm_unibo_common validate_delegate with #{user_delegate.upn}"
       self.delegate_id = user_delegate.id
     rescue => e
       Rails.logger.info "#{e} while validating delegate: #{@_delegate_upn}"
@@ -35,7 +35,7 @@ class Delegation < ApplicationRecord
   end
 
   def delegator_upn=(d)
-    @_delegator_upn = (d =~ /(\w+\.\w+)/) ? "#{Regexp.last_match(1)}@unibo.it" : "wrong upn"
+    @_delegator_upn = d
   end
 
   def delegator_upn
@@ -43,7 +43,7 @@ class Delegation < ApplicationRecord
   end
 
   def delegate_upn=(d)
-    @_delegate_upn = (d =~ /(\w+\.\w+)/) ? "#{Regexp.last_match(1)}@unibo.it" : "wrong upn"
+    @_delegate_upn = d
   end
 
   def delegate_upn
