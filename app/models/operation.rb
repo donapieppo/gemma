@@ -176,9 +176,13 @@ class Operation < ApplicationRecord
 
   def validate_recipient
     return true if @_recipient_upn.blank?
-    Rails.logger.info("validating recipient_upn=#{@_recipient_upn}")
+    Rails.logger.info("Operation: validating recipient_upn=#{@_recipient_upn}")
     begin
-      u = User.find_or_syncronize(@_recipient_upn)
+      u = if Rails.configuration.unibo_common.searchable_provider
+        User.find_or_syncronize(@_recipient_upn)
+      else
+        User.find_by_upn(@_recipient_upn)
+      end
       self.recipient_id = u.id
     rescue => e
       Rails.logger.info "#{e} while validating recipient_upn=#{@_recipient_upn}"
