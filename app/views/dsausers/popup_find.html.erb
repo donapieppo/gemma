@@ -1,4 +1,4 @@
-<%= render DmUniboCommon::ModalComponent.new(title: "Ricerca in rubrica di Ateneo", noactions: true) do %>
+<%= render DmUniboCommon::ModalComponent.new(title: "Ricerca utente", noactions: true) do %>
   <% if Rails.configuration.unibo_common.searchable_provider %>
     <%= form_tag find_user_path, class: 'simple_form mb-3' do %>
       <div class="form-group row">
@@ -17,7 +17,9 @@
   <% end %>
 
   <% if @cache_users.length > 0 %>
-    <p class="info">Oppure puoi scegliere tra questi utenti precedentemente selezionati: </p>
+    <% if Rails.configuration.unibo_common.searchable_provider %>
+      <p class="info">Oppure puoi scegliere tra questi utenti precedentemente selezionati: </p>
+    <% end %>
 
     <ul id="previus_users">
       <% iniziale = '' %>
