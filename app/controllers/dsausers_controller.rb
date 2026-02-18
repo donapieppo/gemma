@@ -9,11 +9,11 @@ class DsausersController < ApplicationController
 
   def find
     authorize :dsauser
-    str = params[:dsauser][:nome] + ' ' + params[:dsauser][:cognome]
+    str = params[:dsauser][:nome] + " " + params[:dsauser][:cognome]
     logger.info("DsaSearch for #{str}")
     @dsa_result = User.search(str)
     respond_to do |format|
-      format.turbo_stream 
+      format.turbo_stream
     end
   end
 end
