@@ -19,19 +19,19 @@ module Gemma
     # nel caso di container caldo l'azoto usato e' x * config.containers_with_multipliers[x]
     config.dewar_liters_and_hot_liters = {
       3 => 10,
-      4 => 11,
+      4 => 12,
       5 => 13,
-      10 => 19,
-      20 => 32,
+      10 => 20,
+      20 => 33,
       25 => 39,
-      30 => 45,
+      30 => 46,
       35 => 52,
-      40 => 58,
-      50 => 71,
-      60 => 84,
-      80 => 110,
-      100 => 136,
-      120 => 162
+      40 => 59,
+      50 => 72,
+      60 => 85,
+      80 => 111,
+      100 => 137,
+      120 => 163
     }
     config.possible_dewars = config.dewar_liters_and_hot_liters.keys
   end
