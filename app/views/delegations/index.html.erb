@@ -5,7 +5,7 @@
 </p>
 
 <div class="accordion" id="accordion">
-  <% @delegations.keys.sort_by(&:surname).each do |delegator| %>  
+  <% @delegations.keys.sort_by{ |k| "#{k.surname} #{k.upn}"}.each do |delegator| %>  
     <div class="accordion-item">
       <div class="accordion-header">
         <button class="accordion-button collapsed py-2" type="button"
