@@ -16,9 +16,7 @@ class TakeoversController < ApplicationController
 
     @takeover.organization_id = current_organization.id
     @takeover.user_id = current_user.id
-    if recipient_upn =~ /(\w+@\w+.\w+)/
-      @takeover.recipient_upn = $1
-    end
+    @takeover.recipient_upn = recipient_upn
 
     authorize @takeover
 

@@ -145,7 +145,7 @@ class Operation < ApplicationRecord
 
   # can submit 'pietro.donatini' 'pietro.donatini@unibo.it' 'Pietro donatini pietro.donatini@unibo.it'
   def recipient_upn=(upn)
-    @_recipient_upn = if !upn.include?("@") && (upn =~ /(\w+\.\w+)/)
+    @_recipient_upn = if !upn&.include?("@") && (upn =~ /(\w+\.\w+)/)
       "#{$1}@#{Rails.configuration.unibo_unibo.domain}"
     else
       upn
