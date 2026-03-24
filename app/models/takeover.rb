@@ -5,10 +5,10 @@ class Takeover < Operation
 
   validate :validate_numbers 
 
-  validates :recipient_id, presence: { message: 'Utente non riconosciuto.' }
+  validates :recipient_id, presence: {message: "Utente non riconosciuto."}
 
   before_save :decide_for_history_coherent
-  
+
   def initialize(attributes = nil)
     if attributes.is_a?(Hash)
       attributes[:ddt_id] = nil
@@ -20,20 +20,20 @@ class Takeover < Operation
 
   # i carichi nuovi sono sempre safe 
   def decide_for_history_coherent
-    avoid_history_coherent = self.new_record? 
+    avoid_history_coherent = self.new_record?
   end
 
   # FIXME da fare dry con Unload
   def validate_numbers
     if !self.numbers || self.numbers.empty?
-      errors.add(:base, 'È necessario indicare la quantità di oggetti e la loro provenienza')
+      errors.add(:base, "È necessario indicare la quantità di oggetti e la loro provenienza")
       throw(:abort) 
     end
-    
+
     self.numbers.each_value do |num|
       if num < 1
         errors.add(:base, "Il numero di oggetti da caricare deve essere positivo (ho #{num})")
-        throw(:abort) 
+        throw(:abort)
       end
     end
   end
