@@ -203,7 +203,7 @@ class ReportsController < ApplicationController
            LEFT OUTER JOIN things ON operations.thing_id = things.id
            LEFT OUTER JOIN users  ON COALESCE(recipient_id, user_id)= users.id
                      WHERE operations.organization_id = #{current_organization.id}
-                           #{params[:bookings] == '1' ? user_select_bookings : user_select}
+                           #{(params[:bookings] == '1') ? user_select_bookings : user_select}
                        AND operations.date = '#{@from}'
                        AND operations.number < 0
                   ORDER BY upn, things.name, operations.date"
@@ -236,20 +236,24 @@ class ReportsController < ApplicationController
 
     report.separator = :thing
     report.fields = [:date, :number, :type, :upn]
-    report.fields = [:date, :number, :type, :upn, :price] if current_organization.pricing
+    report.fields = [:date, :number, :type, :upn, :price, :lab, :cost_center, :picking_point] if current_organization.pricing
     report.separator_page_break = params[:report][:different_pages] == "1"
 
     report.query = "SELECT operations.date AS date,
                            operations.number, type, (price/100) AS price,
                            things.name as thing, things.id AS thing_id,
+                           #{"labs.name AS lab, cost_centers.name AS cost_center, picking_points.name AS picking_point," if current_organization.pricing}
                            ddts.name as ddt, ddts.gen, ddts.number AS dnumber, suppliers.name as supplier,
                            ddts.date AS ddate,
                            users.upn
                      FROM operations
-                     LEFT OUTER JOIN things    ON operations.thing_id             = things.id
-                     LEFT OUTER JOIN ddts      ON operations.ddt_id               = ddts.id
-                     LEFT OUTER JOIN suppliers ON ddts.supplier_id                = suppliers.id
-                     LEFT OUTER JOIN users     ON COALESCE(recipient_id, user_id) = users.id
+                     LEFT OUTER JOIN things         ON operations.thing_id             = things.id
+                     LEFT OUTER JOIN ddts           ON operations.ddt_id               = ddts.id
+                     LEFT OUTER JOIN cost_centers   ON operations.cost_center_id       = cost_centers.id
+                     LEFT OUTER JOIN labs           ON operations.lab_id               = labs.id
+                     LEFT OUTER JOIN picking_points ON operations.picking_point_id     = picking_points.id
+                     LEFT OUTER JOIN suppliers      ON ddts.supplier_id                = suppliers.id
+                     LEFT OUTER JOIN users          ON COALESCE(recipient_id, user_id) = users.id
                     WHERE operations.organization_id = #{current_organization.id}
                           #{loc_query}
                       AND operations.number != 0

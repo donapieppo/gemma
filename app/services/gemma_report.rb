@@ -1,50 +1,58 @@
 require "csv"
 
 class GemmaReport
-  @@titles = {thing: "Materiale",
-              description: "Descrizione",
-              note: "Note",
-              location: "Ubicazione",
-              number: "Quantità",
-              dnumber: "Numero ddt",
-              actual: "Quantità",
-              total: "Totale",
-              minimum: "Minimo",
-              date: "Data",
-              ddate: "Data ddt/fattura",
-              price: "Prezzo",
-              price_operations: "Origine Prezzo",
-              totalprice: "Prezzo Totale",
-              upn: "Operatore",
-              supplier: "Fornitore",
-              code: "Codice Fornitore",
-              cost_center: "Centro di costo",
-              picking_point: "Punto di ritiro"}
+  @@titles = {
+    thing: "Materiale",
+    description: "Descrizione",
+    note: "Note",
+    location: "Ubicazione",
+    number: "Quantità",
+    dnumber: "Numero ddt",
+    actual: "Quantità",
+    total: "Totale",
+    minimum: "Minimo",
+    date: "Data",
+    ddate: "Data ddt/fattura",
+    price: "Prezzo",
+    price_operations: "Origine Prezzo",
+    totalprice: "Prezzo Totale",
+    upn: "Operatore",
+    supplier: "Fornitore",
+    code: "Codice Fornitore",
+    cost_center: "Centro di costo",
+    picking_point: "Punto di ritiro",
+    lab: "Laboratorio"
+  }
 
-  @@format = {thing: " %.80s ",
-              description: " %.60s ",
-              note: " %.80s",
-              location: "(%.20s)",
-              number: "%5i ",
-              dnumber: "%5i ",
-              actual: "%5i ",
-              total: "%5i ",
-              minimum: " su %5i ",
-              date: " %10.10s ",
-              ddate: " %10.10s ",
-              price: "\n\r................... %.2f€ ",
-              price_operations: " %s ",
-              totalprice: " %8.2f€ ",
-              code: " - codice %s",
-              upn: " %s",
-              cost_center: " spesa: %s",
-              picking_point: " ritiro: %s"}
+  @@format = {
+    thing: " %.80s ",
+    description: " %.60s ",
+    note: " %.80s",
+    location: "(%.20s)",
+    number: "%5i ",
+    dnumber: "%5i ",
+    actual: "%5i ",
+    total: "%5i ",
+    minimum: " su %5i ",
+    date: " %10.10s ",
+    ddate: " %10.10s ",
+    price: "\n\r................... %.2f€ ",
+    price_operations: " %s ",
+    totalprice: " %8.2f€ ",
+    code: " - codice %s",
+    upn: " %s",
+    cost_center: " spesa: %s",
+    picking_point: " ritiro: %s",
+    lab: " lab: %s"
+  }
 
-  @@operation_to_s = {"Unlod" => "Scarico",
-                      "Load" => "Carico",
-                      "Stock" => "Giacenza iniziale",
-                      "Shift" => "Spostamento",
-                      "Takeover" => "Carico Manuale"}
+  @@operation_to_s = {
+    "Unlod" => "Scarico",
+    "Load" => "Carico",
+    "Stock" => "Giacenza iniziale",
+    "Shift" => "Spostamento",
+    "Takeover" => "Carico Manuale"
+  }
 
   GEMMA_IMAGE_DIR = "#{Rails.root}/app/assets/images"
 
@@ -328,9 +336,9 @@ module Gemmatxt
       @txt << "-" * 80 + "\r\n\r\n"
     end
 
-    alias :image :font
-    alias :draw_text :font
-    alias :number_pages :font
-    alias :bounds :font
+    alias_method :image, :font
+    alias_method :draw_text, :font
+    alias_method :number_pages, :font
+    alias_method :bounds, :font
   end
 end
