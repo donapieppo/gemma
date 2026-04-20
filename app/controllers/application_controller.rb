@@ -29,16 +29,16 @@ class ApplicationController < DmUniboCommon::ApplicationController
     I18n.locale = :it
   end
 
-  def send_report
-    @title ||= ""
-    rep = GemmaReport.new
-    rep.title = @title
-    rep.organization = current_organization
-    rep.separator = @separator
-    rep.separator_page_break = @separator_page_break
-    rep.separator_first_line = @separator_first_line
-    rep.separator_first_line_field = @separator_first_line_field
-    filename = @title.downcase.tr(" ", "_") + ".pdf"
-    send_data rep.to_pdf(@res, @fields), filename: filename, type: "application/pdf"
-  end
+  # def send_report
+  #   @title ||= ""
+  #   rep = GemmaReport.new
+  #   rep.title = @title
+  #   rep.organization = current_organization
+  #   rep.separator = @separator
+  #   rep.separator_page_break = @separator_page_break
+  #   rep.separator_first_line = @separator_first_line
+  #   rep.separator_first_line_field = @separator_first_line_field
+  #   filename = @title.downcase.tr(" ", "_") + ".pdf"
+  #   send_data rep.to_pdf(@res, @fields), filename: filename, type: "application/pdf"
+  # end
 end
