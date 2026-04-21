@@ -22,7 +22,7 @@ jobs:
           bundler-cache: true
 
       - name: Lint Ruby
-        run: bin/rubocop -f github
+        run: bundle exec bin/rubocop -f github
 
       - name: Audit importmap
-        run: bin/importmap audit
+        run: bunlde exec bin/importmap audit
