@@ -2,8 +2,8 @@ source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 gem "dm_unibo_user_search", git: "https://github.com/donapieppo/dm_unibo_user_search.git"
-gem "dm_unibo_common", git: "https://github.com/donapieppo/dm_unibo_common.git"
-# gem "dm_unibo_common", path: "/home/rails/gems/dm_unibo_common/"
+# gem "dm_unibo_common", git: "https://github.com/donapieppo/dm_unibo_common.git"
+gem "dm_unibo_common", path: "/home/rails/gems/dm_unibo_common/"
 
 gem "puma"
 
@@ -36,6 +36,9 @@ gem "sentry-rails"
 group :development, :test do
   gem "rspec-rails", "~> 7.1"
   gem "factory_bot_rails"
+  gem "rubocop", require: false
+  gem "rubocop-rails", require: false
+  gem "rubocop-performance", require: false
   # gem "faker"
 end
 
