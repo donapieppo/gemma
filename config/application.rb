@@ -9,15 +9,12 @@ Bundler.require(*Rails.groups)
 module Gemma
   class Application < Rails::Application
     config.load_defaults 8.1
+    config.unibo_common = config_for(:unibo_common)
 
-    config.autoload_paths << "#{Rails.root}/app/pdfs"
+    config.hosts << config.unibo_common.host
+
     config.time_zone = "Rome"
     config.i18n.default_locale = :it
-
-    config.hosts += ENV.fetch("ALLOWED_HOSTS", "").split(",")
-    # config.host_authorization = {
-    #   exclude: ->(request) { request.path == "/up" }
-    # }
 
     config.authlevels = {
       read: 10,
@@ -28,10 +25,14 @@ module Gemma
       edit: 50
     }
 
-    config.unibo_common = config_for(:unibo_common)
     config.active_record.yaml_column_permitted_classes = [Symbol]
 
     # better for docker demo :-)
     config.require_master_key = false
+
+    Rails.application.routes.default_url_options = {
+      host: config.unibo_common.host,
+      protocol: "https"
+    }
   end
 end
