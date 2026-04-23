@@ -8,6 +8,7 @@ CI.run do
   step "Security: Importmap vulnerability audit", "bin/importmap audit"
 
   step "Tests: Rails", "bin/rails test"
+  step "Tests: RSpec", "bundle exec rspec"
   step "Tests: System", "bin/rails test:system"
   step "Tests: Seeds", "env RAILS_ENV=test bin/rails db:seed:replant"
 
