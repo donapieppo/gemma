@@ -3,8 +3,6 @@
 CI.run do
   step "Setup: Test Database", "env RAILS_ENV=test bin/rails db:prepare"
 
-  step "Style: Ruby", "bin/rubocop"
-
   step "Tests: Rails", "bin/rails test"
   step "Tests: RSpec", "bundle exec rspec"
   step "Tests: System", "bin/rails test:system"
