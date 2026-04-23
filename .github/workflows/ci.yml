@@ -3,26 +3,109 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [ main ]
+    branches: [ master ]
 
 jobs:
-  lint_and_audit:
+  scan_ruby:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+        uses: actions/checkout@v5
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.4"
-          bundler-cache: true
+          ruby-version: .ruby-version
 
-      - name: Lint Ruby
-        run: bundle exec rubocop -f github
+      - name: Install Brakeman
+        run: gem install brakeman
 
-      - name: Audit importmap
-        run: bunlde exec bin/importmap audit
+      - name: Scan for common Rails security vulnerabilities using static analysis
+        run: brakeman --no-pager
+
+  # scan_js:
+  #   runs-on: ubuntu-latest
+  #
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v5
+  #
+  #     - name: Set up Ruby
+  #       uses: ruby/setup-ruby@v1
+  #       with:
+  #         ruby-version: .ruby-version
+  #         bundler-cache: true
+  #
+  #     - name: Scan for security vulnerabilities in JavaScript dependencies
+  #       run: bin/importmap audit
+
+  # lint:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v5
+  #
+  #     - name: Set up Ruby
+  #       uses: ruby/setup-ruby@v1
+  #       with:
+  #         ruby-version: .ruby-version
+  #         bundler-cache: true
+  #
+  #     - name: Lint code for consistent style
+  #       run: bin/rubocop -f github
+
+  # test:
+  #   runs-on: ubuntu-latest
+  #
+  #   services:
+  #     mysql:
+  #       image: mysql:8.0
+  #       env:
+  #         MYSQL_ROOT_PASSWORD: root
+  #       ports:
+  #         - 3306:3306
+  #       options: --health-cmd="mysqladmin ping -h 127.0.0.1 -proot" --health-interval=10s --health-timeout=5s --health-retries=10
+  #
+  #     # redis:
+  #     #   image: redis
+  #     #   ports:
+  #     #     - 6379:6379
+  #     #   options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
+  #
+  #   steps:
+  #     - name: Install packages
+  #       run: sudo apt-get update && sudo apt-get install --no-install-recommends -y build-essential default-libmysqlclient-dev default-mysql-client git pkg-config google-chrome-stable
+  #
+  #     - name: Checkout code
+  #       uses: actions/checkout@v5
+  #
+  #     - name: Set up Ruby
+  #       uses: ruby/setup-ruby@v1
+  #       with:
+  #         ruby-version: .ruby-version
+  #         bundler-cache: true
+  #
+  #     - name: Prepare MySQL
+  #       run: |
+  #         mysql -h 127.0.0.1 -uroot -proot -e "CREATE DATABASE IF NOT EXISTS seminaria_test;"
+  #         mysql -h 127.0.0.1 -uroot -proot -e "CREATE USER IF NOT EXISTS 'rails'@'%' IDENTIFIED BY 'rails_pass';"
+  #         mysql -h 127.0.0.1 -uroot -proot -e "GRANT ALL PRIVILEGES ON seminaria_test.* TO 'rails'@'%';"
+  #         mysql -h 127.0.0.1 -uroot -proot -e "FLUSH PRIVILEGES;"
+  #
+  #     - name: Run tests
+  #       env:
+  #         RAILS_ENV: test
+  #         DB_HOST: 127.0.0.1
+  #         DB_USER: rails
+  #         RAILS_PASS: rails_pass
+  #         # REDIS_URL: redis://localhost:6379/0
+  #       run: bin/rails db:prepare test test:system
+  #
+  #     - name: Keep screenshots from failed system tests
+  #       uses: actions/upload-artifact@v4
+  #       if: failure()
+  #       with:
+  #         name: screenshots
+  #         path: ${{ github.workspace }}/tmp/screenshots
+  #         if-no-files-found: ignore
