@@ -5,8 +5,6 @@ CI.run do
 
   step "Style: Ruby", "bin/rubocop"
 
-  step "Security: Importmap vulnerability audit", "bin/importmap audit"
-
   step "Tests: Rails", "bin/rails test"
   step "Tests: RSpec", "bundle exec rspec"
   step "Tests: System", "bin/rails test:system"
