@@ -53,10 +53,8 @@ jobs:
 
       - name: Prepare MySQL
         run: |
-          mysql -h 127.0.0.1 -uroot -proot -e "CREATE DATABASE IF NOT EXISTS gemma;"
           mysql -h 127.0.0.1 -uroot -proot -e "CREATE DATABASE IF NOT EXISTS gemma_test;"
           mysql -h 127.0.0.1 -uroot -proot -e "CREATE USER IF NOT EXISTS 'rails'@'%' IDENTIFIED BY 'rails_pass';"
-          mysql -h 127.0.0.1 -uroot -proot -e "GRANT ALL PRIVILEGES ON gemma.* TO 'rails'@'%';"
           mysql -h 127.0.0.1 -uroot -proot -e "GRANT ALL PRIVILEGES ON gemma_test.* TO 'rails'@'%';"
           mysql -h 127.0.0.1 -uroot -proot -e "FLUSH PRIVILEGES;"
 
