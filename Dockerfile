@@ -1,9 +1,10 @@
 # syntax = docker/dockerfile:1
+# check=error=true
 
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version and Gemfile
 ARG RUBY_VERSION=3.4
 FROM registry.docker.com/library/ruby:$RUBY_VERSION-slim AS base
-LABEL org.opencontainers.image.authors="Pietro Donatini <pietro.donatini@unibo.ir>"
+LABEL org.opencontainers.image.authors="Pietro Donatini <pietro.donatini@unibo.it>"
 LABEL org.opencontainers.image.description="Gemma"
 LABEL org.opencontainers.image.source="https://github.com/donapieppo/gemma" 
 
