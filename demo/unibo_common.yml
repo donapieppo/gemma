@@ -2,7 +2,7 @@ shared:
   login_method: :allow_if_email
   superusers: ["super.user@example.it"]
   html_title: "GE.M.MA - GEstione Multiutente MAteriale di consumo"
-  html_description: "Gestione Multiutente MAteriale di consumo. Example word university"
+  html_description: "Gestione Multiutente MAteriale di consumo. My example university."
   header_title: "Ge.M.Ma"
   header_subtitle: "Gestione Multiutente MAteriale di consumo"
   header_icon: "shopping-cart"
