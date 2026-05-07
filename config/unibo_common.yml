@@ -1,4 +1,5 @@
 shared:
+  host: "gemma.example.it"
   superusers: ["pietro.dona@example.it"]
   html_title: "GE.M.MA - GEstione Multiutente MAteriale di consumo"
   html_description: "Gestione Multiutente MAteriale di consumo. Università di Bologna."
@@ -7,14 +8,14 @@ shared:
   header_icon: "shopping-cart"
   contact_mail: "pietro.dona@example.it"
   domain_name: "example.it"
-  support_mail: "dipmat-gemma@example.it"
-  default_from: "Ge.M.Ma <notifica.inviodlist.08218@example.it>"
+  support_mail: "gemma@example.it"
+  default_from: "Ge.M.Ma <gemma@example.it>"
   reply_to: "pietro.dona@example.it"
   login_method: :allow_if_email
   no_students: true
   message_footer: ""
   impersonate_admins: ["pietro.dona@example.it"]
-  interceptor_mails: ["dona@dm.example.it"]
+  interceptor_mails: ["pietro.dona@dm.example.it"]
   main_impersonations: ["pietro.dona@example.it", "maria@example.it", "sandro@example.it"]
   home_description: |
     <p>Applicativo per la gestione del <strong>materiale di consumo</strong> presso le strutture dell'Università di Bologna.</p>
