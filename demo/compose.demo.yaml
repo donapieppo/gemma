@@ -1,0 +1,25 @@
+services:
+  db:
+    environment:
+      MARIADB_DATABASE: gemma_demo
+    volumes:
+      - demo_mariadb_data:/var/lib/mysql
+
+  web:
+    command: ./bin/dev
+    build:
+      target: development
+    volumes:
+    - ./demo/unibo_common.yml:/rails/config/unibo_common.yml
+    - ./demo/gemma.rb:/rails/config/initializers/gemma.rb
+    - ./demo/Procfile.dev:/rails/Procfile.dev
+    environment:
+      BUNDLE_WITHOUT: ""
+      NODE_ENV: development
+      RAILS_ENV: development
+      DATABASE_URL: mysql2://gemma:gemma@db:3306/gemma_demo
+    depends_on:
+      - db
+
+volumes:
+  demo_mariadb_data:

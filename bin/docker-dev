@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+
+echo "Starting GE.M.MA development stack"
+echo "Rails will be available at http://127.0.0.1:3000"
+echo "Stop it with Ctrl-C"
+echo
+
+exec docker compose -f compose.yaml -f compose.dev.yaml up "$@" web

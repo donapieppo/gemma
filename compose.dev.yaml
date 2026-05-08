@@ -1,0 +1,12 @@
+services:
+  web:
+    build:
+      target: development
+    command: ./bin/dev
+    environment:
+      BUNDLE_WITHOUT: ""
+      NODE_ENV: development
+      RAILS_ENV: development
+    volumes:
+      - .:/rails
+      - node_modules:/rails/node_modules

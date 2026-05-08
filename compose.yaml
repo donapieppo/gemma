@@ -1,0 +1,32 @@
+services:
+  db:
+    image: mariadb:12
+    environment:
+      MARIADB_DATABASE: gemma
+      MARIADB_USER: gemma
+      MARIADB_PASSWORD: gemma
+      MARIADB_ROOT_PASSWORD: root
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mariadb-admin ping -h localhost -proot --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+
+  web:
+    build:
+      context: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: mysql2://gemma:gemma@db:3306/gemma
+      GEMMA_DATABASE_PASSWORD: gemma
+    ports:
+      - "3000:3000"
+
+volumes:
+  mariadb_data:
+  node_modules:
