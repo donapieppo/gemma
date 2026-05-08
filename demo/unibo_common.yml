@@ -1,4 +1,5 @@
 shared:
+  host: "127.0.0.1"
   login_method: :allow_if_email
   superusers: ["super.user@example.it"]
   html_title: "GE.M.MA - GEstione Multiutente MAteriale di consumo"
@@ -22,7 +23,6 @@ shared:
   main_impersonations: ["pietro.dona@example.it", "maria@example.it", "sandro@example.it"]
   omniauth_provider:   :developer 
   searchable_provider: false
-  host:                localhost
   smtp_unibo:          true
   home_description: |
     <p>Applicativo per la gestione del <strong>materiale di consumo</strong> presso le strutture dell'Università di Bologna.</p>

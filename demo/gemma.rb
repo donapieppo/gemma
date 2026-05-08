@@ -34,5 +34,8 @@ module Gemma
       120 => 162
     }
     config.possible_dewars = config.dewar_liters_and_hot_liters.keys
+
+    config.assume_ssl = false
+    config.force_ssl = false
   end
 end
