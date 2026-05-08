@@ -1,16 +1,31 @@
-<% str = @thing.deposits.size > 1 ? "Numero di oggetti da caricare in ogni ubicazione" : "Numero oggetti da caricare" %>  
+<%
+  str = if @thing.deposits.size > 1
+      "Numero di oggetti da caricare in ogni ubicazione"
+    else
+      "Numero oggetti da caricare"
+    end
+%>
 
 <div class="form-group row required">
   <%= f.label str, class: 'col-sm-3 col-form-label required', required: true %>
   <div class="col-sm-9">
     <% @thing.deposits.each do |dep| %>  
       <% val = @total_from_orders ? @total_from_orders : @numbers[dep.id] %>  
-      <input type="number" class="form-control required numeric integer mt-2 mb-0 me-1" name="numbers[<%= dep.id %>]" value="<%= val %>" step="1" size="5" />
-      <% @total_from_orders = nil if @total_from_orders %>
-      <div class="mt-1 mb-2">
-        in <strong><%= dep.location %></strong> <small>(attualmente sono <%= dep.actual %>)</small>
+      <% input_id = "numbers_#{dep.id}" %>
+      <% hint_id = "#{input_id}_hint" %>
+      <div class="mb-3">
+        <div class="input-group">
+          <%= number_field_tag "numbers[#{dep.id}]", val,
+            id: input_id,
+            class: "form-control numeric integer",
+            style: "max-width: 10rem" %>
+          <%= label_tag input_id, class: "input-group-text" do %>
+            in <%= dep.location %>
+          <% end %>
+        </div>
+        <div id="<%= hint_id %>" class="form-text">attualmente sono <%= dep.actual %></div>
       </div>
+      <% @total_from_orders = nil if @total_from_orders %>
     <% end %>
   </div>
 </div>
-
