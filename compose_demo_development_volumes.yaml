@@ -1,5 +1,0 @@
-services:
-  web:
-    volumes:
-      - ./app:/rails/app
-
