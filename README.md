@@ -10,15 +10,10 @@ Questa configurazione è pensata per sviluppo locale:
 - usa il target Docker `development`
 - avvia `./bin/dev` per Rails, JavaScript e CSS in watch mode
 
-Creazione container:
+Creazione container, avvio del database e amministratore popolamento del database demo:
 
 ```bash
 docker compose -f compose.yaml -f compose.dev.yaml build
-```
-
-Avvio del database e preparazione e popolamento del database demo:
-
-```bash
 docker compose -f compose.yaml -f compose.dev.yaml up -d db
 docker compose -f compose.yaml -f compose.dev.yaml run --rm web bin/rails db:prepare
 ```
@@ -30,6 +25,13 @@ docker compose -f compose.yaml -f compose.dev.yaml up web
 ```
 
 L'applicazione sarà disponibile su [http://127.0.0.1:3000/home](http://127.0.0.1:3000/home).
+
+Importazione di un dump nel database di sviluppo (`./tmp/gemma.mysql`):
+
+```bash
+docker compose -f compose.yaml -f compose.dev.yaml up -d db
+docker compose -f compose.yaml -f compose.dev.yaml -f compose.mysql-load-data.yaml run --rm mysql-client
+```
 
 ## Demo locale con Docker Compose
 
