@@ -1,0 +1,19 @@
+services:
+  mysql-client:
+    image: mariadb:12
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      MYSQL_PWD: gemma
+    volumes:
+      - ./tmp/gemma.mysql:/tmp/gemma.mysql:ro
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        set -e
+        until mariadb -h db -u gemma -e "SELECT 1" gemma >/dev/null 2>&1; do
+          echo "Waiting for database..."
+          sleep 1
+        done
+        mariadb -h db -u gemma gemma < /tmp/gemma.mysql
