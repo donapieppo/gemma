@@ -2,16 +2,14 @@
 
 ( hostname -f | grep -q 'truffaut.cesia.unibo.it' ) || exit 0
 
-ssh donatini.adm@railsdb-01 "mysqldump gemma" > tmp/gemma.mysql
-# ssh cnrgemma "mysqldump gemma" > tmp/gemma.mysql
+ssh donatini.adm@railsdb-01 "mysqldump gemma" > tmp/dump.mysql
 
 ( hostname -f | grep -q 'truffaut.cesia.unibo.it' ) && mysql -e 'drop database gemma; create database gemma'
-( hostname -f | grep -q 'truffaut.cesia.unibo.it' ) && mysql gemma < tmp/gemma.mysql
+( hostname -f | grep -q 'truffaut.cesia.unibo.it' ) && mysql gemma < tmp/dump.mysql
 
 mysql gemma -e "update users set email=upn"
 
 ( hostname -f | grep -q 'truffaut.cesia.unibo.it' ) && mysql gemma < doc/changes.sql
-
 ( hostname -f | grep -q 'truffaut.cesia.unibo.it' ) && ./bin/rails db:schema:dump
 
 # mysql gemma -e "OPTIMIZE TABLE operations"

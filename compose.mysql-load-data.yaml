@@ -5,15 +5,16 @@ services:
       db:
         condition: service_healthy
     environment:
-      MYSQL_PWD: gemma
+      MYSQL_PWD: dbpwd
     volumes:
-      - ./tmp/gemma.mysql:/tmp/gemma.mysql:ro
+      - ./tmp/dump.mysql:/tmp/dump.mysql:ro
     entrypoint: ["/bin/sh", "-c"]
     command:
       - |
         set -e
-        until mariadb -h db -u gemma -e "SELECT 1" gemma >/dev/null 2>&1; do
+        until mariadb -h db -u dbuser -e "SELECT 1" dbname >/dev/null 2>&1; do
           echo "Waiting for database..."
           sleep 1
         done
-        mariadb -h db -u gemma gemma < /tmp/gemma.mysql
+        echo "Loading ./tmp/dump.mysql database..."
+        mariadb -h db -u dbuser dbname < /tmp/dump.mysql
