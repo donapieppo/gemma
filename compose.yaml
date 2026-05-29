@@ -2,9 +2,9 @@ services:
   db:
     image: mariadb:12
     environment:
-      MARIADB_DATABASE: gemma
-      MARIADB_USER: gemma
-      MARIADB_PASSWORD: gemma
+      MARIADB_DATABASE: dbname
+      MARIADB_USER: dbuser
+      MARIADB_PASSWORD: dbpwd
       MARIADB_ROOT_PASSWORD: root
     volumes:
       - mariadb_data:/var/lib/mysql
@@ -22,8 +22,7 @@ services:
       db:
         condition: service_healthy
     environment:
-      DATABASE_URL: mysql2://gemma:gemma@db:3306/gemma
-      GEMMA_DATABASE_PASSWORD: gemma
+      DATABASE_URL: mysql2://dbuser:dbpwd@db:3306/dbname
     ports:
       - "3000:3000"
 
