@@ -147,7 +147,7 @@ class GemmaReport
     when "pdf"
       "application/#{@format}"
     when "csv"
-      "text/csv; header=present"
+      "text/csv; charset=utf-8; header=present"
     when "txt"
       "text/plain; header=present"
     end
