@@ -124,9 +124,6 @@ COPY --from=build --chown=rails:rails /rails /rails
 RUN mkdir -p tmp/pids tmp/cache tmp/sockets log storage && \
     chown -R rails:rails tmp log storage
 
-RUN mkdir -p tmp/pids tmp/cache tmp/sockets log storage && \
-    chown -R rails:rails tmp log storage
-
 USER rails
 ENTRYPOINT ["./docker/entrypoint.sh"]
 EXPOSE 3000
