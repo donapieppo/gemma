@@ -580,16 +580,16 @@ dm_unibo_common@donapieppo/dm_unibo_common.git:
     trix "^2.1.1"
 
 dompurify@^3.2.5:
-  version "3.4.7"
-  resolved "https://registry.yarnpkg.com/dompurify/-/dompurify-3.4.7.tgz#e2702ea4fd5d83467f1baef62309466ce7d44a82"
-  integrity sha512-2jBxDJY4RR06tQNy4w5FlFH7kfxsQZlufd0sbv+chfHCxeJwrFw2baUDsSwvBISD4K4RDbd0PTfy3uNXsR6siA==
+  version "3.4.8"
+  resolved "https://registry.yarnpkg.com/dompurify/-/dompurify-3.4.8.tgz#6c54f8c207160e7f83fcb7f4fd05a82ac36b1cdc"
+  integrity sha512-yb1cEmaOum7wFvOCSQxyfgVlv5D47Rc30iZWoMpbDIWTnJ6grDDQyu2KFJzB2k7u0pMuJcQ1zphH//fFnw2tjQ==
   optionalDependencies:
     "@types/trusted-types" "^2.0.7"
 
 electron-to-chromium@^1.5.328:
-  version "1.5.366"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.5.366.tgz#54cfb4090db768d58dce9ef5a2f8b837e61ebe6b"
-  integrity sha512-OlRuhb688YTCzzU3gXPLn6nGyd+F+53INE1qaKKlu6kETErE8FYsyDh0XqXEU+uBRn0MpCzz2vfNwORhkap8qg==
+  version "1.5.367"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.5.367.tgz#ceae3cb3f2939d03a4f0f9b70caf93b7400fa705"
+  integrity sha512-4Mk/mrynCNQ+atY40D3UpmhLWB6AHMbYMlIrPhHcMF6x0L7O0b052FCAsxw1LlaR++UFuNg3D/A6XCuGDa0guQ==
 
 emoji-regex@^8.0.0:
   version "8.0.0"

@@ -13,6 +13,7 @@ gem "cssbundling-rails"
 gem "chunky_png"
 gem "barby"
 gem "image_processing"
+gem "ruby-vips"
 
 gem "prawn"
 gem "prawn-table"
