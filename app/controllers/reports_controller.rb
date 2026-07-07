@@ -104,7 +104,7 @@ class ReportsController < ApplicationController
   # scarichi di un certo upn
   def form_scarichi
     authorize :report
-    @cache_users = User.all_in_cache(current_organization.id)
+    @cache_users = User.all_in_cache(current_organization.id, interval: 500)
     @things = current_organization.things.order(:name)
     @groups = current_organization.groups.order(:name)
   end
