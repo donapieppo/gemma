@@ -5,9 +5,7 @@ class User < ApplicationRecord
   has_many :unloads
   has_many :loads
   has_many :bookings
-  has_many :orders
   has_many :images
-  has_many :disposals
   has_many :delegations_as_delegate, class_name: "Delegation", foreign_key: :delegate_id
   has_many :delegations_as_delegator, class_name: "Delegation", foreign_key: :delegator_id
   has_and_belongs_to_many :delegates, class_name: "User", foreign_key: :delegator_id, association_foreign_key: :delegate_id, join_table: :delegations
@@ -16,7 +14,7 @@ class User < ApplicationRecord
   # Ritorna tutti gli utenti che sono stati in qualche modo associati ad una certa struttura in passato
   # Di solito sono gli utenti che hanno fatto s/carichi o a cui sono stati associati scarichi
   # Andiamo indietro di un paio di anni (RECENTY in configuration for caching in mysql)
-  def self.all_in_cache(organization_id)
+  def self.all_in_cache(organization_id, interval: 365)
     # User.joins("INNER JOIN operations ON (operations.user_id = users.id OR operations.recipient_id = users.id)
     #             AND operations.organization_id = #{organization_id.to_i}
     #             AND operations.date > DATE_SUB(NOW(), INTERVAL 1 YEAR)").select(:id, :name, :surname, :upn).order(:surname).distinct
@@ -28,11 +26,11 @@ class User < ApplicationRecord
                                        DISTINCT recipient_id AS user_id FROM operations
                                                             WHERE recipient_id IS NOT NULL
                                                             AND organization_id = #{organization_id.to_i}
-                                                            AND operations.date > DATE_SUB(NOW(), INTERVAL 1 YEAR)
+                                                            AND operations.date > DATE_SUB(NOW(), INTERVAL #{interval.to_i} DAY)
                                       UNION SELECT
                                        DISTINCT user_id FROM operations
                                                         WHERE organization_id = #{organization_id.to_i}
-                                                        AND operations.date > DATE_SUB(NOW(), INTERVAL 1 YEAR)
+                                                        AND operations.date > DATE_SUB(NOW(), INTERVAL #{interval.to_i} DAY)
                                  ) recent
                                  ON users.id = recent.user_id
                                  ORDER BY surname"
