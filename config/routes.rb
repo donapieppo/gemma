@@ -87,7 +87,7 @@ Rails.application.routes.draw do
       get :barcode, on: :collection, action: :index
       # patch :delete_and_new_unload, on: :member
     end
-    resources :users do
+    resources :users, only: [] do
       resources :bookings do
         post :confirm_all, on: :collection
       end
