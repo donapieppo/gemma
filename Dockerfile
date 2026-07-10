@@ -1,10 +1,11 @@
 # syntax = docker/dockerfile:1
+# check=error=true
 
+# Make sure RUBY_VERSION matches the Ruby version in .ruby-version and Gemfile
 ARG RUBY_VERSION=3.4
 
 # BASE
 FROM registry.docker.com/library/ruby:${RUBY_VERSION}-slim AS base
-
 LABEL org.opencontainers.image.authors="Pietro Donatini <pietro.donatini@unibo.it>"
 LABEL org.opencontainers.image.description="Gemma"
 LABEL org.opencontainers.image.source="https://github.com/donapieppo/gemma"
@@ -14,7 +15,8 @@ WORKDIR /rails
 ENV LANG=C.UTF-8 \
     BUNDLE_PATH=/usr/local/bundle \
     BUNDLE_JOBS=4 \
-    BUNDLE_RETRY=3
+    BUNDLE_RETRY=3 \
+    LD_PRELOAD="/usr/local/lib/libjemalloc.so"
 
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y \
@@ -22,109 +24,104 @@ RUN apt-get update -qq && \
       libjemalloc2 \
       libmariadb3 \
       libvips && \
+    ln -s /usr/lib/$(uname -m)-linux-gnu/libjemalloc.so.2 /usr/local/lib/libjemalloc.so && \
     rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
-RUN useradd --create-home --shell /bin/bash rails
+# Shared build/development tooling stage
+FROM base AS tooling
 
-# BUILD-BASE
-FROM base AS build-base
-
+# Install packages needed to build gems and node modules
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y \
       build-essential \
-      ca-certificates \
       curl \
-      default-libmysqlclient-dev \
       git \
-      libyaml-dev \
       node-gyp \
       pkg-config \
       python-is-python3 \
-      xz-utils && \
+      libyaml-dev \
+      default-libmysqlclient-dev && \
     rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
-# NODE-BASE
-FROM build-base AS node-base
-
-ARG NODE_VERSION=22.22.2
-ARG NODE_BUILD_REF=v5.4.37
+# Install JavaScript dependencies
+ARG NODE_VERSION=22.23.1
 ARG YARN_VERSION=1.22.22
 ENV PATH=/usr/local/node/bin:$PATH
+RUN curl -sL https://github.com/nodenv/node-build/archive/master.tar.gz | tar xz -C /tmp/ && \
+    /tmp/node-build-master/bin/node-build "${NODE_VERSION}" /usr/local/node && \
+    npm install -g yarn@$YARN_VERSION && \
+    rm -rf /tmp/node-build-master
 
-RUN mkdir -p /tmp/node-build && \
-    curl -fsSL "https://github.com/nodenv/node-build/archive/${NODE_BUILD_REF}.tar.gz" | tar xz -C /tmp/node-build --strip-components=1 && \
-    /tmp/node-build/bin/node-build ${NODE_VERSION} /usr/local/node && \
-    npm install -g yarn@"${YARN_VERSION}" && \
-    rm -rf /tmp/node-build
+# Development image with all application dependencies and live-reload tooling
+FROM tooling AS development
 
-# GEMS-DEV
-FROM node-base AS gems-dev
-
-ENV RAILS_ENV=development
+ENV RAILS_ENV="development" \
+    NODE_ENV="development" \
+    BUNDLE_WITHOUT=""
 
 COPY Gemfile Gemfile.lock ./
-RUN bundle install && \
-    gem install foreman --no-document
-
-# ASSETS-DEV
-FROM node-base AS assets-dev
+RUN bundle install
 
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
 
-# DEVELOPMENT
-FROM node-base AS development
-
-ENV RAILS_ENV=development \
-    NODE_ENV=development
-
-COPY Gemfile Gemfile.lock package.json yarn.lock ./
-COPY --from=gems-dev --chown=rails:rails /usr/local/bundle /usr/local/bundle
-COPY --from=assets-dev --chown=rails:rails /rails/node_modules /rails/node_modules
-
-COPY --chown=rails:rails . .
-
-USER rails
-
-ENTRYPOINT ["./docker/entrypoint.sh"]
-CMD ["./bin/dev"]
-
-# BUILD
-FROM node-base AS build
-
-ENV RAILS_ENV=production \
-    BUNDLE_WITHOUT=development:test
-
-COPY Gemfile Gemfile.lock ./
-RUN bundle config set without "development test" && \
-    bundle install && \
-    rm -rf ~/.bundle "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git
-
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile --production=false
-
 COPY . .
 
-RUN bundle exec bootsnap precompile --gemfile
-RUN bundle exec bootsnap precompile app/ lib/
-RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
-RUN rm -rf node_modules tmp/cache
+ENTRYPOINT ["/rails/docker/entrypoint.sh"]
+EXPOSE 3000
+CMD ["./bin/dev"]
 
-# PRODUCTION
+# Throw-away build stage to reduce size of final image
+FROM tooling AS build
+
+ENV RAILS_ENV="production" \
+    BUNDLE_DEPLOYMENT="1" \
+    BUNDLE_PATH="/usr/local/bundle" \
+    BUNDLE_WITHOUT="development test"
+
+# Install application gems
+COPY Gemfile Gemfile.lock ./
+RUN bundle install && \
+    rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
+    bundle exec bootsnap precompile --gemfile
+
+# Install node modules
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
+
+# Copy application code
+COPY . .
+
+# Precompile bootsnap code for faster boot times
+RUN bundle exec bootsnap precompile app/ lib/
+
+# Precompiling assets for production without requiring secret RAILS_MASTER_KEY
+RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
+
+RUN rm -rf node_modules
+
+# Final stage for app image
 FROM base AS production
 
-ENV RAILS_ENV=production \
-    NODE_ENV=production \
-    BUNDLE_WITHOUT=development:test \
-    BUNDLE_DEPLOYMENT=1
+ENV RAILS_ENV="production" \
+    BUNDLE_DEPLOYMENT="1" \
+    BUNDLE_PATH="/usr/local/bundle" \
+    BUNDLE_WITHOUT="development test"
 
-COPY --from=build --chown=rails:rails /usr/local/bundle /usr/local/bundle
-COPY --from=build --chown=rails:rails /rails /rails
+# Copy built artifacts: gems, application
+COPY --from=build "${BUNDLE_PATH}" "${BUNDLE_PATH}"
+COPY --from=build /rails /rails
 
-RUN mkdir -p tmp/pids tmp/cache tmp/sockets log storage && \
-    chown -R rails:rails tmp log storage
+# Run and own only the runtime files as a non-root user for security
+RUN groupadd --system --gid 1000 rails && \
+    useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash && \
+    chown -R rails:rails db log storage tmp
+USER 1000:1000
 
-USER rails
-ENTRYPOINT ["./docker/entrypoint.sh"]
+RUN echo 'alias ll="ls -l"' >> ~/.bashrc
+RUN echo 'PS1="DOCKER \w: "' >> ~/.bashrc
+
+# Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
-CMD ["./bin/rails", "server", "-b", "0.0.0.0"]
+CMD ["./bin/rails", "server"]
+
