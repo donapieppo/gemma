@@ -6,7 +6,7 @@ rm -f /rails/tmp/pids/server.pid
 if [ "${RAILS_ENV}" = "development" ]; then
   bundle check || bundle install
 
-  if [ ! -d node_modules ] || [ -z "$(ls -A node_modules 2>/dev/null)" ]; then
+  if [ ! -d node_modules ] || [ -z "$(ls -A node_modules 2>/dev/null)" ] || [ package.json -nt node_modules/.yarn-integrity ] || [ yarn.lock -nt node_modules/.yarn-integrity ]; then
     yarn install --frozen-lockfile
   fi
 

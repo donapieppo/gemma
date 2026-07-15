@@ -9,4 +9,4 @@ services:
       RAILS_ENV: development
     volumes:
       - .:/rails
-      - node_modules:/rails/node_modules
+      - ./node_modules:/rails/node_modules

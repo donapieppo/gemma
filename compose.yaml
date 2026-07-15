@@ -1,31 +1,8 @@
 services:
-  db:
-    image: mariadb:12
-    environment:
-      MARIADB_DATABASE: dbname
-      MARIADB_USER: dbuser
-      MARIADB_PASSWORD: dbpwd
-      MARIADB_ROOT_PASSWORD: root
-    volumes:
-      - mariadb_data:/var/lib/mysql
-    healthcheck:
-      test: ["CMD-SHELL", "mariadb-admin ping -h localhost -proot --silent"]
-      interval: 5s
-      timeout: 5s
-      retries: 20
-      start_period: 10s
-
   web:
     build:
       context: .
-    depends_on:
-      db:
-        condition: service_healthy
     environment:
-      DATABASE_URL: mysql2://dbuser:dbpwd@db:3306/dbname
-    ports:
-      - "3000:3000"
+      DATABASE_URL: mysql2://rails:${RAILS_PASS}@127.0.0.1:3306/gemma
+    network_mode: host
 
-volumes:
-  mariadb_data:
-  node_modules:
