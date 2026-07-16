@@ -3,7 +3,7 @@ class DdtsController < ApplicationController
 
   def index
     authorize Ddt
-    @ddts = current_organization.ddts.includes(:supplier).order('number desc')
+    @ddts = current_organization.ddts.includes(:supplier).order("number desc")
     if params[:supplier_id]
       @supplier = Supplier.find(params[:supplier_id])
       @ddts = @ddts.where(supplier_id: @supplier.id)
@@ -16,61 +16,61 @@ class DdtsController < ApplicationController
     if params[:ncia] && params[:ycia]
       @titolo_ricerca = "Risultati ricerca per Riferimento Cia #{params[:ycia]} / #{params[:ncia]}"
       @ddts = current_organization.operations
-                                  .where('ncia = ? AND ycia = ?', params[:ncia], params[:ycia])
-                                  .includes(:ddt)
-                                  .map(&:ddt).uniq
-      render action: :index                             
+        .where("ncia = ? AND ycia = ?", params[:ncia], params[:ycia])
+        .includes(:ddt)
+        .map(&:ddt).uniq
+      render action: :index
     end
   end
 
   def search
     authorize Ddt
-    @ddts = current_organization.ddts.includes(:supplier).order('date desc')
+    @ddts = current_organization.ddts.includes(:supplier).order("date desc")
 
     # ricerca nome fornitore
     if params[:supplier]
       @titolo_ricerca = "Risultati ricerca per fornitore: #{params[:supplier]}"
-      @ddts = @ddts.where('suppliers.name LIKE ?', "%#{params[:supplier]}%").references(:supplier)
+      @ddts = @ddts.where("suppliers.name LIKE ?", "%#{params[:supplier]}%").references(:supplier)
     end
 
     # ricerca con un singolo fornitore
     if params[:supplier_id]
-      @ddts = @ddts.where('supplier_id = ?', params[:supplier_id].to_i)
+      @ddts = @ddts.where("supplier_id = ?", params[:supplier_id].to_i)
     end
 
     # ricerca libera su name
     if params[:like]
-      @ddts = @ddts.where('name LIKE ?', "%#{params[:like]}%")
+      @ddts = @ddts.where("name LIKE ?", "%#{params[:like]}%")
     end
 
     # ricerca libera su record ddt (chiamato number)
     if params[:number]
       @titolo_ricerca = "Risultati ricerca numero #{params[:number].to_i}"
-      @ddts = @ddts.where('ddts.number = ?', params[:number].to_i)
+      @ddts = @ddts.where("ddts.number = ?", params[:number].to_i)
     end
 
     # ricerca tra date '15/01/2015'
     if params[:datainizio] && params[:datafine]
-      inizio = Date.parse(params['datainizio'])
-      fine   = Date.parse(params['datafine'])
+      inizio = Date.parse(params["datainizio"])
+      fine = Date.parse(params["datafine"])
       @titolo_ricerca = "Risultati ricerca data tra #{inizio} e #{fine}"
-      @ddts = @ddts.where('ddts.date >= ? AND ddts.date <= ?', inizio, fine)
+      @ddts = @ddts.where("ddts.date >= ? AND ddts.date <= ?", inizio, fine)
     end
   end
 
   # mostriamo i load relativi al Ddt (servono solo agli amministratori)
   def show
-    @loads = @ddt.loads.includes(:thing).order('things.name').all
+    @loads = @ddt.loads.includes(:thing).order("things.name").all
   end
 
   def new
     if params[:supplier_id]
       @supplier = Supplier.find(params[:supplier_id])
-      @ddt      = @supplier.ddts.new(organization_id: current_organization.id)
+      @ddt = @supplier.ddts.new(organization_id: current_organization.id)
       authorize @ddt
     else
       skip_authorization
-      redirect_to suppliers_path(for: 'ddt') and return
+      redirect_to suppliers_path(for: "ddt") and return
     end
   end
 
@@ -89,14 +89,14 @@ class DdtsController < ApplicationController
       if session[:from_thing_id]
         from_thing_id = session[:from_thing_id].to_i
         session[:from_thing_id] = nil
-        redirect_to new_thing_load_path(from_thing_id) and return 
+        redirect_to new_thing_load_path(from_thing_id) and return
       else
-        flash[:notice] += 'Per caricare gli articoli relativi a questo ddt/fattura scegliere la Categoria dal menu.'
-        redirect_to ddts_path and return 
+        flash[:notice] += "Per caricare gli articoli relativi a questo ddt/fattura scegliere la Categoria dal menu."
+        redirect_to ddts_path and return
       end
     else
       @supplier = @ddt.supplier
-      render action: 'new', status: :unprocessable_entity
+      render action: "new", status: :unprocessable_entity
     end
   end
 
@@ -109,19 +109,19 @@ class DdtsController < ApplicationController
     params.delete(:supplier_id) # non si può cambiare
 
     if @ddt.update(ddt_params)
-      redirect_to ddts_path, notice: 'Il documento è stato aggiornato.'
+      redirect_to ddts_path, notice: "Il documento è stato aggiornato."
     else
       @supplier = @ddt.supplier
-      render action: 'edit', status: :unprocessable_entity
+      render action: "edit", status: :unprocessable_entity
     end
   end
 
   def destroy
     if @ddt.loads.any?
-      redirect_to ddt_path(@ddt), alert: 'Non è possibile cancellare il documento perchè ha carichi associati che devono prima essere cancellati.'
+      redirect_to ddt_path(@ddt), alert: "Non è possibile cancellare il documento perchè ha carichi associati che devono prima essere cancellati."
     else
       @ddt.destroy or raise "errore interno su ddt #{ddt.id}"
-      redirect_to ddts_path, notice: 'Il documento è stato cancellato.'
+      redirect_to ddts_path, notice: "Il documento è stato cancellato."
     end
   end
 

@@ -1,9 +1,9 @@
 class SearchController < ApplicationController
   def search
-    authorize :search 
+    authorize :search
 
     @search_string = params[:search_string] || ""
-    @search_string = @search_string.strip.gsub("%", "")
+    @search_string = @search_string.strip.delete("%")
     if @search_string.length > 2
       search_things(@search_string)
       if current_user.is_cesia?
@@ -36,6 +36,6 @@ class SearchController < ApplicationController
 
   def search_organizations(stringa_ricerca)
     sql_stringa = "%#{stringa_ricerca}%"
-    @organizations = Organization.where('organizations.name LIKE ? OR organizations.description LIKE ? OR organizations.code LIKE ?', sql_stringa, sql_stringa, sql_stringa)
+    @organizations = Organization.where("organizations.name LIKE ? OR organizations.description LIKE ? OR organizations.code LIKE ?", sql_stringa, sql_stringa, sql_stringa)
   end
 end
