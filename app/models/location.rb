@@ -11,14 +11,14 @@ class Location < ApplicationRecord
   before_destroy :check_no_associated_things, prepend: true # http://api.rubyonrails.org/classes/ActiveRecord/Callbacks.html
 
   def to_s
-    self.name.upcase
+    name.upcase
   end
 
   protected
 
   def check_no_associated_things
-    if self.things.any?
-      self.errors.add(:base, "Ci sono oggetti in questa ubicazione da spostare prima di poterla cancellare.")
+    if things.any?
+      errors.add(:base, "Ci sono oggetti in questa ubicazione da spostare prima di poterla cancellare.")
       throw :abort
     end
   end

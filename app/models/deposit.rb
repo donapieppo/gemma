@@ -15,18 +15,18 @@ class Deposit < ApplicationRecord
   before_destroy :check_moves_for_delete
 
   def check_thing_and_location_organization
-    (self.thing.organization_id == self.organization_id) or raise DmUniboCommon::MismatchOrganization, "Struttura sbagliata"
-    (self.location.organization_id == self.organization_id) or raise DmUniboCommon::MismatchOrganization, "Struttura sbagliata"
+    (thing.organization_id == organization_id) or raise DmUniboCommon::MismatchOrganization, "Struttura sbagliata"
+    (location.organization_id == organization_id) or raise DmUniboCommon::MismatchOrganization, "Struttura sbagliata"
   end
 
   def update_actual
     # self.moves.reload
-    self.update(actual: self.moves.sum(:number))
+    update(actual: moves.sum(:number))
   end
 
   private
 
   def check_moves_for_delete
-    throw(:abort) if self.moves.any?
+    throw(:abort) if moves.any?
   end
 end

@@ -1,1 +1,1 @@
-class ArchStock   < ArchOperation; end
+class ArchStock < ArchOperation; end
