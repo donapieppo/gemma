@@ -1,7 +1,6 @@
 require "rails_helper"
 
 describe Unload do
-
   before(:each) do
     @now = GEMMA_TEST_NOW
     @load = FactoryBot.create(:load)
@@ -66,11 +65,11 @@ describe Unload do
     expect(u).not_to be_valid
   end
 
-  #it "should be ok recipient_upn = 'pip.pi@unibo.it' instead of recipient_id" do
+  # it "should be ok recipient_upn = 'pip.pi@unibo.it' instead of recipient_id" do
   #  u = Unload.new(@ok)
   #  u.recipient_id = nil
   #  u.recipient_upn = @recipient.upn
   #
   #  expect(u).to be_valid
-  #end
+  # end
 end

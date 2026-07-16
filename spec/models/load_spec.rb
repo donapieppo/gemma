@@ -70,7 +70,7 @@ describe Load do
 
   it "can not be deleted if has unloads depending on it" do
     actual = load.reload.number
-    unload = FactoryBot.create(:unload, numbers:  {deposit.id => -1},
+    FactoryBot.create(:unload, numbers:  {deposit.id => -1},
       thing:    thing,
       organization: thing.organization,
       date:     GEMMA_TEST_NOW + 5)
