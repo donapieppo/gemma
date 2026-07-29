@@ -15,7 +15,7 @@ class Load < Operation
 
   def initialize(attributes = {})
     avoid_history_coherent = false # aggiorniamo in aggiorna a false FIXME
-    super(attributes)
+    super
   end
 
   private
@@ -33,7 +33,7 @@ class Load < Operation
     end
   end
 
-  # i carichi nuovi sono sempre safe 
+  # i carichi nuovi sono sempre safe
   def decide_for_history_coherent
     avoid_history_coherent = true if self.new_record?
   end
@@ -41,9 +41,9 @@ class Load < Operation
   # DDT
   def validate_ddt
     if (ddt = Ddt.find_by_id(self.ddt_id))
-      (ddt.organization_id == self.organization_id) or raise DmUniboCommon::MismatchOrganization, 'MismatchOrganization in DDT.'
+      (ddt.organization_id == self.organization_id) or raise DmUniboCommon::MismatchOrganization, "MismatchOrganization in DDT."
 
-      errors.add(:date, 'La data del carico non può essere anteriore alla data del ddt.') if ddt.date > self.date 
+      errors.add(:date, "La data del carico non può essere anteriore alla data del ddt.") if ddt.date > self.date 
       errors.add(:date, "La data del carico non può essere in anno differente dalla data del ddt. Consigliamo di scegliere come data l'ultimo giorno dell'anno del ddt.") if ddt.date.year != self.date.year
     else
       errors.add(:base, "Non c'è il ddt.")
@@ -63,7 +63,7 @@ class Load < Operation
   # PRICE
   def validate_price
     if self.organization.pricing && self.price
-      errors.add(:price, 'Il prezzo deve essere positivo.') if self.price < 0
+      errors.add(:price, "Il prezzo deve essere positivo.") if self.price < 0
     else
       self.price = nil
     end
