@@ -13,10 +13,16 @@ class ImagesController < ApplicationController
 
     authorize image
 
+    unless image.photo.attached?
+      flash[:error] = "Seleziona un'immagine da caricare"
+      redirect_to edit_thing_path(@thing)
+      return
+    end
+
     if image.save
       flash[:notice] = "L'immagine è stata salvata"
     else
-      flash[:error] = "Non è stato possibile salvere l'allegato. #{image.errors.first.inspect}"
+      flash[:error] = "Non è stato possibile salvare l'allegato. #{image.errors.first.inspect}"
     end
 
     redirect_to edit_thing_path(@thing)
@@ -33,15 +39,17 @@ class ImagesController < ApplicationController
   private
 
   def image_params
-    params.require(:image).permit(:photo)
+    # not raise if missing image. It is cheched later with image.photo.attached?
+    params.fetch(:image, ActionController::Parameters.new).permit(:photo)
   end
 
   def resize_image
-    if params[:image] && params[:image][:photo]
-      path = params[:image][:photo].tempfile.path
-      image = ImageProcessing::Vips.source(path)
-      result = image.resize_to_limit!(600, 600)
-      params[:image][:photo].tempfile = result
-    end
+    uploaded_photo = params.dig(:image, :photo)
+    return unless uploaded_photo.respond_to?(:tempfile)
+
+    path = uploaded_photo.tempfile.path
+    image = ImageProcessing::Vips.source(path)
+    result = image.resize_to_limit!(600, 600)
+    uploaded_photo.tempfile = result
   end
 end
