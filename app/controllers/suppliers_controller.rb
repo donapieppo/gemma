@@ -5,7 +5,7 @@ class SuppliersController < ApplicationController
     authorize Supplier
     # possiamo ricevere con un GET da loads/new il valore remember_thing_id
     # che dobbiamo ricordarci per tornare dopo l'inserimento del ddt
-    session[:from_thing_id] = params[:remember_thing_id].to_i if params[:remember_thing_id] 
+    session[:from_thing_id] = params[:remember_thing_id].to_i if params[:remember_thing_id]
 
     @initial = params[:in] ? params[:in][0, 1] : "a"
 

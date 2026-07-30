@@ -20,6 +20,13 @@
       </div>
     </div>
   <% end %>
+  <% if (labs = current_organization.picking_points).any? %>
+    <%= f.association :picking_point, collection: current_organization.picking_points, as: :radio_buttons %>
+  <% end %>
+
+  <% if (labs = current_organization.cost_centers).any? %>
+    <%= f.association :cost_center, collection: current_organization.cost_centers, as: :radio_buttons %>
+  <% end %>
 
   <%# FIXME %>
   <% if @thing.dewars&.any? %>

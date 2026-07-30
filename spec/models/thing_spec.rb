@@ -1,11 +1,10 @@
-require 'rails_helper'
+require "rails_helper"
 
 describe Thing do
-
-  let (:thing_build) { FactoryBot.build(:thing, organization: organization, group: group) }
-  let (:thing) { FactoryBot.create(:thing) }
-  let (:organization) { FactoryBot.create(:organization) }
-  let (:group) { FactoryBot.create(:group, organization: organization) }
+  let(:thing_build) { FactoryBot.build(:thing, organization: organization, group: group) }
+  let(:thing) { FactoryBot.create(:thing) }
+  let(:organization) { FactoryBot.create(:organization) }
+  let(:group) { FactoryBot.create(:group, organization: organization) }
 
   it "is valid with correct params" do
     expect(thing_build).to be_valid
@@ -58,4 +57,3 @@ describe Thing do
     expect(load.thing.errors[:base].first).to match(/Ci sono carichi e scarichi associati a questo articolo/)
   end
 end
-

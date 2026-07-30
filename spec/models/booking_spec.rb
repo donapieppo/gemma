@@ -7,14 +7,14 @@ describe Booking do
 
   it "does set correct actual" do
     actual = deposit.reload.actual
-    booking = FactoryBot.create(:booking, thing: load.thing, numbers: {deposit.id => - 1})
+    FactoryBot.create(:booking, thing: load.thing, numbers: {deposit.id => - 1})
     expect(deposit.reload.actual).to eq(actual - 1)
   end
 
   it "does set correct total" do
     # FIXME ci vuole thing.reload :-(
     actual = thing.reload.total
-    booking = FactoryBot.create(:booking, thing: load.thing, numbers: {deposit.id => - 1})
+    FactoryBot.create(:booking, thing: load.thing, numbers: {deposit.id => - 1})
     expect(thing.reload.total).to eq(actual - 1)
   end
 

@@ -44,7 +44,7 @@ describe Shift do
 
   it "does set total" do
     actual_total = thing.total
-    shift = FactoryBot.create(:shift, thing: thing)
+    FactoryBot.create(:shift, thing: thing)
     expect(thing.reload.total).to eq(actual_total)
   end
 

@@ -10,9 +10,9 @@ class ArchsController < ApplicationController
 
     report = GemmaReport.new(current_organization, params[:report][:format])
 
-    report.title     = "Movimenti anno #{@year}"
+    report.title = "Movimenti anno #{@year}"
     report.separator = :thing
-    report.fields    = [:type, :date, :number, :upn, :description]
+    report.fields = [:type, :date, :number, :upn, :description]
     report.query = "SELECT type, arch_operations.number, COALESCE(recipient, upn) AS upn,
                            arch_things.name as thing, arch_ddts.name as ddt, gen, arch_ddts.number AS dnumber,
                            arch_operations.date AS date, suppliers.name AS supplier

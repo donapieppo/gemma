@@ -36,7 +36,7 @@ class TakeoversController < ApplicationController
   def update
     params[:takeover][:numbers] = params[:numbers]
 
-    begin 
+    begin
       res = @takeover.aggiorna(takeover_params)
     rescue Gemma::NegativeDeposit => e
       @takeover.errors.add(:base, e.to_s)
@@ -84,6 +84,3 @@ class TakeoversController < ApplicationController
     authorize @takeover
   end
 end
-
-
-

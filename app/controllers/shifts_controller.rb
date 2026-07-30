@@ -2,24 +2,24 @@ class ShiftsController < ApplicationController
   before_action :set_shift_and_check_permission, only: [:edit, :update, :destroy]
 
   def new
-    @thing    = current_organization.things.find(params[:thing_id]) 
+    @thing = current_organization.things.find(params[:thing_id])
     @deposits = @thing.deposits
-    @shift    = @thing.shifts.new(date: Date.today, organization_id: current_organization)
+    @shift = @thing.shifts.new(date: Date.today, organization_id: current_organization)
     authorize @shift
   end
 
-  # FIXME 
+  # FIXME
   # se manca params[:shift][:from] deve esserci thing_id per tornare alla pagina move_form
   # "shift"=>{"number"=>"2", "from"=>"308", "to"=>"319"}
   def create
     @thing = current_organization.things.find(params[:thing_id])
     @shift = Shift.new(user_id:         current_user.id,
-                       date:            params[:shift][:date],
-                       thing_id:        @thing.id,
-                       number:          params[:shift][:number].to_i,
-                       from:            params[:shift][:from],
-                       to:              params[:shift][:to],
-                       organization_id: current_organization.id)
+      date:            params[:shift][:date],
+      thing_id:        @thing.id,
+      number:          params[:shift][:number].to_i,
+      from:            params[:shift][:from],
+      to:              params[:shift][:to],
+      organization_id: current_organization.id)
     authorize @shift
 
     begin
@@ -49,7 +49,7 @@ class ShiftsController < ApplicationController
     end
 
     if res
-      redirect_to thing_moves_path(@shift.thing_id), notice: 'La data è stata aggiornata.'
+      redirect_to thing_moves_path(@shift.thing_id), notice: "La data è stata aggiornata."
     else
       render action: :edit, status: :unprocessable_entity
     end
@@ -64,7 +64,7 @@ class ShiftsController < ApplicationController
     end
 
     if res
-      flash[:notice] = 'Spostamento correttamente eliminato'
+      flash[:notice] = "Spostamento correttamente eliminato"
     else
       flash[:alert] ||= "Non è stato possibile eliminare l'operazione. #{@shift.errors.on_base}"
     end

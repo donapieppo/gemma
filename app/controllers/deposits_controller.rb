@@ -22,7 +22,7 @@ class DepositsController < ApplicationController
         authorize @deposit
         if !@deposit.save
           redirect_to new_thing_deposit_path(@thing), alert: "Errore nell'aggiunta dell'articolo."
-          return                      
+          return
         end
       end
       redirect_to edit_thing_path(@thing), notice: "Le nuove ubicazioni sono state stata aggiunte."

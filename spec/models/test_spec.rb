@@ -13,11 +13,13 @@ describe Booking do
     @user = FactoryBot.create(:user)
     @recipient = FactoryBot.create(:user)
 
-    @ok = {organization_id: @load.organization.id,
-            numbers: {@moves[0].deposit_id => 1 - @moves[0].number},
-            thing_id: @load.thing_id,
-            user_id: @user.id,
-            date: @now + 2.days}
+    @ok = {
+      organization_id: @load.organization.id,
+      numbers: {@moves[0].deposit_id => 1 - @moves[0].number},
+      thing_id: @load.thing_id,
+      user_id: @user.id,
+      date: @now + 2.days
+    }
   end
 
   it "does set correct total" do
