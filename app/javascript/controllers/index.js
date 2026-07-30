@@ -4,6 +4,8 @@ import DsaController from "./dsa_controller"
 application.register("dsa", DsaController)
 import FocusController from "./focus"
 application.register("focus", FocusController)
+import FileSubmitController from "./file_submit_controller"
+application.register("file-submit", FileSubmitController)
 import DsaAwesomplete from "./dsa_awesomplete.js"
 application.register("dsa-awesomplete", DsaAwesomplete)
 import { DmTest, TurboModalController, LimitVisibleController } from "dm_unibo_common"
