@@ -1,7 +1,17 @@
 <%= dm_form_for [@thing, @image], html: {multipart: true}, title: 'Immagine', data: { turbo: false } do |form| %>
   <p class="alert alert-info">Ogni articolo può essere associato a una immagine</p>
-  <%= form.file_field :photo %>
-  <%= form.submit "Aggiungi immagine" %>  
+  <%= form.label :photo, "Aggiungi immagine", class: "btn btn-primary" %>
+  <%= form.file_field :photo,
+        accept: "image/*",
+        required: true,
+        class: "visually-hidden",
+        data: {
+          controller: "file-submit",
+          action: "change->file-submit#submit"
+        } %>
+  <noscript>
+    <%= form.submit "Carica immagine selezionata" %>
+  </noscript>
 <% end %>
 
 <div class="image-list">
