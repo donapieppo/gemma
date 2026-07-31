@@ -1,6 +1,6 @@
 class LoadPolicy < ApplicationPolicy
   def create?
-    record_organization_manager? 
+    record_organization_manager?
   end
 
   def update?

@@ -69,19 +69,19 @@ namespace :gemma do
               _key = key(instance, attachment)
 
               p active_storage_blob_statement.execute(
-                  _key,
-                  instance.send("#{attachment}_file_name"),
-                  instance.send("#{attachment}_content_type"),
-                  instance.send("#{attachment}_file_size"),
-                  Digest::MD5.base64digest(File.read(paperclip_file)),
-                  orig_date
+                _key,
+                instance.send("#{attachment}_file_name"),
+                instance.send("#{attachment}_content_type"),
+                instance.send("#{attachment}_file_size"),
+                Digest::MD5.base64digest(File.read(paperclip_file)),
+                orig_date
               )
 
               p active_storage_attachment_statement.execute(
-                  attachment,
-                  model.name,
-                  instance.id,
-                  orig_date
+                attachment,
+                model.name,
+                instance.id,
+                orig_date
               )
 
               dest_dir = File.join("/home/rails/gemma/storage", _key.first(2), _key.first(4).last(2))
