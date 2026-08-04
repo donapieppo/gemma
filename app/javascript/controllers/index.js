@@ -8,6 +8,8 @@ import FileSubmitController from "./file_submit_controller"
 application.register("file-submit", FileSubmitController)
 import DsaAwesomplete from "./dsa_awesomplete.js"
 application.register("dsa-awesomplete", DsaAwesomplete)
+import BookingVisibleRicercaController from "./booking_visible_ricerca.js"
+application.register("booking-visible-ricerca", BookingVisibleRicercaController)
 import { DmTest, TurboModalController, LimitVisibleController } from "dm_unibo_common"
 application.register("turbo-modal", TurboModalController)
 application.register("limit-visible", LimitVisibleController)

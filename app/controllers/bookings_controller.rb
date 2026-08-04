@@ -36,12 +36,18 @@ class BookingsController < ApplicationController
       @book = @thing.bookings.new(organization_id: current_organization.id)
       authorize @book
       populate_delegations
+      populate_picking_points_and_cost_centers
     end
   end
 
   def create
-    # lab only if didattica is on
-    params[:booking].delete(:lab_id) unless params[:didattica] == "on"
+    # FIXME move in model
+    if params[:didattica] == "on"
+      params[:booking].delete(:picking_point_id)
+      params[:booking].delete(:cost_center_id)
+    else
+      params[:booking].delete(:lab_id)
+    end
 
     @book = @thing.bookings.new(
       organization_id: current_organization.id,
@@ -62,6 +68,7 @@ class BookingsController < ApplicationController
       redirect_to bookings_path(highlight: @book), notice: "Prenotazione effettuata correttamente."
     else
       populate_delegations
+      populate_picking_points_and_cost_centers
       render action: :new, status: :unprocessable_entity
     end
   end
@@ -97,6 +104,8 @@ class BookingsController < ApplicationController
   # FIXME
   def booking_params
     cold_dewar = false # default dalse per ora non si modifica
+    # si usa solo con deleghe e si setta sotto
+    params[:booking].delete(:recipient_id)
 
     # ricorda che per avere permit la key deve essere string
     # FIXME (else?)
@@ -144,6 +153,17 @@ class BookingsController < ApplicationController
       [[current_user.cn, 0]] + @delegations.map { |d| ["#{d.delegator.cn} #{d.cost_center} #{d.picking_point}", d.id] }
     else
       []
+    end
+  end
+
+  # user has delegations: render only delegation_id choices, no free picking_point / cost_center fields
+  def populate_picking_points_and_cost_centers
+    if @delegations.any?
+      @picking_points = []
+      @cost_centers = []
+    else
+      @picking_points = current_organization.picking_points
+      @cost_centers = current_organization.cost_centers
     end
   end
 end
