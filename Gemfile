@@ -22,11 +22,7 @@ gem "csv"
 
 gem "aws-sdk-s3", require: false
 
-# gem 'sprockets-rails', "=3.4.2", require: 'sprockets/railtie'
 gem "sprockets-rails"
-# OmniAuth.config.request_validation_phase = OmniAuth::AuthenticityTokenProtection.new(key: :_csrf_token)
-# gem "omniauth-rails_csrf_protection"
-
 gem "bootsnap", require: false
 
 gem "lograge"
@@ -37,9 +33,6 @@ gem "sentry-rails"
 group :development, :test do
   gem "rspec-rails", "~> 7.1"
   gem "factory_bot_rails"
-  gem "rubocop", require: false
-  gem "rubocop-rails", require: false
-  gem "rubocop-performance", require: false
   gem "standard", require: false
   # gem "faker"
 end
