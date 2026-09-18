@@ -2,8 +2,11 @@ source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 gem "dm_unibo_user_search", git: "https://github.com/donapieppo/dm_unibo_user_search.git"
-gem "dm_unibo_common", git: "https://github.com/donapieppo/dm_unibo_common.git"
+gem "dm_unibo_common", git: "https://github.com/donapieppo/dm_unibo_common.git", branch: "sett26"
 # gem "dm_unibo_common", path: "/home/rails/gems/dm_unibo_common/"
+
+# FIXME
+gem "json", "~> 2.0"
 
 gem "puma"
 
@@ -31,7 +34,7 @@ gem "sentry-ruby"
 gem "sentry-rails"
 
 group :development, :test do
-  gem "rspec-rails", "~> 7.1"
+  gem "rspec-rails"
   gem "factory_bot_rails"
   gem "standard", require: false
   # gem "faker"
@@ -46,7 +49,7 @@ group :development do
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
-  gem "ruby-lsp"
+  gem "ruby-lsp", require: false
 end
 
 group :test do
