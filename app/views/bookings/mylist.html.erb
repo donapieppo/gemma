@@ -5,41 +5,39 @@
 </div>
 
 <div class="bookings-list my-3">
-  <% @books.each do |o|  %>  
-    <%= content_tag :div, class: "bookings-list-item #{o.class}" do %>
+  <% @books.each do |booking|  %>  
+    <%= content_tag :div, class: "bookings-list-item #{booking.class}" do %>
       <div class="row ">
         <div class="col-2 col-lg-1">
-          <div class="move-number py-1 px-2"><%= o.number.abs %></div>
+          <div class="move-number py-1 px-2"><%= booking.number.abs %></div>
         </div>
 
         <div class="col">
           <div>
-            <span class="pe-2"><%= l o.date %></span>
-            <span class="font-weight-bold"><%= o.thing %></span>
-            <small class="text-body-secondary">da <%= o.moves.first.deposit.location %></small>
+            <span class="pe-2"><%= l booking.date %></span>
+            <span class="font-weight-bold"><%= booking.thing %></span>
+            <small class="text-body-secondary">da <%= booking.moves.first.deposit.location %></small>
             <span class="float-end">
-              <%= link_to_delete "", booking_path(o) %>
+              <%= link_to_delete "", booking_path(booking) %>
             </span>
           </div>
           <div>
-            <% if o.recipient_id %>
-              Responsabile: <strong><%= o.recipient %></strong>
+            <% if booking.recipient_id %>
+              Responsabile: <strong><%= booking.recipient %></strong>
             <% end %>
-            <% if (cost_center = o.cost_center) %>
-              <%= cost_center %>
+            <% if (cost_center = booking.cost_center) %>
+              <%= dm_icon "coins", text: cost_center.to_s %> &nbsp;
             <% end %>
-            <% if (picking_point = o.picking_point) %>
-              <%= picking_point %>
+            <% if (pp = booking.picking_point) %>
+              <%= dm_icon "house", text: pp.to_s %> &nbsp;
+            <% end %>
+            <% if (lab = booking.lab) %>
+              <%= dm_icon "flask", text: "Lab #{lab}" %>
             <% end %>
           </div>
-          <% if o.lab_id %>
-            <div>
-              <%= dm_icon "flask", text: "Per lab. #{o.lab}" %>
-            </div>
-          <% end %>
-          <% unless o.note.blank? %>
-            <div style="margin-left: 6em" class="text-muted">
-              note: <%= o.note %>
+          <% unless booking.note.blank? %>
+            <div class="ps-4 text-muted">
+              note: <%= booking.note %>
             </div>
           <% end %>
         </div>
