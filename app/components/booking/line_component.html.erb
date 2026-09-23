@@ -19,18 +19,18 @@
         <%= link_to @booking.user, user_bookings_path(@booking.user) %>
         <%= "(#{@booking.note})" unless @booking.note.blank? %>
         <% if @booking.recipient %>
-          <span class="text-body-secondary small">per <%= link_to @booking.recipient, user_bookings_path(@booking.recipient) %></span>
-          <% if (cost_center = @booking.cost_center) %>
-            <%= cost_center %>
-          <% end %>
-          <% if (pp = @booking.picking_point) %>
-            <%= pp %>
-          <% end %>
+          <span class="text-body-secondary"> per <%= link_to @booking.recipient, user_bookings_path(@booking.recipient) %></span>
         <% end %>
       </div>
       <div class="ps-3">
-        <% if @booking.lab_id %>
-          <%= dm_icon "flask", text: "Lab: #{@booking.lab}" %>
+        <% if (cost_center = @booking.cost_center) %>
+          <%= dm_icon "coins", text: cost_center.to_s %> &nbsp;
+        <% end %>
+        <% if (pp = @booking.picking_point) %>
+          <%= dm_icon "house", text: pp.to_s %> &nbsp;
+        <% end %>
+        <% if (lab = @booking.lab) %>
+          <%= dm_icon "flask", text: "Lab #{lab}" %>
         <% end %>
       </div>
     </div>
