@@ -41,5 +41,5 @@
 </div>
 
 <% if current_user.is_cesia? %>  
-  <%= button_to "Elimina la struttura", dm_unibo_common.organization_path(current_organization), method: :delete, class: "button" %>  
+  <%= button_to "Elimina la struttura", dm_unibo_common.organization_path(current_organization), method: :delete, class: "btn btn-danger" %>  
 <% end %>

@@ -1,4 +1,4 @@
-<%= dm_card title: "Categorie" do %>
+<%= dm_card title: dm_icon(:list, text: "Categorie") do %>
   <div class="list-group">
     <% current_organization.groups.order('groups.name').each do |group| %>  
       <%= link_to [:edit, group], class: "list-group-item list-group-item-action py-1" do %>

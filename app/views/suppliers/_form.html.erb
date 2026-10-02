@@ -3,10 +3,12 @@
   Vi preghiamo di inserire/aggiornare questi dati con cura.
 </div>
 
-<%= dm_form_for @supplier, title: 'Dati fornitore' do |s| %>
-  <%= s.dm_error_notification %>  
-  <%= s.input :name %>
-  <%= s.input :pi %>
-  <%= s.submit %> 
+<%= dm_card title: "Dati fornitore" do %>
+  <%= simple_form_for @supplier do |s| %>
+    <%= s.dm_error_notification %>  
+    <%= s.input :name %>
+    <%= s.input :pi %>
+    <%= s.submit %> 
+  <% end %>
 <% end %>
 

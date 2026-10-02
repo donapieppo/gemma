@@ -1,4 +1,4 @@
-<%= dm_card title: "Utenti" do %>
+<%= dm_card title: dm_icon(:users, text: "Utenti") do %>
   <ul class="list-group">
     <% @permissions_hash.each do |authlevel, permissions| %>
       <% permissions.each do |p| %>
