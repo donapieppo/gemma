@@ -11,7 +11,7 @@ IVAS = [4, 5, 10, 22]
 
 module Gemma
   class Application < Rails::Application
-    config.session_store :cookie_store, key: "_gemma25"
+    config.session_store :cookie_store, key: "_gemma26", expire_after: 2.weeks
 
     config.active_record.belongs_to_required_by_default = false
 
