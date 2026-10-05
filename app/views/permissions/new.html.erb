@@ -1,0 +1,15 @@
+<h1><%= current_organization %></h1>
+
+<%= dm_form_for @permission, title: 'Nuovo utente', html: {data:{turbo: false}} do |p| %>  
+  <%= p.input :user_upn, label: "Email" %>
+  <% collection = ::Authorization.all_level_list.select{|x| x < 50}.map {|x| [::Authorization.level_description(x), x] } %>
+  <%= p.input :authlevel, label: "Abilitazione", as: :radio_buttons, collection: collection %>  
+
+  <%= p.submit %>  
+
+  <div class="alert alert-info my-3">
+    <%= dm_icon("circle-info", size: "xl") %> Un utente con permessi di "amministratore" può agire sulle categorie e creare oggetti, creare ddt/fatture e carichi/scarichi a nome di altri utenti. Può anche creare deleghe. Per creare/modificare il responsabile struttura (direttore amministrativo) inviare una mail a 
+    <%= mail_to Rails.configuration.unibo_common.support_mail %>.
+  </div>
+<% end %>
+

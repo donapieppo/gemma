@@ -1,0 +1,16 @@
+<h1><%= current_organization %></h1>
+
+<h2>Permessi</h2>
+
+<div class="list-group">
+  <% @permissions.each do |p| %>
+    <div class="list-group-item py-1">
+      <span class="float-end"><%= link_to_delete "", p %></span>
+      <span class=""><%= p.user %></span>
+      <span class="text-primary ps-2">(<%= p.user.email %>)</span>
+      <span class="badge bg-info-subtle text-dark float-end"><%= Authorization.level_description(p.authlevel).downcase %></span>
+    </div>
+  <% end %>
+</div>
+
+<%= link_to "Aggiungi utente", new_permission_path, class: "btn btn-primary my-2" %>
