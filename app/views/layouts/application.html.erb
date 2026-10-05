@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="it">
   <%= render DmUniboCommon::HeaderComponent.new %>
-  <body>
+  <body class="d-flex flex-column min-vh-100 bg-body-tertiary">
     <%= render partial: 'layouts/menu' %>
 
-    <main role="main" class="container">
+    <main id="content" class="container my-4 my-md-5">
       <%= render "shared/breadcrumbs" %>
       <%= render DmUniboCommon::PrivacyAlertComponent.new(cookies) %>  
       <%= render DmUniboCommon::BootstrapAlertComponent.new(flash) %>  
@@ -13,12 +13,11 @@
       <%= yield %>
     </main>
 
-    <%= render DmUniboCommon::FooterComponent.new current_user, 
-                                                  contact_mail: Rails.configuration.unibo_common.contact_mail,
-                                                  documentation_path: (current_user ? helps_path : nil) %>  
     <%= render DmUniboCommon::ImpersonationComponent.new current_user, true_user, 
                                                          who_impersonate_path: dm_unibo_common.who_impersonate_path, 
                                                          stop_impersonating_path: dm_unibo_common.stop_impersonating_path %>
+    <%= render DmUniboCommon::FooterComponent.new current_user, 
+                                                  documentation_path: (current_user ? helps_path : nil) %>  
   </body>
 </html>
 

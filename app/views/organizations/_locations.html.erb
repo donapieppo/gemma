@@ -1,4 +1,4 @@
-<%= dm_card title: "Ubicazioni" do %>
+<%= dm_card title: dm_icon(:building, text: "Ubicazioni") do %>
   <div class="list-group">
     <% current_organization.locations.order(:name).each do |location| %>  
       <%= link_to [:edit, location], class: "list-group-item list-group-item-action py-1" do %>

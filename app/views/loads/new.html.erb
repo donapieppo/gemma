@@ -12,7 +12,8 @@
 
 <%= render Thing::ActionsComponent.new(current_user, @thing) %>
 
-<%= dm_form_for [@thing, @load], title: "Modulo di carico di #{@thing}" do |f| %>
+<%= dm_card title: "Modulo di carico di #{@thing}" do %>
+<%= simple_form_for [@thing, @load] do |f| %>
   <%= f.dm_error_notification %>  
   <%= f.association :ddt, collection: @all_ddts, label_method: :description_with_date, required: true, hint: "Ddt/Fattura con cui è arrivato il materiale oppure crea un #{link_to 'nuovo ddt.', new_ddt_path}".html_safe %>
 
@@ -28,4 +29,5 @@
 
   <%= f.submit %> - <%= link_to_back thing_moves_path(@thing) %>  
   <%= thing_image(@thing) %>  
+<% end %>
 <% end %>
