@@ -57,13 +57,15 @@
         <%= f.input :date, html5: true %>
 
         <% if params[:batch] == 'y' %>  
-          <%= f.input :recipient_upn, label: 'Indirizzi mail dei riceventi', 
-            hint: 'Separare gli indirizzi con la virgola. Usare meno di 20 indirizzi per volta.', as: :text %>
+          <%= f.input :recipient_upn, label: "Indirizzi mail dei riceventi", 
+            hint: "Separare gli indirizzi con la virgola. Usare meno di 20 indirizzi per volta.", as: :text %>
         <% else %>
           <%= render DsaAwesompleteComponent.new(current_organization.id, f, :recipient_upn, hint: recipient_hint(@unload)) %>  
           <div class="col-sm-9 offset-sm-3 mb-4"> 
-            È possibile 
-            <%= link_to dm_icon('search', text: "Cercare l'utente"), popup_find_user_path, data: {turbo_frame: :modal} %>,
+            È possibile
+            <% if Rails.configuration.unibo_common.searchable_provider %>
+              <%= link_to dm_icon("search", text: "Cercare l'utente"), popup_find_user_path, data: {turbo_frame: :modal} %>,
+            <% end %>
             <% if @unload.is_a?(Unload) %>  
               richiamare l'<span data-controller="dsa" data-dsa-lastupn-value="<%= @last_recipient_upn %>" data-action="click->dsa#setLastUpn" style="cursor: pointer; text-decoration: underline">ultimo utente inserito</span>
             <% end %> 
