@@ -1,0 +1,23 @@
+<div class="card border-0 shadow-lg">
+  <div class="card-body p-4 p-md-5">
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <h1 class="fw-semibold text-primary mb-2 fs-2">
+          <%= Rails.configuration.unibo_common.header_title %>
+        </h1>
+        <p class="lead text-dark mb-4">
+          <%= Rails.configuration.unibo_common.header_subtitle %>
+        </p>
+
+        <div class="my-3 p-3 bg-light rounded-3 small text-muted">
+          <%= Rails.configuration.unibo_common.home_description.html_safe %>
+        </div>
+
+        <%= login_link btn: true  %>
+      </div>
+      <div class="col-md-6 text-center d-none d-md-block">
+        <%= image_tag "homepage.webp", class: "img-fluid mt-4 mt-md-0", alt: "Welcome image" %>
+      </div>
+    </div>
+  </div>
+</div>
