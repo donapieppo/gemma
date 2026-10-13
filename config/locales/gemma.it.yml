@@ -20,6 +20,7 @@ it:
       lab: Laboratorio
       picking_point: Punto di ritiro
       cost_center: Centro di costo
+      permission: Permesso
     attributes:
       admin:
         user_upn: Indirizzo mail
@@ -117,6 +118,8 @@ it:
       picking_point:
         name: Nome
         description: Descrizione
+      permission:
+        authlevel: Abilitazione
 
   simple_form:
     hints:

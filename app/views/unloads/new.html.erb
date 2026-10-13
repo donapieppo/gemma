@@ -86,7 +86,8 @@
         <% end %>
       </div>
 
-      <%= f.submit %>
+      <%= f.submit %> - <%= link_to_back group_things_path(@thing.group) %>  
+
       <% if current_organization.code == 'cesia' %>  
         <br/>
         <%= link_to 'Scarichi Multipli Cesia', new_thing_unload_path(@thing, batch: 'y'), class: "float-end" %>  

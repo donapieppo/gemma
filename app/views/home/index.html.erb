@@ -1,9 +1,7 @@
-<h1 class="h1">
-  GE.M.MA <br/>
-  <span class="small">GEstione Multiutente MAteriale di consumo</span>
-</h1>
-
 <% if current_user %>
+  <h1>GE.M.MA</h1>
+  <h2 class="fs-5">GEstione Multiutente MAteriale di consumo</h2>
+
   <% if @available_organizations.any? %>
     <h3 class="my-3">Scegli la struttura su cui vuoi operare</h3>
 
@@ -19,12 +17,5 @@
     </div>
   <% end %>
 <% else %>
-  <div class="text-center my-3">
-    <%= login_link_title %>
-    <%= login_link(btn: true) %>
-  </div>
+  <%= render "welcome_page" %>
 <% end %>
-
-<div class="alert alert-light my-3">
-  <%= Rails.configuration.unibo_common.home_description.html_safe %>
-</div>

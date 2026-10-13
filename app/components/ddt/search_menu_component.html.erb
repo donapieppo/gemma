@@ -1,25 +1,25 @@
-<%= helpers.dm_card title: 'Fornitore' do %>
+<%= render DmUniboCommon::CardComponent.new(title: 'Fornitore', icon: :search) do %>
   <% form_with url: search_ddts_path do |f| %>
     <%= f.text_field "supplier", size: 10 %>
     <%= f.submit 'Cerca', class: "btn btn-sm" %>
   <% end %>
 <% end %>
 
-<%= helpers.dm_card title: 'Num. Record' do %>
+<%= render DmUniboCommon::CardComponent.new(title: 'Num. Record', icon: :search) do %>
   <% form_with url: search_ddts_path do  |f| %>
     <%= f.text_field "number", size: 10 %>
     <%= f.submit 'Cerca', class: "btn btn-sm" %>
   <% end %>
 <% end %>
 
-<%= helpers.dm_card title: 'Dettaglio (n. ddt/fatt)' do %>
+<%= render DmUniboCommon::CardComponent.new(title: 'Dettaglio (n. ddt/fatt)', icon: :search) do %>
   <% form_with url: search_ddts_path do |f| %>
     <%= f.text_field "like", size: 10 %>
     <%= f.submit 'Cerca', class: "btn btn-sm" %>
   <% end %>
 <% end %>
 
-<%= helpers.dm_card title: 'Ricerca per data documento' do %>
+<%= render DmUniboCommon::CardComponent.new(title: 'Ricerca per data documento', icon: :search) do %>
   <% form_with url: search_ddts_path do |f| %>
     <div class="row mb-3">
       <div class="col-sm-2">
@@ -41,7 +41,7 @@
   <% end %>
 <% end %>
 
-<%= helpers.dm_card title: 'Rif. CIA - Nr. Prot.' do %>
+<%= render DmUniboCommon::CardComponent.new(title: 'Rif. CIA - Nr. Prot.', icon: :search) do %>
   <% form_with url: search_cia_ddts_path do |f| %>
     <div class="my-2">
       <%= f.select "ycia", options_for_select(@years_cia), {include_blank: false, class: 'form-select select'} %>
@@ -52,5 +52,4 @@
     </div>
   <% end %>
 <% end %>
-
 

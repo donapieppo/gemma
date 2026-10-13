@@ -6,10 +6,10 @@
           <%= @booking.number.abs %>
         </span>
         <strong><%= @booking.thing.name %></strong>
-        <small class="text-body-secondary"><%= @booking.thing.description %></small>
+        <small class="text-muted"><%= @booking.thing.description %></small>
       </div>
       <div class="ps-3">
-        <small class="text-body-secondary">presso <%= @booking.moves.first.deposit.location %></small>
+        <small class="text-muted">presso <%= @booking.moves.first.deposit.location %></small>
         <% if @booking.thing.under_minimum? %>
           <span class="text-warning" title="sotto scorta minima"><%= dm_icon "circle-exclamation" %></span>
         <% end %>
@@ -19,7 +19,7 @@
         <%= link_to @booking.user, user_bookings_path(@booking.user) %>
         <%= "(#{@booking.note})" unless @booking.note.blank? %>
         <% if @booking.recipient %>
-          <span class="text-body-secondary"> per <%= link_to @booking.recipient, user_bookings_path(@booking.recipient) %></span>
+          <span class="text-muted"> per <%= link_to @booking.recipient, user_bookings_path(@booking.recipient) %></span>
         <% end %>
       </div>
       <div class="ps-3">
@@ -36,7 +36,7 @@
     </div>
 
     <div class="col-md-3 text-end">
-      <div class="text-body-secondary"><%= l(@booking.created_at, format: :booking) if @booking.created_at %></div>
+      <div class="text-muted"><%= l(@booking.created_at, format: :booking) if @booking.created_at %></div>
       <div>
         <%= link_to_check confirm_booking_path(@booking) %> 
         <%= link_to_delete "", booking_path(@booking) %> 

@@ -10,7 +10,7 @@ module ReportHelper
         content_tag(:div, class: "col-sm-8") do
           if title
             concat(
-              content_tag(:h2, title, class: "my-4 text-center")
+              content_tag(:h2, title, class: "my-4")
             )
           end
           yield

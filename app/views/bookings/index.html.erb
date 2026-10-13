@@ -4,23 +4,25 @@
 
 <% if @books.load.any? %>  
   <% @things_cache = Hash.new {|h,v| h[v] = 0} %>  
-  <div class="list-group">
-    <% @users_bookings.keys.sort.each do |user| %>
-      <h2 class="mt-2"><%= user %></h2>
-      <% @users_bookings[user].each do |book| %>
-        <% @things_cache[book.thing] += book.number.abs %>
-        <%= render Booking::LineComponent.new(book) %>
-      <% end %>
+  <% @users_bookings.keys.sort.each do |user| %>
+    <%= render DmUniboCommon::CardComponent.new(title: user, icon: :user) do %>
+      <div class="list-group">
+        <% @users_bookings[user].each do |book| %>
+          <% @things_cache[book.thing] += book.number.abs %>
+          <%= render Booking::LineComponent.new(book) %>
+        <% end %>
+      </div>
       <div class="text-end my-2">
         <%= 
           button_to "Conferma tutte le prenotazioni di #{user}",
             confirm_all_user_bookings_path(@users_bookings[user].first.user_id, booking_ids: @users_bookings[user].map(&:id)),
             class: "text-decoration-underline",
             form: {data: {"turbo-confirm": "Sicuri di volere confermare TUTTE le prenotazioni?"}} 
-        %>
+          %>
       </div>
     <% end %>
-  </div>
+  <% end %>
+
   <div class="my-2 text-end">
     <%= button_to bookings_reports_path(format: "csv"), form: {data: {turbo: false}, class: "d-inline"} do %>  
       <%= dm_icon("file-excel", "regular", size: "xl", text: "scarica csv") %>
@@ -29,24 +31,20 @@
       <%= dm_icon("file-pdf", "regular", size: "xl", text: "scarica pdf") %>
     <% end %>
   </div>
-  </div>
 
   <% if @things_cache.size > 1 %>  
-    <div class="dm-card">
-      <div class="dm-card-title">Riassunto oggetti prenotati</div>
-      <div class="dm-card-body">
-        <ul class="booking-things ps-0">
-          <% @things_cache.each do |thing, num| %>  
-            <li class="my-1">
-              <span class="booking-number me-3 <%= thing_color_class(thing, num) %>">
-                <%= num %>
-              </span> 
-              <%= link_to thing, thing_bookings_path(thing.id) %>
-            </li>
-          <% end %>
-        </ul>
-      </div>
-    </div>
+    <%= render DmUniboCommon::CardComponent.new(title: "Riassunto oggetti prenotati") do %>
+      <ul class="booking-things ps-0">
+        <% @things_cache.each do |thing, num| %>  
+          <li class="my-1">
+            <span class="booking-number me-3 <%= thing_color_class(thing, num) %>">
+              <%= num %>
+            </span> 
+            <%= link_to thing, thing_bookings_path(thing.id) %>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
   <% end %>
 
   <div class="my-2 text-end">
@@ -60,7 +58,6 @@
       <%= submit_tag "cerca" %>
     </div>
   <% end %>
-
 <% else %>
   <div class="alert alert-danger">Non ci sono prenotazioni.
     <%= "per l'utente #{@user}" if @user  %> 
@@ -70,17 +67,14 @@
 <% end %>
 
 <% if @cache_users.any? %>  
-  <div class="dm-form">
-    <div class="dm-form-title">Ricevute</div>
-    <div class="dm-form-body">
-      <%= simple_form_for :report, url: receipt_reports_path, data: { turbo: false } do |f| %>
-        <%= f.input :user_id, collection: @cache_users, label_method: :cn_militar, include_blank: false, label: "Scarichi dell'utente" %>  
-        <%= f.input :date, as: :date, html5: true, label: 'Data', input_html: {value: Date.today} %>  
-        <input type="hidden" name="bookings" value="1" />  
-        <%= f.submit "Scarica report" %>  
-      <% end %>
-    </div>
-  </div>
+  <%= render DmUniboCommon::CardComponent.new(title: "Ricevute", icon: :book) do %>
+    <%= simple_form_for :report, url: receipt_reports_path, data: { turbo: false } do |f| %>
+      <%= f.input :user_id, collection: @cache_users, label_method: :cn_militar, include_blank: false, label: "Scarichi dell'utente" %>  
+      <%= f.input :date, as: :date, html5: true, label: 'Data', input_html: {value: Date.today} %>  
+      <input type="hidden" name="bookings" value="1" />  
+      <%= f.submit "Scarica report" %>  
+    <% end %>
+  <% end %>
 <% end %>
 
 <%= javascript_tag do %>
