@@ -33,10 +33,14 @@
     @extend .bg-info;
   }
   .Stock .move-number {
-    @extend .bg-secondary;
+    @extend .bg-light;
+    @extend .text-dark;
+    @extend .border;
+    @extend .border-success;
   }
   .Shift .move-number {
-    @extend .bg-secondary;
+    @extend .bg-light;
+    @extend .text-dark;
   }
   .Load .move-number, .Takeover .move-number {
     @extend .bg-success;

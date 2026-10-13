@@ -1,3 +1,14 @@
-@import 'dm_unibo_common/scss/dm';
+@import "dm_unibo_common/scss/dm_istituzionale.scss";
 @import 'awesomplete/awesomplete.theme';
 @import 'application';
+
+h1 {
+  @extend .fs-3;
+}
+h2 {
+  @extend .fs-4;
+}
+h3 {
+  @extend .fs-6;
+}
+

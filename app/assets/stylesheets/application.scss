@@ -2,10 +2,6 @@
 @import "tables";
 @import "moves";
 
-body {
-  color: rgb(62, 62, 62);
-}
-
 .booking-number {
   text-align: right;
   @extend .badge;
@@ -69,8 +65,8 @@ ul.groups-list, ul.locations-list, ul.ddts-list, ul.deposits, ul.inactive_things
     @extend .m-1;
     @extend .btn;
     @extend .btn-sm;
-    @extend .btn-outline-secondary;
-
+    @extend .btn-outline-info;
+    @extend .text-dark;
   }
   input {
     display: none;
