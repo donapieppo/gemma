@@ -1,4 +1,4 @@
-<%= dm_form_for @group, title: "Categoria presso #{@group.organization}" do |g| %>
+<%= dm_form_for @group, title: @group.organization.to_s do |g| %>
   <%= g.dm_error_notification %>  
 
   <%= g.input :name %>
