@@ -11,4 +11,7 @@ h2 {
 h3 {
   @extend .fs-6;
 }
-
+.info {
+  @extend .alert;
+  @extend .alert-info;
+}
