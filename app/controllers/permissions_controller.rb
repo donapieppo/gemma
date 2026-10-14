@@ -1,6 +1,6 @@
 class PermissionsController < ApplicationController
   def index
-    if current_user.current_organization_authlevel >= 50
+    if current_user.current_organization_authlevel >= 50 || current_user.is_cesia?
       @permissions = current_organization.permissions.includes(:user)
       skip_authorization
     else
@@ -9,7 +9,7 @@ class PermissionsController < ApplicationController
   end
 
   def new
-    if current_user.current_organization_authlevel >= 50
+    if current_user.current_organization_authlevel >= 50 || current_user.is_cesia?
       @permission = current_organization.permissions.new
       skip_authorization
     else
@@ -45,7 +45,7 @@ class PermissionsController < ApplicationController
     @permission = DmUniboCommon::Permission.find(params[:id])
     skip_authorization
 
-    if current_user.current_organization_authlevel >= 50
+    if current_user.current_organization_authlevel >= 50 || current_user.is_cesia?
       if @permission.destroy
         flash[:notice] = "OK."
       else
