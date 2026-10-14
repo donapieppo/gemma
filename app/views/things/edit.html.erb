@@ -1,16 +1,14 @@
 <%= render Thing::ActionsComponent.new(current_user, @thing) %>
 
 <div class="row">
-  <div class="col-md-6">
-    <%= render partial: 'form' %>  
-    <%= render partial: 'edit_dewars' %>
+  <div class="col-md-8">
+    <%= render partial: "form" %>  
+    <%= render partial: "edit_dewars" %>
   </div>
-  <div class="col-md-6">
-
-    <%= render partial: 'edit_deposits' %>
-    <%= render partial: 'edit_barcodes' %>
-    <%= render partial: 'edit_images' %>
-
+  <div class="col-md-4">
+    <%= render partial: "edit_deposits" %>
+    <%= render partial: "edit_barcodes" %>
+    <%= render partial: "edit_images" %>
     <%= 
       button_to dm_icon("trash-alt", text: "Elimina l'articolo", size: "xl"), 
         thing_path(@thing), 

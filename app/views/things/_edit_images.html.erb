@@ -1,28 +1,33 @@
-<%= dm_form_for [@thing, @image], html: {multipart: true}, title: 'Immagine', data: { turbo: false } do |form| %>
-  <p class="alert alert-info">Ogni articolo può essere associato a una immagine</p>
-  <%= form.label :photo, "Aggiungi immagine", class: "btn btn-primary" %>
-  <%= form.file_field :photo,
-        accept: "image/*",
-        required: true,
-        class: "visually-hidden",
-        data: {
-          controller: "file-submit",
-          action: "change->file-submit#submit"
-        } %>
-  <noscript>
-    <%= form.submit "Carica immagine selezionata" %>
-  </noscript>
-<% end %>
+<%= render DmUniboCommon::CardComponent.new(title: "Immagine") do %>
+  <%= simple_form_for [@thing, @image], html: {multipart: true}, data: {turbo: false} do |f| %>
+    <div class="alert alert-info">
+      Ogni articolo può essere associato a una immagine
+    </div>
 
-<div class="image-list">
-  <% @thing.images.each do |image| %>  
-    <% if image.photo.attached? %>  
-      <div class="image">
-        <%= image_tag image.photo.variant(resize_to_limit: [300, 300]) %>
-      </div>
-      <div>
-        <%= link_to_delete "Cancella la foto", image_path(image) %>
-      </div>
-    <% end %>
+    <%= f.label :photo, "Aggiungi immagine", class: "btn btn-primary" %>
+    <%= f.file_field :photo,
+      accept: "image/*",
+      required: true,
+      class: "visually-hidden",
+      data: {
+        controller: "file-submit",
+        action: "change->file-submit#submit"
+      } %>
+    <noscript>
+      <%= f.submit "Carica immagine selezionata" %>
+    </noscript>
   <% end %>
-</div>
+
+  <div class="image-list my-3">
+    <% @thing.images.each do |image| %>  
+      <% if image.photo.attached? %>  
+        <div class="image">
+          <%= image_tag image.photo.variant(resize_to_limit: [300, 300]) %>
+        </div>
+        <div>
+          <%= link_to_delete "Cancella la foto", image_path(image), form_class: "btn btn-sm btn-outline-danger" %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
