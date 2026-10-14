@@ -1,6 +1,6 @@
 <h1>Gestione strutture</h1>
 
-<div class="info">
+<div class="alert alert-info">
   Con il termine struttura indichiamo una unità di luogo (di solito un Dipartimento)
   dove si trova il materiale di consumo.<br/>
   Per ogni struttura riportiamo a destra i movimenti dell'ultimo anno e tra parentesi 
@@ -12,8 +12,8 @@
     <% c = @this_year_counts[organization.id] ? 'table-success' : 'table-secondary' %>  
     <% c = "table-danger" if @admins[organization.id].to_i == 0 %>  
     <%= content_tag :tr, class: c do %>
-      <td class="number"><%= organization.id %></td>
-      <th class="number"><%=  link_to organization.code.upcase, current_organization_edit_path(__org__: organization.code) %></th>
+      <td class="number" nowrap="nowrap"><small>id</small> <%= organization.id %></td>
+      <th class="number"><%= link_to organization.code.upcase, current_organization_edit_path(__org__: organization.code) %></th>
       <td>
         <%= organization.name.upcase %>
         <small><%= organization.description %></small>
