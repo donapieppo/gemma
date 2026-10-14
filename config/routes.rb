@@ -92,7 +92,9 @@ Rails.application.routes.draw do
         post :confirm_all, on: :collection
       end
     end
+
     resources :delegations
+    resources :permissions
 
     resources :things do
       post :generate_barcode, on: :member
