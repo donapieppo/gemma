@@ -2,7 +2,7 @@
 
 <h2>Permessi</h2>
 
-<div class="list-group">
+<div class="list-group shadow-lg my-4">
   <% @permissions.each do |p| %>
     <div class="list-group-item py-1">
       <span class="float-end"><%= link_to_delete "", p %></span>
@@ -13,4 +13,6 @@
   <% end %>
 </div>
 
-<%= link_to "Aggiungi utente", new_permission_path, class: "btn btn-primary my-2" %>
+<div class="text-end">
+  <%= link_to "Aggiungi utente", new_permission_path, class: "btn btn-primary my-2" %>
+</div>
