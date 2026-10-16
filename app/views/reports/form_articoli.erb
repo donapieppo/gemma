@@ -1,10 +1,9 @@
-<%= report_layout title: "Elenco articoli" do %>  
-  <%= simple_form_for :report, url: articoli_reports_path, data: { turbo: false } do |f| %>
+<%= render Report::FormComponent.new(title: "Elenco articoli") do %>
+  <%= simple_form_for :report, url: articoli_reports_path, data: {turbo: false} do |f| %>
 
     <%= render Report::FormatComponent.new(f) %>  
 
     <%= f.input :different_pages, label: 'Nuova pagina per ogni categoria', as: :boolean %>  
-
-    <%= f.submit "Scarica", input_html: { data: { disable_with: false }} %>
+    <%= f.submit "Scarica", input_html: {data: {disable_with: false}} %>
   <% end %>
 <% end %>

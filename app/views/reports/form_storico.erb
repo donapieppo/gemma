@@ -1,4 +1,4 @@
-<%= report_layout title: "Storico movimenti" do %>  
+<%= render Report::FormComponent.new(title: "Storico movimenti") do %>
   <%= simple_form_for :report, url: storico_reports_path, data: { turbo: false } do |f| %>
     <%= render Report::FormatComponent.new(f) %>  
     <%= render Report::PeriodComponent.new(f) %>  

@@ -1,4 +1,4 @@
-<%= report_layout title: "Giacenze attuali" do %>  
+<%= render Report::FormComponent.new(title: "Giacenze attuali") do %>
   <%= simple_form_for :report, url: giacenza_reports_path, data: { turbo: false } do |f| %>
     <%= render Report::FormatComponent.new(f) %>  
 

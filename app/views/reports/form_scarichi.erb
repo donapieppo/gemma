@@ -1,4 +1,4 @@
-<%= report_layout title: "Scarichi utente" do %>  
+<%= render Report::FormComponent.new(title: "Scarichi utente") do %>
   <%= simple_form_for :report, url: scarichi_reports_path, data: { turbo: false } do |f| %>
     <%= render Report::FormatComponent.new(f) %>  
     <%= render Report::PeriodComponent.new(f) %>  

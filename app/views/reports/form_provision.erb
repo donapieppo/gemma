@@ -1,13 +1,13 @@
-<h2>Scarichi utente</h2>
+<%= render Report::FormComponent.new(title: "Scarichi utente") do %>
 
 <%= form_with url: provision_reports_path, data: { turbo: false } do %>
 
-  <%= render partial: "format" %>
-  <%= render partial: "period" %>
+<%= render partial: "format" %>
+<%= render partial: "period" %>
 
-  <p>
-  <%= submit_tag "Scarica" %>
-  </p>
+<p>
+<%= submit_tag "Scarica" %>
+</p>
 
 <% end %>
 
