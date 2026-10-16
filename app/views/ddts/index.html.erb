@@ -13,11 +13,11 @@
 
 
 <div class="row">
-  <div class="col-md-3">
+  <div class="col-md-4">
     <%= render Ddt::SearchMenuComponent.new(current_organization) %>
   </div>
 
-  <div class="col-md-9">
+  <div class="col-md-8">
     <%= render Ddt::TableComponent.new(@ddts, current_user) %>  
   </div>
 </div>
