@@ -1,6 +1,6 @@
 <h1><%= @title %></h1>
 
-<div class="info">
+<div class="alert alert-info">
   <% if @for == 'ddt' %>
     Per registrare un nuovo ddt/fattura/scontrino fiscale, clicca sul nome del fornitore che ha emesso il documento.
   <% end %>
@@ -8,11 +8,23 @@
   ma si tenga presente che i fornitori sono <strong>comuni a tutte le strutture</strong>.
 </div>
 
+<div class="text-end my-2">
+  <%= link_to_new 'Registra nuovo fornitore', new_supplier_path %>
+</div>
+
+<nav aria-label="suppliers list">
+  <ul id="suppliers_initial" class="pagination pagination-sm justify-content-center">
+    <% ('A'..'Z').each do |i| %>
+      <li class="page-item <%= class_active_val(i, @initial) %>" id="initial_<%= i %>">
+        <%= link_to i, suppliers_path(in: i, for: @for), class: 'page-link' %>
+      </li>
+    <% end %>
+  </ul>
+</nav>
+
 <div class="row">
-  <div class="col-md-3">
-    <div class="dm-card search">
-      <div class="dm-card-title">Ricerca Fornitore</div>
-      <div class="dm-card-body">
+  <div class="col-md-4">
+    <%= render DmUniboCommon::CardComponent.new(title: "Ricerca fornitore") do %>
         <%= form_with url: find_suppliers_path do %>
           <label for="supplier_string">per ragione sociale:</label><br/>
           <input type="text"   id="supplier_string" name="supplier[string]" size="10" value="" />
@@ -26,26 +38,11 @@
           <input type="hidden" name="for" value="<%= @for %>" />
           <%= submit_tag 'Cerca' %>
         <% end %>
-      </div>
-    </div>
+      <% end %>
   </div>
-
-  <div class="col-md-9">
-    <nav aria-label="suppliers list">
-      <ul id="suppliers_initial" class="pagination pagination-sm justify-content-center">
-        <% ('A'..'Z').each do |i| %>
-          <li class="page-item <%= class_active_val(i, @initial) %>" id="initial_<%= i %>">
-            <%= link_to i, suppliers_path(in: i, for: @for), class: 'page-link' %>
-          </li>
-        <% end %>
-      </ul>
-    </nav>
-
-    <p class="centered">
-    <%= link_to_new 'Registra nuovo fornitore', new_supplier_path %>
-    </p>
-
-    <%= render partial: 'suppliers/list', locals: { suppliers: @suppliers, what_for: @for } %>  
+  <div class="col-md-8">
+    <%= render DmUniboCommon::CardComponent.new(title: "Elenco fornitori") do %>
+      <%= render partial: 'suppliers/list', locals: { suppliers: @suppliers, what_for: @for } %>  
+    <% end %>
   </div>
 </div>
-
