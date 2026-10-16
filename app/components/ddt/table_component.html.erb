@@ -1,4 +1,5 @@
-<table class="table table-sm table-hover shadow-lg" id="ddts_table">
+<%= render DmUniboCommon::CardComponent.new(title: "Elenco DDT/Fatture") do %>
+<table class="table table-sm table-hover" id="ddts_table">
   <tbody>
     <% @ddts.each do |ddt| %>
       <tr>
@@ -17,4 +18,4 @@
     <% end %>
   </tbody>
 </table>
-
+<% end %>
