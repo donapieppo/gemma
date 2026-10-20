@@ -43,25 +43,25 @@ class Operation < ApplicationRecord
   scope :ordered, -> { order("operations.date ASC, operations.number DESC") }
   scope :in_last_years, ->(num) { where("YEAR(date) >= ?", num) }
 
-  def is_stock? = self.is_a?(Stock)
+  def is_stock? = is_a?(Stock)
 
-  def is_price? = self.is_a?(Price)
+  def is_price? = is_a?(Price)
 
-  def is_load? = self.is_a?(Load)
+  def is_load? = is_a?(Load)
 
-  def is_takeover? = self.is_a?(Takeover)
+  def is_takeover? = is_a?(Takeover)
 
-  def is_unload? = self.is_a?(Unload)
+  def is_unload? = is_a?(Unload)
 
-  def is_booking? = self.is_a?(Booking)
+  def is_booking? = is_a?(Booking)
 
-  def is_shift? = self.is_a?(Shift)
+  def is_shift? = is_a?(Shift)
 
   # in questo modo @_numbers diventa una cache (se è settato con numbers=)
   # undefined method `deposit_id' for {}:Hash
 
   def numbers
-    @_numbers ||= self.moves.each_with_object({}) do |move, res|
+    @_numbers ||= moves.each_with_object({}) do |move, res|
       res[move.deposit_id] = move.number
     end
   end
@@ -89,7 +89,9 @@ class Operation < ApplicationRecord
 
   # recupera hash con { deposit_id => number }
   def numbers_hash
-    moves.inject({}) { |n, m| n[m.deposit_id] = m.number; n }
+    moves.each_with_object({}) { |m, n|
+      n[m.deposit_id] = m.number
+    }
   end
 
   def fix_date
@@ -97,19 +99,19 @@ class Operation < ApplicationRecord
   end
 
   def price_int
-    self.price ? (self.price / 100).to_i : 0
+    price ? (price / 100).to_i : 0
   end
 
   def price_dec
-    self.price ? (self.price % 100) : 0
+    price ? (price % 100) : 0
   end
 
   def price_int=(p)
-    self.price = p.to_i * 100 + self.price_dec
+    self.price = p.to_i * 100 + price_dec
   end
 
   def price_dec=(p)
-    self.price = self.price_int * 100 + p.to_i
+    self.price = price_int * 100 + p.to_i
   end
 
   # i dati come ddt (e relazione con la data) sono controllati dal validate dell'operation
@@ -121,7 +123,7 @@ class Operation < ApplicationRecord
   def aggiorna(h)
     avoid_history_coherent = avoid_price_updating = changed_numbers = false
 
-    old_numbers = self.numbers
+    old_numbers = numbers
     if h[:numbers] && (h[:numbers] != old_numbers)
       self.numbers = h[:numbers]
       changed_numbers = true
@@ -130,7 +132,7 @@ class Operation < ApplicationRecord
 
     # aggiorniamo con quello che è stato passato
     h.each do |k, v|
-      self.send("#{k}=", v)
+      send("#{k}=", v)
     end
 
     avoid_price_updating = true unless price_changed? || date_changed? || changed_numbers
@@ -140,15 +142,18 @@ class Operation < ApplicationRecord
   end
 
   def recipient_upn
-    self.recipient ? self.recipient.upn : ""
+    recipient ? recipient.upn : ""
   end
 
   # can submit 'pietro.donatini' 'pietro.donatini@unibo.it' 'Pietro donatini pietro.donatini@unibo.it'
-  def recipient_upn=(upn)
-    @_recipient_upn = if !upn&.include?("@") && (upn =~ /(\w+\.\w+)/)
-      "#{$1}@#{Rails.configuration.unibo_common.domain}"
+  def recipient_upn=(value)
+    value = value.to_s.strip
+    @_recipient_upn = if (m = value.match(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i))
+      m[0]
+    elsif value.match?(/\A[A-Z0-9._+-]+\z/i)
+      "#{value}@#{Rails.configuration.unibo_common.domain}"
     else
-      upn
+      value
     end
   end
 
@@ -196,7 +201,7 @@ class Operation < ApplicationRecord
   end
 
   def validate_date
-    errors.add(:date, "La data non può essere successiva a oggi.") if self.date > Date.today
+    errors.add(:date, "La data non può essere successiva a oggi.") if date > Date.today
   end
 
   def recalculate_prices
@@ -213,7 +218,7 @@ class Operation < ApplicationRecord
     # a volte non ci sono i numbers (tipo per aggiornamento di date)
     @_numbers&.each_key do |dep_id|
       if (dep = Deposit.find_by_id(dep_id))
-        if dep.thing_id != self.thing_id
+        if dep.thing_id != thing_id
           errors.add(:base, "Oggetti differenti in deposit and operation. Contattare amministratore.") and return
         end
       else
@@ -237,7 +242,7 @@ class Operation < ApplicationRecord
   # @_numbers => {1 => 2, 3 => 4} nella forma deposit_id => number
   # settati con numbers=
   def update_moves
-    Rails.logger.debug("Update_moves: self=#{self.inspect} e numbers=#{self.numbers.inspect}")
+    Rails.logger.debug("Update_moves: self=#{inspect} e numbers=#{numbers.inspect}")
 
     @deposits_to_check ||= []
 
@@ -267,7 +272,7 @@ class Operation < ApplicationRecord
     # aggiungiamo i nuovi
     tmp_numbers.each do |dep_id, num|
       if num.to_i != 0
-        self.moves.create(deposit_id: dep_id, number: num)
+        moves.create(deposit_id: dep_id, number: num)
         @deposits_to_check << dep_id
       end
     end
@@ -280,10 +285,10 @@ class Operation < ApplicationRecord
     @deposits_to_check ||= []
 
     # la cancellazione di un unload / prenotazione non pone problemi
-    self.instance_of?(Unload) and avoid_history_coherent = true
-    self.instance_of?(Booking) and avoid_history_coherent = true
+    instance_of?(Unload) and avoid_history_coherent = true
+    instance_of?(Booking) and avoid_history_coherent = true
 
-    self.moves.each do |m|
+    moves.each do |m|
       @deposits_to_check << m.deposit_id
       m.destroy or raise "non cancello in delete_moves"
     end
@@ -317,6 +322,6 @@ class Operation < ApplicationRecord
   end
 
   def log_creation
-    Rails.logger.info(self.inspect)
+    Rails.logger.info(inspect)
   end
 end
