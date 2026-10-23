@@ -39,8 +39,8 @@ tags
 public/system
 /.codex
 
-/app/assets/images/homepage.png
-/app/assets/images/homepage.webp
-/app/assets/images/sigillo_orizzontale.png
-/app/assets/images/sigillo_verticale.png
+/public/homepage.*
+/public/sigillo*
+/public/logo.png
 
+opencode.jsonc
