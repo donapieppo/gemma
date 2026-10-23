@@ -3,7 +3,7 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
-echo "Starting It Inventory development stack"
+echo "Starting development stack"
 echo "Rails will be available at http://127.0.0.1:3000"
 echo "Stop it with Ctrl-C"
 echo
