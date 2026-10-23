@@ -156,7 +156,7 @@ class GemmaReport
   end
 
   def pdf_head
-    @pdf.image "#{Rails.root}/public/logo.png", width: 54
+    @pdf.image "#{Rails.root}/public/branding/logo.png", width: 54
 
     @pdf.draw_text "GEMMA: Reportistica del #{Time.now.strftime("%d/%m/%Y")}",
       at: [@pdf.bounds.left + 80, @pdf.bounds.top - 10]
@@ -171,14 +171,14 @@ class GemmaReport
   end
 
   def pdf_intro
-    return if self.intro.blank?
+    return if intro.blank?
     @pdf.move_down 20
   end
 
   def pdf_bye_bye
-    return if self.bye_bye.blank?
+    return if bye_bye.blank?
     @pdf.move_down 20
-    @pdf.text self.bye_bye
+    @pdf.text bye_bye
   end
 
   def pdf_pages
