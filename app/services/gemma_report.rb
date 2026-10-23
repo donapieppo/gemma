@@ -54,8 +54,6 @@ class GemmaReport
     "Takeover" => "Carico Manuale"
   }
 
-  GEMMA_IMAGE_DIR = "#{Rails.root}/app/assets/images"
-
   # titolo del report
   attr_accessor :title
   # i campi da reportare (array di symbols)
@@ -158,7 +156,7 @@ class GemmaReport
   end
 
   def pdf_head
-    @pdf.image "#{GEMMA_IMAGE_DIR}/logo.png", width: 54
+    @pdf.image "#{Rails.root}/public/logo.png", width: 54
 
     @pdf.draw_text "GEMMA: Reportistica del #{Time.now.strftime("%d/%m/%Y")}",
       at: [@pdf.bounds.left + 80, @pdf.bounds.top - 10]
