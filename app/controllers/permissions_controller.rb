@@ -1,7 +1,7 @@
 class PermissionsController < ApplicationController
   def index
     if current_user.current_organization_authlevel >= 50 || current_user.is_cesia?
-      @permissions = current_organization.permissions.includes(:user)
+      @permissions = current_organization.permissions.where.not(user_id: nil).includes(:user)
       skip_authorization
     else
       redirect_to home_path, error: "No access."
