@@ -7,7 +7,7 @@
     <div class="list-group-item py-1">
       <span class="float-end"><%= link_to_delete "", p %></span>
       <span class=""><%= p.user %></span>
-      <span class="text-primary ps-2">(<%= p.user.email %>)</span>
+      <span class="text-primary ps-2">(<%= p.user.upn %>)</span>
       <span class="badge bg-info-subtle text-dark float-end"><%= Authorization.level_description(p.authlevel).downcase %></span>
     </div>
   <% end %>
