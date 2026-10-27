@@ -151,7 +151,7 @@ class Operation < ApplicationRecord
     @_recipient_upn = if (m = value.match(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i))
       m[0]
     elsif value.match?(/\A[A-Z0-9._+-]+\z/i)
-      "#{value}@#{Rails.configuration.unibo_common.domain}"
+      "#{value}@#{Rails.configuration.unibo_common.domain_name}"
     else
       value
     end
