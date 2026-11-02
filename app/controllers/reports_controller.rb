@@ -135,7 +135,7 @@ class ReportsController < ApplicationController
     report.separator = :upn
     report.separator_page_break = params[:report][:different_pages] == "1"
 
-    report.fields = [:date, :number, :thing, :description, :note, :created_at]
+    report.fields = [:date, :number, :thing, :description, :note]
     report.accumulator = :number if (@thing_id || @group_id)
     report.separator = :thing if @group_id
 
@@ -143,6 +143,8 @@ class ReportsController < ApplicationController
       report.fields += [:price, :price_operations]
       report.price_accumulator = true
     end
+
+    report.fields << :created_at
 
     order = "upn, operations.date"
     order = "upn, things.name, operations.date" if @group_id
