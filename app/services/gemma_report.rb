@@ -299,7 +299,7 @@ class GemmaReport
     if @fields.include?(:price_operations) && record["price_operations"]
       record["price_operations"] = price_operation_to_text(record["price_operations"])
     end
-    if record["from_booking"] && @fields.include?(:created_at) && record["created_at"]
+    if format != "csv" && record["from_booking"] && @fields.include?(:created_at) && record["created_at"]
       record["created_at"] = "(#{record["created_at"].to_time.strftime("%d/%m-%H:%M")})"
     end
     record
