@@ -135,7 +135,7 @@ class ReportsController < ApplicationController
     report.separator = :upn
     report.separator_page_break = params[:report][:different_pages] == "1"
 
-    report.fields = [:date, :number, :thing, :description, :note]
+    report.fields = [:date, :number, :thing, :description, :note, :created_at]
     report.accumulator = :number if (@thing_id || @group_id)
     report.separator = :thing if @group_id
 
@@ -149,7 +149,8 @@ class ReportsController < ApplicationController
 
     report.query = "SELECT operations.date AS date,
                            users.upn,
-                           ABS(number) as number, things.name as thing, description, operations.note, (price/100) AS price, price_operations
+                           ABS(number) as number, things.name as thing, description, operations.note,
+                           (price/100) AS price, price_operations, from_booking, operations.created_at
                       FROM operations
            LEFT OUTER JOIN things ON operations.thing_id = things.id
            LEFT OUTER JOIN users  ON COALESCE(recipient_id, user_id) = users.id

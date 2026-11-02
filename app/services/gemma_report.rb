@@ -21,7 +21,8 @@ class GemmaReport
     code: "Codice Fornitore",
     cost_center: "Centro di costo",
     picking_point: "Punto di ritiro",
-    lab: "Laboratorio"
+    lab: "Laboratorio",
+    created_at: "Data creazione"
   }
 
   @@format = {
@@ -43,7 +44,8 @@ class GemmaReport
     upn: " %s",
     cost_center: " spesa: %s",
     picking_point: " ritiro: %s",
-    lab: " lab: %s"
+    lab: " lab: %s",
+    created_at: "%s"
   }
 
   @@operation_to_s = {
@@ -120,9 +122,7 @@ class GemmaReport
       CSV.generate(col_sep: ";", quote_char: '"') do |csv|
         csv << csv_titles
         ActiveRecord::Base.connection.execute(@query).each(as: :hash) do |record|
-          if @fields.include?(:price_operations) && record["price_operations"]
-            record["price_operations"] = price_operation_to_text(record["price_operations"])
-          end
+          normalize_record(record, @format)
           # FIXME mettere tutto in keys
           csv << @fields.inject([]) do |tmp, f|
             str = (f == :type) ? @@operation_to_s[record[f.to_s]] : record[f.to_s]
@@ -220,21 +220,7 @@ class GemmaReport
         @price_accumulator_value += record["price"]
       end
 
-      # FIXME accrocchio !!!
-      # l'upn in caso di load diventa il ddt
-      if @fields.include?(:type)
-        if record["type"] == "Stock" || record["type"] == "ArchStock"
-          record["upn"] = "Giacenza iniziale"
-        elsif record["type"] == "Load" || record["type"] == "ArchLoad"
-          record["upn"] = "#{record["gen"]} #{record["ddt"]} numero #{record["dnumber"]} di #{record["supplier"]}"
-        end
-      end
-      if @fields.include?(:note)
-        record["note"] = "(#{record["note"]})" unless record["note"].blank?
-      end
-      if @fields.include?(:price_operations) && record["price_operations"]
-        record["price_operations"] = price_operation_to_text(record["price_operations"])
-      end
+      normalize_record(record, @format)
 
       # necessari non-breaking space characters all'inizio della stringa
       # report.fields = [:date, :number, :thing, :description, :note]
@@ -292,6 +278,31 @@ class GemmaReport
       @pdf.text "Spesa Totale: #{@price_accumulator_value} € "
       @price_accumulator_value = 0
     end
+  end
+
+  # Applica le correzioni al record in base ai @fields richiesti.
+  # Unico punto in cui il record viene "sistemato", usato sia dalla
+  # generazione CSV sia da pdf_body.
+  def normalize_record(record, format)
+    # FIXME accrocchio !!!
+    # l'upn in caso di load diventa il ddt
+    if @fields.include?(:type)
+      if record["type"] == "Stock" || record["type"] == "ArchStock"
+        record["upn"] = "Giacenza iniziale"
+      elsif record["type"] == "Load" || record["type"] == "ArchLoad"
+        record["upn"] = "#{record["gen"]} #{record["ddt"]} numero #{record["dnumber"]} di #{record["supplier"]}"
+      end
+    end
+    if format != "csv" && @fields.include?(:note)
+      record["note"] = "(#{record["note"]})" unless record["note"].blank?
+    end
+    if @fields.include?(:price_operations) && record["price_operations"]
+      record["price_operations"] = price_operation_to_text(record["price_operations"])
+    end
+    if record["from_booking"] && @fields.include?(:created_at) && record["created_at"]
+      record["created_at"] = "(#{record["created_at"].to_time.strftime("%d/%m-%H:%M")})"
+    end
+    record
   end
 
   def price_operation_to_text(po)
