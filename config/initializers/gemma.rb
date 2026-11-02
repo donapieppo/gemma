@@ -1,10 +1,5 @@
-# upn di amministratori del programma (Array di upn)
-CESIA_UPN = ["pietro.donatini@unibo.it"]
-
 FIRST_LOCATION = "generale"
 FIRST_GROUP = "cancelleria"
-
-CREDENZIALI_ERRATE_STRING = "Credenziali errate"
 
 GEMMA_TEST_NOW = Date.parse("2017-01-07")
 IVAS = [4, 5, 10, 22]
