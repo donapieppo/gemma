@@ -12,23 +12,23 @@
 
 ActiveRecord::Schema[8.1].define(version: 2022_05_25_142402) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
     t.bigint "blob_id", null: false
     t.datetime "created_at", precision: nil, null: false
-    t.string "name", null: false
-    t.bigint "record_id", null: false
-    t.string "record_type", null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
   create_table "active_storage_blobs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
     t.bigint "byte_size", null: false
     t.string "checksum"
-    t.string "content_type"
     t.datetime "created_at", precision: nil, null: false
-    t.string "filename", null: false
-    t.string "key", null: false
-    t.text "metadata"
     t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
@@ -40,43 +40,43 @@ ActiveRecord::Schema[8.1].define(version: 2022_05_25_142402) do
   end
 
   create_table "arch_ddts", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.date "date"
+    t.integer "number"
     t.string "gen"
     t.string "name"
-    t.integer "number"
-    t.integer "oldid", null: false
+    t.date "date"
     t.integer "organization_id"
     t.integer "supplier_id"
+    t.integer "oldid", null: false
     t.index ["organization_id"], name: "organization_id"
     t.index ["supplier_id"], name: "supplier_id"
   end
 
   create_table "arch_divisions", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.integer "organization_id", null: false
+    t.string "name"
     t.string "description"
     t.string "email"
-    t.string "name"
-    t.integer "organization_id", null: false
     t.index ["organization_id"], name: "organization_id"
   end
 
   create_table "arch_operations", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.date "date"
-    t.integer "ddt_id"
-    t.integer "division_id"
-    t.string "ip"
-    t.string "ncia", limit: 20
-    t.text "note"
-    t.integer "number"
-    t.integer "oldid", null: false
-    t.integer "organization_id"
-    t.integer "price"
+    t.string "upn", limit: 150
+    t.integer "user_id"
     t.string "recipient"
     t.integer "recipient_id"
     t.integer "thing_id"
+    t.integer "number"
+    t.date "date"
+    t.string "ip"
+    t.integer "ddt_id"
+    t.text "note"
     t.string "type", limit: 100
-    t.string "upn", limit: 150
-    t.integer "user_id"
     t.integer "ycia"
+    t.string "ncia", limit: 20
+    t.integer "organization_id"
+    t.integer "price"
+    t.integer "division_id"
+    t.integer "oldid", null: false
     t.index ["ddt_id"], name: "index_operations_on_ddt_id"
     t.index ["division_id"], name: "index_operations_on_division_id"
     t.index ["organization_id"], name: "index_operations_on_organization_id"
@@ -88,45 +88,45 @@ ActiveRecord::Schema[8.1].define(version: 2022_05_25_142402) do
   end
 
   create_table "arch_things", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.string "description"
     t.string "name"
-    t.integer "oldid", null: false
+    t.string "description"
     t.integer "organization_id", null: false
     t.integer "year", null: false
+    t.integer "oldid", null: false
     t.index ["organization_id"], name: "organization_id"
   end
 
   create_table "barcodes", id: :integer, charset: "latin1", collation: "latin1_swedish_ci", force: :cascade do |t|
     t.string "name"
-    t.integer "organization_id"
     t.integer "thing_id"
+    t.integer "organization_id"
     t.index ["name"], name: "index_barcodes_on_barcode"
     t.index ["organization_id"], name: "organization_id"
     t.index ["thing_id"], name: "index_barcodes_on_thing_id"
   end
 
   create_table "cost_centers", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
-    t.text "description"
-    t.string "name", limit: 200, null: false
     t.integer "organization_id", null: false
+    t.string "name", limit: 200, null: false
+    t.text "description"
     t.index ["organization_id"], name: "fk_cost_center_organizations"
   end
 
   create_table "ddts", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.date "date"
-    t.string "gen"
-    t.string "name"
     t.integer "number"
     t.integer "organization_id"
+    t.string "gen"
     t.integer "supplier_id"
+    t.string "name"
+    t.date "date"
   end
 
   create_table "delegations", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.integer "cost_center_id"
-    t.integer "delegate_id", null: false, unsigned: true
     t.integer "delegator_id", null: false, unsigned: true
+    t.integer "delegate_id", null: false, unsigned: true
     t.integer "organization_id", null: false
     t.integer "picking_point_id"
+    t.integer "cost_center_id"
     t.index ["cost_center_id"], name: "fk_delegation_cost_center"
     t.index ["delegate_id"], name: "delegate_id"
     t.index ["delegator_id"], name: "delegator_id"
@@ -135,71 +135,71 @@ ActiveRecord::Schema[8.1].define(version: 2022_05_25_142402) do
   end
 
   create_table "deposits", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.integer "thing_id"
     t.integer "actual"
     t.integer "location_id"
     t.integer "organization_id"
-    t.integer "thing_id"
     t.index ["location_id"], name: "location_id"
     t.index ["organization_id"], name: "organization_id"
   end
 
   create_table "groups", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.boolean "hidden", default: false
     t.string "name"
     t.integer "organization_id"
+    t.boolean "hidden", default: false
   end
 
   create_table "images", id: { type: :integer, unsigned: true }, charset: "latin1", collation: "latin1_swedish_ci", force: :cascade do |t|
-    t.datetime "created_at", precision: nil
     t.integer "thing_id", null: false, unsigned: true
     t.integer "user_id", unsigned: true
+    t.datetime "created_at", precision: nil
     t.index ["user_id"], name: "userid"
   end
 
   create_table "labs", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.string "name"
     t.integer "organization_id"
+    t.string "name"
     t.index ["organization_id"], name: "fk_labs_organizations"
   end
 
   create_table "locations", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.string "name"
     t.integer "organization_id"
+    t.string "name"
     t.index ["organization_id"], name: "index_locations_on_organization_id"
   end
 
   create_table "moves", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.integer "deposit_id", null: false
     t.integer "number", null: false
+    t.integer "deposit_id", null: false
     t.integer "operation_id", null: false
     t.index ["deposit_id"], name: "index_moves_on_deposit_id"
     t.index ["operation_id"], name: "index_moves_on_operation_id"
   end
 
   create_table "notices", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.string "notice"
     t.integer "organization_id"
+    t.string "notice"
   end
 
   create_table "operations", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.integer "cost_center_id"
-    t.datetime "created_at", precision: nil
+    t.integer "organization_id", null: false
+    t.integer "thing_id", null: false
+    t.integer "number", null: false
+    t.integer "user_id"
+    t.integer "recipient_id"
     t.date "date"
     t.integer "ddt_id"
-    t.boolean "from_booking"
     t.integer "lab_id", unsigned: true
-    t.string "ncia", limit: 200
     t.text "note"
-    t.integer "number", null: false
-    t.integer "organization_id", null: false
-    t.integer "picking_point_id"
+    t.integer "ycia"
+    t.string "ncia", limit: 200
+    t.string "type", limit: 100, null: false
     t.integer "price"
     t.text "price_operations"
-    t.integer "recipient_id"
-    t.integer "thing_id", null: false
-    t.string "type", limit: 100, null: false
-    t.integer "user_id"
-    t.integer "ycia"
+    t.boolean "from_booking"
+    t.datetime "created_at", precision: nil
+    t.integer "picking_point_id"
+    t.integer "cost_center_id"
     t.index ["cost_center_id"], name: "fk_operation_cost_center"
     t.index ["ddt_id"], name: "index_operations_on_ddt_id"
     t.index ["lab_id"], name: "operations_labfk"
@@ -213,54 +213,53 @@ ActiveRecord::Schema[8.1].define(version: 2022_05_25_142402) do
   end
 
   create_table "orderingcalendars", id: :integer, charset: "latin1", collation: "latin1_swedish_ci", options: "ENGINE=MyISAM", force: :cascade do |t|
-    t.date "from", null: false
     t.integer "group_id", null: false
+    t.date "from", null: false
     t.date "until", null: false
     t.index ["group_id"], name: "index_orderingcalendars_on_group_id"
   end
 
   create_table "orders", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.date "date", null: false
-    t.integer "division_id"
-    t.string "note"
+    t.integer "user_id"
+    t.integer "thing_id", null: false
     t.integer "number", null: false
     t.integer "organization_id", null: false
-    t.integer "thing_id", null: false
-    t.integer "user_id"
+    t.integer "division_id"
+    t.date "date", null: false
+    t.string "note"
     t.index ["organization_id"], name: "index_orders_on_organization_id"
     t.index ["thing_id"], name: "index_orders_on_thing_id"
     t.index ["user_id"], name: "userid"
   end
 
   create_table "organizations", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.string "code"
+    t.string "name"
+    t.string "description"
+    t.string "sendmail", limit: 1
     t.string "adminmail", limit: 200
     t.boolean "booking"
-    t.string "code"
-    t.datetime "created_at", precision: nil
-    t.string "description"
-    t.string "name"
-    t.boolean "ordering"
+    t.text "booking_mail"
     t.boolean "pricing"
-    t.string "sendmail", limit: 1
     t.datetime "updated_at", precision: nil
-    t.boolean "with_labs", default: false
+    t.datetime "created_at", precision: nil
   end
 
   create_table "permissions", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.integer "authlevel"
-    t.datetime "created_at", precision: nil
-    t.string "network", limit: 20
-    t.integer "organization_id"
-    t.datetime "updated_at", precision: nil
     t.integer "user_id", unsigned: true
+    t.integer "organization_id"
+    t.string "network", limit: 20
+    t.integer "authlevel"
+    t.datetime "updated_at", precision: nil
+    t.datetime "created_at", precision: nil
     t.index ["organization_id"], name: "fk_organization_permission"
     t.index ["user_id"], name: "fk_user_permission"
   end
 
   create_table "picking_points", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
-    t.text "description"
-    t.string "name", null: false
     t.integer "organization_id", null: false
+    t.string "name", null: false
+    t.text "description"
     t.index ["organization_id"], name: "fk_picking_points_organizations"
   end
 
@@ -274,26 +273,26 @@ ActiveRecord::Schema[8.1].define(version: 2022_05_25_142402) do
   end
 
   create_table "things", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.string "name"
     t.string "description"
-    t.text "dewars"
-    t.text "future_prices"
     t.integer "group_id"
     t.integer "minimum"
-    t.string "name"
-    t.integer "organization_id"
     t.integer "total", default: 0, unsigned: true
+    t.integer "organization_id"
+    t.text "future_prices"
+    t.text "dewars"
     t.index ["group_id"], name: "group_id"
     t.index ["organization_id"], name: "organization_id"
   end
 
   create_table "users", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.string "email"
-    t.integer "emplyeeid"
+    t.string "upn", limit: 150
     t.string "gender", limit: 1
     t.string "name", limit: 50
     t.string "surname", limit: 50
+    t.string "email"
+    t.integer "emplyeeid"
     t.timestamp "updated_at", default: -> { "current_timestamp() ON UPDATE current_timestamp()" }, null: false
-    t.string "upn", limit: 150
     t.index ["upn"], name: "index_dsacaches_on_upn", unique: true
   end
 
