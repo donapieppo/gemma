@@ -43,4 +43,5 @@ public/system
 /public/sigillo*
 /public/logo.png
 
-opencode.jsonc
+/opencode.jsonc
+/config/DSASearch.wsdl.xml
