@@ -1,4 +1,11 @@
+alter table organizations drop with_labs;
+alter table organizations drop ordering;
+
 ALTER TABLE `organizations` ADD COLUMN `booking_mail` text DEFAULT NULL after `booking`;
+
+
+
+
 
 ALTER TABLE `groups` ADD COLUMN `hidden` BOOL DEFAULT false;
 
