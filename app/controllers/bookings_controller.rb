@@ -65,6 +65,7 @@ class BookingsController < ApplicationController
     end
 
     if res
+      send_booking_mail
       redirect_to bookings_path(highlight: @book), notice: "Prenotazione effettuata correttamente."
     else
       populate_delegations
@@ -100,6 +101,11 @@ class BookingsController < ApplicationController
   end
 
   private
+
+  def send_booking_mail
+    return unless current_organization.booking_mail =~ /\w/
+    BookingMailer.notify_booking(@book.reload).deliver_now
+  end
 
   # FIXME
   def booking_params
