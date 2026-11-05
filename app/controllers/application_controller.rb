@@ -4,6 +4,7 @@ class ApplicationController < DmUniboCommon::ApplicationController
     :force_sso_user,
     :set_current_organization,
     :after_current_user_and_organization,
+    :set_sentry_context,
     :set_locale
 
   # formally accept affiliation if
