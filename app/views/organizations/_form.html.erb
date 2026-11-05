@@ -5,12 +5,14 @@
       <%= o.input :code %>
       <%= o.input :name %>
       <%= o.input :description, as: :text %>
-      <%= o.input :booking %>
     <% end %>
 
     <%= o.input :pricing, hint: t(:pricing_option) %>
-    <%= o.input :adminmail, hint: t(:sottoscorta_message).html_safe %>
-    <%= o.input :sendmail, collection: Configuration::SELECT_COLLECTION, hint: t(:sendmail_message) %>  
+    <%= o.input :adminmail %>
+    <%= o.input :sendmail, collection: Configuration::SELECT_COLLECTION %>  
+    <%= o.input :booking %>
+    <%= o.input :booking_mail, as: :string %>
+
     <%= o.submit "Salva configurazione", class: "my-2" %> - <%= link_to_back root_path %>  
   <% end %>
 <% end %>
