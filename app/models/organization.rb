@@ -60,13 +60,22 @@ class Organization < ApplicationRecord
   def check_mail_parameters
     Configuration::NOTIFY_FREQUENCIES.include?(self.sendmail) or self.sendmail = "n"
 
-    # se abbiamo adminmail lo controlliamo
-    self.adminmail.nil? and return true
-    self.adminmail.gsub!(/\s+/, '')
+    # se abbiamo adminmail/booking_mail li controlliamo
+    validate_mail_field(:adminmail)
+    validate_mail_field(:booking_mail)
 
-    self.adminmail.split(",").each do |mail|
-      (mail =~ /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/) and next
-      errors.add(:adminmail, "indirizzo mail non corretto")
+    true
+  end
+
+  # valida un campo contenente uno o più indirizzi mail separati da virgola
+  def validate_mail_field(field)
+    value = self.send(field)
+    value.nil? and return true
+    value.gsub!(/\s+/, "")
+
+    value.split(",").each do |mail|
+      (mail =~ /^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/) and next
+      errors.add(field, "indirizzo mail non corretto")
       throw(:abort)
     end
 
