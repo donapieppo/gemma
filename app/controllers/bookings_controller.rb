@@ -103,7 +103,7 @@ class BookingsController < ApplicationController
   private
 
   def send_booking_mail
-    return unless current_organization.booking_mail =~ /\w/
+    return unless current_organization.booking_mail&.match?(/\w/)
     BookingMailer.notify_booking(@book.reload).deliver_now
   end
 
