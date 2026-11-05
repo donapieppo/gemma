@@ -101,6 +101,7 @@ it:
         adminmail: Indirizzo mail responsabili
         sendmail: Modalità invio mail
         booking: Prenotazione materiale
+        booking_mail: Indirizzo mail notifica prenotazioni
         ordering: Richiesta acquisti 
         pricing: Prezzi
       delegation:
@@ -125,12 +126,14 @@ it:
     hints:
       group:
         hidden: Se abilitato la categoria e i suoi oggetti sono nascosti agli utenti.
+      organization:
+        adminmail: È possibile scegliere l'indirizzo mail a cui inviare gli avvisi (nel caso di più indirizzi, separarli con una virgola).
+        sendmail: È possibile impostare la modalità di invio delle mail che notificano agli utenti la registrazione dello scarico. Indipendentemente dall'opzione attivata, nella maschera di scarico l'utente amministratore può sempre attivare l'invio della singola mail per notificare quella specifica operazione.
+        booking_mail: Indirizzo mail a cui inviare la notifica di una nuova prenotazione (nel caso di più indirizzi, separarli con una virgola).
       delegation:
         delegator_upn: Indirizzo email del responsabile dei fondi.
         delegate_upn: Indirizzo email della persona delegata a ritirale in materiale in nome del delegante sopra.
 
-  sottoscorta_message:  È possibile scegliere l'indirizzo mail a cui inviare gli avvisi (nel caso di più indirizzi, separarli con una virgola).
-  sendmail_message:     È possibile impostare la modalità di invio delle mail che notificano agli utenti la registrazione dello scarico. Indipendentemente dall'opzione attivata, nella maschera di scarico l'utente amministratore può sempre attivare l'invio della singola mail per notificare quella specifica operazione.
   ddt_hint: Numero del ddt/fatt/scontrino come compare sul documento di accompagnamento emesso dal fornitore (per esempio kd/234)
   booking_recipient_hint: Selezionare la persona reponsabile dello scarico.
   minimum_description: Soglia sotto la quale l'articolo è sottoscorta e si desidera essere avvisati via <strong>mail</strong>. Inserire 0 per non abilitare il servizio su questo articolo.
