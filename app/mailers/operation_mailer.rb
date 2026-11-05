@@ -22,6 +22,6 @@ class OperationMailer < ApplicationMailer
     @unload = unload
     @thing = @unload.thing
     @organization = @thing.organization
-    mail(to: @organization.adminmail, subject: "Raggiungimento minimo di #{@thing}")
+    mail(to: @organization.adminmail.split(","), subject: "Raggiungimento minimo di #{@thing}")
   end
 end
