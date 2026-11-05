@@ -17,6 +17,8 @@ Rails.application.routes.draw do
   get "/home", to: "home#index", as: "home"
   get "helps", to: "helps#index"
 
+  get "/raise12342", to: "home#raise123"
+
   scope ":__org__" do
     # current_organization implicit
     get "/edit", to: "organizations#edit", as: "current_organization_edit"

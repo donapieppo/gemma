@@ -9,4 +9,8 @@ class HomeController < ApplicationController
       @available_organizations = current_user.my_organizations(ordering: :code)
     end
   end
+
+  def raise123
+    raise "test 123"
+  end
 end
