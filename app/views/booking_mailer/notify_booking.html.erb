@@ -1,0 +1,31 @@
+<p>
+AVVISO DI PRENOTAZIONE
+</p>
+
+<p>
+l'utente <%= @user %>
+<% if @recipient %>
+(a nome di <%= @recipient %>)
+<% end %>
+ha effettuato una nuova prenotazione:
+</p>
+
+<p style="margin-left: 1rem">
+numero <%= @booking.number.to_i.abs %> di <i>"<%= @thing %>"</i>
+presso la struttura <i>"<%= @organization.description %>"</i>.
+</p>
+
+<% if @booking.note.present? %>
+<p>
+Note: <%= @booking.note %>
+</p>
+<% end %>
+
+<p style="margin-left: 2rem">
+Con i migliori saluti
+</p>
+
+<p>
+Amministrazione
+<%= @organization.description %>
+</p>
