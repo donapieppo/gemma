@@ -129,7 +129,7 @@ it:
       organization:
         adminmail: È possibile scegliere l'indirizzo mail a cui inviare gli avvisi (nel caso di più indirizzi, separarli con una virgola).
         sendmail: È possibile impostare la modalità di invio delle mail che notificano agli utenti la registrazione dello scarico. Indipendentemente dall'opzione attivata, nella maschera di scarico l'utente amministratore può sempre attivare l'invio della singola mail per notificare quella specifica operazione.
-        booking_mail: Indirizzo mail a cui inviare la notifica di una nuova prenotazione (nel caso di più indirizzi, separarli con una virgola).
+        booking_mail: Indirizzo mail a cui inviare la notifica di una nuova prenotazione (nel caso di più indirizzi, separarli con una virgola). Lasciare vuoto per non inviare mail.
       delegation:
         delegator_upn: Indirizzo email del responsabile dei fondi.
         delegate_upn: Indirizzo email della persona delegata a ritirale in materiale in nome del delegante sopra.
