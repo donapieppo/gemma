@@ -322,6 +322,7 @@ class Operation < ApplicationRecord
   end
 
   def log_creation
-    Rails.logger.info(inspect)
+    # Rails.logger.info(inspect)
+    true
   end
 end
